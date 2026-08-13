@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AREA PERSONALE — FUORISCHEMA</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #050505;
+            color: #f5f5f5;
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            height: 90px;
+            border-bottom: 1px solid #252525;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5vw;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: rgba(5,5,5,.94);
+            backdrop-filter: blur(12px);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+        }
+
+        .logo span {
+            color: #ff4d00;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .header-btn {
+            border: 1px solid #333;
+            padding: 13px 18px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: .2s;
+        }
+
+        .header-btn:hover {
+            border-color: #ff4d00;
+            color: #ff4d00;
+        }
+
+        .header-btn.orange {
+            background: #ff4d00;
+            border-color: #ff4d00;
+            color: #050505;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .profile-hero {
+            padding: 90px 7vw 70px;
+            border-bottom: 1px solid #252525;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-hero::after {
+            content: "";
+            position: absolute;
+            width: 520px;
+            height: 520px;
+            border: 1px solid rgba(255,77,0,.18);
+            border-radius: 50%;
+            right: -180px;
+            top: -180px;
+            box-shadow:
+                0 0 0 45px rgba(255,77,0,.025),
+                0 0 0 90px rgba(255,77,0,.02);
+            pointer-events: none;
+        }
+
+        .eyebrow {
+            color: #ff4d00;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            margin-bottom: 28px;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-size: clamp(70px, 12vw, 180px);
+            line-height: .78;
+            letter-spacing: -9px;
+            font-weight: 950;
+            text-transform: uppercase;
+            max-width: 1000px;
+        }
+
+        .hero-title span {
+            color: #ff4d00;
+        }
+
+        /* =========================
+           PROFILE
+        ========================= */
+
+        .profile-area {
+            width: min(1250px, 90%);
+            margin: 0 auto;
+            padding: 70px 0 100px;
+        }
+
+        .profile-top {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 55px;
+            align-items: start;
+        }
+
+        .avatar-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at center, #151515 0 48%, #0b0b0b 49% 100%);
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .avatar-placeholder {
+            font-size: 75px;
+            font-weight: 950;
+            color: #ff4d00;
+        }
+
+        .change-avatar {
+            margin-top: 18px;
+            background: transparent;
+            color: #aaa;
+            border: none;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .change-avatar:hover {
+            color: #ff4d00;
+        }
+
+        #avatarInput {
+            display: none;
+        }
+
+        .profile-info {
+            padding-top: 5px;
+        }
+
+        .profile-name {
+            font-size: clamp(45px, 6vw, 85px);
+            line-height: .9;
+            letter-spacing: -4px;
+            text-transform: uppercase;
+            font-weight: 950;
+        }
+
+        .profile-username {
+            color: #ff4d00;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-top: 15px;
+        }
+
+        .profile-bio {
+            color: #999;
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 650px;
+            margin-top: 28px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 45px;
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 1px solid #292929;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 30px;
+            font-weight: 950;
+        }
+
+        .stat span {
+            display: block;
+            margin-top: 5px;
+            color: #666;
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 35px;
+        }
+
+        .action-btn {
+            border: 1px solid #444;
+            background: transparent;
+            color: white;
+            padding: 15px 24px;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .action-btn:hover {
+            border-color: #ff4d00;
+            color: #ff4d00;
+        }
+
+        .action-btn.orange {
+            background: #ff4d00;
+            color: #050505;
+            border-color: #ff4d00;
+        }
+
+        /* =========================
+           DIVIDER
+        ========================= */
+
+        .section-divider {
+            border-top: 1px solid #252525;
+            margin: 80px 0 45px;
+            padding-top: 20px;
+            color: #ff4d00;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 4px;
+        }
+
+        /* =========================
+           POSTS
+        ========================= */
+
+        .posts-title {
+            font-size: clamp(40px, 7vw, 90px);
+            line-height: .85;
+            letter-spacing: -4px;
+            font-weight: 950;
+            text-transform: uppercase;
+        }
+
+        .posts-title span {
+            color: #ff4d00;
+        }
+
+        .posts-grid {
+            margin-top: 45px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .post-placeholder {
+            aspect-ratio: 1 / 1;
+            border: 1px solid #242424;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .post-placeholder strong {
+            font-size: 20px;
+            text-transform: uppercase;
+        }
+
+        .post-placeholder span {
+            color: #666;
+            margin-top: 10px;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            border-top: 1px solid #252525;
+            padding: 35px 7vw;
+            display: flex;
+            justify-content: space-between;
+            color: #555;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            header {
+                height: 70px;
+                padding: 0 20px;
+            }
+
+            .header-btn {
+                padding: 10px 12px;
+                font-size: 9px;
+            }
+
+            .profile-hero {
+                padding: 70px 25px 55px;
+            }
+
+            .hero-title {
+                font-size: 72px;
+                letter-spacing: -5px;
+            }
+
+            .profile-area {
+                width: calc(100% - 40px);
+                padding-top: 50px;
+            }
+
+            .profile-top {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+
+            .avatar-column {
+                align-items: flex-start;
+            }
+
+            .avatar {
+                width: 150px;
+                height: 150px;
+            }
+
+            .avatar-placeholder {
+                font-size: 50px;
+            }
+
+            .profile-name {
+                font-size: 55px;
+                letter-spacing: -3px;
+            }
+
+            .stats {
+                gap: 25px;
+            }
+
+            .posts-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <a href="index.html" class="logo">
+        FUORI<span>SCHEMA</span>
+    </a>
+
+    <div class="header-right">
+
+        <a href="community.html" class="header-btn">
+            COMMUNITY
+        </a>
+
+        <button id="logoutBtn" class="header-btn orange">
+            ESCI
+        </button>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <!-- HERO -->
+
+    <section class="profile-hero">
+
+        <div class="eyebrow">
+            01 / MEMBER IDENTITY
+        </div>
+
+        <h1 class="hero-title">
+            QUESTA È<br>
+            LA TUA <span>TRACCIA.</span>
+        </h1>
+
+    </section>
+
+
+    <!-- PROFILO -->
+
+    <section class="profile-area">
+
+        <div class="profile-top">
+
+            <div class="avatar-column">
+
+                <div class="avatar">
+
+                    <img id="avatarImage" alt="Foto profilo">
+
+                    <div id="avatarPlaceholder" class="avatar-placeholder">
+                        F
+                    </div>
+
+                </div>
+
+                <button id="changeAvatarBtn" class="change-avatar">
+                    + CAMBIA FOTO
+                </button>
+
+                <input
+                    type="file"
+                    id="avatarInput"
+                    accept="image/*"
+                >
+
+            </div>
+
+
+            <div class="profile-info">
+
+                <div id="profileName" class="profile-name">
+                    CARICAMENTO...
+                </div>
+
+                <div id="profileUsername" class="profile-username">
+                    @FUORISCHEMA
+                </div>
+
+                <div id="profileBio" class="profile-bio">
+                    Fuori dagli schemi. Dentro te stesso.
+                </div>
+
+
+                <div class="stats">
+
+                    <div class="stat">
+                        <strong id="postCount">0</strong>
+                        <span>Post</span>
+                    </div>
+
+                    <div class="stat">
+                        <strong id="followerCount">0</strong>
+                        <span>Follower</span>
+                    </div>
+
+                    <div class="stat">
+                        <strong id="followingCount">0</strong>
+                        <span>Seguiti</span>
+                    </div>
+
+                </div>
+
+
+                <div class="actions">
+
+                    <button
+                        id="editProfileBtn"
+                        class="action-btn orange">
+                        MODIFICA PROFILO
+                    </button>
+
+                    <a
+                        href="community.html"
+                        class="action-btn">
+                        VAI ALLA COMMUNITY →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- POST -->
+
+        <div class="section-divider">
+            02 / YOUR PRESENCE
+        </div>
+
+        <h2 class="posts-title">
+            I TUOI<br>
+            <span>POST.</span>
+        </h2>
+
+
+        <div id="postsGrid" class="posts-grid">
+
+            <div class="post-placeholder">
+                <strong>Nessun post</strong>
+                <span>Lascia la tua prima traccia.</span>
+            </div>
+
+            <div class="post-placeholder">
+                <strong>FUORISCHEMA</strong>
+                <span>Il tuo stile. Le tue regole.</span>
+            </div>
+
+            <div class="post-placeholder">
+                <strong>COMING SOON</strong>
+                <span>Il feed nascerà qui.</span>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <span>FUORISCHEMA © 2026</span>
+
+    <span>FUORI DAGLI SCHEMI.</span>
+
+</footer>
+
+
+<script type="module">
+
+    import { supabase } from "./supabase.js";
+
+
+    /* =========================
+       ELEMENTI
+    ========================= */
+
+    const profileName = document.getElementById("profileName");
+    const profileUsername = document.getElementById("profileUsername");
+    const profileBio = document.getElementById("profileBio");
+
+    const avatarImage = document.getElementById("avatarImage");
+    const avatarPlaceholder = document.getElementById("avatarPlaceholder");
+
+    const avatarInput = document.getElementById("avatarInput");
+    const changeAvatarBtn = document.getElementById("changeAvatarBtn");
+
+    const logoutBtn = document.getElementById("logoutBtn");
+
+
+    /* =========================
+       CARICA PROFILO
+    ========================= */
+
+    async function loadProfile() {
+
+        const {
+            data: { session }
+        } = await supabase.auth.getSession();
+
+
+        if (!session) {
+
+            window.location.href = "login.html";
+
+            return;
+        }
+
+
+        const user = session.user;
+
+
+        const { data: profile, error } = await supabase
+            .from("profiles")
+            .select("*")
+            .eq("id", user.id)
+            .single();
+
+
+        if (error) {
+
+            console.error("Errore caricamento profilo:", error);
+
+            profileName.textContent =
+                user.user_metadata?.full_name ||
+                "MEMBRO FUORISCHEMA";
+
+            profileUsername.textContent =
+                "@" + (user.email?.split("@")[0] || "member");
+
+            return;
+        }
+
+
+        const fullName =
+            profile.full_name ||
+            user.user_metadata?.full_name ||
+            "MEMBRO FUORISCHEMA";
+
+
+        const username =
+            profile.username ||
+            user.email?.split("@")[0] ||
+            "member";
+
+
+        const bio =
+            profile.bio ||
+            "Fuori dagli schemi. Dentro te stesso.";
+
+
+        profileName.textContent = fullName.toUpperCase();
+
+        profileUsername.textContent =
+            "@" + username.replace("@", "");
+
+        profileBio.textContent = bio;
+
+
+        /* FOTO PROFILO */
+
+        if (profile.avatar_url) {
+
+            avatarImage.src = profile.avatar_url;
+
+            avatarImage.style.display = "block";
+
+            avatarPlaceholder.style.display = "none";
+
+        } else {
+
+            avatarPlaceholder.textContent =
+                fullName.charAt(0).toUpperCase();
+
+        }
+
+    }
+
+
+    /* =========================
+       LOGOUT
+    ========================= */
+
+    logoutBtn.addEventListener("click", async () => {
+
+        await supabase.auth.signOut();
+
+        window.location.href = "index.html";
+
+    });
+
+
+    /* =========================
+       CAMBIA FOTO
+    ========================= */
+
+    changeAvatarBtn.addEventListener("click", () => {
+
+        avatarInput.click();
+
+    });
+
+
+    avatarInput.addEventListener("change", async () => {
+
+        const file = avatarInput.files[0];
+
+        if (!file) return;
+
+
+        const {
+            data: { session }
+        } = await supabase.auth.getSession();
+
+
+        if (!session) {
+
+            window.location.href = "login.html";
+
+            return;
+        }
+
+
+        const user = session.user;
+
+
+        const extension =
+            file.name.split(".").pop();
+
+
+        const filePath =
+            `${user.id}/avatar.${extension}`;
+
+
+        changeAvatarBtn.textContent =
+            "CARICAMENTO...";
+
+
+        const { error: uploadError } =
+            await supabase.storage
+                .from("avatars")
+                .upload(
+                    filePath,
+                    file,
+                    {
+                        upsert: true
+                    }
+                );
+
+
+        if (uploadError) {
+
+            console.error(uploadError);
+
+            alert(
+                "Non è stato possibile caricare la foto."
+            );
+
+            changeAvatarBtn.textContent =
+                "+ CAMBIA FOTO";
+
+            return;
+        }
+
+
+        const { data } =
+            supabase.storage
+                .from("avatars")
+                .getPublicUrl(filePath);
+
+
+        const avatarUrl =
+            data.publicUrl;
+
+
+        const { error: updateError } =
+            await supabase
+                .from("profiles")
+                .update({
+                    avatar_url: avatarUrl
+                })
+                .eq("id", user.id);
+
+
+        if (updateError) {
+
+            console.error(updateError);
+
+            alert(
+                "Foto caricata, ma non è stato possibile salvarla nel profilo."
+            );
+
+            return;
+        }
+
+
+        avatarImage.src =
+            avatarUrl + "?t=" + Date.now();
+
+        avatarImage.style.display =
+            "block";
+
+        avatarPlaceholder.style.display =
+            "none";
+
+
+        changeAvatarBtn.textContent =
+            "✓ FOTO AGGIORNATA";
+
+    });
+
+
+    /* =========================
+       AVVIO
+    ========================= */
+
+    loadProfile();
+
+</script>
+
+</body>
+</html>

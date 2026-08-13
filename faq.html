@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FAQ — FUORISCHEMA</title>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root{
+    --nero:#050505;
+    --bianco:#f4f4f2;
+    --arancio:#ff4d00;
+    --grigio:#888;
+    --linea:#242424;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:var(--nero);
+    color:var(--bianco);
+    font-family:'Inter',Arial,sans-serif;
+    overflow-x:hidden;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+header{
+
+    height:86px;
+
+    position:fixed;
+
+    top:0;
+    left:0;
+    right:0;
+
+    z-index:1000;
+
+    padding:0 5vw;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    border-bottom:1px solid var(--linea);
+
+    background:rgba(5,5,5,.88);
+
+    backdrop-filter:blur(12px);
+}
+
+
+.logo{
+
+    font-size:25px;
+
+    font-weight:900;
+
+    letter-spacing:-2px;
+}
+
+
+.logo span{
+    color:var(--arancio);
+}
+
+
+.home-link{
+
+    color:var(--arancio);
+
+    font-size:10px;
+
+    font-weight:800;
+
+    letter-spacing:3px;
+
+    transition:.3s ease;
+}
+
+
+.home-link:hover{
+    transform:translateX(-6px);
+}
+
+
+/* =====================================================
+   HERO FAQ
+===================================================== */
+
+.faq-hero{
+
+    padding:
+
+        170px
+        5vw
+        100px;
+
+    border-bottom:1px solid var(--linea);
+}
+
+
+.number{
+
+    color:var(--arancio);
+
+    font-size:10px;
+
+    font-weight:800;
+
+    letter-spacing:5px;
+
+    margin-bottom:25px;
+}
+
+
+.faq-title{
+
+    font-size:
+
+        clamp(
+            90px,
+            15vw,
+            220px
+        );
+
+    line-height:.78;
+
+    font-weight:900;
+
+    letter-spacing:-11px;
+}
+
+
+.faq-subtitle{
+
+    margin-top:40px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    letter-spacing:2px;
+
+    color:#999;
+}
+
+
+/* =====================================================
+   FAQ CONTENT
+===================================================== */
+
+.faq-container{
+
+    width:90%;
+
+    max-width:1200px;
+
+    margin:0 auto;
+
+    padding:110px 0 130px;
+}
+
+
+.faq-section{
+
+    margin-bottom:90px;
+}
+
+
+.section-number{
+
+    color:var(--arancio);
+
+    font-size:10px;
+
+    font-weight:800;
+
+    letter-spacing:5px;
+
+    margin-bottom:22px;
+}
+
+
+.section-title{
+
+    font-size:
+
+        clamp(
+            35px,
+            5vw,
+            65px
+        );
+
+    line-height:.9;
+
+    font-weight:900;
+
+    letter-spacing:-4px;
+
+    margin-bottom:30px;
+}
+
+
+/* =====================================================
+   ACCORDION
+===================================================== */
+
+.faq-item{
+
+    border-top:1px solid var(--linea);
+}
+
+
+.faq-item:last-child{
+
+    border-bottom:1px solid var(--linea);
+}
+
+
+.faq-question{
+
+    width:100%;
+
+    padding:27px 0;
+
+    background:none;
+
+    border:0;
+
+    color:var(--bianco);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:30px;
+
+    text-align:left;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    line-height:1.4;
+}
+
+
+.faq-question:hover{
+    color:var(--arancio);
+}
+
+
+.faq-symbol{
+
+    flex-shrink:0;
+
+    color:var(--arancio);
+
+    font-size:25px;
+
+    font-weight:400;
+
+    line-height:1;
+
+    transition:
+        transform .35s ease;
+}
+
+
+.faq-item.open
+.faq-symbol{
+
+    transform:rotate(45deg);
+
+}
+
+
+/* =====================================================
+   ANSWER
+===================================================== */
+
+.faq-answer{
+
+    display:grid;
+
+    grid-template-rows:0fr;
+
+    transition:
+        grid-template-rows .4s
+        cubic-bezier(.16,1,.3,1);
+}
+
+
+.faq-answer-inner{
+
+    overflow:hidden;
+
+    color:#888;
+
+    font-size:14px;
+
+    line-height:1.8;
+
+    max-width:850px;
+}
+
+
+.faq-item.open
+.faq-answer{
+
+    grid-template-rows:1fr;
+
+}
+
+
+.faq-item.open
+.faq-answer-inner{
+
+    padding-bottom:28px;
+
+}
+
+
+/* =====================================================
+   TESTO MODIFICABILE
+===================================================== */
+
+.editable{
+
+    color:#aaa;
+
+}
+
+
+.editable::before{
+
+    content:"";
+
+}
+
+
+/* =====================================================
+   CONTATTI
+===================================================== */
+
+.faq-contact{
+
+    padding:
+
+        110px
+        5vw
+        130px;
+
+    border-top:1px solid var(--linea);
+
+    background:
+
+        radial-gradient(
+            circle at 85% 50%,
+            rgba(255,77,0,.08),
+            transparent 35%
+        );
+}
+
+
+.contact-number{
+
+    color:var(--arancio);
+
+    font-size:10px;
+
+    font-weight:800;
+
+    letter-spacing:5px;
+
+    margin-bottom:25px;
+}
+
+
+.contact-title{
+
+    font-size:
+
+        clamp(
+            45px,
+            7vw,
+            105px
+        );
+
+    line-height:.85;
+
+    font-weight:900;
+
+    letter-spacing:-6px;
+
+    margin-bottom:45px;
+}
+
+
+.contact-button{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    padding-bottom:14px;
+
+    border-bottom:1px solid var(--arancio);
+
+    color:var(--arancio);
+
+    font-size:10px;
+
+    font-weight:800;
+
+    letter-spacing:4px;
+
+    transition:.3s ease;
+}
+
+
+.contact-button:hover{
+
+    padding-left:10px;
+    padding-right:10px;
+
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer{
+
+    border-top:1px solid var(--linea);
+
+    padding:65px 5vw 25px;
+}
+
+
+.footer-top{
+
+    display:grid;
+
+    grid-template-columns:
+        2fr 1fr 1fr 1fr;
+
+    gap:50px;
+
+    padding-bottom:65px;
+}
+
+
+.footer-logo{
+
+    font-size:42px;
+
+    font-weight:900;
+
+    letter-spacing:-4px;
+}
+
+
+.footer-logo span{
+
+    color:var(--arancio);
+
+}
+
+
+.footer-title{
+
+    color:var(--arancio);
+
+    font-size:9px;
+
+    font-weight:800;
+
+    letter-spacing:4px;
+
+    margin-bottom:18px;
+}
+
+
+.footer-links{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+}
+
+
+.footer-links a{
+
+    color:#888;
+
+    font-size:12px;
+
+    transition:.2s ease;
+}
+
+
+.footer-links a:hover{
+
+    color:white;
+
+}
+
+
+.footer-bottom{
+
+    border-top:1px solid #202020;
+
+    padding-top:22px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    color:#555;
+
+    font-size:9px;
+
+    letter-spacing:2px;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:800px){
+
+    header{
+
+        height:72px;
+
+        padding:0 20px;
+
+    }
+
+
+    .logo{
+
+        font-size:20px;
+
+    }
+
+
+    .faq-hero{
+
+        padding:
+
+            130px
+            20px
+            75px;
+
+    }
+
+
+    .faq-title{
+
+        font-size:
+
+            clamp(
+                85px,
+                24vw,
+                130px
+            );
+
+        letter-spacing:-7px;
+
+    }
+
+
+    .faq-subtitle{
+
+        font-size:10px;
+
+        line-height:1.5;
+
+        max-width:280px;
+
+    }
+
+
+    .faq-container{
+
+        width:calc(100% - 40px);
+
+        padding:75px 0 90px;
+
+    }
+
+
+    .faq-section{
+
+        margin-bottom:65px;
+
+    }
+
+
+    .section-title{
+
+        font-size:48px;
+
+        letter-spacing:-3px;
+
+    }
+
+
+    .faq-question{
+
+        padding:23px 0;
+
+        font-size:14px;
+
+    }
+
+
+    .faq-answer-inner{
+
+        font-size:13px;
+
+        line-height:1.7;
+
+    }
+
+
+    .faq-contact{
+
+        padding:
+
+            80px
+            20px
+            100px;
+
+    }
+
+
+    .contact-title{
+
+        font-size:55px;
+
+        letter-spacing:-4px;
+
+    }
+
+
+    .footer-top{
+
+        grid-template-columns:1fr 1fr;
+
+        gap:40px 25px;
+
+    }
+
+
+    .footer-logo{
+
+        grid-column:1/-1;
+
+        font-size:36px;
+
+    }
+
+
+    .footer-bottom{
+
+        display:block;
+
+        line-height:2;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+    <a
+        href="index.html"
+        class="logo"
+    >
+
+        FUORI<span>SCHEMA</span>
+
+    </a>
+
+
+    <a
+        href="index.html"
+        class="home-link"
+    >
+
+        ← HOME
+
+    </a>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="faq-hero">
+
+    <div class="number">
+
+        01 / SUPPORTO
+
+    </div>
+
+
+    <h1 class="faq-title">
+
+        FAQ
+
+    </h1>
+
+
+    <p class="faq-subtitle">
+
+        TUTTO QUELLO CHE DEVI SAPERE
+
+    </p>
+
+</section>
+
+
+
+<!-- =====================================================
+     FAQ
+===================================================== -->
+
+<main class="faq-container">
+
+
+    <!-- =================================================
+         01 / ORDINI
+    ================================================== -->
+
+    <section class="faq-section">
+
+        <div class="section-number">
+
+            01 / ORDINI
+
+        </div>
+
+
+        <h2 class="section-title">
+
+            ORDINI
+
+        </h2>
+
+
+        <div class="faq-list">
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Come posso acquistare un prodotto?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner">
+
+                        Per acquistare un prodotto, clicca su
+                        <strong>"SCRIVI IN DM"</strong>
+                        nella pagina del prodotto.
+
+                        Verrai indirizzato direttamente al profilo
+                        Instagram ufficiale di FUORISCHEMA, dove potrai
+                        verificare disponibilità, taglia e modalità
+                        di acquisto.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Come posso sapere se una taglia è disponibile?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner">
+
+                        La disponibilità viene verificata direttamente
+                        tramite il nostro profilo Instagram.
+
+                        Clicca su "SCRIVI IN DM" nella pagina del prodotto
+                        e contattaci.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Posso acquistare più prodotti?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner">
+
+                        Sì.
+
+                        Contattaci tramite Instagram e indicaci
+                        i prodotti e le taglie che ti interessano.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Posso modificare o annullare un ordine?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner">
+
+                        Contattaci il prima possibile tramite Instagram.
+
+                        Faremo il possibile per aiutarti in base
+                        allo stato dell'ordine.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         02 / SPEDIZIONI
+    ================================================== -->
+
+    <section class="faq-section">
+
+        <div class="section-number">
+
+            02 / SPEDIZIONI
+
+        </div>
+
+
+        <h2 class="section-title">
+
+            SPEDIZIONI
+
+        </h2>
+
+
+        <div class="faq-list">
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Quanto costa la spedizione?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner editable">
+
+                        INFORMAZIONE DA DEFINIRE.
+
+                        Il costo della spedizione verrà indicato
+                        una volta definite le modalità di spedizione
+                        di FUORISCHEMA.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        In quanto tempo arriva il mio ordine?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner editable">
+
+                        INFORMAZIONE DA DEFINIRE.
+
+                        Le tempistiche definitive verranno indicate
+                        una volta stabilite le modalità di spedizione.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Effettuate spedizioni in tutta Italia?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner editable">
+
+                        INFORMAZIONE DA DEFINIRE.
+
+                        Le modalità di spedizione in Italia verranno
+                        comunicate quando il servizio sarà definito.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Spedite anche all'estero?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner editable">
+
+                        INFORMAZIONE DA DEFINIRE.
+
+                        Le spedizioni internazionali verranno
+                        definite in seguito.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         03 / PAGAMENTI
+    ================================================== -->
+
+    <section class="faq-section">
+
+        <div class="section-number">
+
+            03 / PAGAMENTI
+
+        </div>
+
+
+        <h2 class="section-title">
+
+            PAGAMENTI
+
+        </h2>
+
+
+        <div class="faq-list">
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Quali metodi di pagamento accettate?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner editable">
+
+                        INFORMAZIONE DA DEFINIRE.
+
+                        I metodi di pagamento disponibili verranno
+                        comunicati in base alla modalità definitiva
+                        di gestione degli ordini.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Il pagamento è sicuro?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner">
+
+                        Gli ordini vengono gestiti direttamente
+                        tramite i canali ufficiali di FUORISCHEMA.
+
+                        Le modalità di pagamento verranno comunicate
+                        prima della conclusione dell'acquisto.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         04 / TAGLIE
+    ================================================== -->
+
+    <section class="faq-section">
+
+        <div class="section-number">
+
+            04 / TAGLIE
+
+        </div>
+
+
+        <h2 class="section-title">
+
+            TAGLIE
+
+        </h2>
+
+
+        <div class="faq-list">
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Come scelgo la taglia giusta?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner">
+
+                        Per qualsiasi dubbio sulla taglia,
+                        puoi contattarci tramite Instagram prima
+                        dell'acquisto.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Avete una guida alle taglie?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner editable">
+
+                        INFORMAZIONE DA DEFINIRE.
+
+                        Una guida alle taglie verrà resa disponibile
+                        quando necessario.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Cosa faccio se ho dubbi sulla taglia?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner">
+
+                        Contattaci tramite Instagram prima dell'acquisto.
+
+                        Ti aiuteremo a verificare la taglia più adatta
+                        al prodotto che ti interessa.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         05 / RESI
+    ================================================== -->
+
+    <section class="faq-section">
+
+        <div class="section-number">
+
+            05 / RESI
+
+        </div>
+
+
+        <h2 class="section-title">
+
+            RESI
+
+        </h2>
+
+
+        <div class="faq-list">
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Posso effettuare un reso?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner editable">
+
+                        INFORMAZIONE DA DEFINIRE.
+
+                        La politica di reso definitiva verrà
+                        pubblicata quando sarà ufficialmente stabilita.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Entro quanti giorni posso effettuare un reso?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner editable">
+
+                        INFORMAZIONE DA DEFINIRE.
+
+                        Il periodo previsto per eventuali resi
+                        verrà indicato nella policy ufficiale.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Come funziona il rimborso?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner editable">
+
+                        INFORMAZIONE DA DEFINIRE.
+
+                        Le modalità di rimborso verranno indicate
+                        nella policy definitiva di FUORISCHEMA.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         06 / PRODOTTI
+    ================================================== -->
+
+    <section class="faq-section">
+
+        <div class="section-number">
+
+            06 / PRODOTTI
+
+        </div>
+
+
+        <h2 class="section-title">
+
+            PRODOTTI
+
+        </h2>
+
+
+        <div class="faq-list">
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        I prodotti sono originali?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner">
+
+                        Sì.
+
+                        I prodotti venduti da FUORISCHEMA
+                        sono originali.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        I prodotti sono nuovi?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner">
+
+                        I prodotti vengono presentati come nuovi,
+                        salvo eventuali eccezioni che saranno
+                        specificate nella relativa scheda prodotto.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="faq-item">
+
+                <button class="faq-question">
+
+                    <span>
+                        Come posso sapere se un prodotto è disponibile?
+                    </span>
+
+                    <span class="faq-symbol">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer">
+
+                    <div class="faq-answer-inner">
+
+                        Nella V1 del sito, la disponibilità viene
+                        verificata direttamente tramite Instagram.
+
+                        Clicca su <strong>"SCRIVI IN DM"</strong>
+                        nella pagina del prodotto e contattaci.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<!-- =====================================================
+     CONTATTI
+===================================================== -->
+
+<section class="faq-contact">
+
+    <div class="contact-number">
+
+        07 / CONTATTI
+
+    </div>
+
+
+    <h2 class="contact-title">
+
+        NON HAI TROVATO<br>
+        LA RISPOSTA?
+
+    </h2>
+
+
+    <!--
+        SOSTITUIRE # CON IL VERO PROFILO INSTAGRAM
+        DI FUORISCHEMA QUANDO ME LO DAI.
+    -->
+
+    <a
+        href="#"
+        class="contact-button"
+        target="_blank"
+    >
+
+        CONTATTACI →
+
+    </a>
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <div class="footer-top">
+
+
+        <div class="footer-logo">
+
+            FUORI<span>SCHEMA</span>
+
+        </div>
+
+
+        <div>
+
+            <div class="footer-title">
+                SHOP
+            </div>
+
+            <div class="footer-links">
+
+                <a href="catalogo.html">
+                    Catalogo
+                </a>
+
+                <a href="scarpe.html">
+                    Scarpe
+                </a>
+
+                <a href="abbigliamento.html">
+                    Abbigliamento
+                </a>
+
+                <a href="index.html#nuovi-arrivi">
+                    Nuovi arrivi
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div>
+
+            <div class="footer-title">
+                FUORISCHEMA
+            </div>
+
+            <div class="footer-links">
+
+                <a href="index.html#manifesto">
+                    Manifesto
+                </a>
+
+                <a href="faq.html">
+                    FAQ
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div>
+
+            <div class="footer-title">
+                AIUTO
+            </div>
+
+            <div class="footer-links">
+
+                <a href="faq.html">
+                    FAQ
+                </a>
+
+                <a href="#">
+                    Spedizioni
+                </a>
+
+                <a href="#">
+                    Resi
+                </a>
+
+                <a href="#">
+                    Contatti
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <span>
+            © 2026 FUORISCHEMA
+        </span>
+
+        <span>
+            FUORI DAGLI SCHEMI. DENTRO TE STESSO.
+        </span>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT ACCORDION
+===================================================== -->
+
+<script>
+
+const questions =
+    document.querySelectorAll(".faq-question");
+
+
+questions.forEach(question => {
+
+    question.addEventListener(
+        "click",
+        () => {
+
+            const item =
+                question.parentElement;
+
+            const alreadyOpen =
+                item.classList.contains("open");
+
+
+            /*
+                Chiude le altre FAQ
+                della stessa pagina.
+            */
+
+            document
+                .querySelectorAll(".faq-item.open")
+                .forEach(openItem => {
+
+                    if(openItem !== item){
+
+                        openItem.classList.remove(
+                            "open"
+                        );
+
+                    }
+
+                });
+
+
+            /*
+                Apre/chiude quella cliccata.
+            */
+
+            if(!alreadyOpen){
+
+                item.classList.add("open");
+
+            }else{
+
+                item.classList.remove("open");
+
+            }
+
+        }
+    );
+
+});
+
+</script>
+
+
+</body>
+</html>

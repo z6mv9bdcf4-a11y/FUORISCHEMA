@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FUORISCHEMA — Scarpe</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #050505;
+            color: #f5f5f5;
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 30px 6%;
+            border-bottom: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #ff4d00;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .back {
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            transition: 0.2s;
+        }
+
+        .back:hover {
+            color: #ff4d00;
+        }
+
+        main {
+            padding: 80px 6%;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .label {
+            color: #ff4d00;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: clamp(45px, 8vw, 90px);
+            line-height: 0.9;
+            text-transform: uppercase;
+            margin-bottom: 60px;
+        }
+
+        .brands {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .brand {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px;
+            border: 1px solid #252525;
+            background: #0b0b0b;
+            color: white;
+            text-decoration: none;
+            transition: 0.25s;
+        }
+
+        .brand:hover {
+            border-color: #ff4d00;
+            transform: translateY(-3px);
+        }
+
+        .brand-name {
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .arrow {
+            color: #ff4d00;
+            font-size: 24px;
+        }
+
+        @media (max-width: 700px) {
+            header {
+                padding: 22px 5%;
+            }
+
+            main {
+                padding: 55px 5%;
+            }
+
+            .brands {
+                grid-template-columns: 1fr;
+            }
+
+            .brand {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">FUORISCHEMA</div>
+
+    <a href="index.html" class="back">
+        ← TORNA AL CATALOGO
+    </a>
+</header>
+
+<main>
+
+    <div class="label">01 / CATEGORIA</div>
+
+    <h1>SCARPE</h1>
+
+    <div class="brands">
+
+        <a href="nike.html" class="brand">
+            <span class="brand-name">NIKE</span>
+            <span class="arrow">→</span>
+        </a>
+
+        <a href="jordan.html" class="brand">
+            <span class="brand-name">JORDAN</span>
+            <span class="arrow">→</span>
+        </a>
+
+        <a href="travis-scott.html" class="brand">
+            <span class="brand-name">TRAVIS SCOTT</span>
+            <span class="arrow">→</span>
+        </a>
+
+        <a href="adidas.html" class="brand">
+            <span class="brand-name">ADIDAS</span>
+            <span class="arrow">→</span>
+        </a>
+
+        <a href="asics.html" class="brand">
+            <span class="brand-name">ASICS</span>
+            <span class="arrow">→</span>
+        </a>
+
+        <a href="puma.html" class="brand">
+            <span class="brand-name">PUMA</span>
+            <span class="arrow">→</span>
+        </a>
+
+        <a href="timberland.html" class="brand">
+            <span class="brand-name">TIMBERLAND</span>
+            <span class="arrow">→</span>
+        </a>
+
+    </div>
+
+</main>
+
+</body>
+</html>

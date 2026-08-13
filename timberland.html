@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FUORISCHEMA — Timberland</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #050505;
+            color: #f5f5f5;
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 30px 6%;
+            border-bottom: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #ff4d00;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .back {
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .back:hover {
+            color: #ff4d00;
+        }
+
+        main {
+            padding: 70px 6%;
+            max-width: 1300px;
+            margin: auto;
+        }
+
+        .label {
+            color: #ff4d00;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: clamp(50px, 9vw, 100px);
+            line-height: 0.9;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .intro {
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 60px;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: minmax(0, 650px);
+            gap: 25px;
+        }
+
+        .product {
+            background: #0b0b0b;
+            border: 1px solid #222;
+            overflow: hidden;
+            transition: 0.25s;
+        }
+
+        .product:hover {
+            border-color: #ff4d00;
+            transform: translateY(-4px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 520px;
+            background: #111;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-number {
+            color: #ff4d00;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .product-title {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .product-subtitle {
+            color: #999;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .dm-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 18px;
+            border: 1px solid #ff4d00;
+            color: #fff;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .dm-button:hover {
+            background: #ff4d00;
+            color: #000;
+        }
+
+        @media (max-width: 700px) {
+            header {
+                padding: 22px 5%;
+            }
+
+            main {
+                padding: 50px 5%;
+            }
+
+            .product-image {
+                height: 420px;
+            }
+
+            .products {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        FUORISCHEMA
+    </div>
+
+    <a href="scarpe.html" class="back">
+        ← TORNA A SCARPE
+    </a>
+
+</header>
+
+<main>
+
+    <div class="label">
+        07 / TIMBERLAND
+    </div>
+
+    <h1>
+        TIMBERLAND
+    </h1>
+
+    <p class="intro">
+        SELEZIONE FUORISCHEMA
+    </p>
+
+    <div class="products">
+
+        <article class="product">
+
+            <div class="product-image">
+                <img
+                    src="images/timberland.jpeg"
+                    alt="Timberland">
+            </div>
+
+            <div class="product-info">
+
+                <div class="product-number">
+                    #001
+                </div>
+
+                <div class="product-title">
+                    Timberland
+                </div>
+
+                <div class="product-subtitle">
+                    DISPONIBILITÀ IN DM
+                </div>
+
+                <a
+                    href="https://www.instagram.com/_fuori.schema_/"
+                    target="_blank"
+                    class="dm-button">
+                    SCRIVI IN DM
+                </a>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</main>
+
+</body>
+</html>

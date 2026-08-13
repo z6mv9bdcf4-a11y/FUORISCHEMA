@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ACCOUNT — FUORISCHEMA</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+        :root {
+            --nero: #050505;
+            --bianco: #f4f4f2;
+            --arancio: #ff4d00;
+            --grigio: #888;
+            --linea: #242424;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--nero);
+            color: var(--bianco);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* HEADER */
+
+        header {
+            padding: 28px 38px;
+            border-bottom: 1px solid var(--linea);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+        }
+
+        .back {
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .back:hover {
+            color: var(--arancio);
+        }
+
+        /* MAIN */
+
+        main {
+            min-height: calc(100vh - 150px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 20px;
+        }
+
+        .account-wrapper {
+            width: 100%;
+            max-width: 520px;
+        }
+
+        .eyebrow {
+            color: var(--arancio);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-size: clamp(55px, 9vw, 100px);
+            line-height: 0.85;
+            letter-spacing: -5px;
+            font-weight: 900;
+            margin-bottom: 30px;
+        }
+
+        h1 span {
+            color: var(--arancio);
+        }
+
+        .intro {
+            color: #999;
+            font-size: 14px;
+            line-height: 1.7;
+            max-width: 470px;
+            margin-bottom: 45px;
+        }
+
+        /* FORM */
+
+        .form-section {
+            border-top: 1px solid var(--linea);
+            padding-top: 30px;
+        }
+
+        .field {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            color: #888;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 9px;
+        }
+
+        input {
+            width: 100%;
+            height: 52px;
+            padding: 0 15px;
+            background: transparent;
+            border: 1px solid var(--linea);
+            color: var(--bianco);
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.25s ease;
+        }
+
+        input:focus {
+            border-color: var(--arancio);
+        }
+
+        input::placeholder {
+            color: #555;
+        }
+
+        .instagram-field {
+            position: relative;
+        }
+
+        .instagram-prefix {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--arancio);
+            font-weight: 800;
+            pointer-events: none;
+        }
+
+        .instagram-field input {
+            padding-left: 30px;
+        }
+
+        .form-note {
+            color: #666;
+            font-size: 10px;
+            line-height: 1.5;
+            margin-top: 8px;
+        }
+
+        /* BUTTON */
+
+        .submit-button {
+            width: 100%;
+            height: 58px;
+            margin-top: 12px;
+            border: 1px solid var(--arancio);
+            background: var(--arancio);
+            color: var(--nero);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .submit-button:hover {
+            background: transparent;
+            color: var(--arancio);
+        }
+
+        .submit-button span {
+            font-size: 20px;
+        }
+
+        /* LOGIN */
+
+        .login-link {
+            border-top: 1px solid var(--linea);
+            margin-top: 35px;
+            padding-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .login-link span {
+            color: #777;
+            font-size: 11px;
+        }
+
+        .login-link a {
+            color: var(--bianco);
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .login-link a:hover {
+            color: var(--arancio);
+        }
+
+        /* FOOTER */
+
+        footer {
+            border-top: 1px solid var(--linea);
+            padding: 22px 38px;
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 22px 20px;
+            }
+
+            .brand {
+                font-size: 20px;
+            }
+
+            main {
+                padding: 60px 20px;
+                align-items: flex-start;
+            }
+
+            .account-wrapper {
+                padding-top: 20px;
+            }
+
+            h1 {
+                font-size: clamp(52px, 17vw, 85px);
+                letter-spacing: -4px;
+            }
+
+            .intro {
+                font-size: 13px;
+            }
+
+            footer {
+                padding: 20px;
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+
+        <a href="index.html" class="brand">
+            FUORISCHEMA
+        </a>
+
+        <a href="community.html" class="back">
+            ← COMMUNITY
+        </a>
+
+    </header>
+
+
+    <main>
+
+        <div class="account-wrapper">
+
+            <div class="eyebrow">
+                01 / MEMBER ACCESS
+            </div>
+
+            <h1>
+                CREA<br>
+                IL TUO <span>ACCOUNT.</span>
+            </h1>
+
+            <p class="intro">
+                Entra nella Community FUORISCHEMA.
+                Crea il tuo profilo, collega il tuo Instagram
+                e preparati a condividere i tuoi look con gli altri membri.
+            </p>
+
+
+            <section class="form-section">
+
+                <div class="field">
+
+                    <label for="name">
+                        NOME
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Il tuo nome"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="email">
+                        EMAIL
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="La tua email"
+                    >
+
+                </div>
+
+
+                <div class="field instagram-field">
+
+                    <label for="instagram">
+                        INSTAGRAM
+                    </label>
+
+                    <span class="instagram-prefix">@</span>
+
+                    <input
+                        type="text"
+                        id="instagram"
+                        placeholder="username"
+                    >
+
+                    <p class="form-note">
+                        Il tuo username Instagram verrà associato
+                        al tuo profilo Community.
+                    </p>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="password">
+                        PASSWORD
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Crea una password"
+                    >
+
+                </div>
+
+
+                <button class="submit-button" type="button">
+
+                    CREA ACCOUNT
+
+                    <span>→</span>
+
+                </button>
+
+            </section>
+
+
+            <div class="login-link">
+
+                <span>
+                    HAI GIÀ UN ACCOUNT?
+                </span>
+
+                <a href="login.html">
+                    ACCEDI →
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+
+        <span>
+            FUORISCHEMA © 2026
+        </span>
+
+        <span>
+            MEMBER ACCESS
+        </span>
+
+    </footer>
+    <script type="module">
+    import { supabase } from "./supabase.js";
+
+    const createAccountButton = document.querySelector(".submit-button");
+
+    createAccountButton.addEventListener("click", async () => {
+
+        const inputs = document.querySelectorAll(".field input");
+
+        const nameInput = inputs[0];
+        const emailInput = inputs[1];
+        const instagramInput = inputs[2];
+        const passwordInput = inputs[3];
+
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const instagram = instagramInput.value.trim();
+        const password = passwordInput.value;
+
+        if (!name || !email || !instagram || !password) {
+            alert("COMPILA TUTTI I CAMPI.");
+            return;
+        }
+
+        if (password.length < 6) {
+            alert("LA PASSWORD DEVE AVERE ALMENO 6 CARATTERI.");
+            return;
+        }
+
+        createAccountButton.disabled = true;
+        createAccountButton.style.opacity = "0.6";
+
+        try {
+
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: {
+                        full_name: name,
+                        instagram: instagram
+                    },
+                    emailRedirectTo: "https://z6mv9bdcf4-a11y.github.io/FUORISCHEMA/login.html"
+                }
+            });
+
+            if (error) {
+                throw error;
+            }
+
+            alert(
+                "ACCOUNT CREATO.\n\n" +
+                "Controlla la tua email e conferma l'indirizzo per attivare l'account."
+            );
+
+            window.location.href = "login.html";
+
+        } catch (error) {
+
+            console.error("ERRORE REGISTRAZIONE:", error);
+
+            alert("ERRORE: " + error.message);
+
+            createAccountButton.disabled = false;
+            createAccountButton.style.opacity = "1";
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FUORISCHEMA — Catalogo</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #050505;
+            color: #f5f5f5;
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 30px 6%;
+            border-bottom: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #ff4d00;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .back {
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            transition: 0.2s;
+        }
+
+        .back:hover {
+            color: #ff4d00;
+        }
+
+        main {
+            max-width: 1300px;
+            margin: auto;
+            padding: 80px 6%;
+        }
+
+        .label {
+            color: #ff4d00;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            font-size: clamp(60px, 10vw, 120px);
+            line-height: 0.85;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .intro {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 70px;
+            letter-spacing: 1px;
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .category {
+            display: block;
+            position: relative;
+            min-height: 260px;
+            padding: 35px;
+            background: #0b0b0b;
+            border: 1px solid #222;
+            text-decoration: none;
+            color: #fff;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .category:hover {
+            border-color: #ff4d00;
+            transform: translateY(-5px);
+        }
+
+        .category-number {
+            color: #ff4d00;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            margin-bottom: 90px;
+        }
+
+        .category-name {
+            font-size: clamp(26px, 3.2vw, 46px);
+            font-weight: 900;
+            line-height: 0.9;
+            text-transform: uppercase;
+        }
+
+        .arrow {
+            position: absolute;
+            right: 35px;
+            bottom: 30px;
+            color: #ff4d00;
+            font-size: 30px;
+            transition: 0.3s;
+        }
+
+        .category:hover .arrow {
+            transform: translateX(8px);
+        }
+
+        @media (max-width: 700px) {
+            header {
+                padding: 22px 5%;
+            }
+
+            main {
+                padding: 55px 5%;
+            }
+
+            .categories {
+                grid-template-columns: 1fr;
+            }
+
+            .category {
+                min-height: 220px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        FUORISCHEMA
+    </div>
+
+    <a href="index.html" class="back">
+        ← HOME
+    </a>
+
+</header>
+
+<main>
+
+    <div class="label">
+        01 / CATALOGO
+    </div>
+
+    <h1>
+        CATALOGO
+    </h1>
+
+    <p class="intro">
+        SCEGLI LA TUA CATEGORIA
+    </p>
+
+    <div class="categories">
+
+        <a href="scarpe.html" class="category">
+
+            <div class="category-number">
+                001
+            </div>
+
+            <div class="category-name">
+                SCARPE
+            </div>
+
+            <div class="arrow">
+                →
+            </div>
+
+        </a>
+
+
+        <a href="abbigliamento.html" class="category">
+
+            <div class="category-number">
+                002
+            </div>
+
+            <div class="category-name">
+                ABBIGLIAMENTO
+            </div>
+
+            <div class="arrow">
+                →
+            </div>
+
+        </a>
+
+    </div>
+
+</main>
+
+</body>
+</html>
