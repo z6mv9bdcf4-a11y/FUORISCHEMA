@@ -372,11 +372,26 @@ a{color:inherit}
     object-fit:contain;
     background:#080808;
 }
-.post-body{padding:14px 17px 3px}
+.post-body{padding:16px 17px 6px}
+.post-caption{
+    position:relative;
+    padding:13px 14px 14px 16px;
+    border-left:2px solid var(--orange);
+    border-radius:0 12px 12px 0;
+    background:linear-gradient(90deg,rgba(255,77,0,.055),rgba(255,255,255,.012));
+}
+.post-caption-label{
+    margin-bottom:7px;
+    color:#666;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
 .post-text{
-    color:#e9e9e9;
+    color:#f0f0f0;
     font-size:14px;
-    line-height:1.62;
+    line-height:1.58;
     white-space:pre-wrap;
     word-break:break-word;
 }
@@ -531,6 +546,38 @@ a{color:inherit}
     opacity:.6;
     cursor:not-allowed;
 }
+.story-nav{
+    position:absolute;
+    top:50%;
+    z-index:20;
+    width:48px;
+    height:72px;
+    transform:translateY(-50%);
+    display:grid;
+    place-items:center;
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:14px;
+    background:rgba(0,0,0,.48);
+    color:#fff;
+    font-size:42px;
+    line-height:1;
+    cursor:pointer;
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    transition:.18s ease;
+}
+.story-nav:hover{background:var(--orange);border-color:var(--orange);color:#050505}
+.story-nav:disabled{opacity:.16;pointer-events:none}
+.story-prev{left:12px}
+.story-next{right:12px}
+.story-viewer-delete{
+    right:16px;
+    bottom:calc(16px + env(safe-area-inset-bottom));
+    z-index:25;
+    min-width:138px;
+    text-align:center;
+    box-shadow:0 8px 30px rgba(0,0,0,.4);
+}
 
 .story-viewer-close{
     position:absolute;
@@ -637,9 +684,21 @@ a{color:inherit}
     .post-card{border-radius:22px}
 }
 @media (max-width:700px){
-    .topbar{height:62px;padding:0 14px}
+    .topbar{height:62px;padding:0 10px}
     .brand{font-size:18px}
-    .top-btn{min-height:34px;padding:0 11px;font-size:8px}
+    .topbar-actions{gap:5px}
+    .top-btn{min-height:34px;padding:0 9px;font-size:8px}
+    .story-nav{width:40px;height:58px;font-size:34px}
+    .story-prev{left:7px}
+    .story-next{right:7px}
+    .story-viewer-delete{
+        right:50%;
+        bottom:calc(14px + env(safe-area-inset-bottom));
+        transform:translateX(50%);
+        min-width:145px;
+        padding:11px 15px;
+        font-size:10px;
+    }
     .page{padding:24px 9px 75px}
     .hero{align-items:flex-start;flex-direction:column;gap:8px;margin-bottom:18px}
     .hero-title{font-size:48px;letter-spacing:-3px}
@@ -674,6 +733,7 @@ a{color:inherit}
         <span class="brand-white">FUORI</span><span class="brand-orange">SCHEMA</span>
     </a>
     <div class="topbar-actions">
+        <a href="index.html" class="top-btn home-btn">HOME</a>
         <a href="area-personale.html" class="top-btn">PROFILO</a>
         <button id="logoutButton" class="top-btn primary" type="button">ESCI</button>
     </div>
@@ -765,13 +825,15 @@ a{color:inherit}
             <div id="storyViewerAvatar" class="story-viewer-avatar">F</div>
             <div id="storyViewerName" class="story-viewer-name">FUORISCHEMA</div>
         </div>
+        <button id="storyPrevButton" class="story-nav story-prev" type="button" aria-label="Story precedente">‹</button>
         <img id="storyViewerImage" class="story-viewer-image" src="" alt="Story">
+        <button id="storyNextButton" class="story-nav story-next" type="button" aria-label="Story successiva">›</button>
         <button id="storyViewerDelete" class="story-viewer-delete" type="button" aria-label="Elimina story">ELIMINA STORY</button>
         <button id="storyViewerClose" class="story-viewer-close" type="button" aria-label="Chiudi story">×</button>
     </div>
 </div>
 
-<div id="toast" class="toast"></div>
+<div id="toast"<div id="toast" class="toast"></div>
 
 <style>
 .toast{
@@ -832,6 +894,8 @@ const storyViewerName = document.getElementById("storyViewerName");
 let storyViewerCurrentStory = null;
 let storyViewerCurrentAuthor = null;
 const storyViewerAvatar = document.getElementById("storyViewerAvatar");
+const storyPrevButton = document.getElementById("storyPrevButton");
+const storyNextButton = document.getElementById("storyNextButton");
 
 const toast = document.getElementById("toast");
 
@@ -843,6 +907,8 @@ let selectedImageFile = null;
 let selectedImageUrl = null;
 const storyCache = new Map();
 const STORY_MARKER = "__FS_STORY__";
+let activeStories = [];
+let activeStoryIndex = 0;
 
 /* =========================================================
    HELPERS
@@ -1213,7 +1279,10 @@ async function renderPost(post,author){
 
         ${post.content ? `
             <div class="post-body">
-                <div class="post-text">${escapeHtml(post.content)}</div>
+                <div class="post-caption">
+                    <div class="post-caption-label">CAPTION</div>
+                    <div class="post-text">${escapeHtml(post.content)}</div>
+                </div>
             </div>
         ` : ""}
 
@@ -1651,6 +1720,7 @@ async function deleteStory(story){
         }
 
         storyCache.delete(currentUser.id);
+        activeStories = activeStories.filter(item => item.story?.postId !== story.postId);
         storyViewerCurrentStory = null;
         storyViewerDelete.style.display = "none";
         closeStory();
@@ -1662,12 +1732,13 @@ async function deleteStory(story){
     }
 }
 
-function openStory(author,story){
-    if(!story?.url){
-        showToast("Nessuna Story disponibile.");
-        return;
-    }
+function updateStoryNavigation(){
+    const total = activeStories.length;
+    storyPrevButton.disabled = total <= 1 || activeStoryIndex <= 0;
+    storyNextButton.disabled = total <= 1 || activeStoryIndex >= total - 1;
+}
 
+function renderStoryViewer(author,story){
     storyViewerCurrentStory = story;
     storyViewerCurrentAuthor = author;
 
@@ -1678,9 +1749,7 @@ function openStory(author,story){
     storyViewerImage.src = story.url;
     storyViewerName.textContent = author.name || "FUORISCHEMA";
 
-    if(author.username){
-        storyViewerName.textContent += `  @${author.username}`;
-    }
+    if(author.username) storyViewerName.textContent += `  @${author.username}`;
 
     if(author.avatar){
         storyViewerAvatar.innerHTML =
@@ -1689,8 +1758,33 @@ function openStory(author,story){
         storyViewerAvatar.textContent = getInitials(author.name);
     }
 
+    updateStoryNavigation();
+}
+
+function openStory(author,story,storyList=null){
+    if(!story?.url){
+        showToast("Nessuna Story disponibile.");
+        return;
+    }
+
+    if(Array.isArray(storyList) && storyList.length){
+        activeStories = storyList;
+        const found = activeStories.findIndex(item =>
+            item.story?.url === story.url && item.author?.id === author?.id
+        );
+        activeStoryIndex = found >= 0 ? found : 0;
+    }
+
+    renderStoryViewer(author,story);
     storyViewer.classList.add("show");
     document.body.classList.add("modal-open");
+}
+
+function showStoryAt(index){
+    if(index < 0 || index >= activeStories.length) return;
+    activeStoryIndex = index;
+    const item = activeStories[index];
+    if(item?.story?.url) renderStoryViewer(item.author,item.story);
 }
 
 function closeStory(){
@@ -1707,6 +1801,24 @@ function closeStory(){
 
 storyViewerClose.addEventListener("click",closeStory);
 
+storyPrevButton.addEventListener("click",event => {
+    event.stopPropagation();
+    showStoryAt(activeStoryIndex - 1);
+});
+
+storyNextButton.addEventListener("click",event => {
+    event.stopPropagation();
+    showStoryAt(activeStoryIndex + 1);
+});
+
+storyViewerImage.addEventListener("click",event => {
+    if(!storyViewer.classList.contains("show") || !activeStories.length) return;
+    const rect = storyViewerImage.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    if(x < rect.width * 0.32) showStoryAt(activeStoryIndex - 1);
+    else if(x > rect.width * 0.68) showStoryAt(activeStoryIndex + 1);
+});
+
 storyViewerDelete.addEventListener("click",async event => {
     event.stopPropagation();
     if(!storyViewerCurrentStory || storyViewerDelete.disabled) return;
@@ -1722,9 +1834,10 @@ storyViewer.addEventListener("click",event => {
 });
 
 document.addEventListener("keydown",event => {
-    if(event.key === "Escape" && storyViewer.classList.contains("show")){
-        closeStory();
-    }
+    if(!storyViewer.classList.contains("show")) return;
+    if(event.key === "Escape") closeStory();
+    else if(event.key === "ArrowLeft") showStoryAt(activeStoryIndex - 1);
+    else if(event.key === "ArrowRight") showStoryAt(activeStoryIndex + 1);
 });
 
 /* ---------- YOUR STORY ---------- */
@@ -1756,7 +1869,7 @@ function renderMyStoryCard(me,story){
 
     storyEl.addEventListener("click",() => {
         if(story?.url){
-            openStory(me,story);
+            openStory(me,story,activeStories);
             return;
         }
 
@@ -1819,7 +1932,11 @@ async function loadStories(){
     };
 
     stories.innerHTML = "";
+    activeStories = [];
+
     const myStory = await getLatestStory(currentUser.id);
+    if(myStory?.url) activeStories.push({author:me,story:myStory});
+
     renderMyStoryCard(me,myStory);
 
     const {data:profiles,error} = await supabase
@@ -1846,15 +1963,20 @@ async function loadStories(){
             bio:profile.bio || "Membro FUORISCHEMA."
         };
 
+        activeStories.push({author,story});
+
         const storyEl = document.createElement("div");
         storyEl.className = "story";
 
         const ring = document.createElement("div");
         ring.className = "story-ring";
+
         const avatar = document.createElement("div");
         avatar.className = "story-avatar";
+
         if(author.avatar) avatar.innerHTML = `<img src="${escapeHtml(author.avatar)}" alt="">`;
         else avatar.textContent = getInitials(author.name);
+
         ring.appendChild(avatar);
 
         const name = document.createElement("div");
@@ -1862,7 +1984,7 @@ async function loadStories(){
         name.textContent = author.username ? `@${author.username}` : author.name;
 
         storyEl.append(ring,name);
-        storyEl.addEventListener("click",() => openStory(author,story));
+        storyEl.addEventListener("click",() => openStory(author,story,activeStories));
         stories.appendChild(storyEl);
     }
 
@@ -1873,7 +1995,6 @@ async function loadStories(){
         stories.appendChild(hint);
     }
 }
-
 /* =========================================================
    START
 ========================================================= */
