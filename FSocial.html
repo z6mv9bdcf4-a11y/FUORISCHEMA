@@ -507,14 +507,12 @@ a{color:inherit}
 .profile-overlay,.story-viewer{
     position:fixed;
     inset:0;
-    z-index:500;
+    z-index:99999;
     display:none;
     align-items:center;
     justify-content:center;
     padding:18px;
-    background:rgba(0,0,0,.84);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
+    background:rgba(0,0,0,.94);
 }
 .profile-overlay.active,.story-viewer.show{display:flex}
 .profile-modal{
@@ -635,6 +633,8 @@ a{color:inherit}
 }
 .story-viewer-content{
     position:relative;
+    position:relative;
+    z-index:100000;
     width:min(100vw,520px);
     height:100dvh;
     display:flex;
@@ -647,6 +647,9 @@ a{color:inherit}
     width:100%;
     height:100%;
     object-fit:contain;
+    background:#080808;
+    user-select:none;
+    -webkit-user-drag:none;
 }
 .story-viewer-header{
     position:absolute;
@@ -670,6 +673,7 @@ a{color:inherit}
 .story-viewer-name{font-size:12px;font-weight:900}
 .story-viewer-close{
     top:16px;right:16px;
+    z-index:100001;
     background:rgba(255,255,255,.92);
     border-color:transparent;
     color:#050505;
@@ -833,7 +837,7 @@ a{color:inherit}
     </div>
 </div>
 
-<div id="toast"<div id="toast" class="toast"></div>
+<div id="toast" class="toast"></div>
 
 <style>
 .toast{
@@ -1184,11 +1188,13 @@ function openProfile(author){
 
     profilePageLink.href = author?.id ? `area-personale.html?id=${encodeURIComponent(author.id)}` : "area-personale.html";
     profileOverlay.classList.add("active");
+    profileOverlay.style.display = "flex";
     document.body.classList.add("modal-open");
 }
 
 function closeProfile(){
     profileOverlay.classList.remove("active");
+    profileOverlay.style.display = "none";
     if(!storyViewer.classList.contains("show")) document.body.classList.remove("modal-open");
 }
 
@@ -1339,7 +1345,11 @@ async function renderPost(post,author){
             addComment(post.id,article);
         }
     });
-    authorTrigger.addEventListener("click",() => openProfile(author));
+    authorTrigger.addEventListener("click",(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        openProfile(author);
+    });
 
     if(deleteButton){
         deleteButton.addEventListener("click",() => deletePost(post.id));
@@ -1777,6 +1787,7 @@ function openStory(author,story,storyList=null){
 
     renderStoryViewer(author,story);
     storyViewer.classList.add("show");
+    storyViewer.style.display = "flex";
     document.body.classList.add("modal-open");
 }
 
@@ -1789,6 +1800,7 @@ function showStoryAt(index){
 
 function closeStory(){
     storyViewer.classList.remove("show");
+    storyViewer.style.display = "none";
     storyViewerImage.src = "";
     storyViewerDelete.style.display = "none";
     storyViewerCurrentStory = null;
@@ -1867,7 +1879,9 @@ function renderMyStoryCard(me,story){
 
     storyEl.append(ring,name);
 
-    storyEl.addEventListener("click",() => {
+    storyEl.addEventListener("click",(event) => {
+        event.preventDefault();
+        event.stopPropagation();
         if(story?.url){
             openStory(me,story,activeStories);
             return;
@@ -1984,7 +1998,11 @@ async function loadStories(){
         name.textContent = author.username ? `@${author.username}` : author.name;
 
         storyEl.append(ring,name);
-        storyEl.addEventListener("click",() => openStory(author,story,activeStories));
+        storyEl.addEventListener("click",(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            openStory(author,story,activeStories);
+        });
         stories.appendChild(storyEl);
     }
 
