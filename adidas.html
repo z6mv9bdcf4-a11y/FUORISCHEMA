@@ -1,141 +1,745 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050505">
+<title>ADIDAS — FUORISCHEMA</title>
 
-    <title>FUORISCHEMA — adidas</title>
+<style>
+:root{
+    --bg:#050505;
+    --panel:#0b0b0b;
+    --text:#f5f5f5;
+    --muted:#777;
+    --line:rgba(255,255,255,.10);
+    --line-strong:rgba(255,255,255,.17);
+    --orange:#ff4d00;
+    --max:1220px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 50% -12%,rgba(255,77,0,.09),transparent 30%),
+        var(--bg);
+    color:var(--text);
+    font-family:Inter,Arial,Helvetica,sans-serif;
+    -webkit-font-smoothing:antialiased;
+}
+body.modal-open{overflow:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;border:0}
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:100;
+    height:74px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 38px;
+    background:rgba(5,5,5,.88);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border-bottom:1px solid var(--line);
+}
+.brand{font-size:21px;font-weight:1000;letter-spacing:-1.7px}
+.brand-white{color:#fff}
+.brand-orange{color:var(--orange)}
+.nav-actions{display:flex;gap:8px}
+.nav-btn{
+    min-height:39px;
+    padding:0 14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid var(--line-strong);
+    color:#ddd;
+    font-size:8px;
+    font-weight:1000;
+    letter-spacing:1.7px;
+    transition:.2s ease;
+}
+.nav-btn:hover{color:var(--orange);border-color:var(--orange)}
 
-        body {
-            background: #050505;
-            color: #f5f5f5;
-            font-family: Arial, Helvetica, sans-serif;
-            min-height: 100vh;
-        }
+.page{
+    width:min(calc(100% - 48px),var(--max));
+    margin:0 auto;
+    padding:58px 0 90px;
+}
 
-        header {
-            padding: 30px 6%;
-            border-bottom: 1px solid #222;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+.hero{
+    position:relative;
+    min-height:355px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    padding-bottom:46px;
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+}
+.hero-kicker{
+    margin-bottom:18px;
+    color:var(--orange);
+    font-size:9px;
+    font-weight:1000;
+    letter-spacing:4px;
+}
+.hero-title{
+    font-size:clamp(86px,15vw,178px);
+    line-height:.73;
+    font-weight:1000;
+    letter-spacing:-11px;
+}
+.hero-sub{
+    margin-top:27px;
+    color:#777;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:3px;
+}
+.hero-index{
+    position:absolute;
+    right:-5px;
+    top:30px;
+    color:rgba(255,255,255,.018);
+    font-size:260px;
+    line-height:.8;
+    font-weight:1000;
+    letter-spacing:-25px;
+    pointer-events:none;
+}
 
-        .logo {
-            color: #ff4d00;
-            font-size: 28px;
-            font-weight: 900;
-            letter-spacing: 2px;
-        }
+.catalog-bar{
+    margin:42px 0 23px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:20px;
+}
+.catalog-label{
+    color:#5f5f5f;
+    font-size:8px;
+    font-weight:1000;
+    letter-spacing:3px;
+}
+.catalog-count{
+    color:#555;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:2px;
+}
 
-        .back {
-            color: #fff;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
+.product-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:12px;
+}
+.product-card{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    background:var(--panel);
+    border:1px solid var(--line);
+    cursor:pointer;
+    transition:.25s ease;
+}
+.product-card:hover{
+    transform:translateY(-4px);
+    border-color:var(--line-strong);
+}
+.product-image{
+    position:relative;
+    aspect-ratio:1 / 1.08;
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 50% 43%,rgba(255,255,255,.035),transparent 45%),
+        #080808;
+    border-bottom:1px solid var(--line);
+}
+.product-image::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(135deg,transparent 45%,rgba(255,77,0,.025));
+    pointer-events:none;
+}
+.product-image img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+}
+.product-placeholder{
+    color:#292929;
+    font-size:9px;
+    font-weight:1000;
+    letter-spacing:3px;
+}
+.product-info{padding:15px 15px 16px}
+.product-brand{
+    color:#666;
+    font-size:7px;
+    font-weight:1000;
+    letter-spacing:2px;
+}
+.product-name{
+    margin-top:7px;
+    color:#eee;
+    font-size:12px;
+    font-weight:900;
+    line-height:1.25;
+}
+.product-type{
+    margin-top:5px;
+    color:#555;
+    font-size:8px;
+    line-height:1.4;
+}
+.product-bottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:15px;
+    padding-top:11px;
+    border-top:1px solid var(--line);
+}
+.product-dm{
+    color:var(--orange);
+    font-size:7px;
+    font-weight:1000;
+    letter-spacing:1.4px;
+}
+.product-arrow{
+    color:#555;
+    font-size:14px;
+    transition:.2s ease;
+}
+.product-card:hover .product-arrow{
+    color:var(--orange);
+    transform:translateX(3px);
+}
 
-        .back:hover {
-            color: #ff4d00;
-        }
+.footer{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    margin-top:72px;
+    padding-top:19px;
+    border-top:1px solid var(--line);
+    color:#444;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:3px;
+}
 
-        main {
-            padding: 80px 6%;
-            max-width: 1300px;
-            margin: auto;
-        }
+/* DETTAGLIO PRODOTTO */
+.product-detail{
+    display:none;
+}
+.product-detail.show{display:block}
+.catalog-view.hidden{display:none}
 
-        .label {
-            color: #ff4d00;
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 3px;
-            margin-bottom: 15px;
-        }
+.detail-back{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:28px;
+    color:#777;
+    font-size:8px;
+    font-weight:1000;
+    letter-spacing:2px;
+    cursor:pointer;
+    background:none;
+}
+.detail-back:hover{color:var(--orange)}
 
-        h1 {
-            font-size: clamp(50px, 9vw, 100px);
-            line-height: 0.9;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
+.detail-layout{
+    display:grid;
+    grid-template-columns:minmax(0,1.15fr) minmax(360px,.85fr);
+    gap:58px;
+    align-items:start;
+}
+.detail-image{
+    aspect-ratio:1 / 1;
+    overflow:hidden;
+    display:grid;
+    place-items:center;
+    background:
+        radial-gradient(circle at 50% 45%,rgba(255,255,255,.04),transparent 45%),
+        #080808;
+    border:1px solid var(--line);
+}
+.detail-image img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+}
+.detail-info{position:sticky;top:105px}
+.detail-kicker{
+    color:var(--orange);
+    font-size:8px;
+    font-weight:1000;
+    letter-spacing:3.5px;
+}
+.detail-brand{
+    margin-top:14px;
+    color:#777;
+    font-size:9px;
+    font-weight:1000;
+    letter-spacing:2.5px;
+}
+.detail-title{
+    margin-top:8px;
+    font-size:clamp(42px,4.55vw,66px);
+    line-height:.9;
+    font-weight:1000;
+    letter-spacing:-3.6px;
+    text-transform:uppercase;
+    overflow-wrap:anywhere;
+}
+.detail-type{
+    margin-top:17px;
+    color:#888;
+    font-size:10px;
+    line-height:1.6;
+}
+.divider{
+    height:1px;
+    margin:28px 0;
+    background:var(--line);
+}
+.detail-label{
+    color:#555;
+    font-size:8px;
+    font-weight:1000;
+    letter-spacing:2.5px;
+}
+.detail-description{
+    margin-top:9px;
+    color:#c5c5c5;
+    font-size:11px;
+    line-height:1.7;
+}
+.availability{
+    margin-top:28px;
+    padding:18px;
+    border:1px solid var(--line-strong);
+    background:linear-gradient(145deg,rgba(255,77,0,.06),rgba(255,255,255,.01));
+}
+.availability-title{
+    color:#fff;
+    font-size:10px;
+    font-weight:1000;
+    letter-spacing:1.7px;
+}
+.availability-text{
+    margin-top:7px;
+    color:#777;
+    font-size:9px;
+    line-height:1.6;
+}
+.dm-button{
+    width:100%;
+    min-height:52px;
+    margin-top:14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 17px;
+    background:var(--orange);
+    color:#080808;
+    font-size:9px;
+    font-weight:1000;
+    letter-spacing:1.7px;
+    transition:.2s ease;
+}
+.dm-button:hover{background:#fff}
+.dm-arrow{font-size:16px}
 
-        .intro {
-            color: #999;
-            font-size: 14px;
-            margin-bottom: 60px;
-        }
+.meta-list{
+    display:grid;
+    margin-top:28px;
+    border-top:1px solid var(--line);
+}
+.meta-row{
+    display:grid;
+    grid-template-columns:125px minmax(0,1fr);
+    gap:15px;
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+}
+.meta-key{
+    color:#555;
+    font-size:7px;
+    font-weight:1000;
+    letter-spacing:2px;
+}
+.meta-value{
+    color:#aaa;
+    font-size:9px;
+    font-weight:800;
+}
 
-        .coming-soon {
-            border: 1px solid #222;
-            background: #0b0b0b;
-            padding: 80px 30px;
-            text-align: center;
-        }
-
-        .coming-soon-number {
-            color: #ff4d00;
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 3px;
-            margin-bottom: 20px;
-        }
-
-        .coming-soon h2 {
-            font-size: 35px;
-            margin-bottom: 15px;
-        }
-
-        .coming-soon p {
-            color: #888;
-            font-size: 14px;
-        }
-    </style>
+/* FILTRO URL: nessuna dipendenza da prodotto.html */
+@media(max-width:1000px){
+    .product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:850px){
+    .detail-layout{
+        grid-template-columns:1fr;
+        gap:30px;
+    }
+    .detail-info{position:static}
+}
+@media(max-width:720px){
+    .topbar{height:64px;padding:0 15px}
+    .brand{font-size:18px}
+    .nav-btn{min-height:35px;padding:0 10px;font-size:7px}
+    .page{width:calc(100% - 22px);padding-top:35px}
+    .hero{min-height:270px;padding-bottom:34px}
+    .hero-title{font-size:78px;letter-spacing:-6px}
+    .hero-index{top:25px;right:-5px;font-size:145px;letter-spacing:-13px}
+    .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+    .product-info{padding:12px 11px 13px}
+    .product-name{font-size:11px}
+    .product-bottom{margin-top:12px}
+    .footer{flex-direction:column;gap:8px}
+}
+@media(max-width:560px){
+    .topbar{height:64px;padding:0 16px}
+    .brand{font-size:13px;letter-spacing:1.6px}
+    .nav-actions{gap:6px}
+    .nav-btn{min-height:34px;padding:0 9px;font-size:7px;letter-spacing:1px}
+    .page{padding:0 14px 30px}
+    .hero{padding-top:48px;padding-bottom:38px}
+    .hero-kicker{font-size:8px;letter-spacing:2.2px}
+    .hero-title{margin-top:10px;font-size:clamp(62px,20vw,92px);letter-spacing:-4px}
+    .hero-sub{margin-top:12px;font-size:7px;letter-spacing:1.4px}
+    .hero-index{margin-top:22px;font-size:7px}
+    .catalog-bar{padding:0 0 11px}
+    .catalog-label,.catalog-count{font-size:7px;letter-spacing:1.8px}
+    .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .product-image{aspect-ratio:1 / 1.04}
+    .product-info{padding:11px 10px 12px}
+    .product-brand{font-size:6px;letter-spacing:1.6px}
+    .product-name{margin-top:6px;font-size:10px;line-height:1.2}
+    .product-type{margin-top:4px;font-size:7px}
+    .product-bottom{margin-top:10px;padding-top:8px}
+    .product-dm{font-size:6px;letter-spacing:1px}
+    .product-arrow{font-size:11px}
+    .detail-title{font-size:clamp(37px,11.5vw,49px);letter-spacing:-2.7px}
+    .detail-description{font-size:10px;line-height:1.65}
+    .meta-row{grid-template-columns:96px minmax(0,1fr);padding:12px 0}
+    .meta-key{font-size:6.5px}
+    .meta-value{font-size:8px}
+}
+</style>
 </head>
 
 <body>
 
-<header>
-    <div class="logo">FUORISCHEMA</div>
-
-    <a href="scarpe.html" class="back">
-        ← TORNA A SCARPE
+<header class="topbar">
+    <a href="index.html" class="brand">
+        <span class="brand-white">FUORI</span><span class="brand-orange">SCHEMA</span>
     </a>
+
+    <div class="nav-actions">
+        <button id="sectionBackButton" class="nav-btn" type="button">← SCARPE</button>
+        <a href="index.html" class="nav-btn">HOME</a>
+    </div>
 </header>
 
-<main>
+<main class="page">
 
-    <div class="label">04 / ADIDAS</div>
+    <!-- CATALOGO ADIDAS -->
+    <section id="catalogView" class="catalog-view">
+        <section class="hero">
+            <div class="hero-kicker">01 / BRAND</div>
+            <h1 class="hero-title">ADIDAS</h1>
+            <div class="hero-sub">FOOTWEAR SELECTION / FUORISCHEMA</div>
+            <div class="hero-index">01</div>
+        </section>
 
-    <h1>ADIDAS</h1>
+        <section>
+            <div class="catalog-bar">
+                <div class="catalog-label">SELEZIONE ADIDAS</div>
+                <div class="catalog-count" id="catalogCount">7 PRODOTTI</div>
+            </div>
 
-    <p class="intro">
-        SELEZIONE FUORISCHEMA
-    </p>
+            <section class="product-grid" id="productGrid"></section>
+        </section>
+    </section>
 
-    <div class="coming-soon">
+    <!-- SCHEDA PRODOTTO INTERNA: NON APRE prodotto.html -->
+    <section id="productDetail" class="product-detail" aria-live="polite">
+        <button class="detail-back" id="detailBack" type="button">← TORNA AD ADIDAS</button>
 
-        <div class="coming-soon-number">
-            CATALOGO IN AGGIORNAMENTO
+        <div class="detail-layout">
+            <div class="detail-image">
+                <img id="detailImage" src="" alt="">
+            </div>
+
+            <article class="detail-info">
+                <div class="detail-kicker" id="detailKicker">01 / PRODOTTO</div>
+                <div class="detail-brand">ADIDAS</div>
+                <h1 class="detail-title" id="detailTitle"></h1>
+                <p class="detail-type">SNEAKER / FUORISCHEMA</p>
+
+                <div class="divider"></div>
+
+                <div class="detail-label">DESCRIZIONE</div>
+                <p class="detail-description" id="detailDescription"></p>
+
+                <section class="availability">
+                    <div class="availability-title">DISPONIBILITÀ IN DM</div>
+                    <p class="availability-text">
+                        Per prezzo, taglie e disponibilità aggiornata, scrivici direttamente sui nostri social.
+                    </p>
+                    <a class="dm-button"
+                       href="https://www.instagram.com/_fuori.schema_/"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        <span>SCRIVI IN DM</span>
+                        <span class="dm-arrow">→</span>
+                    </a>
+                </section>
+
+                <div class="meta-list">
+                    <div class="meta-row">
+                        <span class="meta-key">BRAND</span>
+                        <span class="meta-value">ADIDAS</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-key">CATEGORIA</span>
+                        <span class="meta-value">SCARPE</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-key">CODICE</span>
+                        <span class="meta-value" id="detailCode"></span>
+                    </div>
+                </div>
+            </article>
         </div>
+    </section>
 
-        <h2>PROSSIMAMENTE</h2>
-
-        <p>
-            I prodotti adidas saranno disponibili a breve.
-        </p>
-
-    </div>
+    <footer class="footer">
+        <span>FUORISCHEMA</span>
+        <span id="footerSection">ADIDAS / 01</span>
+    </footer>
 
 </main>
+
+<script>
+/*
+    MASTER ADIDAS FUORISCHEMA
+    - 7 prodotti reali forniti dall'utente
+    - Le card NON puntano a prodotto.html
+    - Il dettaglio viene gestito direttamente da questa pagina
+    - URL supportati:
+      adidas.html
+      adidas.html?product=adidas-01
+      ...
+      adidas.html?product=adidas-07
+*/
+
+const products = [
+    {
+        id: "adidas-01",
+        name: "Adidas XLG Runner Deluxe – JR9633",
+        code: "JR9633",
+        image: "images/adidas/adidas-01.jpeg"
+    },
+    {
+        id: "adidas-02",
+        name: "Adidas XLG Runner Deluxe – JP5761",
+        code: "JP5761",
+        image: "images/adidas/adidas-02.jpeg"
+    },
+    {
+        id: "adidas-03",
+        name: "Adidas XLG Runner Deluxe – JS1590",
+        code: "JS1590",
+        image: "images/adidas/adidas-03.jpeg"
+    },
+    {
+        id: "adidas-04",
+        name: "Adidas XLG Runner Deluxe – JS1588",
+        code: "JS1588",
+        image: "images/adidas/adidas-04.jpeg"
+    },
+    {
+        id: "adidas-05",
+        name: "Adidas XLG Runner Deluxe – JR0861",
+        code: "JR0861",
+        image: "images/adidas/adidas-05.jpeg"
+    },
+    {
+        id: "adidas-06",
+        name: "Adidas Vento XLG Deluxe – IH7799",
+        code: "IH7799",
+        image: "images/adidas/adidas-06.jpeg"
+    },
+    {
+        id: "adidas-07",
+        name: "Adidas Vento XLG Deluxe – IH0070",
+        code: "IH0070",
+        image: "images/adidas/adidas-07.jpeg"
+    }
+];
+
+const catalogView = document.getElementById("catalogView");
+const productDetail = document.getElementById("productDetail");
+const productGrid = document.getElementById("productGrid");
+const detailBack = document.getElementById("detailBack");
+const detailImage = document.getElementById("detailImage");
+const detailTitle = document.getElementById("detailTitle");
+const detailCode = document.getElementById("detailCode");
+const detailDescription = document.getElementById("detailDescription");
+const footerSection = document.getElementById("footerSection");
+const sectionBackButton = document.getElementById("sectionBackButton");
+
+function escapeHtml(value){
+    const div = document.createElement("div");
+    div.textContent = value ?? "";
+    return div.innerHTML;
+}
+
+function renderCatalog(){
+    productGrid.innerHTML = "";
+
+    products.forEach((product, index) => {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "product-card";
+        card.setAttribute("aria-label", `Apri ${product.name}`);
+
+        card.innerHTML = `
+            <div class="product-image">
+                <img
+                    src="${escapeHtml(product.image)}"
+                    alt="${escapeHtml(product.name)}"
+                    loading="lazy"
+                >
+            </div>
+
+            <div class="product-info">
+                <div class="product-brand">ADIDAS</div>
+                <div class="product-name">${escapeHtml(product.name)}</div>
+                <div class="product-type">Sneaker</div>
+
+                <div class="product-bottom">
+                    <span class="product-dm">SCOPRI IL PRODOTTO</span>
+                    <span class="product-arrow">→</span>
+                </div>
+            </div>
+        `;
+
+        const image = card.querySelector("img");
+
+        image.addEventListener("error", () => {
+            image.remove();
+
+            const fallback = document.createElement("div");
+            fallback.className = "product-placeholder";
+            fallback.textContent = "IMMAGINE PRODOTTO";
+            card.querySelector(".product-image").appendChild(fallback);
+        }, { once:true });
+
+        card.addEventListener("click", () => openProduct(product.id));
+        productGrid.appendChild(card);
+    });
+}
+
+function openProduct(id, updateHistory = true){
+    const product = products.find(item => item.id === id);
+
+    if(!product){
+        showCatalog(false);
+        return;
+    }
+
+    detailImage.src = product.image;
+    detailImage.alt = product.name;
+    detailTitle.textContent = product.name;
+    detailCode.textContent = product.code;
+
+    detailDescription.textContent =
+        `${product.name}. Prodotto Adidas selezionato da FUORISCHEMA. Per prezzo, taglie e disponibilità aggiornata, scrivici in DM.`;
+
+    const index = products.indexOf(product) + 1;
+    document.getElementById("detailKicker").textContent =
+        `${String(index).padStart(2,"0")} / PRODOTTO`;
+
+    footerSection.textContent =
+        `ADIDAS / ${String(index).padStart(2,"0")}`;
+
+    sectionBackButton.textContent = "← ADIDAS";
+    sectionBackButton.onclick = () => showCatalog();
+
+    catalogView.classList.add("hidden");
+    productDetail.classList.add("show");
+    window.scrollTo({top:0,behavior:"smooth"});
+
+    if(updateHistory){
+        history.pushState(
+            {product:id},
+            "",
+            `adidas.html?product=${encodeURIComponent(id)}`
+        );
+    }
+}
+
+function showCatalog(updateHistory = true){
+    sectionBackButton.textContent = "← SCARPE";
+    sectionBackButton.onclick = () => {
+        window.location.href = "scarpe.html";
+    };
+
+    productDetail.classList.remove("show");
+    catalogView.classList.remove("hidden");
+    footerSection.textContent = "ADIDAS / 01";
+    window.scrollTo({top:0,behavior:"smooth"});
+
+    if(updateHistory){
+        history.pushState({}, "", "adidas.html");
+    }
+}
+
+detailBack.addEventListener("click", () => showCatalog());
+
+window.addEventListener("popstate", () => {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("product");
+
+    if(id){
+        openProduct(id, false);
+    }else{
+        showCatalog(false);
+    }
+});
+
+sectionBackButton.onclick = () => {
+    window.location.href = "scarpe.html";
+};
+
+renderCatalog();
+
+/* Se la pagina viene aperta direttamente con ?product=adidas-XX */
+const initialParams = new URLSearchParams(window.location.search);
+const initialProduct = initialParams.get("product");
+
+if(initialProduct){
+    openProduct(initialProduct, false);
+}
+</script>
 
 </body>
 </html>

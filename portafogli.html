@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#050505">
-<title>ASICS — FUORISCHEMA</title>
+<title>PORTAFOGLI — FUORISCHEMA</title>
 
 <style>
 :root{
@@ -553,7 +553,7 @@ button{font:inherit}
     </a>
 
     <div class="nav-actions">
-        <a href="scarpe.html" class="nav-btn">← SCARPE</a>
+        <a href="accessori.html" class="nav-btn">← ACCESSORI</a>
         <a href="index.html" class="nav-btn">HOME</a>
     </div>
 </header>
@@ -562,18 +562,18 @@ button{font:inherit}
 
     <section class="hero">
         <div class="hero-kicker">01 / BRAND</div>
-        <h1 class="hero-title">ASICS</h1>
-        <div class="hero-sub">FOOTWEAR SELECTION / FUORISCHEMA</div>
+        <h1 class="hero-title">PORTAFOGLI</h1>
+        <div class="hero-sub">CLOTHING SELECTION / FUORISCHEMA</div>
         <div class="hero-index">01</div>
     </section>
 
     <section>
         <div class="catalog-bar">
-            <div class="catalog-label">SELEZIONE ASICS</div>
+            <div class="catalog-label">SELEZIONE PORTAFOGLI</div>
             <div class="catalog-count" id="catalogCount">0 PRODOTTI</div>
         </div>
 
-        <nav class="filters" aria-label="Filtri Asics">
+        <nav class="filters" aria-label="Filtri Portafogli">
             <button class="filter active" type="button" data-filter="all">TUTTI</button>
             <button class="filter" type="button" data-filter="new">NUOVI ARRIVI</button>
             <button class="filter" type="button" data-filter="selected">PIÙ SCELTI</button>
@@ -582,8 +582,8 @@ button{font:inherit}
         <section class="product-grid" id="productGrid"></section>
 
         <section class="empty-state show" id="emptyState">
-            <div class="empty-kicker">ASICS / FUORISCHEMA</div>
-            <div class="empty-title">NESSUN PRODOTTO</div>
+            <div class="empty-kicker">PORTAFOGLI / FUORISCHEMA</div>
+            <div class="empty-title">SELEZIONE IN PREPARAZIONE.</div>
             <p class="empty-text">
                 Non ci sono prodotti in questa selezione al momento.
             </p>
@@ -593,7 +593,7 @@ button{font:inherit}
 
     <footer class="footer">
         <span>FUORISCHEMA</span>
-        <span>ASICS / 01</span>
+        <span>PORTAFOGLI / 01</span>
     </footer>
 
 </main>
@@ -606,14 +606,18 @@ button{font:inherit}
     qui. Per ora NON inseriamo i vecchi prodotti di prova.
 */
 const products = [
-        {
-        id: "asics-01",
-        name: "ASICS GEL-NYC — 1201A789-103",
-        type: "Sneaker",
-        image: "images/asics/Asics-1.jpeg",
-        badge: "NUOVO",
-        filter: "all"
-    }
+    // =====================================================
+    // PORTAFOGLI — PRODOTTI DA INSERIRE
+    //
+    // {
+    //     id: "portafogli-esempio",
+    //     name: "Nome prodotto",
+    //     type: "Portafogli",
+    //     image: "images/nome-foto.jpeg",
+    //     badge: "",
+    //     filter: "all"
+    // }
+    // =====================================================
 ];
 
 const productGrid = document.getElementById("productGrid");
@@ -639,7 +643,7 @@ function renderProducts(filter = "all"){
     visible.forEach(product => {
         const card = document.createElement("a");
         card.className = "product-card";
-        card.href = `asics-prodotto.html?id=${encodeURIComponent(product.id)}`;
+        card.href = `prodotto.html?id=${encodeURIComponent(product.id)}`;
 
         card.innerHTML = `
             <div class="product-image">
@@ -653,7 +657,7 @@ function renderProducts(filter = "all"){
             </div>
 
             <div class="product-info">
-                <div class="product-brand">ASICS</div>
+                <div class="product-brand">PORTAFOGLI</div>
                 <div class="product-name">${escapeHtml(product.name)}</div>
                 <div class="product-type">${escapeHtml(product.type || "Footwear")}</div>
 

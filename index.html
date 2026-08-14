@@ -127,20 +127,17 @@
 
 
         /* =========================================================
-           MENU LATERALE
+           MENU LATERALE — HAMBURGER
+           Tutto ciò che segue riguarda esclusivamente il menu.
         ========================================================= */
 
         .menu-overlay {
             position: fixed;
             inset: 0;
-
-            background: rgba(0, 0, 0, .55);
-
+            background: rgba(0, 0, 0, .72);
             opacity: 0;
             visibility: hidden;
-
-            transition: .4s ease;
-
+            transition: opacity .35s ease, visibility .35s ease;
             z-index: 1100;
         }
 
@@ -153,94 +150,181 @@
             position: fixed;
             top: 0;
             left: 0;
-
-            width: min(620px, 88vw);
+            width: min(560px, 92vw);
             height: 100vh;
-
             background: #070707;
-
-            border-right: 1px solid #303030;
-
+            border-right: 1px solid #2a2a2a;
             transform: translateX(-100%);
-
-            transition:
-                transform .55s cubic-bezier(.16, 1, .3, 1);
-
+            transition: transform .55s cubic-bezier(.16, 1, .3, 1);
             z-index: 1200;
-
             overflow-y: auto;
             overscroll-behavior: contain;
-
-            padding: 110px 7vw 70px;
+            padding: 34px 42px 55px;
+            scrollbar-width: thin;
+            scrollbar-color: #444 transparent;
         }
 
         .side-menu.active {
             transform: translateX(0);
         }
 
+        .menu-close {
+            position: absolute;
+            top: 24px;
+            right: 28px;
+            width: 42px;
+            height: 42px;
+            border: 1px solid #303030;
+            background: #0b0b0b;
+            color: var(--bianco);
+            font-size: 27px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color .25s ease, color .25s ease, transform .25s ease;
+        }
+
+        .menu-close:hover {
+            border-color: var(--arancio);
+            color: var(--arancio);
+            transform: rotate(90deg);
+        }
+
         .menu-top {
-            margin-bottom: 55px;
+            padding-top: 70px;
+            margin-bottom: 38px;
         }
 
         .menu-number {
             color: var(--arancio);
-
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 800;
-            letter-spacing: 5px;
-
-            margin-bottom: 15px;
+            letter-spacing: 4px;
+            margin-bottom: 12px;
         }
 
         .menu-title {
-            font-size: clamp(40px, 7vw, 78px);
-            line-height: .9;
+            font-size: clamp(48px, 7vw, 76px);
+            line-height: .86;
             font-weight: 900;
             letter-spacing: -4px;
+        }
+
+        /* FSocial: funzione distintiva, separata dal percorso shopping */
+        .menu-feature {
+            position: relative;
+            display: block;
+            margin: 0 0 42px;
+            padding: 20px 20px 18px;
+            border: 1px solid #2d2d2d;
+            background:
+                linear-gradient(120deg, rgba(255,77,0,.10), transparent 48%),
+                #0b0b0b;
+            overflow: hidden;
+            transition: border-color .3s ease, transform .3s ease;
+        }
+
+        .menu-feature::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--arancio);
+        }
+
+        .menu-feature:hover {
+            border-color: var(--arancio);
+            transform: translateX(4px);
+        }
+
+        .menu-feature-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 13px;
+        }
+
+        .menu-feature-label {
+            color: var(--arancio);
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: 3px;
+        }
+
+        .menu-feature-arrow {
+            color: var(--arancio);
+            font-size: 20px;
+            transition: transform .25s ease;
+        }
+
+        .menu-feature:hover .menu-feature-arrow {
+            transform: translateX(6px);
+        }
+
+        .menu-feature-title {
+            display: block;
+            font-size: 30px;
+            line-height: 1;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+            margin-bottom: 8px;
+        }
+
+        .menu-feature-text {
+            display: block;
+            max-width: 390px;
+            color: #777;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .menu-section {
+            margin: 0 0 4px;
+            padding-top: 25px;
+            color: var(--arancio);
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 4px;
         }
 
         .menu-links {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 0;
         }
 
         .menu-link {
             position: relative;
-
             display: flex;
             align-items: center;
             justify-content: space-between;
-
-            padding: 17px 0;
-
+            min-height: 56px;
+            padding: 13px 0;
             border-bottom: 1px solid #202020;
-
-            font-size: clamp(22px, 3vw, 34px);
-            font-weight: 800;
-
-            transition:
-                color .25s ease,
-                padding-left .25s ease;
+            font-size: 19px;
+            font-weight: 750;
+            letter-spacing: -.3px;
+            transition: color .25s ease, padding-left .25s ease, border-color .25s ease;
         }
 
         .menu-link::after {
             content: "→";
-
             color: var(--arancio);
-
-            font-size: 25px;
-
-            transform: translateX(-10px);
-
+            font-size: 19px;
+            transform: translateX(-8px);
             opacity: 0;
-
-            transition: .25s ease;
+            transition: opacity .25s ease, transform .25s ease;
         }
 
         .menu-link:hover {
             color: var(--arancio);
-            padding-left: 10px;
+            padding-left: 8px;
+            border-color: #333;
         }
 
         .menu-link:hover::after {
@@ -248,35 +332,19 @@
             transform: translateX(0);
         }
 
-        .menu-section {
-            margin-top: 45px;
-            margin-bottom: 13px;
+        .menu-link-main {
+            font-weight: 850;
+        }
 
-            color: var(--arancio);
-
+        .menu-link-sub {
+            color: #666;
             font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 4px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-left: auto;
+            margin-right: 22px;
+            text-transform: uppercase;
         }
-
-        .menu-close {
-            position: absolute;
-            top: 28px;
-            right: 32px;
-
-            width: 40px;
-            height: 40px;
-
-            border: 0;
-            background: transparent;
-
-            color: white;
-
-            font-size: 30px;
-
-            cursor: pointer;
-        }
-
 
         /* =========================================================
            HERO
@@ -618,7 +686,7 @@
         }
 
         .product:hover img {
-            transform: scale(1.04);
+            transform: scale(1.015);
         }
 
         .product-info {
@@ -678,7 +746,7 @@
         .categories {
             display: grid;
 
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
 
             gap: 14px;
         }
@@ -1205,19 +1273,39 @@
 
             .side-menu {
                 width: 100vw;
+                padding: 25px 22px 45px;
+            }
 
-                padding:
-                    100px
-                    25px
-                    60px;
+            .menu-close {
+                top: 20px;
+                right: 20px;
+            }
+
+            .menu-top {
+                padding-top: 70px;
+                margin-bottom: 30px;
             }
 
             .menu-title {
                 font-size: 54px;
             }
 
-            .menu-link {
+            .menu-feature {
+                margin-bottom: 30px;
+                padding: 17px 17px 16px;
+            }
+
+            .menu-feature-title {
                 font-size: 27px;
+            }
+
+            .menu-link {
+                min-height: 53px;
+                font-size: 20px;
+            }
+
+            .menu-section {
+                padding-top: 22px;
             }
 
         }/* =========================
@@ -1278,6 +1366,101 @@
 
 }
 
+
+
+        /* =========================================================
+           FIX LAYOUT / OVERFLOW
+           ========================================================= */
+
+        /* Le immagini restano sempre fisicamente dentro il riquadro */
+        .product {
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .product img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            object-position: center center;
+            padding: 18px 14px 68px;
+            box-sizing: border-box;
+        }
+
+        /* Testi delle card: mai uscire lateralmente dal riquadro */
+        .product-info {
+            min-width: 0;
+            max-width: calc(100% - 36px);
+        }
+
+        .product-name,
+        .product-number {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Categorie: le parole lunghe non possono uscire dal box */
+        .category-bottom {
+            min-width: 0;
+            width: 100%;
+            gap: 12px;
+        }
+
+        .category h3 {
+            min-width: 0;
+            max-width: calc(100% - 48px);
+            margin: 0;
+            font-size: clamp(24px, 2.65vw, 42px);
+            line-height: .92;
+            letter-spacing: -1.8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .category-arrow {
+            flex: 0 0 auto;
+        }
+
+        /* Manifesto: dimensione forte ma proporzionata e contenuta */
+        .manifesto-title {
+            max-width: 1050px;
+            font-size: clamp(48px, 6.5vw, 104px);
+            line-height: .88;
+            letter-spacing: -5px;
+            overflow-wrap: normal;
+        }
+
+        @media (max-width: 1100px) {
+            .category h3 {
+                font-size: clamp(26px, 4vw, 44px);
+                letter-spacing: -2px;
+            }
+
+            .manifesto-title {
+                font-size: clamp(44px, 8vw, 82px);
+                letter-spacing: -4px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .category h3 {
+                max-width: calc(100% - 42px);
+                font-size: clamp(22px, 7.5vw, 38px);
+                letter-spacing: -1.5px;
+            }
+
+            .manifesto-title {
+                font-size: clamp(42px, 12vw, 68px);
+                letter-spacing: -3px;
+            }
+        }
+
     </style>
 </head>
 
@@ -1293,58 +1476,67 @@
 
 
     <!-- =========================================================
-         MENU LATERALE
-    ========================================================= -->
+         MENU OVERLAY + MENU LATERALE
+         ========================================================= -->
+
+    <div class="menu-overlay" id="menuOverlay"></div>
 
     <aside class="side-menu" id="sideMenu">
 
-        <button class="menu-close" id="menuClose">
+        <button class="menu-close" id="menuClose" aria-label="Chiudi menu">
             ×
         </button>
 
         <div class="menu-top">
-
-            <div class="menu-number">
-                00 / MENU
-            </div>
+            <div class="menu-number">00 / MENU</div>
 
             <div class="menu-title">
                 FUORI<br>
                 SCHEMA.
             </div>
-
         </div>
 
+        <!-- Funzione distintiva: separata dal percorso prodotti -->
+        <a class="menu-feature" href="FSocial.html">
+            <div class="menu-feature-top">
+                <span class="menu-feature-label">FUNZIONE FUORISCHEMA</span>
+                <span class="menu-feature-arrow">→</span>
+            </div>
+            <span class="menu-feature-title">FSocial</span>
+            <span class="menu-feature-text">
+                La parte social di FUORISCHEMA. Scopri, condividi e resta dentro la community.
+            </span>
+        </a>
 
         <nav class="menu-links">
 
-            <a class="menu-link" href="FSocial.html">
-    FSocial
-</a>
-<a class="menu-link" href="area-personale.html">
-    Area Personale
-</a>
-<a class="menu-link" href="catalogo.html">
-    Catalogo
-</a>
-           ↓
- 
+            <div class="menu-section">SHOP</div>
 
-            <a class="menu-link" href="#nuovi-arrivi">
+            <a class="menu-link menu-link-main" href="catalogo.html">
+                Catalogo
+            </a>
+
+            <a class="menu-link menu-link-main" href="#nuovi-arrivi">
                 Nuovi arrivi
             </a>
 
-            <a class="menu-link" href="scarpe.html">
+            <a class="menu-link menu-link-main" href="scarpe.html">
                 Scarpe
             </a>
 
-            <a class="menu-link" href="abbigliamento.html">
+            <a class="menu-link menu-link-main" href="abbigliamento.html">
                 Abbigliamento
             </a>
 
-            <div class="menu-section">
-                FUORISCHEMA
-            </div>
+            <a class="menu-link menu-link-main" href="accessori.html">
+                Accessori
+            </a>
+
+            <div class="menu-section">FUORISCHEMA</div>
+
+            <a class="menu-link" href="area-personale.html">
+                Area Personale
+            </a>
 
             <a class="menu-link" href="#manifesto">
                 Manifesto
@@ -1354,9 +1546,7 @@
                 Newsletter
             </a>
 
-            <div class="menu-section">
-                ASSISTENZA
-            </div>
+            <div class="menu-section">ASSISTENZA</div>
 
             <a class="menu-link" href="faq.html">
                 FAQ
@@ -1374,23 +1564,13 @@
                 Contatti
             </a>
 
-            <div class="menu-section">
-                SOCIAL
-            </div>
+            <div class="menu-section">SOCIAL</div>
 
-    <a
-    class="menu-link"
-    href="https://www.instagram.com/_fuori.schema_/"
-    target="_blank"
-    rel="noopener noreferrer"
->
-    Instagram
-</a>
-             <a
-             class="menu-link"
-                href="https://www.tiktok.com/"
-                target="_blank"
-            >
+            <a class="menu-link" href="https://www.instagram.com/_fuori.schema_/" target="_blank" rel="noopener noreferrer">
+                Instagram
+            </a>
+
+            <a class="menu-link" href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer">
                 TikTok
             </a>
 
@@ -1445,7 +1625,7 @@
             <div class="hero-content">
 
                 <div class="hero-kicker">
-                    CALZATURE / ABBIGLIAMENTO
+                    CALZATURE / ABBIGLIAMENTO / ACCESSORI
                 </div>
 
 
@@ -1543,14 +1723,11 @@
 
             <div class="products">
 
-
                 <!-- PRODOTTO 1 -->
-
                 <a
                     href="nike.html"
                     class="product reveal"
                 >
-
                     <span class="badge">
                         PIÙ SCELTO
                     </span>
@@ -1561,7 +1738,6 @@
                     >
 
                     <div class="product-info">
-
                         <span class="product-name">
                             Nike Air Force 1
                         </span>
@@ -1569,101 +1745,81 @@
                         <span class="product-number">
                             #001
                         </span>
-
                     </div>
-
                 </a>
 
-
                 <!-- PRODOTTO 2 -->
-
                 <a
-                    href="nike.html"
+                    href="adidas.html"
                     class="product reveal"
                 >
-
                     <span class="badge">
                         NUOVO
                     </span>
 
                     <img
-                        src="images/airforce black.jpeg"
-                        alt="Nike Air Force 1 Black"
+                        src="images/adidas/adidas-01.jpeg"
+                        alt="Adidas XLG Runner Deluxe — JR9633"
                     >
 
                     <div class="product-info">
-
                         <span class="product-name">
-                            Nike Air Force 1 Black
+                            Adidas XLG Runner Deluxe
                         </span>
 
                         <span class="product-number">
-                            #002
+                            JR9633
                         </span>
-
                     </div>
-
                 </a>
 
-
                 <!-- PRODOTTO 3 -->
+                <a
+                    href="asics.html"
+                    class="product reveal"
+                >
+                    <span class="badge">
+                        NUOVO
+                    </span>
 
+                    <img
+                        src="images/asics/Asics-1.jpeg"
+                        alt="ASICS GEL-NYC — 1201A789-103"
+                    >
+
+                    <div class="product-info">
+                        <span class="product-name">
+                            ASICS GEL-NYC
+                        </span>
+
+                        <span class="product-number">
+                            1201A789-103
+                        </span>
+                    </div>
+                </a>
+
+                <!-- PRODOTTO 4 -->
                 <a
                     href="nike.html"
                     class="product reveal"
                 >
-
                     <img
                         src="images/nike shox bianca.jpeg"
                         alt="Nike Shox White"
                     >
 
                     <div class="product-info">
-
                         <span class="product-name">
                             Nike Shox
                         </span>
 
                         <span class="product-number">
-                            #003
-                        </span>
-
-                    </div>
-
-                </a>
-
-
-                <!-- PRODOTTO 4 -->
-
-                <a
-                    href="timberland.html"
-                    class="product reveal"
-                >
-
-                    <span class="badge">
-                        LIMITED
-                    </span>
-
-                    <img
-                        src="images/timberland.jpeg"
-                        alt="Timberland"
-                    >
-
-                    <div class="product-info">
-
-                        <span class="product-name">
-                            Timberland
-                        </span>
-
-                        <span class="product-number">
                             #004
                         </span>
-
                     </div>
-
                 </a>
 
-            </div>
+</div>
 
         </section>
 
@@ -1695,7 +1851,6 @@
 
 
             <div class="categories">
-
 
                 <a
                     href="scarpe.html"
@@ -1744,7 +1899,31 @@
 
                 </a>
 
-            </div>
+
+                <a
+                    href="accessori.html"
+                    class="category reveal"
+                >
+
+                    <div class="category-number">
+                        003
+                    </div>
+
+                    <div class="category-bottom">
+
+                        <h3>
+                            ACCESSORI
+                        </h3>
+
+                        <span class="category-arrow">
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+</div>
 
         </section>
 
@@ -1876,6 +2055,10 @@
                         Abbigliamento
                     </a>
 
+                    <a href="accessori.html">
+                        Accessori
+                    </a>
+
                     <a href="#nuovi-arrivi">
                         Nuovi arrivi
                     </a>
@@ -1914,7 +2097,7 @@
 
                 <div class="footer-links">
 
-                    <a href="#">
+                    <a href="faq.html">
                         FAQ
                     </a>
 
@@ -2091,31 +2274,66 @@
            NEWSLETTER
         ===================================================== */
 
-        const emailForm =
-            document.getElementById("emailForm");
+       const emailForm = document.getElementById("emailForm");
 
+if (emailForm) {
+    emailForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
 
-        emailForm.addEventListener(
-            "submit",
-            function(event) {
+        const button = emailForm.querySelector("button");
+        const input = emailForm.querySelector("input");
+        const email = input.value.trim();
 
-                event.preventDefault();
+        if (!email) return;
 
-                const button =
-                    emailForm.querySelector("button");
+        button.disabled = true;
+        button.textContent = "ISCRIZIONE...";
 
-                button.textContent =
-                    "ISCRITTO ✓";
+        try {
+            const { supabase } = await import("./supabase.js");
 
-                button.style.color =
-                    "#ffffff";
+            const { data, error } = await supabase.functions.invoke(
+                "newsletter",
+                {
+                    body: {
+                        email: email
+                    }
+                }
+            );
 
-                emailForm
-                    .querySelector("input")
-                    .value = "";
-
+            if (error) {
+                throw error;
             }
-        );
+
+            if (!data || data.success !== true) {
+                throw new Error(
+                    data?.message || "Iscrizione non riuscita."
+                );
+            }
+
+            button.textContent = "ISCRITTO ✓";
+            button.style.color = "#ffffff";
+
+            input.value = "";
+
+        } catch (error) {
+            console.error("Newsletter error:", error);
+
+            button.textContent = "RIPROVA →";
+            button.style.color = "#ff4d00";
+
+        } finally {
+            setTimeout(() => {
+                button.disabled = false;
+
+                if (button.textContent === "RIPROVA →") {
+                    button.textContent = "ENTRA →";
+                    button.style.color = "";
+                }
+            }, 3000);
+        }
+    });
+}
 
     </script>
 <script type="module">

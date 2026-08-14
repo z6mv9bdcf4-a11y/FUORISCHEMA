@@ -386,6 +386,162 @@ button{font:inherit}
         font-size:67px;
     }
 }
+
+/* RESPONSIVE / MOBILE */
+@media (max-width: 900px){
+    .product-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:10px;
+    }
+
+    .page{
+        padding-left:18px;
+        padding-right:18px;
+    }
+
+    .hero{
+        padding-top:64px;
+        padding-bottom:52px;
+    }
+
+    .hero-title{
+        font-size:clamp(64px,18vw,110px);
+    }
+}
+
+@media (max-width: 560px){
+    .topbar{
+        height:64px;
+        padding:0 16px;
+    }
+
+    .brand{
+        font-size:13px;
+        letter-spacing:1.6px;
+    }
+
+    .nav-actions{
+        gap:6px;
+    }
+
+    .nav-btn{
+        min-height:34px;
+        padding:0 9px;
+        font-size:7px;
+        letter-spacing:1px;
+    }
+
+    .page{
+        padding:0 14px 30px;
+    }
+
+    .hero{
+        padding-top:48px;
+        padding-bottom:38px;
+    }
+
+    .hero-kicker{
+        font-size:8px;
+        letter-spacing:2.2px;
+    }
+
+    .hero-title{
+        margin-top:10px;
+        font-size:clamp(62px,20vw,92px);
+        letter-spacing:-4px;
+    }
+
+    .hero-sub{
+        margin-top:12px;
+        font-size:7px;
+        letter-spacing:1.4px;
+    }
+
+    .hero-index{
+        margin-top:22px;
+        font-size:7px;
+    }
+
+    .catalog-bar{
+        padding:0 0 11px;
+    }
+
+    .catalog-label,
+    .catalog-count{
+        font-size:7px;
+        letter-spacing:1.8px;
+    }
+
+    .filters{
+        gap:6px;
+        padding-bottom:12px;
+    }
+
+    .filter{
+        min-height:34px;
+        padding:0 11px;
+        font-size:7px;
+        letter-spacing:1.2px;
+    }
+
+    .product-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:8px;
+    }
+
+    .product-image{
+        aspect-ratio:1 / 1.04;
+    }
+
+    .product-badge{
+        top:7px;
+        left:7px;
+        padding:6px 6px;
+        font-size:6px;
+        letter-spacing:1px;
+    }
+
+    .product-info{
+        padding:11px 10px 12px;
+    }
+
+    .product-brand{
+        font-size:6px;
+        letter-spacing:1.6px;
+    }
+
+    .product-name{
+        margin-top:6px;
+        font-size:10px;
+        line-height:1.2;
+    }
+
+    .product-type{
+        margin-top:4px;
+        font-size:7px;
+    }
+
+    .product-bottom{
+        margin-top:10px;
+        padding-top:8px;
+    }
+
+    .product-dm{
+        font-size:6px;
+        letter-spacing:1px;
+    }
+
+    .product-arrow{
+        font-size:11px;
+    }
+
+    .footer{
+        margin-top:48px;
+        font-size:7px;
+        letter-spacing:1.5px;
+    }
+}
+
 </style>
 </head>
 
@@ -429,10 +585,9 @@ button{font:inherit}
             <div class="empty-kicker">NIKE / FUORISCHEMA</div>
             <div class="empty-title">SELEZIONE IN PREPARAZIONE.</div>
             <p class="empty-text">
-                Stiamo preparando la selezione Nike FUORISCHEMA.
-                I prodotti verranno aggiunti qui con foto, descrizione e disponibilità.
+                Non ci sono prodotti in questa selezione al momento.
             </p>
-            <a class="empty-dm" href="#" id="dmButton">SCRIVI IN DM →</a>
+            <a class="empty-dm" href="https://www.instagram.com/_fuori.schema_/" target="_blank" rel="noopener noreferrer" id="dmButton">SCRIVI IN DM →</a>
         </section>
     </section>
 
@@ -533,6 +688,15 @@ function renderProducts(filter = "all"){
             </div>
         `;
 
+        const image = card.querySelector("img");
+        image.addEventListener("error", () => {
+            image.remove();
+            const fallback = document.createElement("div");
+            fallback.className = "product-placeholder";
+            fallback.textContent = "IMMAGINE PRODOTTO";
+            card.querySelector(".product-image").appendChild(fallback);
+        }, { once:true });
+
         productGrid.appendChild(card);
     });
 }
@@ -555,10 +719,7 @@ filters.forEach(filter => {
     Il link DM verrà collegato al profilo social definitivo
     quando avremo fissato l'account FUORISCHEMA.
 */
-document.getElementById("dmButton").addEventListener("click", event => {
-    event.preventDefault();
-    alert("Collegheremo qui il social FUORISCHEMA.");
-});
+
 
 renderProducts();
 </script>

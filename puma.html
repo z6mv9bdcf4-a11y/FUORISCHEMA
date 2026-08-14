@@ -1,161 +1,708 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050505">
+<title>PUMA — FUORISCHEMA</title>
 
-    <title>FUORISCHEMA — PUMA</title>
+<style>
+:root{
+    --bg:#050505;
+    --panel:#0b0b0b;
+    --text:#f5f5f5;
+    --muted:#777;
+    --muted-2:#4d4d4d;
+    --line:rgba(255,255,255,.10);
+    --line-strong:rgba(255,255,255,.17);
+    --orange:#ff4d00;
+    --max:1220px;
+}
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 50% -12%,rgba(255,77,0,.09),transparent 30%),
+        var(--bg);
+    color:var(--text);
+    font-family:Inter,Arial,Helvetica,sans-serif;
+    -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
 
-        body {
-            background: #050505;
-            color: #f5f5f5;
-            font-family: Arial, Helvetica, sans-serif;
-            min-height: 100vh;
-        }
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:100;
+    height:74px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 38px;
+    background:rgba(5,5,5,.88);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border-bottom:1px solid var(--line);
+}
+.brand{
+    font-size:21px;
+    font-weight:1000;
+    letter-spacing:-1.7px;
+}
+.brand-white{color:#fff}
+.brand-orange{color:var(--orange)}
+.nav-actions{display:flex;gap:8px}
+.nav-btn{
+    min-height:39px;
+    padding:0 14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid var(--line-strong);
+    color:#ddd;
+    font-size:8px;
+    font-weight:1000;
+    letter-spacing:1.7px;
+    transition:.2s ease;
+}
+.nav-btn:hover{
+    color:var(--orange);
+    border-color:var(--orange);
+}
 
-        header {
-            padding: 30px 6%;
-            border-bottom: 1px solid #222;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+.page{
+    width:min(calc(100% - 48px),var(--max));
+    margin:0 auto;
+    padding:58px 0 90px;
+}
 
-        .logo {
-            color: #ff4d00;
-            font-size: 28px;
-            font-weight: 900;
-            letter-spacing: 2px;
-        }
+/* HERO */
+.hero{
+    position:relative;
+    min-height:355px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    padding-bottom:46px;
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+}
+.hero-kicker{
+    margin-bottom:18px;
+    color:var(--orange);
+    font-size:9px;
+    font-weight:1000;
+    letter-spacing:4px;
+}
+.hero-title{
+    font-size:clamp(86px,15vw,178px);
+    line-height:.73;
+    font-weight:1000;
+    letter-spacing:-11px;
+}
+.hero-sub{
+    margin-top:27px;
+    color:#777;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:3px;
+}
+.hero-index{
+    position:absolute;
+    right:-5px;
+    top:30px;
+    color:rgba(255,255,255,.018);
+    font-size:260px;
+    line-height:.8;
+    font-weight:1000;
+    letter-spacing:-25px;
+    pointer-events:none;
+}
 
-        .back {
-            color: #fff;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
+/* CONTROLS */
+.catalog-bar{
+    margin:42px 0 23px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:20px;
+}
+.catalog-label{
+    color:#5f5f5f;
+    font-size:8px;
+    font-weight:1000;
+    letter-spacing:3px;
+}
+.catalog-count{
+    color:#555;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+.filters{
+    display:flex;
+    gap:7px;
+    overflow-x:auto;
+    padding:1px 0 13px;
+    scrollbar-width:none;
+}
+.filters::-webkit-scrollbar{display:none}
+.filter{
+    flex:0 0 auto;
+    min-height:36px;
+    padding:0 14px;
+    border:1px solid var(--line);
+    background:transparent;
+    color:#777;
+    cursor:pointer;
+    font-size:8px;
+    font-weight:1000;
+    letter-spacing:1.6px;
+    transition:.2s ease;
+}
+.filter:hover,
+.filter.active{
+    color:#080808;
+    background:var(--orange);
+    border-color:var(--orange);
+}
 
-        .back:hover {
-            color: #ff4d00;
-        }
+/* PRODUCT GRID */
+.product-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:12px;
+}
+.product-card{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    background:var(--panel);
+    border:1px solid var(--line);
+    transition:.25s ease;
+}
+.product-card:hover{
+    transform:translateY(-4px);
+    border-color:var(--line-strong);
+}
+.product-image{
+    position:relative;
+    aspect-ratio:1 / 1.08;
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 50% 43%,rgba(255,255,255,.035),transparent 45%),
+        #080808;
+    border-bottom:1px solid var(--line);
+}
+.product-image::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(135deg,transparent 45%,rgba(255,77,0,.025));
+    pointer-events:none;
+}
+.product-placeholder{
+    color:#292929;
+    font-size:9px;
+    font-weight:1000;
+    letter-spacing:3px;
+}
+.product-badge{
+    position:absolute;
+    top:11px;
+    left:11px;
+    z-index:2;
+    padding:7px 8px;
+    background:var(--orange);
+    color:#080808;
+    font-size:7px;
+    font-weight:1000;
+    letter-spacing:1.5px;
+}
+.product-info{
+    padding:15px 15px 16px;
+}
+.product-brand{
+    color:#666;
+    font-size:7px;
+    font-weight:1000;
+    letter-spacing:2px;
+}
+.product-name{
+    margin-top:7px;
+    color:#eee;
+    font-size:12px;
+    font-weight:900;
+    line-height:1.25;
+}
+.product-type{
+    margin-top:5px;
+    color:#555;
+    font-size:8px;
+    line-height:1.4;
+}
+.product-bottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:15px;
+    padding-top:11px;
+    border-top:1px solid var(--line);
+}
+.product-dm{
+    color:var(--orange);
+    font-size:7px;
+    font-weight:1000;
+    letter-spacing:1.4px;
+}
+.product-arrow{
+    color:#555;
+    font-size:14px;
+    transition:.2s ease;
+}
+.product-card:hover .product-arrow{
+    color:var(--orange);
+    transform:translateX(3px);
+}
 
-        main {
-            padding: 80px 6%;
-            max-width: 1300px;
-            margin: auto;
-        }
+/* EMPTY STATE */
+.empty-state{
+    display:none;
+    padding:82px 25px;
+    border:1px dashed var(--line-strong);
+    text-align:center;
+}
+.empty-state.show{display:block}
+.empty-kicker{
+    color:var(--orange);
+    font-size:8px;
+    font-weight:1000;
+    letter-spacing:3px;
+}
+.empty-title{
+    margin-top:14px;
+    font-size:27px;
+    font-weight:1000;
+    letter-spacing:-1.2px;
+}
+.empty-text{
+    max-width:400px;
+    margin:12px auto 0;
+    color:#666;
+    font-size:10px;
+    line-height:1.6;
+}
+.empty-dm{
+    display:inline-flex;
+    margin-top:25px;
+    min-height:42px;
+    padding:0 17px;
+    align-items:center;
+    justify-content:center;
+    background:var(--orange);
+    color:#080808;
+    font-size:8px;
+    font-weight:1000;
+    letter-spacing:1.5px;
+}
 
-        .label {
-            color: #ff4d00;
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 3px;
-            margin-bottom: 15px;
-        }
+/* FOOTER */
+.footer{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    margin-top:72px;
+    padding-top:19px;
+    border-top:1px solid var(--line);
+    color:#444;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:3px;
+}
 
-        h1 {
-            font-size: clamp(50px, 9vw, 100px);
-            line-height: 0.9;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
+@media(max-width:1000px){
+    .product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
 
-        .intro {
-            color: #999;
-            font-size: 14px;
-            margin-bottom: 60px;
-        }
+@media(max-width:720px){
+    .topbar{
+        height:64px;
+        padding:0 15px;
+    }
+    .brand{font-size:18px}
+    .nav-btn{
+        min-height:35px;
+        padding:0 10px;
+        font-size:7px;
+    }
+    .page{
+        width:calc(100% - 22px);
+        padding-top:35px;
+    }
+    .hero{
+        min-height:270px;
+        padding-bottom:34px;
+    }
+    .hero-title{
+        font-size:78px;
+        letter-spacing:-6px;
+    }
+    .hero-index{
+        top:25px;
+        right:-5px;
+        font-size:145px;
+        letter-spacing:-13px;
+    }
+    .catalog-bar{
+        margin-top:34px;
+    }
+    .product-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:9px;
+    }
+    .product-info{
+        padding:12px 11px 13px;
+    }
+    .product-name{
+        font-size:11px;
+    }
+    .product-bottom{
+        margin-top:12px;
+    }
+    .footer{
+        flex-direction:column;
+        gap:8px;
+    }
+}
 
-        .coming-soon {
-            border: 1px solid #222;
-            background: #0b0b0b;
-            padding: 80px 30px;
-            text-align: center;
-        }
+@media(max-width:380px){
+    .hero-title{
+        font-size:67px;
+    }
+}
 
-        .coming-soon-number {
-            color: #ff4d00;
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 3px;
-            margin-bottom: 20px;
-        }
+/* RESPONSIVE / MOBILE */
+@media (max-width: 900px){
+    .product-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:10px;
+    }
 
-        .coming-soon h2 {
-            font-size: 35px;
-            margin-bottom: 15px;
-        }
+    .page{
+        padding-left:18px;
+        padding-right:18px;
+    }
 
-        .coming-soon p {
-            color: #888;
-            font-size: 14px;
-        }
+    .hero{
+        padding-top:64px;
+        padding-bottom:52px;
+    }
 
-        @media (max-width: 700px) {
-            header {
-                padding: 22px 5%;
-            }
+    .hero-title{
+        font-size:clamp(64px,18vw,110px);
+    }
+}
 
-            main {
-                padding: 50px 5%;
-            }
-        }
-    </style>
+@media (max-width: 560px){
+    .topbar{
+        height:64px;
+        padding:0 16px;
+    }
+
+    .brand{
+        font-size:13px;
+        letter-spacing:1.6px;
+    }
+
+    .nav-actions{
+        gap:6px;
+    }
+
+    .nav-btn{
+        min-height:34px;
+        padding:0 9px;
+        font-size:7px;
+        letter-spacing:1px;
+    }
+
+    .page{
+        padding:0 14px 30px;
+    }
+
+    .hero{
+        padding-top:48px;
+        padding-bottom:38px;
+    }
+
+    .hero-kicker{
+        font-size:8px;
+        letter-spacing:2.2px;
+    }
+
+    .hero-title{
+        margin-top:10px;
+        font-size:clamp(62px,20vw,92px);
+        letter-spacing:-4px;
+    }
+
+    .hero-sub{
+        margin-top:12px;
+        font-size:7px;
+        letter-spacing:1.4px;
+    }
+
+    .hero-index{
+        margin-top:22px;
+        font-size:7px;
+    }
+
+    .catalog-bar{
+        padding:0 0 11px;
+    }
+
+    .catalog-label,
+    .catalog-count{
+        font-size:7px;
+        letter-spacing:1.8px;
+    }
+
+    .filters{
+        gap:6px;
+        padding-bottom:12px;
+    }
+
+    .filter{
+        min-height:34px;
+        padding:0 11px;
+        font-size:7px;
+        letter-spacing:1.2px;
+    }
+
+    .product-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:8px;
+    }
+
+    .product-image{
+        aspect-ratio:1 / 1.04;
+    }
+
+    .product-badge{
+        top:7px;
+        left:7px;
+        padding:6px 6px;
+        font-size:6px;
+        letter-spacing:1px;
+    }
+
+    .product-info{
+        padding:11px 10px 12px;
+    }
+
+    .product-brand{
+        font-size:6px;
+        letter-spacing:1.6px;
+    }
+
+    .product-name{
+        margin-top:6px;
+        font-size:10px;
+        line-height:1.2;
+    }
+
+    .product-type{
+        margin-top:4px;
+        font-size:7px;
+    }
+
+    .product-bottom{
+        margin-top:10px;
+        padding-top:8px;
+    }
+
+    .product-dm{
+        font-size:6px;
+        letter-spacing:1px;
+    }
+
+    .product-arrow{
+        font-size:11px;
+    }
+
+    .footer{
+        margin-top:48px;
+        font-size:7px;
+        letter-spacing:1.5px;
+    }
+}
+
+</style>
 </head>
 
 <body>
 
-<header>
-
-    <div class="logo">
-        FUORISCHEMA
-    </div>
-
-    <a href="scarpe.html" class="back">
-        ← TORNA A SCARPE
+<header class="topbar">
+    <a href="index.html" class="brand">
+        <span class="brand-white">FUORI</span><span class="brand-orange">SCHEMA</span>
     </a>
 
+    <div class="nav-actions">
+        <a href="scarpe.html" class="nav-btn">← SCARPE</a>
+        <a href="index.html" class="nav-btn">HOME</a>
+    </div>
 </header>
 
-<main>
+<main class="page">
 
-    <div class="label">
-        06 / PUMA
-    </div>
+    <section class="hero">
+        <div class="hero-kicker">01 / BRAND</div>
+        <h1 class="hero-title">PUMA</h1>
+        <div class="hero-sub">FOOTWEAR SELECTION / FUORISCHEMA</div>
+        <div class="hero-index">01</div>
+    </section>
 
-    <h1>
-        PUMA
-    </h1>
-
-    <p class="intro">
-        SELEZIONE FUORISCHEMA
-    </p>
-
-    <div class="coming-soon">
-
-        <div class="coming-soon-number">
-            CATALOGO IN AGGIORNAMENTO
+    <section>
+        <div class="catalog-bar">
+            <div class="catalog-label">SELEZIONE PUMA</div>
+            <div class="catalog-count" id="catalogCount">0 PRODOTTI</div>
         </div>
 
-        <h2>
-            PROSSIMAMENTE
-        </h2>
+        <nav class="filters" aria-label="Filtri Puma">
+            <button class="filter active" type="button" data-filter="all">TUTTI</button>
+            <button class="filter" type="button" data-filter="new">NUOVI ARRIVI</button>
+            <button class="filter" type="button" data-filter="selected">PIÙ SCELTI</button>
+        </nav>
 
-        <p>
-            I prodotti PUMA saranno disponibili a breve.
-        </p>
+        <section class="product-grid" id="productGrid"></section>
 
-    </div>
+        <section class="empty-state show" id="emptyState">
+            <div class="empty-kicker">PUMA / FUORISCHEMA</div>
+            <div class="empty-title">NESSUN PRODOTTO</div>
+            <p class="empty-text">
+                Non ci sono prodotti in questa selezione al momento.
+            </p>
+            <a class="empty-dm" href="https://www.instagram.com/_fuori.schema_/" target="_blank" rel="noopener noreferrer" id="dmButton">SCRIVI IN DM →</a>
+        </section>
+    </section>
+
+    <footer class="footer">
+        <span>FUORISCHEMA</span>
+        <span>PUMA / 01</span>
+    </footer>
 
 </main>
+
+<script>
+/*
+    MASTER STRUTTURA PRODOTTO
+
+    Quando inizieremo a caricare i prodotti, basterà aggiungerli
+    qui. Per ora NON inseriamo i vecchi prodotti di prova.
+*/
+const products = [
+    // =====================================================
+    // PUMA — PRODOTTI DA INSERIRE
+    //
+    // {
+    //     id: "puma-esempio",
+    //     name: "Nome prodotto",
+    //     type: "Sneaker",
+    //     image: "images/nome-foto.jpeg",
+    //     badge: "",
+    //     filter: "all"
+    // }
+    // =====================================================
+];
+
+const productGrid = document.getElementById("productGrid");
+const emptyState = document.getElementById("emptyState");
+const catalogCount = document.getElementById("catalogCount");
+const filters = document.querySelectorAll(".filter");
+
+function renderProducts(filter = "all"){
+    const visible = products.filter(product =>
+        filter === "all" || product.filter === filter
+    );
+
+    productGrid.innerHTML = "";
+    catalogCount.textContent = `${visible.length} ${visible.length === 1 ? "PRODOTTO" : "PRODOTTI"}`;
+
+    if(!visible.length){
+        emptyState.classList.add("show");
+        return;
+    }
+
+    emptyState.classList.remove("show");
+
+    visible.forEach(product => {
+        const card = document.createElement("a");
+        card.className = "product-card";
+        card.href = `prodotto.html?id=${encodeURIComponent(product.id)}`;
+
+        card.innerHTML = `
+            <div class="product-image">
+                ${product.badge ? `<div class="product-badge">${escapeHtml(product.badge)}</div>` : ""}
+                <img
+                    src="${escapeHtml(product.image)}"
+                    alt="${escapeHtml(product.name)}"
+                    style="width:100%;height:100%;object-fit:contain;display:block;"
+                    loading="lazy"
+                >
+            </div>
+
+            <div class="product-info">
+                <div class="product-brand">PUMA</div>
+                <div class="product-name">${escapeHtml(product.name)}</div>
+                <div class="product-type">${escapeHtml(product.type || "Footwear")}</div>
+
+                <div class="product-bottom">
+                    <span class="product-dm">SCRIVI IN DM</span>
+                    <span class="product-arrow">→</span>
+                </div>
+            </div>
+        `;
+
+        const image = card.querySelector("img");
+        image.addEventListener("error", () => {
+            image.remove();
+            const fallback = document.createElement("div");
+            fallback.className = "product-placeholder";
+            fallback.textContent = "IMMAGINE PRODOTTO";
+            card.querySelector(".product-image").appendChild(fallback);
+        }, { once:true });
+
+        productGrid.appendChild(card);
+    });
+}
+
+function escapeHtml(value){
+    const div = document.createElement("div");
+    div.textContent = value ?? "";
+    return div.innerHTML;
+}
+
+filters.forEach(filter => {
+    filter.addEventListener("click", () => {
+        filters.forEach(item => item.classList.remove("active"));
+        filter.classList.add("active");
+        renderProducts(filter.dataset.filter);
+    });
+});
+
+/*
+    Il link DM verrà collegato al profilo social definitivo
+    quando avremo fissato l'account FUORISCHEMA.
+*/
+
+
+renderProducts();
+</script>
 
 </body>
 </html>
