@@ -114,6 +114,34 @@ a{color:inherit;text-decoration:none}
     text-align:right;
 }
 
+/* Feed Tabs Switcher */
+.feed-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--panel-border);
+    margin-bottom: 20px;
+}
+.tab-btn {
+    flex: 1;
+    padding: 12px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+.tab-btn:hover {
+    color: var(--text);
+}
+.tab-btn.active {
+    color: #fff;
+    border-bottom-color: var(--orange);
+}
+
 /* Instagram Create Post Box */
 .create-card{
     position:relative;
@@ -550,6 +578,12 @@ a{color:inherit;text-decoration:none}
             <div class="hero-meta">FUORISCHEMA COMMUNITY</div>
         </section>
 
+        <!-- Feed Selector Tabs -->
+        <div class="feed-tabs">
+            <button id="tabForYou" class="tab-btn active" type="button">Per Te</button>
+            <button id="tabRecent" class="tab-btn" type="button">Recenti</button>
+        </div>
+
         <!-- Create Post Section -->
         <section class="create-card">
             <div class="create-top">
@@ -640,6 +674,9 @@ const modalBio = document.getElementById("modalBio");
 const instagramLink = document.getElementById("instagramLink");
 const profilePageLink = document.getElementById("profilePageLink");
 
+const tabForYou = document.getElementById("tabForYou");
+const tabRecent = document.getElementById("tabRecent");
+
 const toast = document.getElementById("toast");
 
 /* =========================================================
@@ -648,6 +685,7 @@ const toast = document.getElementById("toast");
 let currentUser = null;
 let selectedImageFile = null;
 let selectedImageUrl = null;
+let currentFeedType = "foryou"; // "foryou" oppure "recent"
 
 /* =========================================================
    HELPERS
@@ -717,6 +755,30 @@ function setAvatar(element, author){
     }else{
         element.textContent = getInitials(author?.name);
     }
+}
+
+/* Helper deterministico per offset quotidiano basato su ID utente e Data */
+function getDailyOffset(userId) {
+    const todayStr = new Date().toISOString().slice(0, 10);
+    let hash = 0;
+    const str = userId + todayStr;
+    for (let i = 0; i < str.length; i++) {
+        hash = (hash << 5) - hash + str.charCodeAt(i);
+        hash |= 0;
+    }
+    return Math.abs(hash) % 200;
+}
+
+/* Micro-noise deterministico stabile per utente/post (varia tra 0.995 e 1.005) */
+function getDeterministicNoise(postId, userId) {
+    let hash = 0;
+    const str = String(postId) + String(userId);
+    for (let i = 0; i < str.length; i++) {
+        hash = (hash << 5) - hash + str.charCodeAt(i);
+        hash |= 0;
+    }
+    const normalized = (Math.abs(hash) % 1000) / 1000; // [0, 1)
+    return 0.995 + (normalized * 0.01);
 }
 
 /* =========================================================
@@ -939,9 +1001,175 @@ profileOverlay.addEventListener("click",event => {
 });
 
 /* =========================================================
-   FEED (INSTAGRAM STYLE LAYOUT)
+   FEED LOGIC V1 ("Per Te" & "Recenti")
 ========================================================= */
-async function loadFeed(){
+
+// Event Listeners per i Tab
+tabForYou.addEventListener("click", () => {
+    if (currentFeedType === "foryou") return;
+    currentFeedType = "foryou";
+    tabForYou.classList.add("active");
+    tabRecent.classList.remove("active");
+    loadFeed();
+});
+
+tabRecent.addEventListener("click", () => {
+    if (currentFeedType === "recent") return;
+    currentFeedType = "recent";
+    tabRecent.classList.add("active");
+    tabForYou.classList.remove("active");
+    loadFeed();
+});
+
+async function fetchRecentPosts() {
+    const { data, error } = await supabase
+        .from("posts")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(60);
+
+    if (error) throw error;
+    return data || [];
+}
+
+async function fetchForYouPosts() {
+    // 1. Fetch dai tre scaglioni temporali per garantire l'accesso anche ai contenuti storici
+    const currentUserId = currentUser ? currentUser.id : "guest";
+    const offset = getDailyOffset(currentUserId);
+
+    const pRecent = supabase
+        .from("posts")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .range(0, 59);
+
+    const pMid = supabase
+        .from("posts")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .range(60, 119);
+
+    const pOld = supabase
+        .from("posts")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .range(120 + offset, 179 + offset);
+
+    const [resRecent, resMid, resOld] = await Promise.all([pRecent, pMid, pOld]);
+
+    if (resRecent.error) throw resRecent.error;
+
+    const rawPool = [
+        ...(resRecent.data || []),
+        ...(resMid.data || []),
+        ...(resOld.data || [])
+    ];
+
+    // Deduplicazione per ID
+    const uniqueMap = new Map();
+    rawPool.forEach(post => {
+        if (!uniqueMap.has(post.id)) uniqueMap.set(post.id, post);
+    });
+    const pool = Array.from(uniqueMap.values());
+
+    if (pool.length === 0) return [];
+
+    // 2. Fetch dell'Engagement in Batch
+    const postIds = pool.map(p => p.id);
+
+    let likesMap = {};
+    let commentsMap = {};
+
+    try {
+        const pLikes = supabase
+            .from("post_likes")
+            .select("post_id")
+            .in("post_id", postIds);
+
+        const pComments = supabase
+            .from("post_comments")
+            .select("post_id")
+            .in("post_id", postIds);
+
+        const [resLikes, resComments] = await Promise.all([pLikes, pComments]);
+
+        if (!resLikes.error && resLikes.data) {
+            resLikes.data.forEach(l => {
+                likesMap[l.post_id] = (likesMap[l.post_id] || 0) + 1;
+            });
+        }
+        if (!resComments.error && resComments.data) {
+            resComments.data.forEach(c => {
+                commentsMap[c.post_id] = (commentsMap[c.post_id] || 0) + 1;
+            });
+        }
+    } catch (engagementErr) {
+        console.warn("Errore durante il recupero engagement, proseguimento con conteggi zero:", engagementErr);
+    }
+
+    // 3. Algoritmo di Ranking V1 con Reranking Dinamico
+    const now = Date.now();
+
+    // Step 3a: Calcolo baseScore per ciascun post nel pool
+    // baseScore = (1 + likes * 1.5 + comments * 2.0) / ((hoursSinceCreation + 2) ^ 1.2)
+    const poolWithBaseScore = pool.map(post => {
+        const likes = likesMap[post.id] || 0;
+        const comments = commentsMap[post.id] || 0;
+        const createdAt = new Date(post.created_at).getTime();
+        const hoursSinceCreation = Math.max(0, (now - createdAt) / (1000 * 60 * 60));
+
+        const baseScore = (1 + (likes * 1.5) + (comments * 2.0)) / Math.pow(hoursSinceCreation + 2, 1.2);
+        const noise = getDeterministicNoise(post.id, currentUserId);
+
+        return {
+            post,
+            baseScore: baseScore * noise
+        };
+    });
+
+    // Step 3b: Reranking Dinamico per Diversità degli Autori (Greedy Selection)
+    // Costruisce la classifica finale scegliendo passo per passo il candidato con il punteggio ponderato più alto.
+    const selectedPosts = [];
+    const authorSelectedCount = {};
+    let candidates = [...poolWithBaseScore];
+
+    function getAuthorPenalty(count) {
+        if (count === 0) return 1.0;  // 1° post dell'autore: nessuna penalità
+        if (count === 1) return 0.50; // 2° post dell'autore: 0.50
+        if (count === 2) return 0.25; // 3° post dell'autore: 0.25
+        return 0.20;                 // 4°+ post dell'autore: 0.20
+    }
+
+    while (candidates.length > 0) {
+        let bestIndex = -1;
+        let bestDynamicScore = -1;
+
+        for (let i = 0; i < candidates.length; i++) {
+            const cand = candidates[i];
+            const authorId = cand.post.user_id;
+            const count = authorSelectedCount[authorId] || 0;
+            const penalty = getAuthorPenalty(count);
+            const dynamicScore = cand.baseScore * penalty;
+
+            if (dynamicScore > bestDynamicScore) {
+                bestDynamicScore = dynamicScore;
+                bestIndex = i;
+            }
+        }
+
+        if (bestIndex === -1) break;
+
+        const [chosen] = candidates.splice(bestIndex, 1);
+        selectedPosts.push(chosen.post);
+
+        const chosenAuthorId = chosen.post.user_id;
+        authorSelectedCount[chosenAuthorId] = (authorSelectedCount[chosenAuthorId] || 0) + 1;
+    }
+
+    return selectedPosts;
+}
+
+async function loadFeed() {
     feed.innerHTML = `
         <div class="empty">
             <div class="empty-icon">◌</div>
@@ -950,26 +1178,32 @@ async function loadFeed(){
         </div>
     `;
 
-    const {data:rawPosts,error} = await supabase
-        .from("posts")
-        .select("*")
-        .order("created_at",{ascending:false});
+    let posts = [];
 
-    const posts = rawPosts || [];
-
-    if(error){
-        console.error(error);
-        feed.innerHTML = `
-            <div class="empty">
-                <div class="empty-icon">!</div>
-                <strong>ERRORE NEL FEED</strong>
-                <span>${escapeHtml(error.message)}</span>
-            </div>
-        `;
-        return;
+    try {
+        if (currentFeedType === "foryou") {
+            posts = await fetchForYouPosts();
+        } else {
+            posts = await fetchRecentPosts();
+        }
+    } catch (err) {
+        console.warn("Fallback attivato per errore durante il fetch del feed:", err);
+        try {
+            posts = await fetchRecentPosts();
+        } catch (fallbackErr) {
+            console.error("Errore irreversibile nel feed:", fallbackErr);
+            feed.innerHTML = `
+                <div class="empty">
+                    <div class="empty-icon">!</div>
+                    <strong>ERRORE NEL FEED</strong>
+                    <span>${escapeHtml(fallbackErr.message)}</span>
+                </div>
+            `;
+            return;
+        }
     }
 
-    if(!posts?.length){
+    if (!posts || posts.length === 0) {
         feed.innerHTML = `
             <div class="empty">
                 <div class="empty-icon">◎</div>
@@ -983,8 +1217,7 @@ async function loadFeed(){
     feed.innerHTML = "";
 
     const authors = await Promise.all(posts.map(post => resolveAuthor(post.user_id)));
-    await Promise.all(posts.map((post,index) => renderPost(post,authors[index])));
-
+    await Promise.all(posts.map((post, index) => renderPost(post, authors[index])));
 }
 
 async function renderPost(post,author){
