@@ -7,171 +7,423 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:#050505;color:#f5f5f5;font-family:Arial,Helvetica,sans-serif;min-height:100vh}
+body{background:#050505;color:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column}
 a{color:inherit;text-decoration:none}
 button,input,textarea{font:inherit}
 button{cursor:pointer}
+
 :root{
-  --bg:#050505;--panel:#0b0b0b;--line:#242424;--line2:#303030;
-  --text:#f5f5f5;--muted:#8b8b8b;--orange:#ff4d00;
+  --bg:#050505;
+  --panel:#0f0f0f;
+  --line:#1c1c1c;
+  --line-light:#2e2e2e;
+  --text:#f5f5f5;
+  --muted:#8e8e8e;
+  --orange:#ff4d00;
+  --orange-hover:#e04400;
 }
+
+/* HEADER */
 header{
-  height:76px;border-bottom:1px solid var(--line);display:flex;align-items:center;
-  justify-content:space-between;padding:0 5vw;position:sticky;top:0;z-index:50;
-  background:rgba(5,5,5,.94);backdrop-filter:blur(14px)
+  height:70px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 5vw;
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:rgba(5,5,5,.88);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
 }
-.logo{font-size:21px;font-weight:950;letter-spacing:-1.5px}
+.logo{
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:-1.2px;
+  text-transform:uppercase;
+}
 .logo span{color:var(--orange)}
-.header-right{display:flex;gap:8px;align-items:center}
+.header-right{display:flex;gap:10px;align-items:center}
 .header-btn{
-  border:1px solid #333;background:transparent;color:#fff;padding:11px 16px;
-  font-size:10px;font-weight:900;letter-spacing:1.6px;text-transform:uppercase
+  border:1px solid var(--line-light);
+  background:transparent;
+  color:var(--text);
+  padding:9px 16px;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  border-radius:4px;
+  transition:all .2s ease;
 }
 .header-btn:hover{border-color:var(--orange);color:var(--orange)}
 .header-btn.orange{background:var(--orange);border-color:var(--orange);color:#050505}
-.header-btn.home{display:inline-flex;align-items:center;gap:7px}
+.header-btn.orange:hover{background:var(--orange-hover);border-color:var(--orange-hover);color:#050505}
+.header-btn.home{display:inline-flex;align-items:center;gap:6px}
 
-/* HERO — volutamente piccolo: il profilo è il contenuto */
-.profile-hero{
-  width:min(1180px,90%);margin:0 auto;padding:42px 0 26px;border-bottom:1px solid var(--line)
+/* MAIN CONTENT CONTAINER */
+.profile-container{
+  width:min(935px,92%);
+  margin:0 auto;
+  padding:40px 0 80px;
+  flex:1;
 }
-.eyebrow{color:var(--orange);font-size:9px;font-weight:900;letter-spacing:3px;text-transform:uppercase}
-.hero-title{margin-top:10px;font-size:clamp(26px,4vw,48px);line-height:.95;letter-spacing:-2px;font-weight:950;text-transform:uppercase}
-.hero-title span{color:var(--orange)}
 
-/* PROFILE */
-.profile-area{width:min(1180px,90%);margin:0 auto;padding:36px 0 70px}
-.profile-top{
-  display:grid;grid-template-columns:150px 1fr;gap:34px;align-items:center;
-  padding-bottom:32px;border-bottom:1px solid var(--line)
+/* PROFILE HEADER (INSTAGRAM-LIKE LAYOUT) */
+.profile-header{
+  display:grid;
+  grid-template-columns:180px 1fr;
+  gap:40px;
+  align-items:start;
+  padding-bottom:44px;
+  border-bottom:1px solid var(--line);
 }
-.avatar-column{display:flex;flex-direction:column;align-items:center}
+
+.avatar-wrapper{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
 .avatar{
-  width:136px;height:136px;border-radius:50%;background:#111;border:1px solid #353535;
-  display:flex;align-items:center;justify-content:center;overflow:hidden
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  background:var(--panel);
+  border:1px solid var(--line-light);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 0 25px rgba(255,77,0,.05);
 }
 .avatar img{width:100%;height:100%;object-fit:cover;display:none}
-.avatar-placeholder{font-size:43px;font-weight:950;color:var(--orange)}
+.avatar-placeholder{font-size:48px;font-weight:900;color:var(--orange)}
 .change-avatar{
-  margin-top:11px;background:none;border:0;color:#777;font-size:9px;font-weight:900;
-  letter-spacing:1.5px;text-transform:uppercase
+  margin-top:14px;
+  background:none;
+  border:none;
+  color:var(--muted);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  transition:color .2s;
 }
 .change-avatar:hover{color:var(--orange)}
 #avatarInput{display:none}
-.profile-name{
-  font-size:clamp(30px,4.5vw,58px);line-height:.95;letter-spacing:-3px;
-  font-weight:950;text-transform:uppercase
+
+.profile-info{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
 }
-.profile-username{color:var(--orange);font-size:12px;font-weight:900;letter-spacing:1.4px;margin-top:10px}
-.profile-bio{color:#aaa;font-size:14px;line-height:1.5;margin-top:13px;max-width:650px}
-.actions{display:flex;gap:8px;margin-top:20px;flex-wrap:wrap}
+
+.profile-title-row{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.profile-name{
+  font-size:clamp(24px,3.5vw,36px);
+  line-height:1.1;
+  font-weight:900;
+  letter-spacing:-1px;
+  text-transform:uppercase;
+  color:#fff;
+}
+.profile-username{
+  color:var(--orange);
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:1.2px;
+}
+
+/* STATS BAR */
+.profile-stats{
+  display:flex;
+  gap:28px;
+  padding:10px 0;
+}
+.stat-item{
+  display:flex;
+  align-items:baseline;
+  gap:6px;
+}
+.stat-value{
+  font-size:16px;
+  font-weight:900;
+  color:#fff;
+}
+.stat-label{
+  font-size:11px;
+  font-weight:700;
+  color:var(--muted);
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.profile-bio{
+  color:#ccc;
+  font-size:14px;
+  line-height:1.5;
+  max-width:580px;
+  white-space:pre-wrap;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  margin-top:4px;
+  flex-wrap:wrap;
+}
 .action-btn{
-  display:inline-flex;align-items:center;justify-content:center;border:1px solid #3a3a3a;
-  background:transparent;color:#fff;padding:11px 15px;font-size:9px;font-weight:900;
-  letter-spacing:1.5px;text-transform:uppercase
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--line-light);
+  background:var(--panel);
+  color:#fff;
+  padding:10px 18px;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1.4px;
+  text-transform:uppercase;
+  border-radius:4px;
+  transition:all .2s ease;
 }
 .action-btn:hover{border-color:var(--orange);color:var(--orange)}
 .action-btn.orange{background:var(--orange);border-color:var(--orange);color:#050505}
+.action-btn.orange:hover{background:var(--orange-hover);border-color:var(--orange-hover)}
 
-/* POSTS */
-.posts-section{padding-top:34px}
-.section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:17px}
-.section-label{color:var(--orange);font-size:9px;font-weight:900;letter-spacing:3px;text-transform:uppercase}
-.posts-count{color:#666;font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}
+/* POSTS SECTION GRID */
+.posts-section{padding-top:32px}
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+.section-label{
+  color:var(--text);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.section-label::before{
+  content:'';
+  display:inline-block;
+  width:6px;
+  height:6px;
+  background:var(--orange);
+  border-radius:50%;
+}
+.posts-count{
+  color:var(--muted);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
 .posts-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:#050505
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
 }
+
 .post-tile{
-  position:relative;aspect-ratio:1/1;background:#0b0b0b;overflow:hidden;border:1px solid #171717
+  position:relative;
+  aspect-ratio:1/1;
+  background:var(--panel);
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:4px;
+  transition:border-color .25s ease;
 }
-.post-tile img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s}
-.post-tile:hover img{transform:scale(1.025)}
+.post-tile:hover{border-color:var(--line-light)}
+
+.post-tile img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform .3s ease;
+}
+.post-tile:hover img{transform:scale(1.04)}
+
 .post-overlay{
-  position:absolute;inset:auto 0 0 0;padding:38px 12px 12px;
-  background:linear-gradient(transparent,rgba(0,0,0,.82));opacity:0;transition:.2s
+  position:absolute;
+  inset:0;
+  padding:20px;
+  background:rgba(5,5,5,.85);
+  backdrop-filter:blur(4px);
+  opacity:0;
+  transition:opacity .25s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 .post-tile:hover .post-overlay{opacity:1}
-.post-text{font-size:11px;line-height:1.35;color:#fff}
-.text-only{display:flex;align-items:center;justify-content:center;padding:22px}
-.text-only .post-text{font-size:18px;font-weight:800;text-align:center;max-width:90%}
-.empty-posts{
-  grid-column:1/-1;min-height:220px;border:1px solid #1d1d1d;display:flex;
-  align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:30px
+
+.post-text{
+  font-size:12px;
+  line-height:1.4;
+  color:#fff;
+  text-align:center;
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-line-clamp:6;
+  -webkit-box-orient:vertical;
 }
-.empty-posts strong{font-size:15px;text-transform:uppercase}
-.empty-posts span{margin-top:8px;color:#666;font-size:9px;letter-spacing:1.7px;text-transform:uppercase}
+
+.text-only{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:linear-gradient(145deg, #0f0f0f, #070707);
+}
+.text-only .post-text{
+  font-size:14px;
+  font-weight:700;
+  text-align:center;
+  color:#ececec;
+  line-height:1.4;
+  -webkit-line-clamp:7;
+}
+
+.empty-posts{
+  grid-column:1/-1;
+  min-height:240px;
+  border:1px dashed var(--line-light);
+  border-radius:6px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  text-align:center;
+  padding:40px 20px;
+  background:rgba(15,15,15,.3);
+}
+.empty-posts strong{font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--text)}
+.empty-posts span{margin-top:8px;color:var(--muted);font-size:10px;letter-spacing:1.5px;text-transform:uppercase}
 
 /* MODAL */
 .modal-backdrop{
-  position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);
-  display:none;align-items:center;justify-content:center;padding:20px;z-index:100
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:100;
 }
 .modal-backdrop.show{display:flex}
 .modal{
-  width:min(520px,100%);background:#0b0b0b;border:1px solid #303030;
-  box-shadow:0 25px 80px rgba(0,0,0,.55);padding:24px
+  width:min(480px,100%);
+  background:#0d0d0d;
+  border:1px solid var(--line-light);
+  border-radius:8px;
+  box-shadow:0 30px 90px rgba(0,0,0,.8);
+  padding:28px;
 }
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
-.modal-title{font-size:20px;font-weight:950;letter-spacing:-.5px;text-transform:uppercase}
-.close-modal{border:0;background:none;color:#777;font-size:22px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.modal-title{font-size:16px;font-weight:900;letter-spacing:.5px;text-transform:uppercase}
+.close-modal{border:0;background:none;color:var(--muted);font-size:24px;line-height:1}
 .close-modal:hover{color:#fff}
-.field{margin-bottom:15px}
-.field label{display:block;color:var(--orange);font-size:8px;font-weight:900;letter-spacing:2px;margin-bottom:7px}
-.field input,.field textarea{
-  width:100%;background:#050505;color:#fff;border:1px solid #292929;padding:12px 13px;
-  outline:none;font-size:12px
+
+.field{margin-bottom:18px}
+.field label{
+  display:block;
+  color:var(--orange);
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:1.5px;
+  margin-bottom:8px;
+  text-transform:uppercase;
 }
-.field textarea{min-height:88px;resize:vertical}
+.field input,.field textarea{
+  width:100%;
+  background:#050505;
+  color:#fff;
+  border:1px solid var(--line-light);
+  border-radius:4px;
+  padding:12px 14px;
+  outline:none;
+  font-size:13px;
+  transition:border-color .2s;
+}
+.field textarea{min-height:90px;resize:vertical}
 .field input:focus,.field textarea:focus{border-color:var(--orange)}
-.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
-.status{font-size:10px;color:#777;margin-top:8px;min-height:14px}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px}
+.status{font-size:11px;color:var(--muted);margin-top:10px;min-height:16px}
 
 /* FOOTER */
 footer{
-  border-top:1px solid var(--line);padding:22px 5vw;display:flex;justify-content:space-between;
-  color:#555;font-size:9px;letter-spacing:1.5px;text-transform:uppercase
+  border-top:1px solid var(--line);
+  padding:24px 5vw;
+  display:flex;
+  justify-content:space-between;
+  color:var(--muted);
+  font-size:10px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  background:#050505;
 }
 
-/* MOBILE */
-@media(max-width:800px){
-  header{height:68px;padding:0 18px}
-  .logo{font-size:19px}
-  .header-btn{padding:10px 11px;font-size:8px}
-  .profile-hero{width:calc(100% - 36px);padding:28px 0 20px}
-  .hero-title{font-size:30px}
-  .profile-area{width:calc(100% - 36px);padding-top:25px}
-  .profile-top{grid-template-columns:92px 1fr;gap:18px;align-items:start;padding-bottom:24px}
-  .avatar{width:88px;height:88px}
-  .avatar-placeholder{font-size:29px}
-  .change-avatar{font-size:7px;letter-spacing:1px}
-  .profile-name{font-size:28px;letter-spacing:-1.5px}
-  .profile-username{font-size:10px;margin-top:7px}
-  .profile-bio{font-size:11px;margin-top:9px}
-  .actions{margin-top:13px}
-  .action-btn{padding:9px 10px;font-size:7px;letter-spacing:1px}
-  .posts-section{padding-top:24px}
-  .posts-grid{grid-template-columns:repeat(3,1fr);gap:2px}
+/* RESPONSIVE DESIGN */
+@media(max-width:768px){
+  header{height:62px;padding:0 16px}
+  .logo{font-size:17px}
+  .header-btn{padding:8px 12px;font-size:9px}
+  
+  .profile-container{width:100%;padding:24px 16px 60px}
+  .profile-header{
+    grid-template-columns:100px 1fr;
+    gap:20px;
+    padding-bottom:28px;
+  }
+  .avatar{width:96px;height:96px}
+  .avatar-placeholder{font-size:32px}
+  .change-avatar{font-size:8px;letter-spacing:1px;margin-top:10px}
+  
+  .profile-name{font-size:22px}
+  .profile-username{font-size:11px}
+  .profile-bio{font-size:12px}
+  
+  .posts-grid{
+    grid-template-columns:repeat(3,1fr);
+    gap:3px;
+  }
+  .post-tile{border-radius:0;border:none}
   .post-overlay{display:none}
-  .text-only .post-text{font-size:11px}
-  footer{padding:18px;flex-direction:column;gap:8px}
-}
-@media(max-width:460px){
-  .home-label{display:none}
-  .profile-top{grid-template-columns:78px 1fr;gap:13px}
-  .avatar{width:76px;height:76px}
-  .profile-name{font-size:24px}
+  .text-only .post-text{font-size:10px;line-height:1.2; -webkit-line-clamp:5;}
+  footer{padding:20px 16px;flex-direction:column;gap:10px;text-align:center}
 }
 
-/* STORY NEL PROFILO */
-.profile-story-wrap{margin-top:16px;display:flex;flex-direction:column;align-items:flex-start;gap:7px}
-.profile-story-ring{width:78px;height:78px;padding:3px;border-radius:50%;background:linear-gradient(135deg,#ff6a21,#ff4d00,#ff2500);cursor:pointer;display:none}
-.profile-story-ring img{width:100%;height:100%;object-fit:cover;border-radius:50%;border:3px solid #050505}
-.profile-story-label{font-size:9px;font-weight:900;letter-spacing:1.6px;color:#aaa;text-transform:uppercase;display:none}
-.profile-story-viewer{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:99999;display:none;align-items:center;justify-content:center}
-.profile-story-viewer.show{display:flex}
-.profile-story-viewer img{max-width:92vw;max-height:92vh;object-fit:contain}
-.profile-story-close{position:absolute;top:22px;right:22px;width:44px;height:44px;border:0;border-radius:50%;background:#fff;color:#000;font-size:25px;cursor:pointer}
-.profile-story-owner{position:absolute;top:25px;left:25px;color:#fff;font-weight:900;font-size:14px;letter-spacing:.5px}
+@media(max-width:480px){
+  .home-label{display:none}
+  .profile-header{
+    grid-template-columns:1fr;
+    justify-items:center;
+    text-align:center;
+    gap:16px;
+  }
+  .profile-info{align-items:center}
+  .profile-stats{justify-content:center}
+  .actions{justify-content:center}
+}
 </style>
 </head>
 <body>
@@ -185,32 +437,31 @@ footer{
   </div>
 </header>
 
-<section class="profile-hero">
-  <div class="eyebrow">01 / MEMBER PROFILE</div>
-  <h1 class="hero-title">LA TUA <span>TRACCIA.</span></h1>
-</section>
-
-<main class="profile-area">
-  <section class="profile-top">
-    <div class="avatar-column">
+<main class="profile-container">
+  <section class="profile-header">
+    <div class="avatar-wrapper">
       <div class="avatar">
         <img id="avatarImage" alt="Foto profilo">
         <div id="avatarPlaceholder" class="avatar-placeholder">F</div>
       </div>
       <button id="changeAvatarBtn" class="change-avatar">+ CAMBIA FOTO</button>
       <input type="file" id="avatarInput" accept="image/*">
-      <div class="profile-story-wrap">
-        <div id="profileStoryRing" class="profile-story-ring" title="Apri Story">
-          <img id="profileStoryImage" alt="Story">
-        </div>
-        <div id="profileStoryLabel" class="profile-story-label">Story attiva</div>
-      </div>
     </div>
 
     <div class="profile-info">
-      <div id="profileName" class="profile-name">CARICAMENTO...</div>
-      <div id="profileUsername" class="profile-username">@FUORISCHEMA</div>
-      <div id="profileBio" class="profile-bio">Fuori dagli schemi. Dentro te stesso.</div>
+      <div class="profile-title-row">
+        <h1 id="profileName" class="profile-name">CARICAMENTO...</h1>
+        <div id="profileUsername" class="profile-username">@FUORISCHEMA</div>
+      </div>
+
+      <div class="profile-stats">
+        <div class="stat-item">
+          <span id="postsCount" class="stat-value">0</span>
+          <span class="stat-label">Post</span>
+        </div>
+      </div>
+
+      <p id="profileBio" class="profile-bio">Fuori dagli schemi. Dentro te stesso.</p>
 
       <div class="actions">
         <button id="editProfileBtn" class="action-btn orange">MODIFICA PROFILO</button>
@@ -221,8 +472,7 @@ footer{
 
   <section class="posts-section">
     <div class="section-head">
-      <div class="section-label">02 / I TUOI POST</div>
-      <div id="postsCount" class="posts-count">0 POST</div>
+      <div class="section-label">GALLERIA TRACCE</div>
     </div>
     <div id="postsGrid" class="posts-grid"></div>
   </section>
@@ -232,12 +482,6 @@ footer{
   <span>FUORISCHEMA © 2026</span>
   <span>FUORI DAGLI SCHEMI.</span>
 </footer>
-
-<div id="profileStoryViewer" class="profile-story-viewer">
-  <div id="profileStoryOwner" class="profile-story-owner"></div>
-  <button id="profileStoryClose" class="profile-story-close" type="button">×</button>
-  <img id="profileStoryViewerImage" alt="Story">
-</div>
 
 <div id="editModal" class="modal-backdrop">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -285,14 +529,6 @@ const logoutBtn = document.getElementById("logoutBtn");
 const editProfileBtn = document.getElementById("editProfileBtn");
 const postsGrid = document.getElementById("postsGrid");
 const postsCount = document.getElementById("postsCount");
-const profileStoryRing = document.getElementById("profileStoryRing");
-const profileStoryImage = document.getElementById("profileStoryImage");
-const profileStoryLabel = document.getElementById("profileStoryLabel");
-const profileStoryViewer = document.getElementById("profileStoryViewer");
-const profileStoryViewerImage = document.getElementById("profileStoryViewerImage");
-const profileStoryOwner = document.getElementById("profileStoryOwner");
-const profileStoryClose = document.getElementById("profileStoryClose");
-const STORY_MARKER = "__FS_STORY__";
 
 const editModal = document.getElementById("editModal");
 const closeModal = document.getElementById("closeModal");
@@ -322,43 +558,6 @@ function initials(name="F"){
 function formatPostText(text=""){
   return escapeHtml(text).replace(/\n/g,"<br>");
 }
-
-async function loadProfileStory(userId){
-  profileStoryRing.style.display = "none";
-  profileStoryLabel.style.display = "none";
-  if(!userId) return;
-
-  const cutoff = new Date(Date.now() - 24*60*60*1000).toISOString();
-  const {data,error} = await supabase
-    .from("posts")
-    .select("id,image_url,created_at")
-    .eq("user_id",userId)
-    .eq("content",STORY_MARKER)
-    .gte("created_at",cutoff)
-    .order("created_at",{ascending:false})
-    .limit(1);
-
-  if(error || !data?.length || !data[0].image_url) return;
-
-  profileStoryImage.src = data[0].image_url;
-  profileStoryRing.style.display = "block";
-  profileStoryLabel.style.display = "block";
-  profileStoryRing.onclick = () => {
-    profileStoryViewerImage.src = data[0].image_url;
-    profileStoryOwner.textContent = currentProfile?.username ? `@${String(currentProfile.username).replace(/^@/,'')}` : (currentProfile?.full_name || "FUORISCHEMA");
-    profileStoryViewer.classList.add("show");
-    document.body.style.overflow = "hidden";
-  };
-}
-
-profileStoryClose.addEventListener("click",()=>{
-  profileStoryViewer.classList.remove("show");
-  profileStoryViewerImage.src = "";
-  document.body.style.overflow = "";
-});
-profileStoryViewer.addEventListener("click",e=>{
-  if(e.target === profileStoryViewer) profileStoryClose.click();
-});
 
 async function loadProfile(){
   const {data:{session}} = await supabase.auth.getSession();
@@ -395,7 +594,7 @@ async function loadProfile(){
           <strong>PROFILO NON TROVATO</strong>
           <span>Il membro richiesto non è disponibile.</span>
         </div>`;
-      postsCount.textContent = "0 POST";
+      postsCount.textContent = "0";
       editProfileBtn.style.display = "none";
       changeAvatarBtn.style.display = "none";
       return;
@@ -414,13 +613,7 @@ async function loadProfile(){
   editProfileBtn.style.display = isOwnProfile ? "" : "none";
   changeAvatarBtn.style.display = isOwnProfile ? "" : "none";
 
-  const heroTitle = document.querySelector(".hero-title");
-  const postsLabel = document.querySelector(".section-label");
-  if(heroTitle) heroTitle.innerHTML = isOwnProfile ? 'LA TUA <span>TRACCIA.</span>' : 'LA SUA <span>TRACCIA.</span>';
-  if(postsLabel) postsLabel.textContent = isOwnProfile ? "02 / I TUOI POST" : "02 / I SUOI POST";
-
   renderProfile();
-  await loadProfileStory(viewedUserId);
   await loadMyPosts();
 }
 
@@ -456,7 +649,8 @@ async function loadMyPosts(){
     .select("id,content,image_url,created_at,user_id")
     .eq("user_id", viewedUserId)
     .order("created_at",{ascending:false});
-  const posts = (rawPosts || []).filter(post => post.content !== STORY_MARKER);
+    
+  const posts = (rawPosts || []).filter(post => post.content !== "__FS_STORY__");
 
   if(error){
     console.error(error);
@@ -465,11 +659,11 @@ async function loadMyPosts(){
         <strong>ERRORE</strong>
         <span>${escapeHtml(error.message)}</span>
       </div>`;
-    postsCount.textContent = "0 POST";
+    postsCount.textContent = "0";
     return;
   }
 
-  postsCount.textContent = `${posts?.length || 0} ${posts?.length === 1 ? "POST" : "POST"}`;
+  postsCount.textContent = `${posts?.length || 0}`;
 
   if(!posts || posts.length === 0){
     postsGrid.innerHTML = `
@@ -563,7 +757,6 @@ editModal.addEventListener("click",e=>{
 document.addEventListener("keydown",e=>{
   if(e.key === "Escape") {
     closeEdit();
-    if(profileStoryViewer.classList.contains("show")) profileStoryClose.click();
   }
 });
 

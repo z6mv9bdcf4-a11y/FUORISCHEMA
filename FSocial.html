@@ -4,22 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FSocial — FUORISCHEMA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
 
 <style>
 :root {
-    --bg: #000000;
-    --panel: #000000;
-    --panel-border: #262626;
-    --line: #262626;
-    --line-strong: #363636;
-    --text: #f5f5f5;
-    --muted: #a8a8a8;
-    --muted-2: #737373;
+    --bg: #050505;
+    --panel: #0d0d0f;
+    --panel-border: rgba(255, 255, 255, 0.08);
+    --line: rgba(255, 255, 255, 0.05);
+    --line-strong: rgba(255, 255, 255, 0.15);
+    --text: #f8f8f8;
+    --muted: #8e8e93;
+    --muted-2: #55555c;
     --orange: #ff4d00;
-    --orange-hover: #e04400;
-    --danger: #ed4956;
-    --radius: 12px;
-    --feed-width: 470px;
+    --orange-hover: #ff6a26;
+    --orange-glow: rgba(255, 77, 0, 0.25);
+    --orange-subtle: rgba(255, 77, 0, 0.12);
+    --danger: #ff3b30;
+    --radius: 18px;
+    --feed-width: 520px;
+    --font-title: 'Syne', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -28,60 +36,87 @@ body{
     min-height:100vh;
     background: var(--bg);
     color:var(--text);
-    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: var(--font-body);
     -webkit-font-smoothing:antialiased;
+    letter-spacing: -0.01em;
 }
 body.modal-open{overflow:hidden}
 button,input,textarea{font:inherit}
 button{border:0;background:transparent;cursor:pointer}
 a{color:inherit;text-decoration:none}
 
-/* Topbar - Instagram style top header */
+/* Topbar Header */
 .topbar{
     position:sticky;
     top:0;
     z-index:100;
-    height:60px;
+    height:56px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:0 20px;
-    background:rgba(0,0,0,0.85);
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
+    padding:0 24px;
+    background:rgba(5, 5, 5, 0.82);
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
     border-bottom:1px solid var(--panel-border);
 }
 .brand{
-    font-size:22px;
+    font-family: var(--font-title);
+    font-size:20px;
     font-weight:900;
-    letter-spacing:-1px;
+    letter-spacing:-0.5px;
+    display:inline-flex;
+    align-items:center;
+    gap:2px;
+    transition: opacity 0.2s ease;
+}
+.brand:hover{
+    opacity: 0.88;
 }
 .brand-white{color:#fff}
 .brand-orange{color:var(--orange)}
-.topbar-actions{display:flex;align-items:center;gap:12px}
+.topbar-actions{display:flex;align-items:center;gap:8px}
 .top-btn{
     min-height:34px;
     padding:0 14px;
-    border:1px solid var(--line-strong);
-    border-radius:8px;
-    background:transparent;
-    color:#fff;
+    border:1px solid var(--panel-border);
+    border-radius:100px;
+    background:rgba(255,255,255,0.03);
+    color:var(--muted);
     font-size:11px;
     font-weight:700;
     letter-spacing:0.8px;
     text-transform:uppercase;
-    transition:.2s ease;
+    transition:all .25s var(--ease-out);
     display:inline-flex;
     align-items:center;
     justify-content:center;
 }
-.top-btn:hover{border-color:var(--orange);color:var(--orange)}
-.top-btn.primary{background:var(--orange);color:#000;border-color:var(--orange);font-weight:800}
-.top-btn.primary:hover{background:#fff;border-color:#fff;color:#000}
+.top-btn:hover{
+    border-color:rgba(255,255,255,0.25);
+    color:#fff;
+    background:rgba(255,255,255,0.08);
+}
+.top-btn:active{
+    transform: scale(0.96);
+}
+.top-btn.primary{
+    background:var(--orange);
+    color:#000;
+    border-color:var(--orange);
+    font-weight:800;
+    box-shadow:0 0 16px var(--orange-glow);
+}
+.top-btn.primary:hover{
+    background:#fff;
+    border-color:#fff;
+    color:#000;
+    box-shadow:0 0 22px rgba(255,255,255,0.3);
+}
 
 .page{
     width:100%;
-    padding:24px 0 80px;
+    padding:28px 0 90px;
     display:flex;
     justify-content:center;
 }
@@ -89,102 +124,128 @@ a{color:inherit;text-decoration:none}
     width:100%;
     max-width:var(--feed-width);
     margin:0 auto;
-    padding:0 8px;
+    padding:0 16px;
 }
 
 .hero{
     display:flex;
-    align-items:center;
+    align-items:baseline;
     justify-content:space-between;
-    margin-bottom:20px;
+    margin-bottom:24px;
     padding:0 4px;
 }
 .hero-title{
-    font-size:28px;
+    font-family: var(--font-title);
+    font-size:32px;
     font-weight:900;
-    letter-spacing:-1px;
+    letter-spacing:-1.2px;
+    line-height:1;
 }
 .hero-title span{color:var(--orange)}
 .hero-meta{
-    color:var(--muted);
+    color:var(--muted-2);
     font-size:10px;
     font-weight:800;
-    letter-spacing:1.5px;
+    letter-spacing:2px;
     text-transform:uppercase;
-    text-align:right;
 }
 
 /* Feed Tabs Switcher */
 .feed-tabs {
+    position: relative;
     display: flex;
-    border-bottom: 1px solid var(--panel-border);
-    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 3px;
+    border-radius: 100px;
+    border: 1px solid var(--panel-border);
+    margin-bottom: 28px;
 }
 .tab-btn {
+    position: relative;
+    z-index: 1;
     flex: 1;
-    padding: 12px 0;
+    padding: 9px 0;
     background: transparent;
     border: none;
-    border-bottom: 2px solid transparent;
+    border-radius: 100px;
     color: var(--muted);
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: color 0.25s ease, background-color 0.25s var(--ease-out), transform 0.15s ease, box-shadow 0.25s ease;
     text-align: center;
 }
 .tab-btn:hover {
-    color: var(--text);
+    color: #fff;
+}
+.tab-btn:active {
+    transform: scale(0.97);
 }
 .tab-btn.active {
-    color: #fff;
-    border-bottom-color: var(--orange);
+    color: #000;
+    background: #fff;
+    font-weight: 800;
+    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.18);
 }
 
-/* Instagram Create Post Box */
+/* Editorial Create Post Box */
 .create-card{
     position:relative;
-    margin-bottom:28px;
-    padding:16px;
+    margin-bottom:32px;
+    padding:18px 20px;
     border:1px solid var(--panel-border);
     border-radius:var(--radius);
-    background:#0a0a0a;
+    background: linear-gradient(180deg, rgba(18,18,22,0.7) 0%, rgba(10,10,12,0.85) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+.create-card:focus-within{
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 .create-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
 .avatar{
     width:40px;height:40px;flex:0 0 40px;
     display:grid;place-items:center;
     border-radius:50%;
-    background:var(--orange);
+    background: linear-gradient(135deg, var(--orange) 0%, #ff8000 100%);
     color:#000;
+    font-family: var(--font-title);
     font-size:14px;font-weight:900;
     overflow:hidden;
+    box-shadow: 0 2px 10px var(--orange-glow);
+    transition: transform 0.25s var(--ease-out);
+}
+.avatar:hover{
+    transform: scale(1.04);
 }
 .avatar img{width:100%;height:100%;object-fit:cover}
 .user-info{min-width:0}
-.user-name{font-size:13px;font-weight:700;color:#fff}
-.user-handle{margin-top:1px;color:var(--muted);font-size:11px}
+.user-name{font-size:13px;font-weight:700;color:#fff;letter-spacing:-0.01em}
+.user-handle{margin-top:2px;color:var(--muted);font-size:11px;font-weight:500}
 #postContent{
     width:100%;
-    min-height:70px;
+    min-height:76px;
     resize:none;
     outline:0;
     border:0;
     background:transparent;
     color:#fff;
     font-size:14px;
-    line-height:1.4;
+    line-height:1.5;
     padding:4px 0;
     caret-color:var(--orange);
 }
-#postContent::placeholder{color:var(--muted-2)}
+#postContent::placeholder{color:var(--muted-2);font-weight:400}
 .create-image{
     display:none;
     position:relative;
-    margin-top:10px;
+    margin-top:12px;
     border:1px solid var(--panel-border);
-    border-radius:8px;
+    border-radius:12px;
     overflow:hidden;
     background:#000;
 }
@@ -192,22 +253,26 @@ a{color:inherit;text-decoration:none}
 .create-image img{
     display:block;
     width:100%;
-    max-height:400px;
-    object-fit:contain;
-    background:#000;
+    max-height:420px;
+    object-fit:cover;
 }
 .remove-image{
     position:absolute;
-    top:8px;right:8px;
+    top:10px;right:10px;
     width:28px;height:28px;
     border:0;
     border-radius:50%;
     background:rgba(0,0,0,0.75);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
     color:#fff;
-    font-size:18px;
+    font-size:16px;
     cursor:pointer;
     display:grid;place-items:center;
+    transition: background .2s, transform .2s ease;
 }
+.remove-image:hover{background:rgba(255,59,48,0.9);transform:scale(1.08)}
+.remove-image:active{transform:scale(0.95)}
 .create-footer{
     display:flex;
     align-items:center;
@@ -215,53 +280,76 @@ a{color:inherit;text-decoration:none}
     gap:12px;
     margin-top:12px;
     padding-top:12px;
-    border-top:1px solid var(--panel-border);
+    border-top:1px solid var(--line);
 }
-.create-tools{display:flex;align-items:center;gap:10px;min-width:0}
+.create-tools{display:flex;align-items:center;gap:12px;min-width:0}
 .photo-label{
     display:inline-flex;
     align-items:center;
     gap:6px;
-    padding:6px 12px;
-    border-radius:8px;
-    background:#1a1a1a;
+    padding:7px 13px;
+    border-radius:100px;
+    background:rgba(255,255,255,0.04);
+    border:1px solid var(--panel-border);
     color:#ccc;
     font-size:11px;
     font-weight:700;
+    letter-spacing:0.5px;
     cursor:pointer;
-    transition:.2s ease;
+    transition:all .2s var(--ease-out);
 }
-.photo-label:hover{background:#262626;color:#fff}
+.photo-label:hover{background:rgba(255,255,255,0.09);color:#fff;border-color:rgba(255,255,255,0.22)}
+.photo-label:active{transform:scale(0.96)}
 #postImageInput{display:none}
 #postStatus{color:var(--muted);font-size:11px;font-weight:600}
 .publish-button{
-    padding:7px 16px;
-    border-radius:8px;
+    padding:8px 18px;
+    border-radius:100px;
     background:var(--orange);
     color:#000;
-    font-size:12px;
+    font-size:11px;
     font-weight:800;
+    letter-spacing:0.6px;
     cursor:pointer;
-    transition:.2s ease;
+    transition:all .25s var(--ease-out);
+    box-shadow:0 0 14px var(--orange-glow);
 }
-.publish-button:hover{background:#fff;color:#000}
-.publish-button:disabled{opacity:.5;cursor:wait}
+.publish-button:hover{background:#fff;color:#000;box-shadow:0 0 20px rgba(255,255,255,0.3);transform:translateY(-1px)}
+.publish-button:active{transform:translateY(0) scale(0.97)}
+.publish-button:disabled{opacity:.4;cursor:wait;box-shadow:none;transform:none}
 
-/* Feed & Instagram Post Cards */
+/* Feed & Street-Editorial Post Cards */
 .feed{display:flex;flex-direction:column;gap:24px}
+
+@keyframes cardEnter {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.99);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
 
 .post-card{
     overflow:hidden;
     border:1px solid var(--panel-border);
     border-radius:var(--radius);
     background:var(--panel);
+    transition: border-color .3s ease, box-shadow .3s ease;
+    animation: cardEnter 0.4s var(--ease-out) forwards;
+}
+.post-card:hover{
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
 }
 
 .post-header{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:12px 14px;
+    padding:14px 16px;
 }
 .post-author{
     display:flex;
@@ -269,15 +357,21 @@ a{color:inherit;text-decoration:none}
     gap:10px;
     min-width:0;
     cursor:pointer;
+    transition: opacity 0.2s ease;
+}
+.post-author:hover{
+    opacity: 0.88;
 }
 .post-avatar{
-    width:38px;height:38px;flex:0 0 38px;
+    width:36px;height:36px;flex:0 0 36px;
     display:grid;place-items:center;
     border-radius:50%;
     overflow:hidden;
     background:var(--orange);
     color:#000;
+    font-family: var(--font-title);
     font-size:13px;font-weight:900;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 .post-avatar img{width:100%;height:100%;object-fit:cover}
 .post-author-info{min-width:0;display:flex;flex-direction:column}
@@ -285,8 +379,9 @@ a{color:inherit;text-decoration:none}
     overflow:hidden;
     white-space:nowrap;
     text-overflow:ellipsis;
-    font-size:13px;font-weight:700;
+    font-size:13.5px;font-weight:700;
     color:#fff;
+    letter-spacing:-0.01em;
 }
 .post-author-handle{
     margin-top:1px;
@@ -295,76 +390,104 @@ a{color:inherit;text-decoration:none}
     text-overflow:ellipsis;
     color:var(--muted);
     font-size:11px;
+    font-weight:500;
 }
-.post-date{color:var(--muted-2);font-size:11px;font-weight:500}
+.post-date{color:var(--muted-2);font-size:11px;font-weight:600;letter-spacing:0.5px}
 
 .post-image{
     width:100%;
     background:#000;
+    overflow:hidden;
+    border-top:1px solid rgba(255, 255, 255, 0.04);
+    border-bottom:1px solid rgba(255, 255, 255, 0.04);
 }
 .post-image img{
     display:block;
     width:100%;
-    max-height:600px;
+    max-height:620px;
     object-fit:cover;
     background:#000;
+    transition: transform .5s var(--ease-out);
+}
+.post-card:hover .post-image img{
+    transform: scale(1.018);
 }
 
-/* Instagram action row */
 .post-actions{
     display:flex;
     align-items:center;
-    padding:10px 14px 6px;
+    padding:12px 16px 6px;
     gap:16px;
 }
 .action-button{
     display:inline-flex;
     align-items:center;
+    justify-content:center;
     gap:6px;
     background:transparent;
-    color:#f5f5f5;
+    color:var(--muted);
     font-size:13px;
     font-weight:600;
     cursor:pointer;
-    padding:0;
-    transition:transform .12s ease;
+    padding:4px;
+    border-radius:8px;
+    transition: color .2s ease, transform .15s ease, background-color .2s ease;
 }
-.action-button:active{transform:scale(0.88)}
-.action-icon{font-size:22px;line-height:1}
-.action-button.liked .action-icon{color:var(--orange)}
+.action-button:hover{color:#fff;background:rgba(255, 255, 255, 0.05)}
+.action-button:active{transform:scale(0.86)}
+.action-icon{font-size:19px;line-height:1;transition: transform 0.2s var(--ease-out), color 0.2s ease;}
+.action-button.liked .action-icon{
+    color:var(--orange);
+    animation: likePulse 0.35s var(--ease-out);
+}
 .action-button.liked{color:var(--orange)}
+.action-button.liked:hover{background:var(--orange-subtle)}
+
+@keyframes likePulse {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.35); }
+    100% { transform: scale(1); }
+}
+
 .delete-button{
     margin-left:auto;
     color:var(--muted-2);
-    font-size:11px;
-    font-weight:700;
+    font-size:10px;
+    font-weight:800;
     text-transform:uppercase;
-    letter-spacing:0.5px;
+    letter-spacing:1px;
+    padding:5px 9px;
+    border-radius:6px;
+    transition: all .2s ease;
 }
-.delete-button:hover{color:var(--danger)}
+.delete-button:hover{color:var(--danger);background:rgba(255, 59, 48, 0.12)}
+.delete-button:active{transform:scale(0.94)}
 
-/* Instagram Likes count & Meta */
 .post-meta{
-    padding:4px 14px;
-    font-size:13px;
-    color:#fff;
+    padding:2px 16px 6px;
+    font-size:12.5px;
+    color:var(--muted);
+    font-weight:500;
 }
 .post-meta strong{font-weight:700;color:#fff}
 
-/* Instagram Caption format */
 .post-body{
-    padding:4px 14px 10px;
+    padding:2px 16px 14px;
 }
 .post-caption{
-    font-size:13px;
-    line-height:1.45;
-    color:#f5f5f5;
+    font-size:13.5px;
+    line-height:1.55;
+    color:#e0e0e0;
     word-break:break-word;
 }
 .post-caption .author-username-inline{
     font-weight:700;
-    margin-right:6px;
+    margin-right:8px;
     color:#fff;
+    transition: color .2s;
+}
+.post-caption .author-username-inline:hover{
+    color:var(--orange);
 }
 .post-text{
     display:inline;
@@ -374,12 +497,14 @@ a{color:inherit;text-decoration:none}
 /* Comments Section */
 .comments{
     display:none;
-    padding:8px 14px 14px;
-    border-top:1px solid #1a1a1a;
+    padding:14px 16px;
+    background: rgba(0,0,0,0.35);
+    border-top:1px solid var(--line);
+    transition: all 0.3s var(--ease-out);
 }
 .comments.active{display:block}
-.comments-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;max-height:220px;overflow-y:auto}
-.comment{display:flex;gap:8px;align-items:flex-start}
+.comments-list{display:flex;flex-direction:column;gap:10px;margin-bottom:12px;max-height:240px;overflow-y:auto}
+.comment{display:flex;gap:10px;align-items:flex-start}
 .comment-avatar{
     width:26px;height:26px;flex:0 0 26px;
     display:grid;place-items:center;
@@ -387,62 +512,76 @@ a{color:inherit;text-decoration:none}
     border-radius:50%;
     background:var(--orange);
     color:#000;
-    font-size:9px;font-weight:900;
+    font-family: var(--font-title);
+    font-size:10px;font-weight:900;
     margin-top:2px;
 }
 .comment-avatar img{width:100%;height:100%;object-fit:cover}
 .comment-content{
     min-width:0;
     flex:1;
-    font-size:12px;
+    font-size:12.5px;
     line-height:1.4;
+    background: rgba(255,255,255,0.025);
+    padding:8px 12px;
+    border-radius:12px;
+    border: 1px solid rgba(255,255,255,0.04);
 }
-.comment-user{font-size:12px;font-weight:700;color:#fff;display:inline;margin-right:5px}
-.comment-text{color:#ddd;display:inline;word-break:break-word}
+.comment-user{font-size:12px;font-weight:700;color:#fff;display:inline;margin-right:6px}
+.comment-text{color:#ccc;display:inline;word-break:break-word}
 
-.comment-box{display:flex;gap:8px;align-items:center;margin-top:8px}
+.comment-box{display:flex;gap:8px;align-items:center;margin-top:10px}
 .comment-input{
     min-width:0;
     flex:1;
     outline:0;
-    border:0;
-    background:transparent;
+    border:1px solid var(--panel-border);
+    border-radius:100px;
+    background:rgba(255,255,255,0.03);
     color:#fff;
-    padding:6px 0;
+    padding:8px 14px;
     font-size:12px;
+    transition: border-color .2s ease, background-color .2s ease;
 }
+.comment-input:focus{border-color:rgba(255,255,255,0.22);background:rgba(255,255,255,0.05)}
 .comment-input::placeholder{color:var(--muted-2)}
 .comment-button{
     background:transparent;
     color:var(--orange);
     font-weight:800;
-    font-size:12px;
+    font-size:11px;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
     cursor:pointer;
-    padding:4px 8px;
+    padding:6px 12px;
+    border-radius:100px;
+    transition: all .2s ease;
 }
-.comment-button:disabled{opacity:.4}
+.comment-button:hover{color:#fff;background:var(--orange-subtle)}
+.comment-button:active{transform:scale(0.95)}
+.comment-button:disabled{opacity:.3;background:transparent;transform:none}
 
 .empty{
-    padding:48px 20px;
-    border:1px dashed var(--line-strong);
+    padding:50px 20px;
+    border:1px dashed var(--panel-border);
     border-radius:var(--radius);
-    background:#080808;
+    background:rgba(255,255,255,0.01);
     text-align:center;
 }
-.empty-icon{margin-bottom:10px;color:var(--orange);font-size:24px}
-.empty strong{display:block;margin-bottom:4px;font-size:14px;font-weight:800}
-.empty span{color:var(--muted);font-size:11px}
+.empty-icon{margin-bottom:12px;color:var(--orange);font-size:26px}
+.empty strong{display:block;margin-bottom:6px;font-size:13px;font-weight:800;letter-spacing:1px}
+.empty span{color:var(--muted);font-size:12px}
 
 .social-footer{
     display:flex;
     justify-content:space-between;
-    margin-top:36px;
-    padding:16px 4px 0;
-    border-top:1px solid var(--panel-border);
+    margin-top:40px;
+    padding:18px 4px 0;
+    border-top:1px solid var(--line);
     color:var(--muted-2);
     font-size:10px;
     font-weight:800;
-    letter-spacing:1px;
+    letter-spacing:2px;
 }
 
 /* Profile modal */
@@ -453,106 +592,151 @@ a{color:inherit;text-decoration:none}
     display:none;
     align-items:center;
     justify-content:center;
-    padding:18px;
+    padding:20px;
     background:rgba(0,0,0,.85);
-    backdrop-filter:blur(8px);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    opacity:0;
+    transition: opacity 0.25s var(--ease-out);
 }
-.profile-overlay.active{display:flex}
+.profile-overlay.active{
+    display:flex;
+    opacity:1;
+}
 .profile-modal{
     position:relative;
     width:min(100%,380px);
-    padding:24px;
+    padding:28px 24px;
     border:1px solid var(--panel-border);
-    border-radius:18px;
-    background:#121212;
-    box-shadow:0 20px 50px rgba(0,0,0,.9);
+    border-radius:24px;
+    background:#0d0d10;
+    box-shadow:0 30px 60px rgba(0,0,0,.9);
+    transform: scale(0.95) translateY(10px);
+    transition: transform 0.25s var(--ease-out);
+}
+.profile-overlay.active .profile-modal{
+    transform: scale(1) translateY(0);
 }
 .profile-close{
     position:absolute;
     top:16px; right:16px;
     z-index:100001;
     border:0;
-    background:transparent;
+    background:rgba(255,255,255,0.05);
+    border-radius:50%;
+    width:30px; height:30px;
+    display:grid; place-items:center;
     color:var(--muted);
-    font-size:20px;
+    font-size:13px;
     cursor:pointer;
+    transition: all .2s ease;
 }
-.profile-close:hover{color:#fff}
+.profile-close:hover{color:#fff;background:rgba(255,255,255,0.15);transform:scale(1.05)}
+.profile-close:active{transform:scale(0.92)}
 
 .profile-modal-top{
     display:flex;
     flex-direction:column;
     align-items:center;
     text-align:center;
-    margin-bottom:20px;
+    margin-bottom:22px;
 }
 .profile-modal-avatar{
-    width:70px; height:70px;
+    width:76px; height:76px;
     border-radius:50%;
-    background:var(--orange);
+    background:linear-gradient(135deg, var(--orange) 0%, #ff8000 100%);
     color:#000;
-    font-size:22px;
+    font-family: var(--font-title);
+    font-size:24px;
     font-weight:900;
     display:grid; place-items:center;
     overflow:hidden;
     margin-bottom:12px;
+    box-shadow: 0 4px 20px var(--orange-glow);
 }
 .profile-modal-avatar img{width:100%;height:100%;object-fit:cover}
-.profile-modal-name{font-size:16px;font-weight:800;color:#fff}
-.profile-modal-handle{font-size:12px;color:var(--muted);margin-top:2px}
-.profile-modal-bio{font-size:13px;color:#ccc;margin-top:10px;line-height:1.4}
+.profile-modal-name{font-size:17px;font-weight:800;color:#fff;letter-spacing:-0.01em}
+.profile-modal-handle{font-size:12px;color:var(--muted);margin-top:3px;font-weight:500}
+.profile-modal-bio{font-size:12.5px;color:#ccc;margin-top:10px;line-height:1.5}
 
 .profile-social{
     display:flex;
     flex-direction:column;
-    gap:8px;
+    gap:10px;
 }
 .profile-social a{
     display:flex;
     align-items:center;
     justify-content:center;
-    padding:10px;
-    border-radius:8px;
-    font-size:12px;
+    padding:11px;
+    border-radius:100px;
+    font-size:11px;
     font-weight:800;
+    letter-spacing:1px;
     text-align:center;
-    background:#262626;
+    background:rgba(255,255,255,0.05);
+    border:1px solid var(--panel-border);
     color:#fff;
-    transition:.2s ease;
+    transition:all .25s var(--ease-out);
 }
 .profile-social a.instagram{
     background:var(--orange);
     color:#000;
+    border-color:var(--orange);
+    box-shadow:0 0 15px var(--orange-glow);
 }
-.profile-social a:hover{opacity:0.9}
+.profile-social a:hover{
+    transform:translateY(-1px);
+    background:rgba(255,255,255,0.1);
+}
+.profile-social a:active{
+    transform:translateY(0) scale(0.98);
+}
+.profile-social a.instagram:hover{
+    background:#fff;
+    color:#000;
+    border-color:#fff;
+    box-shadow:0 0 20px rgba(255,255,255,0.3);
+}
 
 .toast{
     position:fixed;
     left:50%;
-    bottom:24px;
+    bottom:28px;
     z-index:900;
-    max-width:calc(100vw - 30px);
-    padding:10px 16px;
-    border:1px solid var(--panel-border);
-    border-radius:10px;
-    background:#1a1a1a;
+    max-width:calc(100vw - 32px);
+    padding:10px 18px;
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:100px;
+    background:rgba(18, 18, 22, 0.92);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
     color:#fff;
-    font-size:12px;
+    font-size:11.5px;
     font-weight:700;
+    letter-spacing:0.3px;
     opacity:0;
     pointer-events:none;
-    transform:translate(-50%,18px);
-    transition:.22s ease;
+    transform:translate(-50%,20px) scale(0.95);
+    transition:all .25s var(--ease-out);
+    box-shadow:0 10px 30px rgba(0,0,0,0.6);
 }
-.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.show{opacity:1;transform:translate(-50%,0) scale(1)}
 
-@media (max-width:500px){
-    .topbar{padding:0 12px;height:54px}
-    .brand{font-size:19px}
-    .top-btn{padding:0 10px;font-size:10px;min-height:30px}
+@media (max-width:550px){
+    .topbar{padding:0 16px;height:52px}
+    .brand{font-size:17px}
+    .top-btn{padding:0 11px;font-size:10px;min-height:30px}
     .page{padding-top:16px}
-    .post-card{border-radius:0;border-left:0;border-right:0}
-    .create-card{border-radius:0;border-left:0;border-right:0}
+    .feed-shell{padding:0 10px}
+    .post-card{border-radius:14px}
+    .create-card{border-radius:14px;padding:14px 16px}
+    .hero{margin-bottom:18px}
+    .hero-title{font-size:26px}
+    .post-header{padding:12px 14px}
+    .post-actions{padding:10px 14px 4px}
+    .post-meta{padding:2px 14px 4px}
+    .post-body{padding:2px 14px 12px}
 }
 </style>
 </head>
@@ -757,18 +941,6 @@ function setAvatar(element, author){
     }
 }
 
-/* Helper deterministico per offset quotidiano basato su ID utente e Data */
-function getDailyOffset(userId) {
-    const todayStr = new Date().toISOString().slice(0, 10);
-    let hash = 0;
-    const str = userId + todayStr;
-    for (let i = 0; i < str.length; i++) {
-        hash = (hash << 5) - hash + str.charCodeAt(i);
-        hash |= 0;
-    }
-    return Math.abs(hash) % 200;
-}
-
 /* Micro-noise deterministico stabile per utente/post (varia tra 0.995 e 1.005) */
 function getDeterministicNoise(postId, userId) {
     let hash = 0;
@@ -779,6 +951,28 @@ function getDeterministicNoise(postId, userId) {
     }
     const normalized = (Math.abs(hash) % 1000) / 1000; // [0, 1)
     return 0.995 + (normalized * 0.01);
+}
+
+/* =========================================================
+   DYNAMIC WINDOW ALGORITHM PARAMS
+========================================================= */
+function getDynamicWindowParams(N) {
+    if (!N || N <= 0) {
+        return { K: 150, T: 720 };
+    }
+
+    const rawK = Math.min(N, 50 + Math.floor(5 * Math.sqrt(N)));
+    const K = Math.min(150, rawK);
+
+    const T_max = 720;
+    const T_min = 48;
+    const N0 = 100;
+    const gamma = 1.2;
+
+    const T = T_min + (T_max - T_min) /
+        (1 + Math.pow(N / N0, gamma));
+
+    return { K, T };
 }
 
 /* =========================================================
@@ -853,7 +1047,11 @@ removeImageButton.addEventListener("click", () => {
 });
 
 async function uploadPostImage(file){
-    const path = `${currentUser.id}/${Date.now()}-${crypto.randomUUID()}.${fileExtension(file)}`;
+   const uniqueId = (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function")
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
+
+const path = `${currentUser.id}/${uniqueId}`;
 
     const {error} = await supabase.storage
         .from("post-images")
@@ -991,7 +1189,11 @@ function openProfile(author){
 
 function closeProfile(){
     profileOverlay.classList.remove("active");
-    profileOverlay.style.display = "none";
+    setTimeout(() => {
+        if(!profileOverlay.classList.contains("active")){
+            profileOverlay.style.display = "none";
+        }
+    }, 250);
     document.body.classList.remove("modal-open");
 }
 
@@ -1001,7 +1203,7 @@ profileOverlay.addEventListener("click",event => {
 });
 
 /* =========================================================
-   FEED LOGIC V1 ("Per Te" & "Recenti")
+   FEED LOGIC WITH DYNAMIC WINDOW
 ========================================================= */
 
 // Event Listeners per i Tab
@@ -1021,62 +1223,59 @@ tabRecent.addEventListener("click", () => {
     loadFeed();
 });
 
-async function fetchRecentPosts() {
-    const { data, error } = await supabase
+// Funzione condivisa per il fetch del pool di candidati tramite Finestra Dinamica
+async function fetchFeedWindow() {
+    // 1. Calcolo del numero totale di post N
+    const { count: totalPosts, error: countErr } = await supabase
+        .from("posts")
+        .select("id", { count: "exact", head: true });
+
+    if (countErr) throw countErr;
+
+    const N = totalPosts || 0;
+    const { K, T } = getDynamicWindowParams(N);
+
+    // 2. Definizione del cutoff temporale
+    const cutoffDate = new Date(Date.now() - T * 60 * 60 * 1000).toISOString();
+
+    // 3. Recupero dei post nella finestra T, al massimo K
+    let { data: posts, error: fetchErr } = await supabase
         .from("posts")
         .select("*")
+        .gte("created_at", cutoffDate)
         .order("created_at", { ascending: false })
-        .limit(60);
+        .limit(K);
 
-    if (error) throw error;
-    return data || [];
+    if (fetchErr) throw fetchErr;
+
+    // 4. Fallback: Se la finestra T non restituisce post, recupera i più recenti fino a K
+    if (!posts || posts.length === 0) {
+        const { data: fallbackPosts, error: fallbackErr } = await supabase
+            .from("posts")
+            .select("*")
+            .order("created_at", { ascending: false })
+            .limit(K);
+
+        if (fallbackErr) throw fallbackErr;
+        posts = fallbackPosts || [];
+    }
+
+    return posts;
+}
+
+async function fetchRecentPosts() {
+    const posts = await fetchFeedWindow();
+    return posts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 }
 
 async function fetchForYouPosts() {
-    // 1. Fetch dai tre scaglioni temporali per garantire l'accesso anche ai contenuti storici
+    const pool = await fetchFeedWindow();
+    if (!pool || pool.length === 0) return [];
+
     const currentUserId = currentUser ? currentUser.id : "guest";
-    const offset = getDailyOffset(currentUserId);
-
-    const pRecent = supabase
-        .from("posts")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .range(0, 59);
-
-    const pMid = supabase
-        .from("posts")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .range(60, 119);
-
-    const pOld = supabase
-        .from("posts")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .range(120 + offset, 179 + offset);
-
-    const [resRecent, resMid, resOld] = await Promise.all([pRecent, pMid, pOld]);
-
-    if (resRecent.error) throw resRecent.error;
-
-    const rawPool = [
-        ...(resRecent.data || []),
-        ...(resMid.data || []),
-        ...(resOld.data || [])
-    ];
-
-    // Deduplicazione per ID
-    const uniqueMap = new Map();
-    rawPool.forEach(post => {
-        if (!uniqueMap.has(post.id)) uniqueMap.set(post.id, post);
-    });
-    const pool = Array.from(uniqueMap.values());
-
-    if (pool.length === 0) return [];
-
-    // 2. Fetch dell'Engagement in Batch
     const postIds = pool.map(p => p.id);
 
+    // Fetch dell'Engagement in Batch
     let likesMap = {};
     let commentsMap = {};
 
@@ -1104,13 +1303,12 @@ async function fetchForYouPosts() {
             });
         }
     } catch (engagementErr) {
-        console.warn("Errore durante il recupero engagement, proseguimento con conteggi zero:", engagementErr);
+        console.warn("Errore recupero engagement, proseguimento con conteggi a zero:", engagementErr);
     }
 
-    // 3. Algoritmo di Ranking V1 con Reranking Dinamico
     const now = Date.now();
 
-    // Step 3a: Calcolo baseScore per ciascun post nel pool
+    // Step 1: Calcolo baseScore per ogni post
     // baseScore = (1 + likes * 1.5 + comments * 2.0) / ((hoursSinceCreation + 2) ^ 1.2)
     const poolWithBaseScore = pool.map(post => {
         const likes = likesMap[post.id] || 0;
@@ -1127,17 +1325,16 @@ async function fetchForYouPosts() {
         };
     });
 
-    // Step 3b: Reranking Dinamico per Diversità degli Autori (Greedy Selection)
-    // Costruisce la classifica finale scegliendo passo per passo il candidato con il punteggio ponderato più alto.
+    // Step 2: Reranking Dinamico per Diversità degli Autori (Greedy Selection)
     const selectedPosts = [];
     const authorSelectedCount = {};
     let candidates = [...poolWithBaseScore];
 
     function getAuthorPenalty(count) {
-        if (count === 0) return 1.0;  // 1° post dell'autore: nessuna penalità
-        if (count === 1) return 0.50; // 2° post dell'autore: 0.50
-        if (count === 2) return 0.25; // 3° post dell'autore: 0.25
-        return 0.20;                 // 4°+ post dell'autore: 0.20
+        if (count === 0) return 1.0;
+        if (count === 1) return 0.50;
+        if (count === 2) return 0.25;
+        return 0.20;
     }
 
     while (candidates.length > 0) {
