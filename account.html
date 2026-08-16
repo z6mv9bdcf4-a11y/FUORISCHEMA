@@ -6,8 +6,6 @@
 
     <title>ACCOUNT — FUORISCHEMA</title>
 
-    <link rel="stylesheet" href="mobile-fixes.css">
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
@@ -241,133 +239,6 @@
             font-weight: 700;
         }
 
-        /* DYNAMIC AUTH FEEDBACK OVERLAY */
-
-        .auth-feedback {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            background: rgba(5, 5, 5, 0);
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transition:
-                opacity .35s ease,
-                background .45s ease,
-                visibility 0s linear .45s;
-        }
-
-        .auth-feedback.active {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-            background: rgba(5, 5, 5, .82);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            transition:
-                opacity .35s ease,
-                background .45s ease,
-                visibility 0s linear 0s;
-        }
-
-        .auth-feedback-card {
-            width: min(100%, 430px);
-            padding: 34px 32px 30px;
-            background: #080808;
-            border: 1px solid #2a2a2a;
-            transform: translateY(18px) scale(.97);
-            opacity: 0;
-            transition:
-                transform .55s cubic-bezier(.16,1,.3,1),
-                opacity .35s ease,
-                border-color .35s ease;
-        }
-
-        .auth-feedback.active .auth-feedback-card {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-            border-color: #333;
-        }
-
-        .auth-feedback-mark {
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 22px;
-            border: 1px solid var(--arancio);
-            color: var(--arancio);
-            font-size: 22px;
-            font-weight: 700;
-            transform: scale(0.6) rotate(-10deg);
-            opacity: 0;
-            transition: transform .45s cubic-bezier(.16,1,.3,1), opacity .3s ease;
-        }
-
-        .auth-feedback.active .auth-feedback-mark {
-            transform: scale(1) rotate(0deg);
-            opacity: 1;
-        }
-
-        .auth-feedback-kicker {
-            color: var(--arancio);
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 2.5px;
-            margin-bottom: 10px;
-        }
-
-        .auth-feedback-title {
-            font-size: clamp(28px, 6vw, 42px);
-            line-height: .95;
-            letter-spacing: -2px;
-            font-weight: 900;
-            margin-bottom: 12px;
-        }
-
-        .auth-feedback-text {
-            color: #888;
-            font-size: 12px;
-            line-height: 1.6;
-        }
-
-        .auth-feedback-loader {
-            height: 2px;
-            width: 100%;
-            margin-top: 28px;
-            overflow: hidden;
-            background: #1d1d1d;
-        }
-
-        .auth-feedback-loader::after {
-            content: "";
-            display: block;
-            width: 42%;
-            height: 100%;
-            background: var(--arancio);
-            transform: translateX(-120%);
-            animation: authLoader 1.15s cubic-bezier(.16,1,.3,1) infinite;
-        }
-
-        .auth-feedback.error .auth-feedback-mark {
-            border-color: #ff4d00;
-            color: #ff4d00;
-        }
-
-        .auth-feedback.error .auth-feedback-title {
-            color: var(--bianco);
-        }
-
-        @keyframes authLoader {
-            from { transform: translateX(-120%); }
-            to { transform: translateX(330%); }
-        }
-
         /* MOBILE */
 
         @media (max-width: 700px) {
@@ -409,26 +280,14 @@
 
 <body>
 
-    <div id="authFeedback" class="auth-feedback" aria-live="polite" aria-hidden="true">
-        <div class="auth-feedback-card">
-            <div id="authFeedbackMark" class="auth-feedback-mark">✓</div>
-            <div id="authFeedbackKicker" class="auth-feedback-kicker">01 / REGISTRATION</div>
-            <div id="authFeedbackTitle" class="auth-feedback-title">ACCOUNT CREATO.</div>
-            <div id="authFeedbackText" class="auth-feedback-text">
-                Controlla la tua email e conferma l'indirizzo per attivare l'account.
-            </div>
-            <div id="authFeedbackLoader" class="auth-feedback-loader"></div>
-        </div>
-    </div>
-
     <header>
 
         <a href="index.html" class="brand">
             FUORISCHEMA
         </a>
 
-        <a href="index.html" class="back">
-            HOME
+        <a href="community.html" class="back">
+            ← COMMUNITY
         </a>
 
     </header>
@@ -480,7 +339,6 @@
                     <input
                         type="email"
                         id="email"
-                        class="mobile-safe-input"
                         placeholder="La tua email"
                     >
 
@@ -518,7 +376,6 @@
                     <input
                         type="password"
                         id="password"
-                        class="mobile-safe-input"
                         placeholder="Crea una password"
                     >
 
@@ -564,42 +421,10 @@
         </span>
 
     </footer>
-
     <script type="module">
     import { supabase } from "./supabase.js";
 
     const createAccountButton = document.querySelector(".submit-button");
-
-    const authFeedback = document.getElementById("authFeedback");
-    const authFeedbackMark = document.getElementById("authFeedbackMark");
-    const authFeedbackKicker = document.getElementById("authFeedbackKicker");
-    const authFeedbackTitle = document.getElementById("authFeedbackTitle");
-    const authFeedbackText = document.getElementById("authFeedbackText");
-    const authFeedbackLoader = document.getElementById("authFeedbackLoader");
-
-    function showFeedback(type, title, text) {
-        authFeedback.classList.toggle("error", type === "error");
-        authFeedbackMark.textContent = type === "error" ? "!" : "✓";
-        authFeedbackKicker.textContent = type === "error" ? "01 / REGISTRATION ERROR" : "01 / REGISTRATION";
-        authFeedbackTitle.textContent = title;
-        authFeedbackText.textContent = text;
-        authFeedbackLoader.style.display = type === "error" ? "none" : "block";
-
-        authFeedback.classList.add("active");
-        authFeedback.setAttribute("aria-hidden", "false");
-    }
-
-    function hideFeedback() {
-        authFeedback.classList.remove("active");
-        authFeedback.setAttribute("aria-hidden", "true");
-    }
-
-    // Chiude l'overlay di errore se l'utente clicca fuori dalla card
-    authFeedback.addEventListener("click", (e) => {
-        if (authFeedback.classList.contains("error") && e.target === authFeedback) {
-            hideFeedback();
-        }
-    });
 
     createAccountButton.addEventListener("click", async () => {
 
@@ -616,12 +441,12 @@
         const password = passwordInput.value;
 
         if (!name || !email || !instagram || !password) {
-            showFeedback("error", "DATI MANCANTI.", "Compila tutti i campi per continuare.");
+            alert("COMPILA TUTTI I CAMPI.");
             return;
         }
 
         if (password.length < 6) {
-            showFeedback("error", "PASSWORD TROPPO CORTA.", "La password deve avere almeno 6 caratteri.");
+            alert("LA PASSWORD DEVE AVERE ALMENO 6 CARATTERI.");
             return;
         }
 
@@ -638,7 +463,7 @@
                         full_name: name,
                         instagram: instagram
                     },
-                    emailRedirectTo: "https://fuorischemastore.it/login.html"
+                    emailRedirectTo: "https://z6mv9bdcf4-a11y.github.io/FUORISCHEMA/login.html"
                 }
             });
 
@@ -646,19 +471,18 @@
                 throw error;
             }
 
-            showFeedback(
-                "success",
-                "ACCOUNT CREATO.",
+            alert(
+                "ACCOUNT CREATO.\n\n" +
                 "Controlla la tua email e conferma l'indirizzo per attivare l'account."
             );
 
-            
+            window.location.href = "login.html";
 
         } catch (error) {
 
             console.error("ERRORE REGISTRAZIONE:", error);
 
-            showFeedback("error", "ERRORE REGISTRAZIONE.", error.message);
+            alert("ERRORE: " + error.message);
 
             createAccountButton.disabled = false;
             createAccountButton.style.opacity = "1";

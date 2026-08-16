@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CONTATTI — FUORISCHEMA</title>
+
+    <link rel="stylesheet" href="mobile-fixes.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+        :root {
+            --nero: #050505;
+            --bianco: #f4f4f2;
+            --arancio: #ff4d00;
+            --grigio: #888;
+            --linea: #242424;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--nero);
+            color: var(--bianco);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* HEADER */
+
+        header {
+            padding: 28px 38px;
+            border-bottom: 1px solid var(--linea);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+        }
+
+        .back {
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .back:hover {
+            color: var(--arancio);
+        }
+
+        /* MAIN LAYOUT */
+
+        main {
+            min-height: calc(100vh - 150px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 20px;
+        }
+
+        .contacts-wrapper {
+            width: 100%;
+            max-width: 520px;
+        }
+
+        .eyebrow {
+            color: var(--arancio);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-size: clamp(55px, 9vw, 100px);
+            line-height: 0.85;
+            letter-spacing: -5px;
+            font-weight: 900;
+            margin-bottom: 30px;
+        }
+
+        h1 span {
+            color: var(--arancio);
+        }
+
+        .intro {
+            color: #999;
+            font-size: 14px;
+            line-height: 1.7;
+            max-width: 470px;
+            margin-bottom: 45px;
+        }
+
+        /* GRID INFO CANALI */
+
+        .channels-section {
+            border-top: 1px solid var(--linea);
+            padding-top: 35px;
+            margin-bottom: 45px;
+            display: grid;
+            gap: 30px;
+        }
+
+        .channel-card {
+            border-bottom: 1px solid var(--linea);
+            padding-bottom: 25px;
+        }
+
+        .channel-label {
+            color: var(--arancio);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+
+        .channel-title {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .channel-desc {
+            color: #888;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .channel-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--bianco);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            transition: color 0.25s ease;
+        }
+
+        .channel-link:hover {
+            color: var(--arancio);
+        }
+
+        /* FORM SEZIONE */
+
+        .form-section {
+            border-top: 1px solid var(--linea);
+            padding-top: 35px;
+        }
+
+        .form-title {
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 25px;
+        }
+
+        .field {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            color: #888;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 9px;
+        }
+
+        input, textarea {
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--linea);
+            color: var(--bianco);
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.25s ease;
+        }
+
+        input {
+            height: 52px;
+            padding: 0 15px;
+        }
+
+        textarea {
+            height: 130px;
+            padding: 15px;
+            resize: vertical;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--arancio);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #555;
+        }
+
+        /* BUTTON */
+
+        .submit-button {
+            width: 100%;
+            height: 58px;
+            margin-top: 12px;
+            border: 1px solid var(--arancio);
+            background: var(--arancio);
+            color: var(--nero);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .submit-button:hover {
+            background: transparent;
+            color: var(--arancio);
+        }
+
+        .submit-button span {
+            font-size: 20px;
+        }
+
+        /* DIRECT MAIL CALLOUT */
+
+        .direct-mail-box {
+            border-top: 1px solid var(--linea);
+            margin-top: 35px;
+            padding-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .direct-mail-box span {
+            color: #777;
+            font-size: 11px;
+        }
+
+        .direct-mail-box a {
+            color: var(--bianco);
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .direct-mail-box a:hover {
+            color: var(--arancio);
+        }
+
+        /* DYNAMIC FEEDBACK OVERLAY */
+
+        .auth-feedback {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(5, 5, 5, 0);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition:
+                opacity .35s ease,
+                background .45s ease,
+                visibility 0s linear .45s;
+        }
+
+        .auth-feedback.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            background: rgba(5, 5, 5, .82);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition:
+                opacity .35s ease,
+                background .45s ease,
+                visibility 0s linear 0s;
+        }
+
+        .auth-feedback-card {
+            width: min(100%, 430px);
+            padding: 34px 32px 30px;
+            background: #080808;
+            border: 1px solid #2a2a2a;
+            transform: translateY(18px) scale(.97);
+            opacity: 0;
+            transition:
+                transform .55s cubic-bezier(.16,1,.3,1),
+                opacity .35s ease,
+                border-color .35s ease;
+        }
+
+        .auth-feedback.active .auth-feedback-card {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            border-color: #333;
+        }
+
+        .auth-feedback-mark {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 22px;
+            border: 1px solid var(--arancio);
+            color: var(--arancio);
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .auth-feedback-kicker {
+            color: var(--arancio);
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            margin-bottom: 10px;
+        }
+
+        .auth-feedback-title {
+            font-size: clamp(28px, 6vw, 42px);
+            line-height: .95;
+            letter-spacing: -2px;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .auth-feedback-text {
+            color: #888;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .auth-feedback.error .auth-feedback-mark {
+            border-color: #ff4d00;
+        }
+
+        /* FOOTER */
+
+        footer {
+            border-top: 1px solid var(--linea);
+            padding: 22px 38px;
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        /* MOBILE RESPONSIVE */
+
+        @media (max-width: 700px) {
+            header {
+                padding: 22px 20px;
+            }
+
+            .brand {
+                font-size: 20px;
+            }
+
+            main {
+                padding: 60px 20px;
+                align-items: flex-start;
+            }
+
+            .contacts-wrapper {
+                padding-top: 20px;
+            }
+
+            h1 {
+                font-size: clamp(52px, 17vw, 85px);
+                letter-spacing: -4px;
+            }
+
+            .intro {
+                font-size: 13px;
+            }
+
+            .direct-mail-box {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            footer {
+                padding: 20px;
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- OVERLAY DI FEEDBACK (COERENTE CON LOGIN E ACCOUNT) -->
+    <div id="contactFeedback" class="auth-feedback" aria-live="polite" aria-hidden="true">
+        <div class="auth-feedback-card">
+            <div id="contactFeedbackMark" class="auth-feedback-mark">✓</div>
+            <div id="contactFeedbackKicker" class="auth-feedback-kicker">03 / CONTACTS</div>
+            <div id="contactFeedbackTitle" class="auth-feedback-title">MESSAGGIO INVIATO.</div>
+            <div id="contactFeedbackText" class="auth-feedback-text">
+                Grazie per averci contattato.<br>Ti risponderemo al più presto.
+            </div>
+        </div>
+    </div>
+
+    <header>
+
+        <a href="index.html" class="brand">
+            FUORISCHEMA
+        </a>
+
+        <a href="index.html" class="back">
+            ← HOME
+        </a>
+
+    </header>
+
+
+    <main>
+
+        <div class="contacts-wrapper">
+
+            <div class="eyebrow">
+                03 / DIRECT LINE
+            </div>
+
+            <h1>
+                PARLIAMO.
+            </h1>
+
+            <p class="intro">
+                Per informazioni, assistenze o proposte di collaborazione, siamo a tua disposizione. Scegli il canale più adatto al tuo progetto.
+            </p>
+
+
+            <!-- CANALI DI CONTATTO DEDICATI -->
+            <section class="channels-section">
+
+                <div class="channel-card">
+                    <div class="channel-label">01 / ASSISTENZA & ORDINI</div>
+                    <div class="channel-title">Supporto Clienti</div>
+                    <p class="channel-desc">Hai domande su prodotti, taglie, spedizioni o sul tuo account? Scrivici direttamente.</p>
+                    <a href="https://www.instagram.com/_fuori.schema_/" target="_blank" rel="noopener noreferrer" class="channel-link">
+                        SCRIVICI SU INSTAGRAM →
+                    </a>
+                </div>
+
+                <div class="channel-card">
+                    <div class="channel-label">02 / COLLABORAZIONI</div>
+                    <div class="channel-title">Partner & Creators</div>
+                    <p class="channel-desc">Vuoi proporre un progetto o collaborare con FUORISCHEMA? Scrivici con la tua idea.</p>
+                    <a href="https://www.instagram.com/_fuori.schema_/" target="_blank" rel="noopener noreferrer" class="channel-link">
+                        SCRIVICI SU INSTAGRAM →
+                    </a>
+                </div>
+
+            </section>
+
+
+            <!-- FORM DI CONTATTO (INTERFACCIA CLIENT-SIDE) -->
+            <section class="form-section">
+
+                <div class="form-title">
+                    INVIA UN MESSAGGIO
+                </div>
+
+                <div class="field">
+                    <label for="contactName">NOME</label>
+                    <input type="text" id="contactName" placeholder="Il tuo nome">
+                </div>
+
+                <div class="field">
+                    <label for="contactEmail">EMAIL</label>
+                    <input type="email" id="contactEmail" class="mobile-safe-input" placeholder="La tua email">
+                </div>
+
+                <div class="field">
+                    <label for="contactSubject">OGGETTO</label>
+                    <input type="text" id="contactSubject" placeholder="In cosa possiamo aiutarti?">
+                </div>
+
+                <div class="field">
+                    <label for="contactMessage">MESSAGGIO</label>
+                    <textarea id="contactMessage" placeholder="Scrivi qui il tuo messaggio..."></textarea>
+                </div>
+
+                <button id="sendMsgBtn" class="submit-button" type="button">
+                    INVIA MESSAGGIO
+                    <span>→</span>
+                </button>
+
+            </section>
+
+
+            <div class="direct-mail-box">
+                <span>CANALE UFFICIALE</span>
+                <a href="https://www.instagram.com/_fuori.schema_/" target="_blank" rel="noopener noreferrer">SCRIVICI SU INSTAGRAM →</a>
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+
+        <span>
+            FUORISCHEMA © 2026
+        </span>
+
+        <span>
+            ALL RIGHTS RESERVED
+        </span>
+
+    </footer>
+
+    <script>
+        const sendBtn = document.getElementById("sendMsgBtn");
+        const nameInput = document.getElementById("contactName");
+        const emailInput = document.getElementById("contactEmail");
+        const subjectInput = document.getElementById("contactSubject");
+        const messageInput = document.getElementById("contactMessage");
+
+        const feedback = document.getElementById("contactFeedback");
+        const feedbackMark = document.getElementById("contactFeedbackMark");
+        const feedbackKicker = document.getElementById("contactFeedbackKicker");
+        const feedbackTitle = document.getElementById("contactFeedbackTitle");
+        const feedbackText = document.getElementById("contactFeedbackText");
+
+        function showFeedback(type, title, text) {
+            feedback.classList.toggle("error", type === "error");
+            feedbackMark.textContent = type === "error" ? "!" : "✓";
+            feedbackKicker.textContent = type === "error" ? "03 / ERROR" : "03 / CONTACTS";
+            feedbackTitle.textContent = title;
+            feedbackText.textContent = text;
+
+            feedback.classList.add("active");
+            feedback.setAttribute("aria-hidden", "false");
+        }
+
+        function hideFeedback() {
+            feedback.classList.remove("active");
+            feedback.setAttribute("aria-hidden", "true");
+        }
+
+        feedback.addEventListener("click", (e) => {
+            if (e.target === feedback) {
+                hideFeedback();
+            }
+        });
+
+        sendBtn.addEventListener("click", () => {
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            const subject = subjectInput.value.trim();
+            const message = messageInput.value.trim();
+
+            if (!name || !email || !subject || !message) {
+                showFeedback("error", "DATI MANCANTI.", "Compila tutti i campi prima di inviare il messaggio.");
+                return;
+            }
+
+            // Essendo stata rimossa la mail dal sito, il form avvisa l'utente e lo rimanda al canale ufficiale Instagram.
+            showFeedback(
+                "success",
+                "CONTATTO SOCIAL.",
+                "Gestiamo tutte le comunicazioni tramite Instagram. Ti stiamo reindirizzando al profilo ufficiale."
+            );
+
+            setTimeout(() => {
+                window.open("https://www.instagram.com/_fuori.schema_/", "_blank", "noopener,noreferrer");
+                hideFeedback();
+            }, 1800);
+        });
+    </script>
+
+</body>
+</html>

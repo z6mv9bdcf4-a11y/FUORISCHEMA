@@ -447,14 +447,16 @@
             FUORISCHEMA
         </a>
 
-        <a href="community.html" class="back">
-            ← COMMUNITY
+       <a href="index.html" class="back">
+    ← HOME
+</a>
         </a>
 
     </header>
 
 
     <main>
+    
 
         <div class="login-wrapper">
 
@@ -759,15 +761,15 @@
         resetBtn.classList.remove("loading");
         resetBtn.querySelector(".button-arrow").textContent = "→";
 
-        if (error) {
-            showFeedback(
-                "error",
-                "02 / RECOVERY ERROR",
-                "ERRORE RICHIESTA.",
-                error.message
-            );
-            return;
-        }
+       if (error) {
+    showFeedback(
+        "error",
+        "02 / RECOVERY ERROR",
+        "RICHIESTA NON RIUSCITA.",
+        "Non è stato possibile completare la richiesta. Controlla l'indirizzo email e riprova."
+    );
+    return;
+}
 
         // Messaggio generico per prevenire l'User Enumeration
         showFeedback(
@@ -783,7 +785,7 @@
             resetView.classList.add("reset-mode-hidden");
             loginView.classList.remove("reset-mode-hidden");
         }, 3200);
-    });
+        });
 
     // Invio con ENTER nei campi Login
     [emailInput, passwordInput].forEach(input => {
