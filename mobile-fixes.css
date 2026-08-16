@@ -1,0 +1,52 @@
+/* ==========================================================================
+   FUORISCHEMA — MOBILE FIXES (ULTRA-CONSERVATIVE)
+   File utility non invasivo per la gestione del touch e dell'auto-zoom mobile.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. REATTIVITÀ TOUCH E PREVENZIONE DOUBLE-TAP ZOOM
+   Riduce il ritardo di risposta e lo zoom accidentale da doppio tap
+   esclusivamente sugli elementi interattivi, senza alterare lo zoom utente.
+   -------------------------------------------------------------------------- */
+a, 
+button, 
+input, 
+textarea, 
+select, 
+label, 
+[role="button"] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* --------------------------------------------------------------------------
+   2. PROTEZIONE ANTI-DRAG E SELEZIONE PER IMMAGINI
+   Evita il trascinamento "fantasma" e la selezione involontaria delle immagini
+   durante lo scorrimento, senza imporre vincoli di dimensioni o touch-action globali.
+   -------------------------------------------------------------------------- */
+img {
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. UTILITY ANTI AUTO-ZOOM SAFARI iOS (16px)
+   Classi opzionali da applicare solo dove necessario per evitare lo zoom
+   automatico di Safari su iPhone quando un campo di testo va in focus.
+   -------------------------------------------------------------------------- */
+.mobile-safe-input,
+.mobile-safe-form input,
+.mobile-safe-form textarea,
+.mobile-safe-form select {
+    font-size: 16px !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. UTILITY OPZIONALE PER MODALI E OVERLAY
+   Classe utilizzabile esclusivamente quando una modale attiva richiede
+   di bloccare lo scorrimento della pagina sottostante.
+   -------------------------------------------------------------------------- */
+.no-scroll-mobile {
+    overflow: hidden !important;
+}
