@@ -111,13 +111,38 @@
             margin-bottom: 22px;
         }
 
+        .field-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 9px;
+        }
+
         label {
             display: block;
             color: #888;
             font-size: 10px;
             font-weight: 800;
             letter-spacing: 1px;
-            margin-bottom: 9px;
+        }
+
+        .forgot-link {
+            background: none;
+            border: none;
+            color: #888;
+            font-family: inherit;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: color 0.25s ease;
+            padding: 0;
+        }
+
+        .forgot-link:hover,
+        .forgot-link:focus-visible {
+            color: var(--arancio);
+            outline: none;
         }
 
         input {
@@ -338,6 +363,31 @@
             to { transform: rotate(360deg); }
         }
 
+        /* =========================================================
+           RESET PASSWORD VIEW TOGGLE
+        ========================================================= */
+        .reset-mode-hidden {
+            display: none !important;
+        }
+
+        .back-to-login {
+            background: none;
+            border: none;
+            color: #888;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: color 0.25s ease;
+            padding: 0;
+        }
+
+        .back-to-login:hover,
+        .back-to-login:focus-visible {
+            color: var(--arancio);
+            outline: none;
+        }
+
         @media (max-width: 700px) {
 
             header {
@@ -408,77 +458,145 @@
 
         <div class="login-wrapper">
 
-            <div class="eyebrow">
-                01 / MEMBER ACCESS
+            <!-- VISTA 1: LOGIN NORMALE -->
+            <div id="loginView">
+                <div class="eyebrow">
+                    01 / MEMBER ACCESS
+                </div>
+
+                <h1>
+                    BENTORNATO<br>
+                    <span>FUORI.</span>
+                </h1>
+
+                <p class="intro">
+                    Accedi al tuo account FUORISCHEMA
+                    per entrare nella Community e condividere
+                    il tuo modo di vivere il brand.
+                </p>
+
+
+                <section class="form-section">
+
+                    <div class="field">
+
+                        <div class="field-header">
+                            <label for="email">
+                                EMAIL
+                            </label>
+                        </div>
+
+                        <input
+                            type="email"
+                            id="email"
+                            class="mobile-safe-input"
+                            placeholder="La tua email"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <div class="field-header">
+                            <label for="password">
+                                PASSWORD
+                            </label>
+
+                            <button type="button" id="forgotBtn" class="forgot-link">
+                                PASSWORD DIMENTICATA?
+                            </button>
+                        </div>
+
+                        <input
+                            type="password"
+                            id="password"
+                            class="mobile-safe-input"
+                            placeholder="La tua password"
+                        >
+
+                    </div>
+
+
+                    <button id="loginBtn" class="submit-button" type="button">
+
+                        ACCEDI
+
+                        <span class="button-arrow">→</span>
+
+                    </button>
+
+                </section>
+
+
+                <div class="register-link">
+
+                    <span>
+                        NON HAI ANCORA UN ACCOUNT?
+                    </span>
+
+                    <a href="account.html">
+                        REGISTRATI →
+                    </a>
+
+                </div>
             </div>
 
-            <h1>
-                BENTORNATO<br>
-                <span>FUORI.</span>
-            </h1>
-
-            <p class="intro">
-                Accedi al tuo account FUORISCHEMA
-                per entrare nella Community e condividere
-                il tuo modo di vivere il brand.
-            </p>
-
-
-            <section class="form-section">
-
-                <div class="field">
-
-                    <label for="email">
-                        EMAIL
-                    </label>
-
-                    <input
-                        type="email"
-                        id="email"
-                        class="mobile-safe-input"
-                        placeholder="La tua email"
-                    >
-
+            <!-- VISTA 2: RICHIEDI RECUPERO PASSWORD -->
+            <div id="resetView" class="reset-mode-hidden">
+                <div class="eyebrow">
+                    02 / RECOVERY ACCESS
                 </div>
 
+                <h1>
+                    RECUPERA<br>
+                    <span>PASSWORD.</span>
+                </h1>
 
-                <div class="field">
+                <p class="intro">
+                    Inserisci l'indirizzo email associato al tuo account FUORISCHEMA.
+                    Ti invieremo un link per reimpostare la password.
+                </p>
 
-                    <label for="password">
-                        PASSWORD
-                    </label>
 
-                    <input
-                        type="password"
-                        id="password"
-                        class="mobile-safe-input"
-                        placeholder="La tua password"
-                    >
+                <section class="form-section">
+
+                    <div class="field">
+
+                        <div class="field-header">
+                            <label for="resetEmail">
+                                EMAIL
+                            </label>
+                        </div>
+
+                        <input
+                            type="email"
+                            id="resetEmail"
+                            class="mobile-safe-input"
+                            placeholder="La tua email"
+                        >
+
+                    </div>
+
+
+                    <button id="resetBtn" class="submit-button" type="button">
+
+                        INVIA LINK
+
+                        <span class="button-arrow">→</span>
+
+                    </button>
+
+                </section>
+
+
+                <div class="register-link">
+
+                    <button type="button" id="backToLoginBtn" class="back-to-login">
+                        ← TORNA AL LOGIN
+                    </button>
 
                 </div>
-
-
-                <button id="loginBtn" class="submit-button" type="button">
-
-                    ACCEDI
-
-                    <span class="button-arrow">→</span>
-
-                </button>
-
-            </section>
-
-
-            <div class="register-link">
-
-                <span>
-                    NON HAI ANCORA UN ACCOUNT?
-                </span>
-
-                <a href="account.html">
-                    REGISTRATI →
-                </a>
-
             </div>
 
         </div>
@@ -504,10 +622,20 @@
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const loginButton = document.querySelector(".submit-button");
+    // Elementi UI Login
+    const loginView = document.getElementById("loginView");
+    const loginButton = document.getElementById("loginBtn");
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
+    const forgotBtn = document.getElementById("forgotBtn");
 
+    // Elementi UI Reset Password
+    const resetView = document.getElementById("resetView");
+    const resetEmailInput = document.getElementById("resetEmail");
+    const resetBtn = document.getElementById("resetBtn");
+    const backToLoginBtn = document.getElementById("backToLoginBtn");
+
+    // Overlay Feedback System
     const authFeedback = document.getElementById("authFeedback");
     const authFeedbackMark = document.getElementById("authFeedbackMark");
     const authFeedbackKicker = document.getElementById("authFeedbackKicker");
@@ -515,13 +643,14 @@
     const authFeedbackText = document.getElementById("authFeedbackText");
     const authFeedbackLoader = document.getElementById("authFeedbackLoader");
 
-    function showFeedback(type, title, text) {
+    function showFeedback(type, kicker, title, text) {
         authFeedback.classList.toggle("error", type === "error");
         authFeedbackMark.textContent = type === "error" ? "!" : "✓";
-        authFeedbackKicker.textContent =
-            type === "error" ? "01 / ACCESS ERROR" : "01 / AUTHENTICATION";
+        authFeedbackKicker.textContent = kicker;
         authFeedbackTitle.textContent = title;
-        authFeedbackText.innerHTML = text;
+        
+        // Uso di textContent per evitare XSS e iniezione di codice da messaggi dinamici
+        authFeedbackText.textContent = text;
         authFeedbackLoader.style.display = type === "error" ? "none" : "block";
 
         authFeedback.classList.add("active");
@@ -533,6 +662,28 @@
         authFeedback.setAttribute("aria-hidden", "true");
     }
 
+    // Permette di chiudere l'overlay in caso di errore cliccando sullo sfondo
+    authFeedback.addEventListener("click", (e) => {
+        if (authFeedback.classList.contains("error") && e.target === authFeedback) {
+            hideFeedback();
+        }
+    });
+
+    // Swapping tra le viste Login / Reset
+    forgotBtn.addEventListener("click", () => {
+        loginView.classList.add("reset-mode-hidden");
+        resetView.classList.remove("reset-mode-hidden");
+        resetEmailInput.value = emailInput.value; // Pre-compila se l'utente aveva già iniziato a scrivere l'email
+        resetEmailInput.focus();
+    });
+
+    backToLoginBtn.addEventListener("click", () => {
+        resetView.classList.add("reset-mode-hidden");
+        loginView.classList.remove("reset-mode-hidden");
+        emailInput.focus();
+    });
+
+    // --- LOGIN CON PASSWORD ---
     loginButton.addEventListener("click", async () => {
         const email = emailInput.value.trim();
         const password = passwordInput.value;
@@ -540,8 +691,9 @@
         if (!email || !password) {
             showFeedback(
                 "error",
+                "01 / ACCESS ERROR",
                 "DATI MANCANTI.",
-                "Inserisci email e password<br>per continuare."
+                "Inserisci email e password per continuare."
             );
             return;
         }
@@ -558,8 +710,9 @@
         if (error) {
             showFeedback(
                 "error",
+                "01 / ACCESS ERROR",
                 "ACCESSO NEGATO.",
-                "Email o password non corretti.<br>Controlla i dati e riprova."
+                "Email o password non corretti. Controlla i dati e riprova."
             );
 
             loginButton.disabled = false;
@@ -570,8 +723,9 @@
 
         showFeedback(
             "success",
+            "01 / AUTHENTICATION",
             "ACCESSO RIUSCITO.",
-            "Bentornato in FUORISCHEMA.<br>Stiamo preparando il tuo spazio."
+            "Bentornato in FUORISCHEMA. Stiamo preparando il tuo spazio."
         );
 
         setTimeout(() => {
@@ -579,13 +733,72 @@
         }, 1150);
     });
 
-    // Invio con ENTER nei campi.
+    // --- RICHIESTA RECUPERO PASSWORD ---
+    resetBtn.addEventListener("click", async () => {
+        const email = resetEmailInput.value.trim();
+
+        if (!email) {
+            showFeedback(
+                "error",
+                "02 / RECOVERY ERROR",
+                "EMAIL MANCANTE.",
+                "Inserisci il tuo indirizzo email per ricevere il link di recupero."
+            );
+            return;
+        }
+
+        resetBtn.disabled = true;
+        resetBtn.classList.add("loading");
+        resetBtn.querySelector(".button-arrow").textContent = "◌";
+
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: "https://fuorischemastore.it/reset-password.html"
+        });
+
+        resetBtn.disabled = false;
+        resetBtn.classList.remove("loading");
+        resetBtn.querySelector(".button-arrow").textContent = "→";
+
+        if (error) {
+            showFeedback(
+                "error",
+                "02 / RECOVERY ERROR",
+                "ERRORE RICHIESTA.",
+                error.message
+            );
+            return;
+        }
+
+        // Messaggio generico per prevenire l'User Enumeration
+        showFeedback(
+            "success",
+            "02 / RECOVERY SENT",
+            "LINK INVIATO.",
+            "Se l'indirizzo è associato a un account FUORISCHEMA, riceverai un'email con le istruzioni per reimpostare la password."
+        );
+
+        // Torna alla vista login dopo l'invio riuscito
+        setTimeout(() => {
+            hideFeedback();
+            resetView.classList.add("reset-mode-hidden");
+            loginView.classList.remove("reset-mode-hidden");
+        }, 3200);
+    });
+
+    // Invio con ENTER nei campi Login
     [emailInput, passwordInput].forEach(input => {
         input.addEventListener("keydown", event => {
             if (event.key === "Enter" && !loginButton.disabled) {
                 loginButton.click();
             }
         });
+    });
+
+    // Invio con ENTER nel campo Reset Password
+    resetEmailInput.addEventListener("keydown", event => {
+        if (event.key === "Enter" && !resetBtn.disabled) {
+            resetBtn.click();
+        }
     });
 </script>
 </body>
