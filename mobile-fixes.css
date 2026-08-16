@@ -4,7 +4,18 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. REATTIVITÀ TOUCH E PREVENZIONE DOUBLE-TAP ZOOM
+   1. PROTEZIONE OVERFLOW ORIZZONTALE GLOBALE
+   Evita scorrimenti laterali indesiderati del layout su schermi stretti,
+   senza bloccare gli elementi con scorrimento orizzontale interno (overflow-x: auto/scroll).
+   -------------------------------------------------------------------------- */
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   2. REATTIVITÀ TOUCH E PREVENZIONE DOUBLE-TAP ZOOM
    Riduce il ritardo di risposta e lo zoom accidentale da doppio tap
    esclusivamente sugli elementi interattivi, senza alterare lo zoom utente.
    -------------------------------------------------------------------------- */
@@ -20,7 +31,7 @@ label,
 }
 
 /* --------------------------------------------------------------------------
-   2. PROTEZIONE ANTI-DRAG E SELEZIONE PER IMMAGINI
+   3. PROTEZIONE ANTI-DRAG E SELEZIONE PER IMMAGINI
    Evita il trascinamento "fantasma" e la selezione involontaria delle immagini
    durante lo scorrimento, senza imporre vincoli di dimensioni o touch-action globali.
    -------------------------------------------------------------------------- */
@@ -31,10 +42,25 @@ img {
 }
 
 /* --------------------------------------------------------------------------
-   3. UTILITY ANTI AUTO-ZOOM SAFARI iOS (16px)
-   Classi opzionali da applicare solo dove necessario per evitare lo zoom
-   automatico di Safari su iPhone quando un campo di testo va in focus.
+   4. PREVENZIONE AUTOMATICA AUTO-ZOOM SAFARI iOS (16px)
+   Imposta il font-size minimo a 16px per i campi di input su schermi mobile
+   (< 768px), impedendo l'auto-zoom di iOS Safari al focus senza dover modificare l'HTML.
+   Compatibilità mantenuta anche con le classi utility preesistenti.
    -------------------------------------------------------------------------- */
+@media screen and (max-width: 768px) {
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="number"],
+    input[type="search"],
+    input[type="tel"],
+    input[type="url"],
+    textarea,
+    select {
+        font-size: 16px !important;
+    }
+}
+
 .mobile-safe-input,
 .mobile-safe-form input,
 .mobile-safe-form textarea,
@@ -43,7 +69,7 @@ img {
 }
 
 /* --------------------------------------------------------------------------
-   4. UTILITY OPZIONALE PER MODALI E OVERLAY
+   5. UTILITY OPZIONALE PER MODALI E OVERLAY
    Classe utilizzabile esclusivamente quando una modale attiva richiede
    di bloccare lo scorrimento della pagina sottostante.
    -------------------------------------------------------------------------- */
