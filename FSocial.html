@@ -182,6 +182,7 @@ a{
 .notif-overlay {
     position: fixed;
     inset: 0;
+    bottom: 70px;
     z-index: 99998;
     display: none;
     justify-content: flex-end;
@@ -1177,7 +1178,8 @@ a{
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-top: 1px solid var(--panel-border);
-    z-index: 100000;
+    z-index: 100001;
+    pointer-events: auto;
     align-items: center;
     justify-content: space-around;
     box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
@@ -1564,13 +1566,17 @@ let searchDebounceTimer = null;
 navHome?.addEventListener("click", (event) => {
     event.preventDefault();
 
-    // HOME della barra = home interna di FSocial, mai la home commerciale.
-    const path = window.location.pathname.toLowerCase();
-    const isFSocialPage = path.endsWith("fsocial.html") || path.endsWith("/fsocial") || document.getElementById("fsocial-home");
+    // HOME è sempre la Home interna di FSocial.
+    // Se le notifiche sono aperte, chiudile prima di riportare l'utente alla Home.
+    if (notifOverlay?.classList.contains("active")) {
+        closeNotifications();
+    }
 
-    if (isFSocialPage) {
+    const homeSection = document.getElementById("fsocial-home");
+
+    if (homeSection) {
         window.history.replaceState(null, "", "FSocial.html#fsocial-home");
-        document.getElementById("fsocial-home")?.scrollIntoView({
+        homeSection.scrollIntoView({
             behavior: "smooth",
             block: "start"
         });
@@ -2208,9 +2214,19 @@ async function loadFeed(){
         let displayPosts = posts;
 
         if(currentFeedType === "foryou"){
+            /*
+             * PER TE:
+             * - non è cronologico;
+             * - engagement e segnali personali hanno peso reale;
+             * - la recenza è un segnale, non il criterio dominante;
+             * - la selezione è probabilistica, quindi due refresh possono produrre
+             *   sequenze diverse;
+             * - viene applicata una forte diversificazione per autore durante la
+             *   selezione, non prima.
+             */
             const now = Date.now();
 
-            const rankedCandidates = posts.map((post, index) => {
+            const candidates = posts.map((post) => {
                 const ageHours = Math.max(
                     0.25,
                     (now - new Date(post.created_at).getTime()) / 3600000
@@ -2221,59 +2237,71 @@ async function loadFeed(){
                 const likedByMe = userLikesMap[post.id] ? 1 : 0;
                 const ownPost = currentUser && post.user_id === currentUser.id ? 1 : 0;
 
-                const freshness = 1 / Math.pow(1 + ageHours / 36, 0.50);
+                const freshness = 1 / Math.pow(1 + ageHours / 48, 0.55);
                 const engagement =
-                    Math.log1p(likes) * 3.50 +
-                    Math.log1p(comments) * 4.00;
-
-                const personal =
-                    likedByMe * 3.00 -
-                    ownPost * 0.20;
-
-                const exploration = Math.random() * 3.50;
+                    Math.log1p(likes) * 2.8 +
+                    Math.log1p(comments) * 3.4;
+                const personal = likedByMe * 3.0 - ownPost * 0.25;
 
                 return {
                     post,
-                    baseScore: freshness * 2.00 + engagement + personal + exploration,
-                    index
+                    baseScore: Math.max(
+                        0.01,
+                        1.5 + freshness * 3.0 + engagement + personal
+                    )
                 };
             });
 
             const selected = [];
-            const selectedAuthorCounts = {};
+            const authorCounts = {};
 
-            while(selected.length < 30 && rankedCandidates.length > 0){
-                let bestIndex = 0;
-                let bestScore = -Infinity;
-
-                rankedCandidates.forEach((candidate, candidateIndex) => {
+            // Selezione pesata: i post migliori hanno più probabilità di entrare,
+            // ma non viene sempre scelto lo stesso primo elemento.
+            while(selected.length < 30 && candidates.length){
+                let totalWeight = 0;
+                const weighted = candidates.map(candidate => {
                     const authorId = candidate.post.user_id || `post-${candidate.post.id}`;
-                    const alreadyShown = selectedAuthorCounts[authorId] || 0;
+                    const count = authorCounts[authorId] || 0;
 
-                    const diversityPenalty =
-                        alreadyShown === 0 ? 0 :
-                        alreadyShown === 1 ? 3.50 :
-                        alreadyShown === 2 ? 7.00 :
-                        10.00 + (alreadyShown - 3) * 2.00;
+                    // Forte diversificazione: dopo il primo post dello stesso autore,
+                    // la probabilità scende drasticamente.
+                    const diversityMultiplier =
+                        count === 0 ? 1.0 :
+                        count === 1 ? 0.22 :
+                        count === 2 ? 0.07 :
+                        0.02;
 
-                    const candidateScore = candidate.baseScore - diversityPenalty;
-
-                    if(candidateScore > bestScore){
-                        bestScore = candidateScore;
-                        bestIndex = candidateIndex;
-                    }
+                    const weight = candidate.baseScore * diversityMultiplier;
+                    totalWeight += weight;
+                    return { candidate, weight };
                 });
 
-                const [winner] = rankedCandidates.splice(bestIndex, 1);
+                if(totalWeight <= 0){
+                    break;
+                }
+
+                let random = Math.random() * totalWeight;
+                let winnerIndex = 0;
+
+                for(let i = 0; i < weighted.length; i++){
+                    random -= weighted[i].weight;
+                    if(random <= 0){
+                        winnerIndex = i;
+                        break;
+                    }
+                }
+
+                const winner = weighted[winnerIndex].candidate;
                 const authorId = winner.post.user_id || `post-${winner.post.id}`;
-                selectedAuthorCounts[authorId] =
-                    (selectedAuthorCounts[authorId] || 0) + 1;
 
                 selected.push(winner.post);
+                authorCounts[authorId] = (authorCounts[authorId] || 0) + 1;
+                candidates.splice(winnerIndex, 1);
             }
 
             displayPosts = selected;
         } else {
+            // RECENTI = cronologico puro.
             displayPosts = posts.slice(0, 30);
         }
 
