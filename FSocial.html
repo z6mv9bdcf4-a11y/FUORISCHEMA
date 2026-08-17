@@ -1900,7 +1900,7 @@ function closeNotifications() {
     document.body.classList.remove("modal-open");
 }
 
-notifButton.addEventListener("click", openNotifications);
+notifButton?.addEventListener("click", openNotifications);
 notifClose.addEventListener("click", closeNotifications);
 notifMarkAllBtn.addEventListener("click", markAllNotificationsRead);
 notifOverlay.addEventListener("click", (e) => {
