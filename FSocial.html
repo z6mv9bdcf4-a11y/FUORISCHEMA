@@ -184,6 +184,7 @@ a{
     inset: 0;
     bottom: 70px;
     z-index: 99998;
+    pointer-events: none;
     display: none;
     justify-content: flex-end;
     background: rgba(0, 0, 0, 0.65);
@@ -193,6 +194,7 @@ a{
     transition: opacity 0.3s var(--ease-out);
 }
 .notif-overlay.active {
+    pointer-events: auto;
     display: flex;
     opacity: 1;
 }
@@ -1565,23 +1567,21 @@ let searchDebounceTimer = null;
 
 navHome?.addEventListener("click", (event) => {
     event.preventDefault();
+    event.stopPropagation();
 
     // HOME è sempre la Home interna di FSocial.
-    // Se le notifiche sono aperte, chiudile prima di riportare l'utente alla Home.
-    if (notifOverlay?.classList.contains("active")) {
-        closeNotifications();
-    }
+    // Chiudi SEMPRE eventuali pannelli/modal prima di navigare.
+    closeNotifications();
+
+    document.body.classList.remove("modal-open");
 
     const homeSection = document.getElementById("fsocial-home");
 
     if (homeSection) {
         window.history.replaceState(null, "", "FSocial.html#fsocial-home");
-        homeSection.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     } else {
-        window.location.href = "FSocial.html#fsocial-home";
+        window.location.assign("FSocial.html#fsocial-home");
     }
 });
 let notifPollInterval = null;
@@ -2216,17 +2216,18 @@ async function loadFeed(){
         if(currentFeedType === "foryou"){
             /*
              * PER TE:
-             * - non è cronologico;
-             * - engagement e segnali personali hanno peso reale;
-             * - la recenza è un segnale, non il criterio dominante;
-             * - la selezione è probabilistica, quindi due refresh possono produrre
-             *   sequenze diverse;
-             * - viene applicata una forte diversificazione per autore durante la
-             *   selezione, non prima.
+             * Ranking reale, non cronologico.
+             * Usiamo solo dati realmente caricati: recenza, likes, commenti,
+             * like dell'utente e autore. La diversità viene applicata durante
+             * la selezione. Una piccola componente di sessione rompe i pareggi
+             * senza trasformare il feed in uno shuffle.
              */
             const now = Date.now();
 
-            const candidates = posts.map((post) => {
+            // Seed stabile per questa apertura di pagina, diverso al refresh.
+            const feedSeed = window.__fsocialFeedSeed ??= Math.random();
+
+            const candidates = posts.map((post, index) => {
                 const ageHours = Math.max(
                     0.25,
                     (now - new Date(post.created_at).getTime()) / 3600000
@@ -2237,71 +2238,76 @@ async function loadFeed(){
                 const likedByMe = userLikesMap[post.id] ? 1 : 0;
                 const ownPost = currentUser && post.user_id === currentUser.id ? 1 : 0;
 
-                const freshness = 1 / Math.pow(1 + ageHours / 48, 0.55);
+                // La recenza conta, ma non può da sola determinare l'ordine.
+                const freshness = 1 / Math.pow(1 + ageHours / 72, 0.45);
+
+                // Engagement reale.
                 const engagement =
-                    Math.log1p(likes) * 2.8 +
-                    Math.log1p(comments) * 3.4;
-                const personal = likedByMe * 3.0 - ownPost * 0.25;
+                    Math.log1p(likes) * 4.0 +
+                    Math.log1p(comments) * 5.0;
+
+                // Segnali personali.
+                const personal =
+                    likedByMe * 3.0 -
+                    ownPost * 0.5;
+
+                // Tie-break/session signal: cambia dopo un refresh ma pesa poco.
+                const sessionSignal =
+                    Math.sin((post.id + "").length * 12.9898 + feedSeed * 78.233 + index * 0.37) * 0.8;
 
                 return {
                     post,
-                    baseScore: Math.max(
-                        0.01,
-                        1.5 + freshness * 3.0 + engagement + personal
-                    )
+                    score: freshness * 3.0 + engagement + personal + sessionSignal,
+                    originalIndex: index
                 };
             });
 
+            // Prima ordiniamo per qualità reale.
+            candidates.sort((a, b) => {
+                if (Math.abs(b.score - a.score) > 0.001) {
+                    return b.score - a.score;
+                }
+                return a.originalIndex - b.originalIndex;
+            });
+
+            // Poi costruiamo il feed applicando la diversificazione per autore.
             const selected = [];
+            const remaining = [...candidates];
             const authorCounts = {};
 
-            // Selezione pesata: i post migliori hanno più probabilità di entrare,
-            // ma non viene sempre scelto lo stesso primo elemento.
-            while(selected.length < 30 && candidates.length){
-                let totalWeight = 0;
-                const weighted = candidates.map(candidate => {
+            while(selected.length < Math.min(30, remaining.length)){
+                let winnerIndex = 0;
+                let winnerScore = -Infinity;
+
+                for(let i = 0; i < remaining.length; i++){
+                    const candidate = remaining[i];
                     const authorId = candidate.post.user_id || `post-${candidate.post.id}`;
                     const count = authorCounts[authorId] || 0;
 
-                    // Forte diversificazione: dopo il primo post dello stesso autore,
-                    // la probabilità scende drasticamente.
-                    const diversityMultiplier =
-                        count === 0 ? 1.0 :
-                        count === 1 ? 0.22 :
-                        count === 2 ? 0.07 :
-                        0.02;
+                    const diversityPenalty =
+                        count === 0 ? 0 :
+                        count === 1 ? 4 :
+                        count === 2 ? 8 :
+                        12 + (count - 3) * 2;
 
-                    const weight = candidate.baseScore * diversityMultiplier;
-                    totalWeight += weight;
-                    return { candidate, weight };
-                });
+                    const finalScore = candidate.score - diversityPenalty;
 
-                if(totalWeight <= 0){
-                    break;
-                }
-
-                let random = Math.random() * totalWeight;
-                let winnerIndex = 0;
-
-                for(let i = 0; i < weighted.length; i++){
-                    random -= weighted[i].weight;
-                    if(random <= 0){
+                    if(finalScore > winnerScore){
+                        winnerScore = finalScore;
                         winnerIndex = i;
-                        break;
                     }
                 }
 
-                const winner = weighted[winnerIndex].candidate;
+                const winner = remaining.splice(winnerIndex, 1)[0];
                 const authorId = winner.post.user_id || `post-${winner.post.id}`;
 
-                selected.push(winner.post);
                 authorCounts[authorId] = (authorCounts[authorId] || 0) + 1;
-                candidates.splice(winnerIndex, 1);
+                selected.push(winner.post);
             }
 
             displayPosts = selected;
         } else {
-            // RECENTI = cronologico puro.
+            // RECENTI = cronologico puro, senza ranking.
             displayPosts = posts.slice(0, 30);
         }
 
