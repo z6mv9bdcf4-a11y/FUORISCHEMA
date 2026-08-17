@@ -1773,6 +1773,13 @@ async function checkUser(){
     updateNotificationBadge();
     loadFeed();
 
+    // Controlla se le notifiche sono state richieste da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("openNotifications") === "1") {
+        openNotifications();
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
     return true;
 }
 
@@ -1793,12 +1800,26 @@ navHome?.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
-navSearch?.addEventListener("click", () => {
-    userSearchInput.focus();
-    userSearchInput.scrollIntoView({ behavior: "smooth", block: "center" });
+navSearch?.addEventListener("click", async () => {
+    if (notifOverlay?.classList.contains("active")) {
+        closeNotifications();
+        await new Promise(resolve => setTimeout(resolve, 350));
+    }
+
+    userSearchInput?.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+
+    setTimeout(() => {
+        userSearchInput?.focus();
+    }, 350);
 });
 
 navCreate?.addEventListener("click", () => {
+    if (notifOverlay?.classList.contains("active")) {
+        closeNotifications();
+    }
     const card = document.getElementById("createPostCard");
     card?.scrollIntoView({ behavior: "smooth", block: "center" });
     postContent?.focus();
@@ -2801,15 +2822,19 @@ async function loadComments(postId,box){
             ? `<img src="${escapeHtml(author.avatar)}" alt="">`
             : escapeHtml(getInitials(author.name));
 
-        const authorHandleOrName = author.username ? author.username : author.name;
-
         div.innerHTML = `
             <div class="comment-avatar">${avatar}</div>
             <div class="comment-content">
-                <span class="comment-user">${escapeHtml(authorHandleOrName)}</span>
+                <span class="comment-user author-profile-trigger" style="cursor:pointer;">${escapeHtml(author.username ? "@"+author.username : author.name)}</span>
                 <span class="comment-text">${escapeHtml(comment.content)}</span>
             </div>
         `;
+
+        div.querySelector(".author-profile-trigger")?.addEventListener("click", (e) => {
+            e.stopPropagation();
+            openProfile(author);
+        });
+
         list.appendChild(div);
     });
 }
@@ -2820,8 +2845,9 @@ async function addComment(postId,article){
         return;
     }
 
-    const input = article.querySelector(".comment-input");
-    const button = article.querySelector(".comment-button");
+    const box = document.getElementById(`comments-${postId}`);
+    const input = box.querySelector(".comment-input");
+    const button = box.querySelector(".comment-button");
     const content = input.value.trim();
 
     if(!content) return;
@@ -2840,14 +2866,10 @@ async function addComment(postId,article){
         if(error) throw error;
 
         input.value = "";
-
-        const box = document.getElementById(`comments-${postId}`);
-        box.classList.add("active");
         await loadComments(postId,box);
-        await updateCommentCount(postId,article.querySelector(".comment-toggle"));
     }catch(error){
         console.error(error);
-        showToast("Errore nel commento: " + error.message);
+        showToast("Errore invio commento: " + error.message);
     }finally{
         button.disabled = false;
     }
@@ -2857,8 +2879,7 @@ async function addComment(postId,article){
    DELETE POST
 ========================================================= */
 async function deletePost(postId){
-    if(!currentUser) return;
-    if(!confirm("Vuoi eliminare questo post?")) return;
+    if(!confirm("Vuoi davvero eliminare questo post?")) return;
 
     try{
         const {error} = await supabase
@@ -2873,7 +2894,7 @@ async function deletePost(postId){
         await loadFeed();
     }catch(error){
         console.error(error);
-        showToast("Non riesco a eliminare il post: " + error.message);
+        showToast("Errore eliminazione post.");
     }
 }
 </script>
