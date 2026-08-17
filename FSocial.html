@@ -1450,7 +1450,7 @@ a{
 
 <!-- BOTTOM NAVIGATION BAR -->
 <nav class="bottom-nav">
-    <a id="navHome" href="#fsocial-home" class="bottom-nav-item" aria-label="Home">
+    <a id="navHome" href="FSocial.html#fsocial-home" class="bottom-nav-item" aria-label="Home">
         <span class="bottom-nav-icon">🏠</span>
         <span class="bottom-nav-label">Home</span>
     </a>
@@ -1563,7 +1563,17 @@ let searchDebounceTimer = null;
 
 navHome?.addEventListener("click", (event) => {
     event.preventDefault();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // HOME della barra = home interna di FSocial, mai la home commerciale.
+    if (window.location.pathname.toLowerCase().endsWith("/fsocial.html")) {
+        window.history.replaceState(null, "", "FSocial.html#fsocial-home");
+        document.getElementById("fsocial-home")?.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    } else {
+        window.location.href = "FSocial.html#fsocial-home";
+    }
 });
 let notifPollInterval = null;
 
@@ -2219,6 +2229,19 @@ async function loadFeed(){
         let displayPosts = posts;
 
         if(currentFeedType === "foryou"){
+            /*
+             * FSocial "PER TE" = feed intelligente.
+             *
+             * Non è un semplice ordine per created_at:
+             * - freschezza: premia i contenuti nuovi, ma senza schiacciare tutto il resto;
+             * - engagement: likes e commenti indicano contenuti che stanno interessando
+             *   la community;
+             * - segnali personali: interazioni dell'utente e propri contenuti;
+             * - qualità minima: i contenuti con interazioni reali ricevono un vantaggio
+             *   rispetto a post completamente ignorati.
+             *
+             * "RECENTI" resta invece rigorosamente cronologico.
+             */
             const now = Date.now();
 
             displayPosts = [...posts]
@@ -2233,22 +2256,47 @@ async function loadFeed(){
                     const likedByMe = userLikesMap[post.id] ? 1 : 0;
                     const ownPost = currentUser && post.user_id === currentUser.id ? 1 : 0;
 
-                    const freshness = 1 / Math.pow(1 + ageHours / 18, 1.15);
-                    const engagement = Math.log1p(likes) * 0.85
-                                     + Math.log1p(comments) * 1.15;
-                    const personal = likedByMe * 1.25 + ownPost * 0.35;
+                    // Decadimento graduale: la novità conta, ma non domina il ranking.
+                    const freshness = 1 / Math.pow(1 + ageHours / 24, 0.72);
 
-                    const score = freshness * 8 + engagement + personal;
+                    // L'interazione della community pesa molto di più della sola data.
+                    const engagement =
+                        Math.log1p(likes) * 2.20 +
+                        Math.log1p(comments) * 2.80;
+
+                    // Segnali direttamente collegati all'utente.
+                    const personal =
+                        likedByMe * 4.00 +
+                        ownPost * 0.75;
+
+                    // Piccolo bonus ai contenuti che hanno già dimostrato interesse.
+                    const interactionBonus =
+                        (likes > 0 ? 0.75 : 0) +
+                        (comments > 0 ? 1.00 : 0);
+
+                    // Piccola componente di esplorazione per evitare un feed troppo rigido.
+                    const exploration = Math.max(0, 0.35 - index * 0.004);
+
+                    const score =
+                        freshness * 4.0 +
+                        engagement +
+                        personal +
+                        interactionBonus +
+                        exploration;
 
                     return { post, score, index };
                 })
                 .sort((a, b) => {
-                    if(b.score !== a.score) return b.score - a.score;
+                    if (Math.abs(b.score - a.score) > 0.001) {
+                        return b.score - a.score;
+                    }
+                    // A parità quasi perfetta, il più recente vince.
                     return a.index - b.index;
                 })
                 .slice(0, 30)
                 .map(item => item.post);
         } else {
+            // RECENTI = ordine cronologico puro, dal più nuovo al più vecchio.
             displayPosts = posts.slice(0, 30);
         }
 
