@@ -23,7 +23,7 @@ button{cursor:pointer}
   --orange-hover:#e04400;
 }
 
-/* HEADER */
+/* HEADER PULITO */
 header{
   height:70px;
   border-bottom:1px solid var(--line);
@@ -45,23 +45,6 @@ header{
   text-transform:uppercase;
 }
 .logo span{color:var(--orange)}
-.header-right{display:flex;gap:10px;align-items:center}
-.header-btn{
-  border:1px solid var(--line-light);
-  background:transparent;
-  color:var(--text);
-  padding:9px 16px;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:1.2px;
-  text-transform:uppercase;
-  border-radius:4px;
-  transition:all .2s ease;
-}
-.header-btn:hover{border-color:var(--orange);color:var(--orange)}
-.header-btn.orange{background:var(--orange);border-color:var(--orange);color:#050505}
-.header-btn.orange:hover{background:var(--orange-hover);border-color:var(--orange-hover);color:#050505}
-.header-btn.home{display:inline-flex;align-items:center;gap:6px}
 
 /* MAIN CONTENT CONTAINER */
 .profile-container{
@@ -71,7 +54,7 @@ header{
   flex:1;
 }
 
-/* PROFILE HEADER (INSTAGRAM-LIKE LAYOUT) */
+/* PROFILE HEADER */
 .profile-header{
   display:grid;
   grid-template-columns:180px 1fr;
@@ -386,7 +369,6 @@ footer{
 @media(max-width:768px){
   header{height:62px;padding:0 16px}
   .logo{font-size:17px}
-  .header-btn{padding:8px 12px;font-size:9px}
   
   .profile-container{width:100%;padding:24px 16px 60px}
   .profile-header{
@@ -413,7 +395,6 @@ footer{
 }
 
 @media(max-width:480px){
-  .home-label{display:none}
   .profile-header{
     grid-template-columns:1fr;
     justify-items:center;
@@ -430,11 +411,6 @@ footer{
 
 <header>
   <a href="index.html" class="logo">FUORI<span>SCHEMA</span></a>
-  <div class="header-right">
-    <a href="index.html" class="header-btn home"><span>←</span><span class="home-label">HOME</span></a>
-    <a href="FSocial.html" class="header-btn">COMMUNITY</a>
-    <button id="logoutBtn" class="header-btn orange">ESCI</button>
-  </div>
 </header>
 
 <main class="profile-container">
@@ -465,7 +441,6 @@ footer{
 
       <div class="actions">
         <button id="editProfileBtn" class="action-btn orange">MODIFICA PROFILO</button>
-        <a href="FSocial.html" class="action-btn">COMMUNITY →</a>
       </div>
     </div>
   </section>
@@ -525,7 +500,6 @@ const avatarImage = document.getElementById("avatarImage");
 const avatarPlaceholder = document.getElementById("avatarPlaceholder");
 const avatarInput = document.getElementById("avatarInput");
 const changeAvatarBtn = document.getElementById("changeAvatarBtn");
-const logoutBtn = document.getElementById("logoutBtn");
 const editProfileBtn = document.getElementById("editProfileBtn");
 const postsGrid = document.getElementById("postsGrid");
 const postsCount = document.getElementById("postsCount");
@@ -544,6 +518,13 @@ let currentUser = null;
 let currentProfile = null;
 let viewedUserId = null;
 let isOwnProfile = true;
+
+// Funzione di Logout esposta globalmente per la Bottom Navigation o altri componenti
+export async function handleLogout(){
+  await supabase.auth.signOut();
+  window.location.href = "index.html";
+}
+window.handleLogout = handleLogout;
 
 function escapeHtml(value=""){
   return String(value).replace(/[&<>"']/g, c => ({
@@ -739,11 +720,6 @@ async function saveProfile(){
   closeEdit();
   saveEdit.disabled = false;
 }
-
-logoutBtn.addEventListener("click",async()=>{
-  await supabase.auth.signOut();
-  window.location.href = "index.html";
-});
 
 editProfileBtn.addEventListener("click",openEdit);
 closeModal.addEventListener("click",closeEdit);

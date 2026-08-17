@@ -71,7 +71,7 @@ a{
     height:56px;
     display:flex;
     align-items:center;
-    justify-content:space-between;
+    justify-space:between;
     padding:0 24px;
     background:rgba(5, 5, 5, 0.82);
     backdrop-filter:blur(24px);
@@ -132,7 +132,7 @@ a{
     box-shadow:0 0 22px rgba(255,255,255,0.3);
 }
 
-/* NOTIFICATIONS ICON & BADGE */
+/* NOTIFICATIONS ICON & BADGE (Desktop Header) */
 .notif-btn {
     position: relative;
     width: 34px;
@@ -1201,6 +1201,9 @@ a{
     .topbar-actions .top-btn {
         display: none !important;
     }
+    .topbar-actions .top-btn.home-main-btn {
+        display: inline-flex !important;
+    }
     .topbar-actions {
         gap: 10px;
     }
@@ -1409,11 +1412,7 @@ a{
         <span class="brand-white">FUORI</span><span class="brand-orange">SCHEMA</span>
     </a>
     <div class="topbar-actions">
-        <button id="notifButton" class="notif-btn" type="button" aria-label="Notifiche">
-            🔔
-            <span id="notifBadge" class="notif-badge">0</span>
-        </button>
-        <a href="index.html" class="top-btn">HOME</a>
+        <a href="index.html" class="top-btn home-main-btn">HOME</a>
         <a href="area-personale.html" class="top-btn">PROFILO</a>
         <button id="logoutButton" class="top-btn primary" type="button">ESCI</button>
     </div>
@@ -1581,8 +1580,6 @@ const modalBio = document.getElementById("modalBio");
 const instagramLink = document.getElementById("instagramLink");
 const profilePageLink = document.getElementById("profilePageLink");
 
-const notifButton = document.getElementById("notifButton");
-const notifBadge = document.getElementById("notifBadge");
 const bottomNavBadge = document.getElementById("bottomNavBadge");
 const notifOverlay = document.getElementById("notifOverlay");
 const notifClose = document.getElementById("notifClose");
@@ -1795,12 +1792,25 @@ logoutButton.addEventListener("click", async () => {
 /* =========================================================
    BOTTOM NAVIGATION CONTROLS
 ========================================================= */
+function updateBottomNavActiveState(activeId) {
+    [navHome, navSearch, navCreate, navNotif].forEach(btn => {
+        if (btn) btn.classList.remove("active");
+    });
+    const profileItem = document.getElementById("navProfile");
+    if (profileItem) profileItem.classList.remove("active");
+
+    const target = document.getElementById(activeId);
+    if (target) target.classList.add("active");
+}
+
 navHome?.addEventListener("click", () => {
     closeNotifications();
+    updateBottomNavActiveState("navHome");
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
 navSearch?.addEventListener("click", async () => {
+    updateBottomNavActiveState("navSearch");
     if (notifOverlay?.classList.contains("active")) {
         closeNotifications();
         await new Promise(resolve => setTimeout(resolve, 350));
@@ -1817,6 +1827,7 @@ navSearch?.addEventListener("click", async () => {
 });
 
 navCreate?.addEventListener("click", () => {
+    updateBottomNavActiveState("navCreate");
     if (notifOverlay?.classList.contains("active")) {
         closeNotifications();
     }
@@ -1826,6 +1837,7 @@ navCreate?.addEventListener("click", () => {
 });
 
 navNotif?.addEventListener("click", () => {
+    updateBottomNavActiveState("navNotif");
     openNotifications();
 });
 
@@ -1845,16 +1857,12 @@ async function updateNotificationBadge() {
 
         if (count && count > 0) {
             const val = count > 99 ? "99+" : count;
-            notifBadge.textContent = val;
-            notifBadge.classList.add("active");
             if (bottomNavBadge) {
                 bottomNavBadge.textContent = val;
                 bottomNavBadge.classList.add("active");
             }
             if (notifHeaderDot) notifHeaderDot.classList.add("active");
         } else {
-            notifBadge.textContent = "0";
-            notifBadge.classList.remove("active");
             if (bottomNavBadge) {
                 bottomNavBadge.textContent = "0";
                 bottomNavBadge.classList.remove("active");
@@ -2022,7 +2030,6 @@ function closeNotifications() {
     document.body.classList.remove("modal-open");
 }
 
-notifButton.addEventListener("click", openNotifications);
 notifClose.addEventListener("click", closeNotifications);
 notifMarkAllBtn.addEventListener("click", markAllNotificationsRead);
 notifOverlay.addEventListener("click", (e) => {
