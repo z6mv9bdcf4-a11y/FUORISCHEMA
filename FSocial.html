@@ -2082,9 +2082,12 @@ async function loadFeed(){
     `;
 
     try {
+        // Carichiamo i post senza usare la relazione automatica posts -> profiles.
+        // Questo evita che il feed si rompa se Supabase non espone/riconosce
+        // la foreign key della relazione "profiles".
         let query = supabase
             .from("posts")
-            .select("id,content,image_url,created_at,user_id, profiles:profiles(id,full_name,username,avatar_url,bio,instagram)")
+            .select("id,content,image_url,created_at,user_id")
             .neq("content", "__FS_STORY__");
 
         if(currentFeedType === "recent"){
@@ -2109,6 +2112,26 @@ async function loadFeed(){
         }
 
         const postIds = posts.map(p => p.id);
+
+        // Recuperiamo i profili separatamente. Se per qualsiasi motivo la query
+        // dei profili fallisce, i post vengono comunque mostrati con dati fallback.
+        const profileMap = {};
+        const authorIds = [...new Set(posts.map(p => p.user_id).filter(Boolean))];
+
+        if(authorIds.length > 0){
+            const { data: profilesData, error: profilesError } = await supabase
+                .from("profiles")
+                .select("id,full_name,username,avatar_url,bio,instagram")
+                .in("id", authorIds);
+
+            if(!profilesError && profilesData){
+                profilesData.forEach(profile => {
+                    profileMap[profile.id] = profile;
+                });
+            } else if(profilesError){
+                console.warn("Profili non caricati, il feed continua comunque:", profilesError);
+            }
+        }
 
         let likesMap = {};
         let userLikesMap = {};
@@ -2142,7 +2165,7 @@ async function loadFeed(){
         }
 
         feed.innerHTML = posts.map(post => {
-            const author = post.profiles || {};
+            const author = profileMap[post.user_id] || {};
             const name = author.full_name || "Membro FUORISCHEMA";
             const username = author.username ? `@${author.username}` : "@member";
             const avatar = author.avatar_url;
@@ -2301,7 +2324,7 @@ async function loadFeed(){
         });
 
     } catch(err) {
-        console.error(err);
+        console.error("FSocial feed error:", err);
         feed.innerHTML = `
             <div class="empty">
                 <div class="empty-icon">⚠</div>
