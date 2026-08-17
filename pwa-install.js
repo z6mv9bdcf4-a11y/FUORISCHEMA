@@ -14,43 +14,73 @@
 
   const isIos = /iphone|ipad|ipod/i.test(window.navigator.userAgent);
 
+  // Se FUORISCHEMA è già installato, nasconde qualsiasi elemento
+  // dedicato all'installazione.
+  function hideInstallUIIfStandalone() {
+    if (!isStandalone) return;
+
+    const selectors = [
+      '#pwaInstallCard',
+      '#pwaInstallButton',
+      '#pwaInstallLauncher',
+      '.pwa-install-launcher',
+      '.pwa-install-button',
+      '[data-pwa-install]'
+    ];
+
+    selectors.forEach((selector) => {
+      document.querySelectorAll(selector).forEach((element) => {
+        element.style.display = 'none';
+        element.setAttribute('aria-hidden', 'true');
+      });
+    });
+
+    // Nasconde anche eventuali pulsanti/link con scritto "SCARICA L'APP".
+    document.querySelectorAll('a, button, [role="button"]').forEach((element) => {
+      const text = (element.textContent || '')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .toUpperCase();
+
+      if (
+        text === "SCARICA L'APP" ||
+        text === "SCARICA L’APP" ||
+        text.includes("SCARICA L'APP") ||
+        text.includes("SCARICA L’APP")
+      ) {
+        element.style.display = 'none';
+        element.setAttribute('aria-hidden', 'true');
+      }
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
+
+    // Se è già installato, non mostrare il sistema di installazione.
+    hideInstallUIIfStandalone();
+
+    if (isStandalone) return;
 
     const installCard = document.getElementById('pwaInstallCard');
     const closeBtn = document.getElementById('pwaInstallClose');
     const actionBtn = document.getElementById('pwaInstallAction');
     const iosSteps = document.getElementById('pwaIosSteps');
     const subtext = document.getElementById('pwaInstallSubtext');
-    const openBtn = document.getElementById('pwaInstallOpen');
 
     if (!installCard) return;
 
-    /* ---------------------------------------------------------------
-       SERVICE WORKER
-       --------------------------------------------------------------- */
+    const isDismissed = localStorage.getItem(STORAGE_KEY);
 
+    // Service Worker
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./service-worker.js')
+      navigator.serviceWorker
+        .register('./service-worker.js')
         .catch(err => {
           console.warn('PWA SW Registration error:', err);
         });
     }
 
-    /* ---------------------------------------------------------------
-       APERTURA MANUALE DELLA CARD
-       Funziona anche se l'utente aveva premuto X.
-       --------------------------------------------------------------- */
-
-    if (openBtn) {
-      openBtn.addEventListener('click', () => {
-        installCard.classList.add('visible');
-      });
-    }
-
-    /* ---------------------------------------------------------------
-       iOS
-       --------------------------------------------------------------- */
-
+    // iPhone / iPad
     if (isIos) {
 
       if (iosSteps) {
@@ -63,23 +93,15 @@
 
       if (subtext) {
         subtext.textContent =
-          'Aggiungi FUORISCHEMA alla schermata Home del tuo iPhone.';
+          'Segui i passaggi per installare l\'app sul tuo iPhone.';
       }
 
-      /* Mostra la card automaticamente solo se non era stata chiusa */
-      const isDismissed = localStorage.getItem(STORAGE_KEY);
-
       if (!isDismissed) {
-        setTimeout(() => {
-          installCard.classList.add('visible');
-        }, 2000);
+        showBanner();
       }
     }
 
-    /* ---------------------------------------------------------------
-       ANDROID / CHROME / DESKTOP
-       --------------------------------------------------------------- */
-
+    // Android / Chrome / Desktop
     window.addEventListener('beforeinstallprompt', (e) => {
 
       e.preventDefault();
@@ -97,22 +119,15 @@
 
       if (subtext) {
         subtext.textContent =
-          'Aggiungi FUORISCHEMA alla schermata Home per averlo sempre con te.';
+          'Aggiungi l\'app sulla tua schermata Home per un accesso rapido.';
       }
 
-      const isDismissed = localStorage.getItem(STORAGE_KEY);
-
       if (!isDismissed) {
-        setTimeout(() => {
-          installCard.classList.add('visible');
-        }, 2000);
+        showBanner();
       }
     });
 
-    /* ---------------------------------------------------------------
-       PULSANTE INSTALLA
-       --------------------------------------------------------------- */
-
+    // Pulsante INSTALLA ORA
     if (actionBtn) {
 
       actionBtn.addEventListener('click', async () => {
@@ -126,51 +141,57 @@
         deferredPrompt = null;
 
         if (outcome === 'accepted') {
+
           hideBanner();
-          localStorage.setItem(STORAGE_KEY, 'true');
+
+          localStorage.setItem(
+            STORAGE_KEY,
+            'true'
+          );
         }
       });
     }
 
-    /* ---------------------------------------------------------------
-       CHIUSURA CARD
-       --------------------------------------------------------------- */
-
+    // X della card
     if (closeBtn) {
 
       closeBtn.addEventListener('click', () => {
 
         hideBanner();
 
-        /*
-         * La X chiude SOLO la card automatica.
-         * Il pulsante SCARICA L'APP rimane sempre disponibile.
-         */
-
-        localStorage.setItem(STORAGE_KEY, 'true');
+        localStorage.setItem(
+          STORAGE_KEY,
+          'true'
+        );
       });
     }
 
-    /* ---------------------------------------------------------------
-       INSTALLAZIONE COMPLETATA
-       --------------------------------------------------------------- */
+    function showBanner() {
 
+      setTimeout(() => {
+
+        installCard.classList.add('visible');
+
+      }, 2000);
+    }
+
+    function hideBanner() {
+
+      installCard.classList.remove('visible');
+    }
+
+    // App installata
     window.addEventListener('appinstalled', () => {
 
       hideBanner();
 
-      localStorage.setItem(STORAGE_KEY, 'true');
+      localStorage.setItem(
+        STORAGE_KEY,
+        'true'
+      );
 
-      const launcher = document.getElementById('pwaInstallLauncher');
-
-      if (launcher) {
-        launcher.style.display = 'none';
-      }
+      hideInstallUIIfStandalone();
     });
-
-    function hideBanner() {
-      installCard.classList.remove('visible');
-    }
 
   });
 
