@@ -1699,7 +1699,7 @@ async function checkUser(){
     return true;
 }
 
-logoutButton.addEventListener("click", async () => {
+logoutButton?.addEventListener("click", async () => {
     logoutButton.disabled = true;
     if(notifPollInterval) clearInterval(notifPollInterval);
     await supabase.auth.signOut();
@@ -2337,6 +2337,7 @@ async function fetchFeedWindow() {
         .limit(K);
 
     if (fetchErr) throw fetchErr;
+    console.log("POSTS CARICATI:", posts);
 
     // 4. Fallback: Se la finestra T non restituisce post, recupera i più recenti fino a K
     if (!posts || posts.length === 0) {
