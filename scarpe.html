@@ -7,572 +7,164 @@
 <title>Scarpe — FUORISCHEMA</title>
 
 <style>
-:root{
-    --bg:#050505;
-    --panel:#0b0b0b;
-    --panel-2:#101010;
-    --text:#f5f5f5;
-    --muted:#777;
-    --line:rgba(255,255,255,.10);
-    --line-strong:rgba(255,255,255,.18);
-    --orange:#ff4d00;
-    --max:1160px;
-}
-
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-    min-height:100vh;
-    background:
-        radial-gradient(circle at 50% -12%,rgba(255,77,0,.10),transparent 32%),
-        var(--bg);
-    color:var(--text);
-    font-family:Inter,Arial,Helvetica,sans-serif;
-    -webkit-font-smoothing:antialiased;
-}
+:root{--bg:#050505;--card:#0b0b0b;--text:#f5f5f5;--muted:#777;--line:rgba(255,255,255,.10);--orange:#ff4d00;--max:1180px}
+*{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth}
+body{min-height:100vh;background:var(--bg);color:var(--text);font-family:Inter,Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
+.topbar{position:sticky;top:0;z-index:100;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 34px;background:rgba(5,5,5,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.brand{font-size:21px;font-weight:1000;letter-spacing:-1.7px}.brand-white{color:#fff}.brand-orange{color:var(--orange)}
+.nav-actions{display:flex;gap:7px}.nav-btn{min-height:38px;padding:0 13px;border:1px solid rgba(255,255,255,.17);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;letter-spacing:1.5px}
+.page{width:min(calc(100% - 42px),var(--max));margin:auto;padding:34px 0 80px}
 
-.topbar{
-    position:sticky;
-    top:0;
-    z-index:100;
-    height:76px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 38px;
-    background:rgba(5,5,5,.88);
-    backdrop-filter:blur(18px);
-    -webkit-backdrop-filter:blur(18px);
-    border-bottom:1px solid var(--line);
-}
-.brand{
-    font-size:21px;
-    font-weight:1000;
-    letter-spacing:-1.7px;
-}
-.brand-white{color:#fff}
-.brand-orange{color:var(--orange)}
+/* HERO: gerarchia editoriale + percorso d'acquisto */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;min-height:390px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.hero-main{display:flex;flex-direction:column;justify-content:flex-end;padding:35px 25px 38px 0;position:relative;z-index:2}
+.kicker{color:var(--orange);font-size:8px;font-weight:1000;letter-spacing:3.5px;margin-bottom:14px}
+h1{font-size:clamp(76px,12vw,148px);line-height:.76;font-weight:1000;letter-spacing:-9px}
+.hero-text{max-width:470px;color:#888;font-size:11px;line-height:1.65;margin-top:25px}.hero-text b{color:#ddd}
+.hero-side{border-left:1px solid var(--line);display:flex;align-items:flex-end;justify-content:flex-end;padding:25px 0 35px 25px}
+.hero-side-box{width:100%;max-width:270px;border:1px solid var(--line);padding:19px;background:linear-gradient(145deg,rgba(255,77,0,.07),rgba(255,255,255,.01))}
+.hero-side-label{color:#666;font-size:7px;font-weight:1000;letter-spacing:2.5px}.hero-side-number{font-size:80px;line-height:.8;font-weight:1000;letter-spacing:-7px;margin:22px 0 15px}
+.hero-side-copy{color:#777;font-size:9px;line-height:1.55}.hero-side-cta{margin-top:18px;color:var(--orange);font-size:8px;font-weight:1000;letter-spacing:2px}
 
-.nav-actions{display:flex;gap:8px}
-.nav-btn{
-    min-height:40px;
-    padding:0 15px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border:1px solid var(--line-strong);
-    font-size:9px;
-    font-weight:900;
-    letter-spacing:1.7px;
-    transition:.2s ease;
-}
-.nav-btn:hover{
-    color:var(--orange);
-    border-color:var(--orange);
-}
-
-.page{
-    width:min(calc(100% - 48px),var(--max));
-    margin:0 auto;
-    padding:58px 0 90px;
-}
-
-/* HERO */
-.hero{
-    position:relative;
-    padding:28px 0 70px;
-    border-bottom:1px solid var(--line);
-}
-.hero-kicker{
-    margin-bottom:17px;
-    color:var(--orange);
-    font-size:9px;
-    font-weight:1000;
-    letter-spacing:4px;
-}
-.hero-title{
-    font-size:clamp(76px,13vw,150px);
-    line-height:.78;
-    font-weight:1000;
-    letter-spacing:-9px;
-}
-.hero-copy{
-    max-width:470px;
-    margin-top:31px;
-    color:#888;
-    font-size:11px;
-    line-height:1.7;
-    letter-spacing:.4px;
-}
-.hero-index{
-    position:absolute;
-    right:0;
-    bottom:27px;
-    color:#292929;
-    font-size:100px;
-    line-height:.8;
-    font-weight:1000;
-    letter-spacing:-8px;
-    pointer-events:none;
-}
-
-/* INTRO / FILTER BAR */
-.catalog-head{
-    display:flex;
-    align-items:flex-end;
-    justify-content:space-between;
-    gap:30px;
-    margin:46px 0 18px;
-}
-.section-kicker{
-    color:#666;
-    font-size:8px;
-    font-weight:1000;
-    letter-spacing:3px;
-    text-transform:uppercase;
-}
-.section-title{
-    margin-top:8px;
-    font-size:27px;
-    font-weight:1000;
-    letter-spacing:-1.2px;
-}
-.section-note{
-    color:#555;
-    font-size:9px;
-    font-weight:800;
-    letter-spacing:1.5px;
-    text-transform:uppercase;
-}
-
-.filters{
-    display:flex;
-    gap:7px;
-    overflow-x:auto;
-    padding:2px 0 13px;
-    scrollbar-width:none;
-}
+/* SCELTA BRAND */
+.shop-intro{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:32px 0 12px}
+.shop-title{font-size:25px;font-weight:1000;letter-spacing:-1.2px}.shop-note{color:#555;font-size:8px;font-weight:900;letter-spacing:1.5px}
+.filters{display:flex;gap:7px;overflow-x:auto;padding:8px 0 14px;scrollbar-width:none;position:sticky;top:68px;z-index:50;background:linear-gradient(var(--bg) 78%,transparent)}
 .filters::-webkit-scrollbar{display:none}
-.filter{
-    flex:0 0 auto;
-    min-height:37px;
-    padding:0 14px;
-    border:1px solid var(--line);
-    background:transparent;
-    color:#8a8a8a;
-    font-size:8px;
-    font-weight:1000;
-    letter-spacing:1.6px;
-    cursor:pointer;
-    transition:.2s ease;
-}
-.filter:hover,
-.filter.active{
-    border-color:var(--orange);
-    background:var(--orange);
-    color:#080808;
-}
+.filter{flex:0 0 auto;min-height:36px;padding:0 13px;border:1px solid var(--line);background:#080808;color:#888;font-size:8px;font-weight:1000;letter-spacing:1.5px}
+.filter.active,.filter:hover{background:var(--orange);border-color:var(--orange);color:#080808}
 
-/* BRAND GRID */
-.brand-grid{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:12px;
-    margin-top:16px;
-}
+/* Gerarchia: brand principale grande, gli altri facilmente scansionabili */
+.brand-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:4px}
+.brand-tile{position:relative;min-height:235px;background:var(--card);border:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;transition:.25s}
+.brand-tile:first-child{grid-column:span 2;min-height:300px;background:radial-gradient(circle at 82% 30%,rgba(255,77,0,.13),transparent 32%),#0b0b0b}
+.brand-tile:after{content:"";position:absolute;width:180px;height:180px;right:-80px;bottom:-90px;border:1px solid rgba(255,77,0,.16);border-radius:50%}
+.brand-tile:hover{transform:translateY(-4px);border-color:rgba(255,77,0,.65)}
+.tile-top{display:flex;justify-content:space-between;padding:17px 18px;color:var(--orange);font-size:8px;font-weight:1000;letter-spacing:2px;position:relative;z-index:2}.tile-arrow{color:#666;font-size:18px}
+.tile-content{padding:0 18px 18px;position:relative;z-index:2}.tile-name{font-size:clamp(30px,5vw,58px);font-weight:1000;line-height:.82;letter-spacing:-3px}.brand-tile:first-child .tile-name{font-size:clamp(52px,8vw,92px)}
+.tile-sub{color:#555;font-size:7px;font-weight:900;letter-spacing:1.7px;margin-top:10px}.tile-action{color:#aaa;font-size:8px;font-weight:1000;letter-spacing:1.7px;margin-top:15px}.tile-action span{color:var(--orange);font-size:13px;margin-left:4px}
 
-.brand-card{
-    position:relative;
-    min-height:250px;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    overflow:hidden;
-    border:1px solid var(--line);
-    background:
-        linear-gradient(145deg,rgba(255,255,255,.025),rgba(255,255,255,.006));
-    transition:.25s ease;
-}
-.brand-card:hover{
-    transform:translateY(-4px);
-    border-color:rgba(255,77,0,.65);
-    background:
-        linear-gradient(145deg,rgba(255,77,0,.065),rgba(255,255,255,.006));
-}
-.brand-card-top{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:20px 21px;
-}
-.brand-number{
-    color:var(--orange);
-    font-size:8px;
-    font-weight:1000;
-    letter-spacing:3px;
-}
-.brand-arrow{
-    color:#666;
-    font-size:22px;
-    line-height:1;
-    transition:.2s ease;
-}
-.brand-card:hover .brand-arrow{
-    color:var(--orange);
-    transform:translateX(4px);
-}
-.brand-card-bottom{
-    position:relative;
-    z-index:2;
-    padding:0 21px 21px;
-}
-.brand-name{
-    font-size:clamp(29px,3.2vw,47px);
-    line-height:.9;
-    font-weight:1000;
-    letter-spacing:-2.5px;
-}
-.brand-meta{
-    margin-top:13px;
-    color:#555;
-    font-size:8px;
-    font-weight:900;
-    letter-spacing:2px;
-    text-transform:uppercase;
-}
-.brand-ghost{
-    position:absolute;
-    right:-5px;
-    bottom:-22px;
-    color:rgba(255,255,255,.018);
-    font-size:130px;
-    line-height:.8;
-    font-weight:1000;
-    letter-spacing:-8px;
-    pointer-events:none;
-}
+/* COLLAB */
+.collab{margin-top:54px;padding-top:24px;border-top:1px solid var(--line)}.collab-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:14px}
+.collab-card{position:relative;min-height:215px;border:1px solid var(--line);padding:23px;display:flex;align-items:flex-end;overflow:hidden;background:radial-gradient(circle at 80% 25%,rgba(255,77,0,.14),transparent 32%),#0b0b0b}
+.collab-label{position:absolute;top:18px;left:19px;color:var(--orange);font-size:7px;font-weight:1000;letter-spacing:2.5px}.collab-arrow{position:absolute;top:17px;right:20px;color:#777;font-size:20px}
+.collab-title{font-size:clamp(38px,6vw,72px);font-weight:1000;line-height:.84;letter-spacing:-4px}.collab-title span{display:block;color:#777;font-size:.34em;letter-spacing:-.5px;margin-top:12px}
+.footer{display:flex;justify-content:space-between;margin-top:58px;padding-top:17px;border-top:1px solid var(--line);color:#444;font-size:7px;font-weight:900;letter-spacing:2.5px}
 
-/* COLLABORATIONS */
-.collab{
-    margin-top:62px;
-    padding-top:25px;
-    border-top:1px solid var(--line);
+@media(max-width:700px){
+ .topbar{height:62px;padding:0 13px}.brand{font-size:17px}.nav-btn{min-height:34px;padding:0 9px;font-size:6.5px}
+ .page{width:calc(100% - 20px);padding-top:18px}
+ .hero{display:block;min-height:auto}.hero-main{padding:24px 0 25px}.kicker{font-size:7px;margin-bottom:11px}
+ h1{font-size:66px;letter-spacing:-5px}.hero-text{font-size:10px;margin-top:17px;max-width:100%;line-height:1.55}
+ .hero-side{border-left:0;border-top:1px solid var(--line);padding:13px 0 0;display:block}
+ .hero-side-box{max-width:none;padding:14px;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:14px;align-items:center}
+ .hero-side-label{grid-column:1/3}.hero-side-number{font-size:47px;letter-spacing:-4px;margin:7px 0 0}.hero-side-copy{font-size:8px;margin-top:5px}
+ .hero-side-cta{grid-column:1/3;margin-top:11px;font-size:7px}
+ .shop-intro{margin-top:27px;align-items:flex-end}.shop-title{font-size:21px}.shop-note{font-size:6.5px}
+ .filters{top:62px;padding-top:7px}
+ .brand-grid{grid-template-columns:1fr;gap:9px}.brand-tile,.brand-tile:first-child{grid-column:auto;min-height:184px}.brand-tile:first-child{min-height:220px}
+ .tile-name,.brand-tile:first-child .tile-name{font-size:45px;letter-spacing:-2.5px}.tile-content{padding:0 16px 16px}.tile-top{padding:15px 16px}
+ .collab{margin-top:42px}.collab-card{min-height:190px;padding:19px}.collab-title{font-size:45px;letter-spacing:-2.5px}
+ .footer{flex-direction:column;gap:7px}
 }
-.collab-head{
-    display:flex;
-    align-items:flex-end;
-    justify-content:space-between;
-    gap:20px;
-    margin-bottom:18px;
-}
-.collab-card{
-    position:relative;
-    min-height:190px;
-    display:flex;
-    align-items:flex-end;
-    padding:25px;
-    overflow:hidden;
-    border:1px solid var(--line);
-    background:
-        radial-gradient(circle at 80% 30%,rgba(255,77,0,.11),transparent 35%),
-        linear-gradient(120deg,#0b0b0b,#111);
-    transition:.25s ease;
-}
-.collab-card:hover{
-    border-color:rgba(255,77,0,.65);
-    transform:translateY(-4px);
-}
-.collab-label{
-    position:absolute;
-    top:20px;
-    left:21px;
-    color:var(--orange);
-    font-size:8px;
-    font-weight:1000;
-    letter-spacing:3px;
-}
-.collab-arrow{
-    position:absolute;
-    top:19px;
-    right:22px;
-    color:#777;
-    font-size:22px;
-}
-.collab-title{
-    font-size:clamp(36px,5vw,67px);
-    line-height:.84;
-    font-weight:1000;
-    letter-spacing:-4px;
-}
-.collab-title span{
-    display:block;
-    color:#777;
-    font-size:.42em;
-    letter-spacing:-1px;
-    margin-top:12px;
-}
-
-/* FOOTER */
-.footer{
-    display:flex;
-    justify-content:space-between;
-    gap:20px;
-    margin-top:70px;
-    padding-top:19px;
-    border-top:1px solid var(--line);
-    color:#444;
-    font-size:8px;
-    font-weight:900;
-    letter-spacing:3px;
-}
-
-@media(max-width:900px){
-    .topbar{padding:0 22px}
-    .page{
-        width:min(calc(100% - 30px),680px);
-        padding-top:42px;
-    }
-    .hero{padding-bottom:48px}
-    .hero-index{font-size:70px}
-    .brand-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .brand-card{min-height:225px}
-}
-
-@media(max-width:560px){
-    .topbar{
-        height:64px;
-        padding:0 14px;
-    }
-    .brand{font-size:18px}
-    .nav-btn{
-        min-height:35px;
-        padding:0 10px;
-        font-size:7px;
-    }
-    .page{
-        width:calc(100% - 22px);
-        padding-top:30px;
-    }
-    .hero-title{
-        font-size:65px;
-        letter-spacing:-5px;
-    }
-    .hero-copy{
-        font-size:10px;
-        max-width:100%;
-    }
-    .hero-index{
-        font-size:55px;
-        bottom:20px;
-    }
-    .catalog-head{
-        align-items:flex-start;
-        flex-direction:column;
-        gap:7px;
-        margin-top:36px;
-    }
-    .brand-grid{
-        grid-template-columns:1fr;
-    }
-    .brand-card{
-        min-height:205px;
-    }
-    .brand-name{
-        font-size:43px;
-    }
-    .collab{
-        margin-top:48px;
-    }
-    .collab-title{
-        font-size:49px;
-        letter-spacing:-3px;
-    }
-    .footer{
-        flex-direction:column;
-        gap:8px;
-    }
-}
+@media(max-width:380px){h1{font-size:59px}.tile-name,.brand-tile:first-child .tile-name{font-size:40px}.nav-btn{padding:0 7px}.shop-title{font-size:19px}}
 </style>
 </head>
 
 <body>
-
 <header class="topbar">
-    <a href="index.html" class="brand">
-        <span class="brand-white">FUORI</span><span class="brand-orange">SCHEMA</span>
-    </a>
-
-    <div class="nav-actions">
-        <a href="catalogo.html" class="nav-btn">← CATALOGO</a>
-        <a href="index.html" class="nav-btn">HOME</a>
-    </div>
+  <a href="index.html" class="brand"><span class="brand-white">FUORI</span><span class="brand-orange">SCHEMA</span></a>
+  <div class="nav-actions"><a href="catalogo.html" class="nav-btn">← CATALOGO</a><a href="index.html" class="nav-btn">HOME</a></div>
 </header>
-
 <main class="page">
-
-    <section class="hero">
-        <div class="hero-kicker">01 / CATEGORIA</div>
-        <h1 class="hero-title">SCARPE</h1>
-        <p class="hero-copy">
-            FOOTWEAR SELECTION FUORISCHEMA.<br>
-            BRAND, MODELLI E COLLABORAZIONI SELEZIONATI
-            PER CHI COSTRUISCE IL PROPRIO STILE.
-        </p>
-        <div class="hero-index">01</div>
-    </section>
-
-    <section>
-        <div class="catalog-head">
-            <div>
-                <div class="section-kicker">ESPLORA</div>
-                <div class="section-title">SCEGLI IL TUO MONDO</div>
-            </div>
-            <div class="section-note">BRAND / SELEZIONI</div>
+  <section class="hero">
+    <div class="hero-main">
+      <div class="kicker">01 / CATEGORIA</div>
+      <h1>SCARPE</h1>
+      <p class="hero-text"><b>IL TUO STILE PARTE DA QUI.</b><br>Scopri i brand selezionati da FUORISCHEMA e trova la scarpa che parla di te.</p>
+    </div>
+    <div class="hero-side">
+      <div class="hero-side-box">
+        <div class="hero-side-label">FOOTWEAR / FUORISCHEMA</div><div class="hero-side-number">01</div>
+        <div class="hero-side-copy">Scegli un brand.<br>Entra nella sua selezione.</div>
+        <div class="hero-side-cta">INIZIA A ESPLORARE →</div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="shop-intro"><div><div class="kicker" style="margin-bottom:6px">SHOP</div><div class="shop-title">SCEGLI IL TUO BRAND</div></div><div class="shop-note">SELEZIONA / ESPLORA</div></div>
+    <nav class="filters" aria-label="Filtri brand">
+      <button class="filter active" type="button" data-target="all">TUTTE</button><button class="filter" type="button" data-target="nike">NIKE</button>
+      <button class="filter" type="button" data-target="jordan">JORDAN</button><button class="filter" type="button" data-target="adidas">ADIDAS</button>
+      <button class="filter" type="button" data-target="asics">ASICS</button><button class="filter" type="button" data-target="puma">PUMA</button>
+      <button class="filter" type="button" data-target="timberland">TIMBERLAND</button><button class="filter" type="button" data-target="collab">COLLABORAZIONI</button>
+    </nav>
+    <div class="brand-grid" id="brandGrid">
+      <a class="brand-tile brand-item" data-brand="nike" href="nike.html">
+        <div class="tile-top"><span>001</span><span class="tile-arrow">↗</span></div>
+        <div class="tile-content">
+          <div class="tile-name">NIKE</div>
+          <div class="tile-sub">SCARPE / NIKE</div>
+          <div class="tile-action">ESPLORA <span>→</span></div>
         </div>
-
-        <nav class="filters" aria-label="Filtri brand">
-            <button class="filter active" type="button" data-target="all">TUTTE</button>
-            <button class="filter" type="button" data-target="nike">NIKE</button>
-            <button class="filter" type="button" data-target="jordan">JORDAN</button>
-            <button class="filter" type="button" data-target="adidas">ADIDAS</button>
-            <button class="filter" type="button" data-target="asics">ASICS</button>
-            <button class="filter" type="button" data-target="puma">PUMA</button>
-            <button class="filter" type="button" data-target="timberland">TIMBERLAND</button>
-            <button class="filter" type="button" data-target="collab">COLLABORAZIONI</button>
-        </nav>
-
-        <div class="brand-grid" id="brandGrid">
-
-            <a class="brand-card brand-item" data-brand="nike" href="nike.html">
-                <div class="brand-card-top">
-                    <span class="brand-number">001</span>
-                    <span class="brand-arrow">→</span>
-                </div>
-                <div class="brand-card-bottom">
-                    <div class="brand-name">NIKE</div>
-                    <div class="brand-meta">FOOTWEAR / NIKE</div>
-                </div>
-                <div class="brand-ghost">01</div>
-            </a>
-
-            <a class="brand-card brand-item" data-brand="jordan" href="jordan.html">
-                <div class="brand-card-top">
-                    <span class="brand-number">002</span>
-                    <span class="brand-arrow">→</span>
-                </div>
-                <div class="brand-card-bottom">
-                    <div class="brand-name">JORDAN</div>
-                    <div class="brand-meta">FOOTWEAR / JORDAN</div>
-                </div>
-                <div class="brand-ghost">02</div>
-            </a>
-
-            <a class="brand-card brand-item" data-brand="adidas" href="adidas.html">
-                <div class="brand-card-top">
-                    <span class="brand-number">003</span>
-                    <span class="brand-arrow">→</span>
-                </div>
-                <div class="brand-card-bottom">
-                    <div class="brand-name">ADIDAS</div>
-                    <div class="brand-meta">FOOTWEAR / ADIDAS</div>
-                </div>
-                <div class="brand-ghost">03</div>
-            </a>
-
-            <a class="brand-card brand-item" data-brand="asics" href="asics.html">
-                <div class="brand-card-top">
-                    <span class="brand-number">004</span>
-                    <span class="brand-arrow">→</span>
-                </div>
-                <div class="brand-card-bottom">
-                    <div class="brand-name">ASICS</div>
-                    <div class="brand-meta">FOOTWEAR / ASICS</div>
-                </div>
-                <div class="brand-ghost">04</div>
-            </a>
-
-            <a class="brand-card brand-item" data-brand="puma" href="puma.html">
-                <div class="brand-card-top">
-                    <span class="brand-number">005</span>
-                    <span class="brand-arrow">→</span>
-                </div>
-                <div class="brand-card-bottom">
-                    <div class="brand-name">PUMA</div>
-                    <div class="brand-meta">FOOTWEAR / PUMA</div>
-                </div>
-                <div class="brand-ghost">05</div>
-            </a>
-
-            <a class="brand-card brand-item" data-brand="timberland" href="timberland.html">
-                <div class="brand-card-top">
-                    <span class="brand-number">006</span>
-                    <span class="brand-arrow">→</span>
-                </div>
-                <div class="brand-card-bottom">
-                    <div class="brand-name">TIMBERLAND</div>
-                    <div class="brand-meta">FOOTWEAR / TIMBERLAND</div>
-                </div>
-                <div class="brand-ghost">06</div>
-            </a>
-
+      </a>
+      <a class="brand-tile brand-item" data-brand="jordan" href="jordan.html">
+        <div class="tile-top"><span>002</span><span class="tile-arrow">↗</span></div>
+        <div class="tile-content">
+          <div class="tile-name">JORDAN</div>
+          <div class="tile-sub">SCARPE / JORDAN</div>
+          <div class="tile-action">ESPLORA <span>→</span></div>
         </div>
-    </section>
-
-    <section class="collab">
-        <div class="collab-head">
-            <div>
-                <div class="section-kicker">SELEZIONI SPECIALI</div>
-                <div class="section-title">COLLABORAZIONI</div>
-            </div>
-            
+      </a>
+      <a class="brand-tile brand-item" data-brand="adidas" href="adidas.html">
+        <div class="tile-top"><span>003</span><span class="tile-arrow">↗</span></div>
+        <div class="tile-content">
+          <div class="tile-name">ADIDAS</div>
+          <div class="tile-sub">SCARPE / ADIDAS</div>
+          <div class="tile-action">ESPLORA <span>→</span></div>
         </div>
-
-        <a class="collab-card" href="travis-scott.html">
-            <div class="collab-label">001 / COLLABORAZIONE</div>
-            <div class="collab-arrow">↗</div>
-            <div class="collab-title">
-                TRAVIS SCOTT
-                <span>SELEZIONE / COLLABORAZIONI</span>
-            </div>
-        </a>
-    </section>
-
-    <footer class="footer">
-        <span>FUORISCHEMA</span>
-        <span>SCARPE / 01</span>
-    </footer>
-
+      </a>
+      <a class="brand-tile brand-item" data-brand="asics" href="asics.html">
+        <div class="tile-top"><span>004</span><span class="tile-arrow">↗</span></div>
+        <div class="tile-content">
+          <div class="tile-name">ASICS</div>
+          <div class="tile-sub">SCARPE / ASICS</div>
+          <div class="tile-action">ESPLORA <span>→</span></div>
+        </div>
+      </a>
+      <a class="brand-tile brand-item" data-brand="puma" href="puma.html">
+        <div class="tile-top"><span>005</span><span class="tile-arrow">↗</span></div>
+        <div class="tile-content">
+          <div class="tile-name">PUMA</div>
+          <div class="tile-sub">SCARPE / PUMA</div>
+          <div class="tile-action">ESPLORA <span>→</span></div>
+        </div>
+      </a>
+      <a class="brand-tile brand-item" data-brand="timberland" href="timberland.html">
+        <div class="tile-top"><span>006</span><span class="tile-arrow">↗</span></div>
+        <div class="tile-content">
+          <div class="tile-name">TIMBERLAND</div>
+          <div class="tile-sub">SCARPE / TIMBERLAND</div>
+          <div class="tile-action">ESPLORA <span>→</span></div>
+        </div>
+      </a>
+    </div>
+  </section>
+  <section class="collab">
+    <div class="collab-head"><div><div class="kicker" style="margin-bottom:6px">SELEZIONE SPECIALE</div><div class="shop-title">COLLABORAZIONI</div></div></div>
+    <a class="collab-card" href="travis-scott.html"><div class="collab-label">001 / COLLABORAZIONE</div><div class="collab-arrow">↗</div><div class="collab-title">TRAVIS SCOTT<span>SELEZIONE / COLLABORAZIONI</span></div></a>
+  </section>
+  <footer class="footer"><span>FUORISCHEMA</span><span>SCARPE / 01</span></footer>
 </main>
-
 <script>
-const filters = document.querySelectorAll(".filter");
-const cards = document.querySelectorAll(".brand-item");
-
-filters.forEach(filter => {
-    filter.addEventListener("click", () => {
-        const target = filter.dataset.target;
-
-        filters.forEach(item => item.classList.remove("active"));
-        filter.classList.add("active");
-
-        if(target === "all"){
-            cards.forEach(card => card.style.display = "");
-            return;
-        }
-
-        if(target === "collab"){
-            cards.forEach(card => card.style.display = "none");
-            document.querySelector(".collab").scrollIntoView({behavior:"smooth",block:"start"});
-            return;
-        }
-
-        cards.forEach(card => {
-            card.style.display = card.dataset.brand === target ? "" : "none";
-        });
-    });
-});
+const filters=document.querySelectorAll(".filter"),cards=document.querySelectorAll(".brand-item");
+filters.forEach(filter=>filter.addEventListener("click",()=>{
+ const target=filter.dataset.target; filters.forEach(x=>x.classList.remove("active")); filter.classList.add("active");
+ if(target==="all"){cards.forEach(x=>x.style.display="");return;}
+ if(target==="collab"){cards.forEach(x=>x.style.display="none");document.querySelector(".collab").scrollIntoView({behavior:"smooth",block:"start"});return;}
+ cards.forEach(x=>x.style.display=x.dataset.brand===target?"":"none");
+}));
 </script>
-
 </body>
 </html>
