@@ -148,7 +148,7 @@ a{
     display:flex;
     align-items:baseline;
     justify-content:space-between;
-    margin-bottom:24px;
+    margin-bottom:20px;
     padding:0 4px;
 }
 .hero-title{
@@ -165,6 +165,141 @@ a{
     font-weight:800;
     letter-spacing:2px;
     text-transform:uppercase;
+}
+
+/* User Search Bar */
+.user-search-wrapper {
+    position: relative;
+    margin-bottom: 24px;
+    z-index: 50;
+}
+.user-search-input-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 100px;
+    padding: 0 16px;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.user-search-input-box:focus-within {
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+.search-icon {
+    font-size: 14px;
+    color: var(--muted);
+    margin-right: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.user-search-input {
+    width: 100%;
+    height: 42px;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    font-size: 13px;
+    outline: none;
+}
+.user-search-input::placeholder {
+    color: var(--muted-2);
+    font-weight: 400;
+}
+.search-clear-btn {
+    display: none;
+    background: transparent;
+    border: 0;
+    color: var(--muted);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 4px;
+    margin-left: 6px;
+    transition: color 0.2s ease;
+}
+.search-clear-btn:hover {
+    color: #fff;
+}
+.search-results {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius);
+    max-height: 320px;
+    overflow-y: auto;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 60;
+}
+.search-results.active {
+    display: block;
+}
+.search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--line);
+    transition: background-color 0.2s ease;
+}
+.search-result-item:last-child {
+    border-bottom: none;
+}
+.search-result-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+.search-result-avatar {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: #000;
+    font-family: var(--font-title);
+    font-size: 12px;
+    font-weight: 900;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+.search-result-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.search-result-info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+.search-result-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.search-result-handle {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.search-state-message {
+    padding: 18px 16px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
 }
 
 /* Feed Tabs Switcher */
@@ -804,8 +939,11 @@ a{
     .feed-shell{padding:0 10px}
     .post-card{border-radius:14px}
     .create-card{border-radius:14px;padding:14px 16px}
-    .hero{margin-bottom:18px}
+    .hero{margin-bottom:14px}
     .hero-title{font-size:26px}
+    .user-search-wrapper{margin-bottom:20px}
+    .user-search-input-box{padding:0 12px}
+    .user-search-input{height:38px;font-size:12px}
     .post-header{padding:12px 14px}
     .post-actions{padding:10px 14px 4px}
     .post-meta{padding:2px 14px 4px}
@@ -834,6 +972,16 @@ a{
             <div class="hero-title">F<span>Social</span></div>
             <div class="hero-meta">FUORISCHEMA COMMUNITY</div>
         </section>
+
+        <!-- User Search Bar -->
+        <div class="user-search-wrapper">
+            <div class="user-search-input-box">
+                <span class="search-icon">🔍</span>
+                <input id="userSearchInput" class="user-search-input" type="text" placeholder="Cerca utenti per nome o @username..." autocomplete="off">
+                <button id="searchClearBtn" class="search-clear-btn" type="button" aria-label="Cancella ricerca">✕</button>
+            </div>
+            <div id="searchResults" class="search-results"></div>
+        </div>
 
         <!-- Feed Selector Tabs -->
         <div class="feed-tabs">
@@ -922,6 +1070,10 @@ const createAvatar = document.getElementById("createAvatar");
 const createUserName = document.getElementById("createUserName");
 const createUserHandle = document.getElementById("createUserHandle");
 
+const userSearchInput = document.getElementById("userSearchInput");
+const searchClearBtn = document.getElementById("searchClearBtn");
+const searchResults = document.getElementById("searchResults");
+
 const profileOverlay = document.getElementById("profileOverlay");
 const profileClose = document.getElementById("profileClose");
 const modalAvatar = document.getElementById("modalAvatar");
@@ -943,6 +1095,7 @@ let currentUser = null;
 let selectedImageFile = null;
 let selectedImageUrl = null;
 let currentFeedType = "foryou"; // "foryou" oppure "recent"
+let searchDebounceTimer = null;
 
 /* =========================================================
    HELPERS
@@ -1015,15 +1168,49 @@ function setAvatar(element, author){
 }
 
 /* Micro-noise deterministico stabile per utente/post (varia tra 0.995 e 1.005) */
-function getDeterministicNoise(postId, userId) {
-    let hash = 0;
-    const str = String(postId) + String(userId);
-    for (let i = 0; i < str.length; i++) {
-        hash = (hash << 5) - hash + str.charCodeAt(i);
-        hash |= 0;
+function getForYouHistoryKey(){
+    return `fsocial_foryou_history_${currentUser?.id || "guest"}`;
+}
+
+function loadForYouHistory(){
+    try{
+        const raw = localStorage.getItem(getForYouHistoryKey());
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+    }catch{
+        return [];
     }
-    const normalized = (Math.abs(hash) % 1000) / 1000; // [0, 1)
-    return 0.995 + (normalized * 0.01);
+}
+
+function saveForYouHistory(posts){
+    try{
+        const history = posts.slice(0, 12).map((post, index) => ({
+            id: post.id,
+            position: index,
+            shownAt: Date.now()
+        }));
+        localStorage.setItem(getForYouHistoryKey(), JSON.stringify(history));
+    }catch{
+        // Il feed deve continuare a funzionare anche se localStorage non è disponibile.
+    }
+}
+
+function getRotationPenalty(postId, history){
+    const item = history.find(entry => entry.id === postId);
+    if(!item) return 1;
+
+    // Penalizza soprattutto ciò che era in cima al feed precedente.
+    // Non esclude mai il post: con pochi contenuti può comunque tornare.
+    if(item.position === 0) return 0.18;
+    if(item.position === 1) return 0.35;
+    if(item.position === 2) return 0.55;
+    if(item.position <= 5) return 0.72;
+    return 0.86;
+}
+
+function getRandomFeedNoise(){
+    // Piccola variazione per evitare un ranking identico ad ogni apertura/refresh.
+    return 0.88 + (Math.random() * 0.24);
 }
 
 /* =========================================================
@@ -1061,10 +1248,21 @@ async function checkUser(){
 
     currentUser = data.user;
 
+    let profileAvatar = "";
+    const { data: profile } = await supabase
+        .from("profiles")
+        .select("avatar_url")
+        .eq("id", currentUser.id)
+        .maybeSingle();
+
+    if (profile && profile.avatar_url) {
+        profileAvatar = profile.avatar_url;
+    }
+
     const me = {
         name:getUserName(currentUser),
         username:getUsername(currentUser),
-        avatar:getAvatar(currentUser)
+        avatar:profileAvatar || getAvatar(currentUser)
     };
 
     createUserName.textContent = me.name;
@@ -1079,6 +1277,111 @@ logoutButton.addEventListener("click", async () => {
     await supabase.auth.signOut();
     window.location.href = "index.html";
 });
+
+/* =========================================================
+   SEARCH USERS
+========================================================= */
+userSearchInput.addEventListener("input", (e) => {
+    const query = e.target.value.trim();
+
+    if (query.length > 0) {
+        searchClearBtn.style.display = "block";
+    } else {
+        searchClearBtn.style.display = "none";
+        searchResults.classList.remove("active");
+        searchResults.innerHTML = "";
+        return;
+    }
+
+    clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = setTimeout(() => {
+        searchUsers(query);
+    }, 250);
+});
+
+searchClearBtn.addEventListener("click", () => {
+    userSearchInput.value = "";
+    searchClearBtn.style.display = "none";
+    searchResults.classList.remove("active");
+    searchResults.innerHTML = "";
+    userSearchInput.focus();
+});
+
+document.addEventListener("click", (e) => {
+    if (!e.target.closest(".user-search-wrapper")) {
+        searchResults.classList.remove("active");
+    }
+});
+
+userSearchInput.addEventListener("focus", () => {
+    if (userSearchInput.value.trim().length > 0 && searchResults.children.length > 0) {
+        searchResults.classList.add("active");
+    }
+});
+
+async function searchUsers(query) {
+    const cleanQuery = query.replace(/^@/, "").trim();
+    if (!cleanQuery) {
+        searchResults.classList.remove("active");
+        searchResults.innerHTML = "";
+        return;
+    }
+
+    searchResults.innerHTML = `<div class="search-state-message">Ricerca in corso...</div>`;
+    searchResults.classList.add("active");
+
+    try {
+        const { data, error } = await supabase
+            .from("profiles")
+            .select("id, username, full_name, instagram, avatar_url, bio")
+            .or(`username.ilike.%${cleanQuery}%,full_name.ilike.%${cleanQuery}%`)
+            .limit(8);
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            searchResults.innerHTML = `<div class="search-state-message">Nessun utente trovato per "${escapeHtml(cleanQuery)}"</div>`;
+            return;
+        }
+
+        searchResults.innerHTML = "";
+        data.forEach(profile => {
+            const author = {
+                id: profile.id,
+                name: profile.full_name || profile.username || "MEMBRO FUORISCHEMA",
+                username: profile.username || "",
+                instagram: profile.instagram || "",
+                avatar: profile.avatar_url || "",
+                bio: profile.bio || "Membro FUORISCHEMA."
+            };
+
+            const item = document.createElement("div");
+            item.className = "search-result-item";
+
+            const avatarContent = author.avatar
+                ? `<img src="${escapeHtml(author.avatar)}" alt="">`
+                : escapeHtml(getInitials(author.name));
+
+            item.innerHTML = `
+                <div class="search-result-avatar">${avatarContent}</div>
+                <div class="search-result-info">
+                    <div class="search-result-name">${escapeHtml(author.name)}</div>
+                    <div class="search-result-handle">${author.username ? "@" + escapeHtml(author.username) : "Membro FUORISCHEMA"}</div>
+                </div>
+            `;
+
+            item.addEventListener("click", () => {
+                searchResults.classList.remove("active");
+                openProfile(author);
+            });
+
+            searchResults.appendChild(item);
+        });
+    } catch (err) {
+        console.error("Errore durante la ricerca utenti:", err);
+        searchResults.innerHTML = `<div class="search-state-message">Errore durante la ricerca</div>`;
+    }
+}
 
 /* =========================================================
    IMAGE POST
@@ -1341,18 +1644,50 @@ async function fetchRecentPosts() {
     return posts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 }
 
-async function fetchForYouPosts() {
-    const pool = await fetchFeedWindow();
-    if (!pool || pool.length === 0) return [];
+async function fetchForYouPosts(){
+    let pool = await fetchFeedWindow();
 
-    const currentUserId = currentUser ? currentUser.id : "guest";
-    const postIds = pool.map(p => p.id);
+    if(!pool || pool.length === 0) return [];
+
+    /*
+     * PER TE:
+     * - privilegia contenuti recenti + engagement;
+     * - mantiene diversità tra gli autori;
+     * - ruota i contenuti mostrati in precedenza;
+     * - non esclude definitivamente i post vecchi;
+     * - introduce una piccola variazione ad ogni caricamento.
+     */
+    const history = loadForYouHistory();
+
+    // Se abbiamo pochi contenuti nella finestra dinamica, allarghiamo il pool
+    // per dare al feed la possibilità di ripescare post più vecchi.
+    if(pool.length < 12){
+        const knownIds = new Set(pool.map(post => post.id));
+
+        const { data: olderPosts, error: olderError } = await supabase
+            .from("posts")
+            .select("*")
+            .order("created_at", { ascending: false })
+            .limit(50);
+
+        if(!olderError && olderPosts){
+            for(const post of olderPosts){
+                if(!knownIds.has(post.id)){
+                    pool.push(post);
+                    knownIds.add(post.id);
+                }
+                if(pool.length >= 50) break;
+            }
+        }
+    }
+
+    const postIds = pool.map(post => post.id);
 
     // Fetch dell'Engagement in Batch
     let likesMap = {};
     let commentsMap = {};
 
-    try {
+    try{
         const pLikes = supabase
             .from("post_likes")
             .select("post_id")
@@ -1365,76 +1700,88 @@ async function fetchForYouPosts() {
 
         const [resLikes, resComments] = await Promise.all([pLikes, pComments]);
 
-        if (!resLikes.error && resLikes.data) {
+        if(!resLikes.error && resLikes.data){
             resLikes.data.forEach(l => {
                 likesMap[l.post_id] = (likesMap[l.post_id] || 0) + 1;
             });
         }
-        if (!resComments.error && resComments.data) {
+
+        if(!resComments.error && resComments.data){
             resComments.data.forEach(c => {
                 commentsMap[c.post_id] = (commentsMap[c.post_id] || 0) + 1;
             });
         }
-    } catch (engagementErr) {
+    }catch(engagementErr){
         console.warn("Errore recupero engagement, proseguimento con conteggi a zero:", engagementErr);
     }
 
     const now = Date.now();
 
-    // Step 1: Calcolo baseScore per ogni post
-    // baseScore = (1 + likes * 1.5 + comments * 2.0) / ((hoursSinceCreation + 2) ^ 1.2)
-    const poolWithBaseScore = pool.map(post => {
+    // Step 1: Score base + rotazione + variazione casuale.
+    const poolWithScore = pool.map(post => {
         const likes = likesMap[post.id] || 0;
         const comments = commentsMap[post.id] || 0;
         const createdAt = new Date(post.created_at).getTime();
-        const hoursSinceCreation = Math.max(0, (now - createdAt) / (1000 * 60 * 60));
+        const hoursSinceCreation = Math.max(
+            0,
+            (now - createdAt) / (1000 * 60 * 60)
+        );
 
-        const baseScore = (1 + (likes * 1.5) + (comments * 2.0)) / Math.pow(hoursSinceCreation + 2, 1.2);
-        const noise = getDeterministicNoise(post.id, currentUserId);
+        const baseScore =
+            (1 + (likes * 1.5) + (comments * 2.0)) /
+            Math.pow(hoursSinceCreation + 2, 1.2);
+
+        const rotationPenalty = getRotationPenalty(post.id, history);
+        const randomNoise = getRandomFeedNoise();
 
         return {
             post,
-            baseScore: baseScore * noise
+            baseScore: baseScore * rotationPenalty * randomNoise
         };
     });
 
-    // Step 2: Reranking Dinamico per Diversità degli Autori (Greedy Selection)
+    // Step 2: Reranking per diversità degli autori.
     const selectedPosts = [];
     const authorSelectedCount = {};
-    let candidates = [...poolWithBaseScore];
+    let candidates = [...poolWithScore];
 
-    function getAuthorPenalty(count) {
-        if (count === 0) return 1.0;
-        if (count === 1) return 0.50;
-        if (count === 2) return 0.25;
+    function getAuthorPenalty(count){
+        if(count === 0) return 1.0;
+        if(count === 1) return 0.50;
+        if(count === 2) return 0.25;
         return 0.20;
     }
 
-    while (candidates.length > 0) {
+    while(candidates.length > 0){
         let bestIndex = -1;
         let bestDynamicScore = -1;
 
-        for (let i = 0; i < candidates.length; i++) {
+        for(let i = 0; i < candidates.length; i++){
             const cand = candidates[i];
             const authorId = cand.post.user_id;
             const count = authorSelectedCount[authorId] || 0;
             const penalty = getAuthorPenalty(count);
             const dynamicScore = cand.baseScore * penalty;
 
-            if (dynamicScore > bestDynamicScore) {
+            if(dynamicScore > bestDynamicScore){
                 bestDynamicScore = dynamicScore;
                 bestIndex = i;
             }
         }
 
-        if (bestIndex === -1) break;
+        if(bestIndex === -1) break;
 
         const [chosen] = candidates.splice(bestIndex, 1);
         selectedPosts.push(chosen.post);
 
         const chosenAuthorId = chosen.post.user_id;
-        authorSelectedCount[chosenAuthorId] = (authorSelectedCount[chosenAuthorId] || 0) + 1;
+        authorSelectedCount[chosenAuthorId] =
+            (authorSelectedCount[chosenAuthorId] || 0) + 1;
     }
+
+    // Salviamo l'ordine appena mostrato per favorire una rotazione
+    // intelligente alla prossima apertura del feed.
+    saveForYouHistory(selectedPosts);
 
     return selectedPosts;
 }

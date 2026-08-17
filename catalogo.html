@@ -78,26 +78,58 @@
 
         .categories {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            grid-template-columns: 1.35fr 1fr;
+            grid-template-rows: 300px 240px;
+            gap: 16px;
         }
 
         .category {
-            display: block;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             position: relative;
-            min-height: 260px;
-            padding: 35px;
-            background: #0b0b0b;
-            border: 1px solid #222;
+            min-height: 0;
+            padding: 32px;
+            background:
+                linear-gradient(135deg, #101010 0%, #080808 58%, #050505 100%);
+            border: 1px solid #242424;
             text-decoration: none;
             color: #fff;
             overflow: hidden;
-            transition: 0.3s;
+            transition:
+                transform 0.3s ease,
+                border-color 0.3s ease,
+                background 0.3s ease;
+        }
+
+        .category:first-child {
+            grid-row: 1 / 3;
+            min-height: 556px;
+        }
+
+        .category::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            right: -65px;
+            bottom: -70px;
+            border: 1px solid rgba(255, 77, 0, 0.22);
+            transform: rotate(45deg);
+            pointer-events: none;
+            transition: transform 0.35s ease, border-color 0.35s ease;
         }
 
         .category:hover {
             border-color: #ff4d00;
-            transform: translateY(-5px);
+            transform: translateY(-4px);
+            background:
+                linear-gradient(135deg, #141414 0%, #090909 58%, #050505 100%);
+        }
+
+        .category:hover::after {
+            transform: rotate(45deg) scale(1.08);
+            border-color: rgba(255, 77, 0, 0.5);
         }
 
         .category-number {
@@ -105,23 +137,56 @@
             font-size: 11px;
             font-weight: 800;
             letter-spacing: 3px;
-            margin-bottom: 90px;
+            margin: 0;
+        }
+
+        .category-content {
+            position: relative;
+            z-index: 1;
         }
 
         .category-name {
-            font-size: clamp(26px, 3.2vw, 46px);
+            font-size: clamp(28px, 3.2vw, 50px);
             font-weight: 900;
-            line-height: 0.9;
+            line-height: 0.88;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+            max-width: 100%;
+            overflow-wrap: break-word;
+        }
+
+        .category:not(:first-child) .category-name {
+            font-size: clamp(24px, 2.4vw, 38px);
+            letter-spacing: -2.2px;
+            white-space: nowrap;
+        }
+
+        .category:first-child .category-name {
+            font-size: clamp(44px, 6vw, 86px);
+        }
+
+        .category-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .category-label {
+            color: #777;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
             text-transform: uppercase;
         }
 
         .arrow {
-            position: absolute;
-            right: 35px;
-            bottom: 30px;
             color: #ff4d00;
-            font-size: 30px;
-            transition: 0.3s;
+            font-size: 28px;
+            line-height: 1;
+            transition: transform 0.3s ease;
         }
 
         .category:hover .arrow {
@@ -134,29 +199,87 @@
             }
 
             main {
-                padding: 55px 5%;
+                padding: 48px 5% 60px;
+            }
+
+            h1 {
+                font-size: clamp(54px, 18vw, 82px);
+            }
+
+            .intro {
+                margin-bottom: 32px;
             }
 
             .categories {
                 grid-template-columns: 1fr;
+                grid-template-rows: none;
+                gap: 12px;
             }
 
-            .category {
-                min-height: 220px;
+            .category,
+            .category:first-child {
+                min-height: 150px;
+                height: 150px;
+                padding: 22px;
+            }
+
+            .category:first-child {
+                grid-row: auto;
+                height: 175px;
+            }
+
+            .category-name,
+            .category:first-child .category-name {
+                font-size: clamp(29px, 10vw, 46px);
+                max-width: 100%;
+                letter-spacing: -1.5px;
+            }
+
+            .category:not(:first-child) .category-name {
+                font-size: clamp(20px, 7vw, 34px);
+                letter-spacing: -1.8px;
+                white-space: nowrap;
+            }
+
+            .category-number {
+                font-size: 10px;
+            }
+
+            .category-label {
+                font-size: 9px;
+            }
+
+            .arrow {
+                font-size: 24px;
+            }
+
+            .category::after {
+                width: 130px;
+                height: 130px;
+                right: -50px;
+                bottom: -55px;
+            }
+        }
+
+        @media (max-width: 390px) {
+            .category,
+            .category:first-child {
+                min-height: 140px;
+                height: 140px;
+                padding: 18px;
+            }
+
+            .category:first-child {
+                height: 160px;
+            }
+
+            .category-name,
+            .category:first-child .category-name {
+                font-size: 28px;
             }
         }
     </style>
 
-<style id="catalog-category-position-fix">
-@media (min-width: 901px){
-    .category{
-        position:relative;
-    }
-    .category-name{
-        bottom: 42px !important;
-    }
-}
-</style>
 
 </head>
 
@@ -190,53 +313,44 @@
 
     <div class="categories">
 
-        <a href="scarpe.html" class="category">
+                <a href="scarpe.html" class="category">
+            <div class="category-number">001</div>
 
-            <div class="category-number">
-                001
+            <div class="category-content">
+                <div class="category-name">SCARPE</div>
             </div>
 
-            <div class="category-name">
-                SCARPE
+            <div class="category-meta">
+                <span class="category-label">FOOTWEAR</span>
+                <span class="arrow">→</span>
             </div>
-
-            <div class="arrow">
-                →
-            </div>
-
         </a>
 
 
-        <a href="abbigliamento.html" class="category">
+                <a href="abbigliamento.html" class="category">
+            <div class="category-number">002</div>
 
-            <div class="category-number">
-                002
+            <div class="category-content">
+                <div class="category-name">ABBIGLIAMENTO</div>
             </div>
 
-            <div class="category-name">
-                ABBIGLIAMENTO
+            <div class="category-meta">
+                <span class="category-label">CLOTHING</span>
+                <span class="arrow">→</span>
             </div>
-
-            <div class="arrow">
-                →
-            </div>
-
         </a>
 
-        <a href="accessori.html" class="category">
+                <a href="accessori.html" class="category">
+            <div class="category-number">003</div>
 
-            <div class="category-number">
-                003
+            <div class="category-content">
+                <div class="category-name">ACCESSORI</div>
             </div>
 
-            <div class="category-name">
-                ACCESSORI
+            <div class="category-meta">
+                <span class="category-label">ACCESSORIES</span>
+                <span class="arrow">→</span>
             </div>
-
-            <div class="arrow">
-                →
-            </div>
-
         </a>
 
     </div>

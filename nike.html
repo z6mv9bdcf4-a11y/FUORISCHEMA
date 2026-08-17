@@ -122,9 +122,63 @@ button{font:inherit}
     pointer-events:none;
 }
 
+/* SEARCH BAR */
+.search-container{
+    margin-top:42px;
+}
+.search-box{
+    position:relative;
+    display:flex;
+    align-items:center;
+    width:100%;
+    background:var(--panel);
+    border:1px solid var(--line);
+    transition:border-color .2s ease;
+}
+.search-box:focus-within{
+    border-color:var(--orange);
+}
+.search-icon{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding-left:16px;
+    color:var(--muted);
+    pointer-events:none;
+}
+.search-icon svg{
+    width:14px;
+    height:14px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+.search-input{
+    width:100%;
+    min-height:46px;
+    padding:0 16px 0 12px;
+    background:transparent;
+    border:none;
+    outline:none;
+    color:var(--text);
+    font-family:inherit;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1px;
+}
+.search-input::placeholder{
+    color:var(--muted-2);
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+
 /* CONTROLS */
 .catalog-bar{
-    margin:42px 0 23px;
+    margin:24px 0 23px;
     display:flex;
     align-items:flex-end;
     justify-content:space-between;
@@ -359,8 +413,11 @@ button{font:inherit}
         font-size:145px;
         letter-spacing:-13px;
     }
+    .search-container{
+        margin-top:28px;
+    }
     .catalog-bar{
-        margin-top:34px;
+        margin-top:20px;
     }
     .product-grid{
         grid-template-columns:repeat(2,minmax(0,1fr));
@@ -460,6 +517,11 @@ button{font:inherit}
     .hero-index{
         margin-top:22px;
         font-size:7px;
+    }
+
+    .search-input{
+        min-height:40px;
+        font-size:10px;
     }
 
     .catalog-bar{
@@ -568,6 +630,15 @@ button{font:inherit}
     </section>
 
     <section>
+        <div class="search-container">
+            <div class="search-box">
+                <div class="search-icon">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+                <input type="search" id="productSearch" class="search-input" placeholder="CERCA PRODOTTO PER NOME..." autocomplete="off">
+            </div>
+        </div>
+
         <div class="catalog-bar">
             <div class="catalog-label">SELEZIONE NIKE</div>
             <div class="catalog-count" id="catalogCount">0 PRODOTTI</div>
@@ -583,8 +654,8 @@ button{font:inherit}
 
         <section class="empty-state show" id="emptyState">
             <div class="empty-kicker">NIKE / FUORISCHEMA</div>
-            <div class="empty-title">SELEZIONE IN PREPARAZIONE.</div>
-            <p class="empty-text">
+            <div class="empty-title" id="emptyTitle">SELEZIONE IN PREPARAZIONE.</div>
+            <p class="empty-text" id="emptyText">
                 Non ci sono prodotti in questa selezione al momento.
             </p>
             <a class="empty-dm" href="https://www.instagram.com/_fuori.schema_/" target="_blank" rel="noopener noreferrer" id="dmButton">SCRIVI IN DM →</a>
@@ -642,18 +713,35 @@ const products = [
 
 const productGrid = document.getElementById("productGrid");
 const emptyState = document.getElementById("emptyState");
+const emptyTitle = document.getElementById("emptyTitle");
+const emptyText = document.getElementById("emptyText");
 const catalogCount = document.getElementById("catalogCount");
 const filters = document.querySelectorAll(".filter");
+const productSearch = document.getElementById("productSearch");
 
-function renderProducts(filter = "all"){
-    const visible = products.filter(product =>
-        filter === "all" || product.filter === filter
-    );
+let activeFilter = "all";
+
+function renderProducts(filter = activeFilter){
+    activeFilter = filter;
+    const query = productSearch ? productSearch.value.trim().toLowerCase() : "";
+
+    const visible = products.filter(product => {
+        const matchesFilter = (filter === "all" || product.filter === filter);
+        const matchesSearch = !query || (product.name && product.name.toLowerCase().includes(query));
+        return matchesFilter && matchesSearch;
+    });
 
     productGrid.innerHTML = "";
     catalogCount.textContent = `${visible.length} ${visible.length === 1 ? "PRODOTTO" : "PRODOTTI"}`;
 
     if(!visible.length){
+        if(query){
+            emptyTitle.textContent = "NESSUN RISULTATO";
+            emptyText.textContent = `Nessun prodotto trovato per "${query}".`;
+        } else {
+            emptyTitle.textContent = "SELEZIONE IN PREPARAZIONE.";
+            emptyText.textContent = "Non ci sono prodotti in questa selezione al momento.";
+        }
         emptyState.classList.add("show");
         return;
     }
@@ -715,11 +803,16 @@ filters.forEach(filter => {
     });
 });
 
+if(productSearch){
+    productSearch.addEventListener("input", () => {
+        renderProducts(activeFilter);
+    });
+}
+
 /*
     Il link DM verrà collegato al profilo social definitivo
     quando avremo fissato l'account FUORISCHEMA.
 */
-
 
 renderProducts();
 </script>

@@ -239,6 +239,18 @@
             font-weight: 700;
         }
 
+        /* REGISTRATION SUCCESS */
+        .success-overlay { position: fixed; inset: 0; z-index: 9999; display:flex; align-items:center; justify-content:center; padding:24px; background:rgba(5,5,5,.96); opacity:0; visibility:hidden; transition:opacity .35s ease,visibility .35s ease; }
+        .success-overlay.is-visible { opacity:1; visibility:visible; }
+        .success-card { width:min(100%,420px); text-align:center; transform:translateY(18px) scale(.97); transition:transform .45s cubic-bezier(.16,1,.3,1); }
+        .success-overlay.is-visible .success-card { transform:translateY(0) scale(1); }
+        .success-check { width:58px; height:58px; margin:0 auto 24px; display:flex; align-items:center; justify-content:center; border:1px solid var(--arancio); color:var(--arancio); font-size:28px; font-weight:800; border-radius:50%; animation:success-pop .55s cubic-bezier(.16,1,.3,1) both; }
+        .success-eyebrow { color:var(--arancio); font-size:10px; font-weight:800; letter-spacing:2px; margin-bottom:14px; }
+        .success-card h2 { font-size:clamp(42px,12vw,68px); line-height:.88; letter-spacing:-3px; font-weight:900; margin-bottom:22px; }
+        .success-card h2 span { color:var(--arancio); }
+        .success-card p { max-width:360px; margin:0 auto; color:#999; font-size:13px; line-height:1.6; }
+        @keyframes success-pop { 0%{opacity:0;transform:scale(.5)} 70%{opacity:1;transform:scale(1.08)} 100%{opacity:1;transform:scale(1)} }
+
         /* MOBILE */
 
         @media (max-width: 700px) {
@@ -471,12 +483,20 @@
                 throw error;
             }
 
-            alert(
-                "ACCOUNT CREATO.\n\n" +
-                "Controlla la tua email e conferma l'indirizzo per attivare l'account."
-            );
-
-            window.location.href = "login.html";
+            const successOverlay = document.createElement("div");
+            successOverlay.innerHTML = `
+                <div class="success-overlay" role="status" aria-live="polite">
+                    <div class="success-card">
+                        <div class="success-check">✓</div>
+                        <div class="success-eyebrow">FUORISCHEMA</div>
+                        <h2>ACCOUNT<br><span>CREATO.</span></h2>
+                        <p>Controlla la tua email e conferma l'indirizzo per attivare l'account.</p>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(successOverlay);
+            requestAnimationFrame(() => successOverlay.querySelector(".success-overlay").classList.add("is-visible"));
+            setTimeout(() => { window.location.href = "login.html"; }, 2600);
 
         } catch (error) {
 

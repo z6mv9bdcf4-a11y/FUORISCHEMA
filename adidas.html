@@ -12,6 +12,7 @@
     --panel:#0b0b0b;
     --text:#f5f5f5;
     --muted:#777;
+    --muted-2:#4d4d4d;
     --line:rgba(255,255,255,.10);
     --line-strong:rgba(255,255,255,.17);
     --orange:#ff4d00;
@@ -113,8 +114,36 @@ button{font:inherit;border:0}
     pointer-events:none;
 }
 
+/* SEARCH BAR */
+.search-wrapper{
+    margin-top:35px;
+    margin-bottom:10px;
+}
+.search-input{
+    width:100%;
+    height:46px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    padding:0 16px;
+    color:var(--text);
+    font-family:inherit;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1.5px;
+    outline:none;
+    transition:.2s ease;
+}
+.search-input::placeholder{
+    color:var(--muted-2);
+    font-size:9px;
+    letter-spacing:2px;
+}
+.search-input:focus{
+    border-color:var(--orange);
+}
+
 .catalog-bar{
-    margin:42px 0 23px;
+    margin:25px 0 23px;
     display:flex;
     align-items:flex-end;
     justify-content:space-between;
@@ -407,6 +436,15 @@ button{font:inherit;border:0}
     .hero{min-height:270px;padding-bottom:34px}
     .hero-title{font-size:78px;letter-spacing:-6px}
     .hero-index{top:25px;right:-5px;font-size:145px;letter-spacing:-13px}
+    .search-wrapper{
+        margin-top:25px;
+        margin-bottom:5px;
+    }
+    .search-input{
+        height:40px;
+        font-size:10px;
+    }
+    .catalog-bar{margin-top:20px}
     .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
     .product-info{padding:12px 11px 13px}
     .product-name{font-size:11px}
@@ -469,6 +507,10 @@ button{font:inherit;border:0}
         </section>
 
         <section>
+            <div class="search-wrapper">
+                <input type="text" id="searchInput" class="search-input" placeholder="CERCA PER NOME PRODOTTO..." autocomplete="off">
+            </div>
+
             <div class="catalog-bar">
                 <div class="catalog-label">SELEZIONE ADIDAS</div>
                 <div class="catalog-count" id="catalogCount">7 PRODOTTI</div>
@@ -605,6 +647,7 @@ const detailCode = document.getElementById("detailCode");
 const detailDescription = document.getElementById("detailDescription");
 const footerSection = document.getElementById("footerSection");
 const sectionBackButton = document.getElementById("sectionBackButton");
+const searchInput = document.getElementById("searchInput");
 
 function escapeHtml(value){
     const div = document.createElement("div");
@@ -613,9 +656,16 @@ function escapeHtml(value){
 }
 
 function renderCatalog(){
-    productGrid.innerHTML = "";
+    const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
 
-    products.forEach((product, index) => {
+    const visible = products.filter(product =>
+        !query || product.name.toLowerCase().includes(query)
+    );
+
+    productGrid.innerHTML = "";
+    catalogCount.textContent = `${visible.length} ${visible.length === 1 ? "PRODOTTO" : "PRODOTTI"}`;
+
+    visible.forEach((product) => {
         const card = document.createElement("button");
         card.type = "button";
         card.className = "product-card";
@@ -714,6 +764,10 @@ function showCatalog(updateHistory = true){
 }
 
 detailBack.addEventListener("click", () => showCatalog());
+
+if(searchInput){
+    searchInput.addEventListener("input", renderCatalog);
+}
 
 window.addEventListener("popstate", () => {
     const params = new URLSearchParams(window.location.search);

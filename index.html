@@ -650,36 +650,38 @@
 
 
         /* =========================================================
-           NUOVI ARRIVI
+           NUOVI ARRIVI (EDITORIALE / ASIMMETRICO)
         ========================================================= */
 
         .products {
             display: grid;
-            grid-template-columns: minmax(0, 1.45fr) minmax(0, .85fr);
-            grid-template-rows: repeat(2, minmax(220px, 1fr));
-            gap: 12px;
-            min-height: 620px;
+            grid-template-columns: 1.55fr 1fr;
+            gap: 20px;
+            min-height: 580px;
         }
 
         .product {
             position: relative;
-            background: #0a0a0a;
-            border: 1px solid #252525;
+            background: #090909;
+            border: 1px solid #1a1a1a;
             overflow: hidden;
             min-width: 0;
             min-height: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             transition:
                 transform .45s cubic-bezier(.16,1,.3,1),
                 border-color .3s ease;
         }
 
         .product.featured {
-            grid-row: 1 / span 2;
+            background: radial-gradient(circle at 80% 20%, rgba(255, 77, 0, 0.08), transparent 50%), #090909;
         }
 
         .product:hover {
             transform: translateY(-6px);
-            border-color: #444;
+            border-color: #333;
         }
 
         .product::after {
@@ -688,9 +690,9 @@
             inset: 0;
             background: linear-gradient(
                 180deg,
-                transparent 42%,
-                rgba(0,0,0,.08) 55%,
-                rgba(0,0,0,.82) 100%
+                transparent 35%,
+                rgba(0,0,0,.15) 60%,
+                rgba(0,0,0,.92) 100%
             );
             pointer-events: none;
             z-index: 1;
@@ -705,24 +707,24 @@
             max-height: 100%;
             object-fit: contain;
             object-position: center center;
-            padding: 28px 26px 92px;
+            padding: 40px 30px 100px;
             display: block;
             transition: transform .8s cubic-bezier(.16,1,.3,1);
         }
 
         .product.featured img {
-            padding: 38px 36px 105px;
+            padding: 50px 40px 110px;
         }
 
         .product:hover img {
-            transform: scale(1.025);
+            transform: scale(1.03);
         }
 
         .product-info {
             position: absolute;
-            left: 22px;
-            right: 22px;
-            bottom: 20px;
+            left: 28px;
+            right: 28px;
+            bottom: 24px;
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
@@ -745,7 +747,7 @@
 
         .product-name {
             display: block;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 850;
             text-transform: uppercase;
             line-height: 1.05;
@@ -755,23 +757,24 @@
         }
 
         .product.featured .product-name {
-            font-size: 21px;
+            font-size: 24px;
         }
 
         .product-number {
-            color: #aaa;
-            font-size: 8px;
+            color: #777;
+            font-size: 9px;
             font-weight: 800;
             letter-spacing: 2px;
             flex: 0 0 auto;
         }
 
         .product-cta {
+            display: inline-block;
             color: #fff;
             font-size: 8px;
             font-weight: 900;
             letter-spacing: 2px;
-            margin-top: 8px;
+            margin-top: 10px;
         }
 
         .product-cta span {
@@ -781,11 +784,11 @@
 
         .badge {
             position: absolute;
-            top: 16px;
-            left: 16px;
+            top: 20px;
+            left: 20px;
             background: var(--arancio);
             color: #050505;
-            padding: 8px 10px;
+            padding: 8px 12px;
             font-size: 8px;
             font-weight: 900;
             letter-spacing: 2px;
@@ -794,10 +797,10 @@
 
         .product-meta {
             position: absolute;
-            top: 17px;
-            right: 17px;
-            color: #666;
-            font-size: 7px;
+            top: 22px;
+            right: 22px;
+            color: #555;
+            font-size: 8px;
             font-weight: 800;
             letter-spacing: 2px;
             z-index: 3;
@@ -947,61 +950,60 @@
         .email-box {
             border-top: 1px solid #292929;
             border-bottom: 1px solid #292929;
-
             padding: 60px 0;
-
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-
             gap: 60px;
         }
 
         .email-kicker {
             color: var(--arancio);
-
             font-size: 10px;
             font-weight: 800;
-
             letter-spacing: 5px;
-
             margin-bottom: 20px;
         }
 
         .email-title {
             font-size: clamp(42px, 6vw, 85px);
-
             line-height: .86;
-
             font-weight: 900;
-
             letter-spacing: -5px;
         }
 
-        .email-form {
+        .email-copy {
+            color: #777;
+            font-size: 12px;
+            line-height: 1.55;
+            max-width: 360px;
+            margin-top: 18px;
+        }
+
+        .email-form-wrap {
             width: min(600px, 100%);
+        }
 
+        .email-form {
+            width: 100%;
             display: flex;
-
             border-bottom: 1px solid #666;
-
             padding-bottom: 15px;
+            transition: border-color .25s ease;
+        }
+
+        .email-form:focus-within {
+            border-color: var(--arancio);
         }
 
         .email-form input {
             flex: 1;
-
             min-width: 0;
-
             background: transparent;
-
             border: 0;
             outline: 0;
-
             color: white;
-
             font-size: 13px;
-
             letter-spacing: 1px;
         }
 
@@ -1011,23 +1013,49 @@
 
         .email-form button {
             border: 0;
-
             background: transparent;
-
             color: var(--arancio);
-
             font-size: 10px;
             font-weight: 900;
-
             letter-spacing: 3px;
-
             cursor: pointer;
-
-            transition: transform .25s ease;
+            white-space: nowrap;
+            transition: transform .25s ease, opacity .25s ease;
         }
 
-        .email-form button:hover {
+        .email-form button:hover:not(:disabled) {
             transform: translateX(7px);
+        }
+
+        .email-form button:disabled {
+            cursor: wait;
+            opacity: .55;
+        }
+
+        .email-feedback {
+            min-height: 18px;
+            margin-top: 14px;
+            color: #777;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(5px);
+            transition: opacity .25s ease, transform .25s ease;
+        }
+
+        .email-feedback.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .email-feedback.success {
+            color: #f4f4f2;
+        }
+
+        .email-feedback.error {
+            color: var(--arancio);
         }
 
 
@@ -1225,39 +1253,6 @@
                 letter-spacing: -4px;
             }
 
-            .products {
-                grid-template-columns: repeat(2, 1fr);
-
-                gap: 8px;
-            }
-
-            .product {
-                aspect-ratio: .72;
-            }
-
-            .product-info {
-                left: 10px;
-                right: 10px;
-                bottom: 10px;
-            }
-
-            .product-name {
-                font-size: 9px;
-            }
-
-            .product-number {
-                font-size: 7px;
-            }
-
-            .badge {
-                top: 9px;
-                left: 9px;
-
-                padding: 6px 7px;
-
-                font-size: 6px;
-            }
-
             .categories {
                 grid-template-columns: 1fr;
 
@@ -1292,18 +1287,31 @@
 
             .email-box {
                 display: block;
-
                 padding: 45px 0;
             }
 
             .email-title {
                 font-size: 55px;
+                margin-bottom: 0;
+            }
 
-                margin-bottom: 45px;
+            .email-copy {
+                max-width: 320px;
+                margin-top: 18px;
+                margin-bottom: 38px;
             }
 
             .email-form {
                 width: 100%;
+            }
+
+            .email-form input {
+                font-size: 12px;
+            }
+
+            .email-form button {
+                font-size: 9px;
+                letter-spacing: 2px;
             }
 
             .footer-grid {
@@ -1375,41 +1383,41 @@
         }
 
         /* =========================================================
-           NUOVI ARRIVI — MOBILE
+           NUOVI ARRIVI — MOBILE (PREMIUM & COMPATTO)
         ========================================================= */
-        @media (max-width: 700px) {
+        @media (max-width: 768px) {
 
             .products {
                 grid-template-columns: 1fr;
-                grid-template-rows: auto;
-                gap: 10px;
-                min-height: 0;
+                gap: 12px;
+                min-height: auto;
             }
 
-            .product,
-            .product.featured {
-                grid-row: auto;
-                min-height: 290px;
+            .product {
+                min-height: 240px;
             }
 
             .product.featured {
-                min-height: 390px;
+                min-height: 320px;
             }
 
-            .product img,
+            .product img {
+                padding: 24px 20px 80px;
+            }
+
             .product.featured img {
-                padding: 28px 24px 92px;
+                padding: 30px 24px 90px;
             }
 
             .product-info {
-                left: 15px;
-                right: 15px;
-                bottom: 14px;
-                gap: 10px;
+                left: 16px;
+                right: 16px;
+                bottom: 16px;
+                gap: 12px;
             }
 
             .product-name {
-                font-size: 11px;
+                font-size: 13px;
             }
 
             .product.featured .product-name {
@@ -1424,23 +1432,24 @@
             .product-cta {
                 font-size: 7px;
                 letter-spacing: 1.5px;
+                margin-top: 6px;
             }
 
             .product-number {
-                font-size: 7px;
+                font-size: 8px;
             }
 
             .badge {
-                top: 11px;
-                left: 11px;
-                padding: 7px 8px;
-                font-size: 6px;
+                top: 12px;
+                left: 12px;
+                padding: 6px 9px;
+                font-size: 7px;
             }
 
             .product-meta {
-                top: 12px;
-                right: 12px;
-                font-size: 6px;
+                top: 14px;
+                right: 14px;
+                font-size: 7px;
             }
         }
 
@@ -1509,19 +1518,6 @@
         .product {
             overflow: hidden;
             min-width: 0;
-        }
-
-        .product img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            object-position: center center;
-            padding: 18px 14px 68px;
-            box-sizing: border-box;
         }
 
         .product-info {
@@ -1923,7 +1919,7 @@
 
 
         <!-- =====================================================
-             NUOVI ARRIVI
+             NUOVI ARRIVI — CURATED DROP (2 PRODOTTI EDITORIALI)
         ===================================================== -->
 
         <section
@@ -2025,43 +2021,6 @@
 
                         <span class="product-number">
                             JR9633
-                        </span>
-                    </div>
-                </a>
-
-                <!-- PRODOTTO 3 -->
-                <a
-                    href="asics.html"
-                    class="product reveal"
-                >
-                    <span class="badge">
-                        NUOVO
-                    </span>
-
-                    <span class="product-meta">
-                        DROP / 003
-                    </span>
-
-                    <img
-                        src="images/asics/Asics-1.jpeg"
-                        alt="ASICS GEL-NYC — 1201A789-103"
-                    >
-
-                    <div class="product-info">
-                        <div class="product-copy">
-                            <span class="product-label">
-                                NEW IN
-                            </span>
-                            <span class="product-name">
-                                ASICS GEL-NYC
-                            </span>
-                            <span class="product-cta">
-                                ESPLORA <span>→</span>
-                            </span>
-                        </div>
-
-                        <span class="product-number">
-                            1201A789-103
                         </span>
                     </div>
                 </a>
@@ -2238,26 +2197,47 @@
                         FUORI.
                     </h2>
 
+                    <p class="email-copy">
+                        Nuovi arrivi, drop e selezioni FUORISCHEMA.
+                        Solo quello che vale la pena vedere.
+                    </p>
+
                 </div>
 
 
-                <form
-                    class="email-form"
-                    id="emailForm"
-                >
-
-                    <input
-                        type="email"
-                        placeholder="INSERISCI LA TUA EMAIL"
-                        aria-label="Inserisci la tua email"
-                        required
+                <div class="email-form-wrap">
+                    <form
+                        class="email-form"
+                        id="emailForm"
+                        novalidate
                     >
 
-                    <button type="submit">
-                        ENTRA →
-                    </button>
+                        <input
+                            id="newsletterEmail"
+                            name="email"
+                            type="email"
+                            inputmode="email"
+                            autocomplete="email"
+                            placeholder="INSERISCI LA TUA EMAIL"
+                            aria-label="Inserisci la tua email"
+                            aria-describedby="newsletterFeedback"
+                            required
+                            maxlength="254"
+                        >
 
-                </form>
+                        <button type="submit">
+                            ENTRA →
+                        </button>
+
+                    </form>
+
+                    <div
+                        class="email-feedback"
+                        id="newsletterFeedback"
+                        role="status"
+                        aria-live="polite"
+                    ></div>
+                </div>
 
             </div>
 
@@ -2556,20 +2536,44 @@
 
 
         /* =====================================================
-           NEWSLETTER
+           NEWSLETTER — FUORISCHEMA
         ===================================================== */
 
         const emailForm = document.getElementById("emailForm");
+        const newsletterEmail = document.getElementById("newsletterEmail");
+        const newsletterFeedback = document.getElementById("newsletterFeedback");
 
-        if (emailForm) {
+        function setNewsletterFeedback(message, type = "") {
+            if (!newsletterFeedback) return;
+
+            newsletterFeedback.textContent = message;
+            newsletterFeedback.className = "email-feedback visible";
+
+            if (type) {
+                newsletterFeedback.classList.add(type);
+            }
+        }
+
+        if (emailForm && newsletterEmail) {
             emailForm.addEventListener("submit", async function (event) {
                 event.preventDefault();
 
                 const button = emailForm.querySelector("button");
-                const input = emailForm.querySelector("input");
-                const email = input.value.trim();
+                const email = newsletterEmail.value.trim().toLowerCase();
 
-                if (!email) return;
+                setNewsletterFeedback("");
+
+                if (!email) {
+                    setNewsletterFeedback("Inserisci la tua email.", "error");
+                    newsletterEmail.focus();
+                    return;
+                }
+
+                if (!newsletterEmail.checkValidity()) {
+                    setNewsletterFeedback("Inserisci un indirizzo email valido.", "error");
+                    newsletterEmail.focus();
+                    return;
+                }
 
                 button.disabled = true;
                 button.textContent = "ISCRIZIONE...";
@@ -2580,15 +2584,11 @@
                     const { data, error } = await supabase.functions.invoke(
                         "newsletter",
                         {
-                            body: {
-                                email: email
-                            }
+                            body: { email }
                         }
                     );
 
-                    if (error) {
-                        throw error;
-                    }
+                    if (error) throw error;
 
                     if (!data || data.success !== true) {
                         throw new Error(
@@ -2596,30 +2596,39 @@
                         );
                     }
 
-                    button.textContent = "ISCRITTO ✓";
-                    button.style.color = "#ffffff";
+                    newsletterEmail.value = "";
 
-                    input.value = "";
+                    if (data.alreadySubscribed) {
+                        button.textContent = "GIÀ ISCRITTO ✓";
+                        setNewsletterFeedback(
+                            "Questa email è già dentro FUORISCHEMA.",
+                            "success"
+                        );
+                    } else {
+                        button.textContent = "ISCRITTO ✓";
+                        setNewsletterFeedback(
+                            "Sei dentro. Ti scriveremo solo quando ne vale la pena.",
+                            "success"
+                        );
+                    }
 
                 } catch (error) {
                     console.error("Newsletter error:", error);
 
                     button.textContent = "RIPROVA →";
-                    button.style.color = "#ff4d00";
+                    setNewsletterFeedback(
+                        "Non siamo riusciti a completare l'iscrizione. Riprova tra poco.",
+                        "error"
+                    );
 
                 } finally {
                     setTimeout(() => {
                         button.disabled = false;
-
-                        if (button.textContent === "RIPROVA →") {
-                            button.textContent = "ENTRA →";
-                            button.style.color = "";
-                        }
-                    }, 3000);
+                        button.textContent = "ENTRA →";
+                    }, 3500);
                 }
             });
         }
-
     </script>
     <script type="module">
         import { supabase } from "./supabase.js";
