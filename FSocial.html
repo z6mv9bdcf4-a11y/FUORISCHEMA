@@ -71,7 +71,7 @@ a{
     height:56px;
     display:flex;
     align-items:center;
-    justify-space:between;
+    justify-content:space-between;
     padding:0 24px;
     background:rgba(5, 5, 5, 0.82);
     backdrop-filter:blur(24px);
@@ -1673,66 +1673,6 @@ function setAvatar(element, author){
     }
 }
 
-function getForYouHistoryKey(){
-    return `fsocial_foryou_history_${currentUser?.id || "guest"}`;
-}
-
-function loadForYouHistory(){
-    try{
-        const raw = localStorage.getItem(getForYouHistoryKey());
-        const parsed = raw ? JSON.parse(raw) : [];
-        return Array.isArray(parsed) ? parsed : [];
-    }catch{
-        return [];
-    }
-}
-
-function saveForYouHistory(posts){
-    try{
-        const history = posts.slice(0, 12).map((post, index) => ({
-            id: post.id,
-            position: index,
-            shownAt: Date.now()
-        }));
-        localStorage.setItem(getForYouHistoryKey(), JSON.stringify(history));
-    }catch{
-    }
-}
-
-function getRotationPenalty(postId, history){
-    const item = history.find(entry => entry.id === postId);
-    if(!item) return 1;
-
-    if(item.position === 0) return 0.18;
-    if(item.position === 1) return 0.35;
-    if(item.position === 2) return 0.55;
-    if(item.position <= 5) return 0.72;
-    return 0.86;
-}
-
-function getRandomFeedNoise(){
-    return 0.88 + (Math.random() * 0.24);
-}
-
-function getDynamicWindowParams(N) {
-    if (!N || N <= 0) {
-        return { K: 150, T: 720 };
-    }
-
-    const rawK = Math.min(N, 50 + Math.floor(5 * Math.sqrt(N)));
-    const K = Math.min(150, rawK);
-
-    const T_max = 720;
-    const T_min = 48;
-    const N0 = 100;
-    const gamma = 1.2;
-
-    const T = T_min + (T_max - T_min) /
-        (1 + Math.pow(N / N0, gamma));
-
-    return { K, T };
-}
-
 /* =========================================================
    AUTH
 ========================================================= */
@@ -1770,10 +1710,27 @@ async function checkUser(){
     updateNotificationBadge();
     loadFeed();
 
-    // Controlla se le notifiche sono state richieste da URL
+    // Gestione parametri URL per azioni da altre pagine (es. Area Personale)
     const urlParams = new URLSearchParams(window.location.search);
+    const action = urlParams.get("action");
+    
     if (urlParams.get("openNotifications") === "1") {
         openNotifications();
+        window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (action === "search") {
+        updateBottomNavActiveState("navSearch");
+        setTimeout(() => {
+            userSearchInput?.scrollIntoView({ behavior: "smooth", block: "center" });
+            userSearchInput?.focus();
+        }, 300);
+        window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (action === "create") {
+        updateBottomNavActiveState("navCreate");
+        setTimeout(() => {
+            const card = document.getElementById("createPostCard");
+            card?.scrollIntoView({ behavior: "smooth", block: "center" });
+            postContent?.focus();
+        }, 300);
         window.history.replaceState({}, document.title, window.location.pathname);
     }
 
@@ -1782,7 +1739,7 @@ async function checkUser(){
 
 checkUser();
 
-logoutButton.addEventListener("click", async () => {
+logoutButton?.addEventListener("click", async () => {
     logoutButton.disabled = true;
     if(notifPollInterval) clearInterval(notifPollInterval);
     await supabase.auth.signOut();
@@ -1942,586 +1899,324 @@ async function loadNotifications() {
         });
     } catch (err) {
         console.error("Errore caricamento notifiche:", err);
-        notifList.innerHTML = `<div class="search-state-message">Errore durante il caricamento notifiche</div>`;
+        notifList.innerHTML = `<div class="search-state-message">Impossibile caricare le notifiche.</div>`;
     }
 }
 
 async function handleNotificationClick(notif) {
     if (!notif.is_read) {
-        try {
-            await supabase
-                .from("notifications")
-                .update({ is_read: true })
-                .eq("id", notif.id)
-                .eq("user_id", currentUser.id);
-            
-            updateNotificationBadge();
-        } catch (err) {
-            console.error("Errore aggiornamento notifica:", err);
-        }
+        await supabase
+            .from("notifications")
+            .update({ is_read: true })
+            .eq("id", notif.id);
+        updateNotificationBadge();
     }
-
     closeNotifications();
 
     if (notif.post_id) {
-        let targetPostEl = document.getElementById(`comments-${notif.post_id}`)?.closest(".post-card");
-        
-        if (!targetPostEl) {
-            await loadFeed();
-            targetPostEl = document.getElementById(`comments-${notif.post_id}`)?.closest(".post-card");
-        }
-
-        if (targetPostEl) {
-            targetPostEl.scrollIntoView({ behavior: "smooth", block: "center" });
-            targetPostEl.style.transition = "box-shadow 0.4s ease";
-            targetPostEl.style.boxShadow = "0 0 24px var(--orange)";
-            setTimeout(() => {
-                targetPostEl.style.boxShadow = "";
-            }, 2000);
-
-            if (notif.type === "comment") {
-                const commentBox = document.getElementById(`comments-${notif.post_id}`);
-                if (commentBox && !commentBox.classList.contains("active")) {
-                    toggleComments(notif.post_id, targetPostEl);
-                }
-            }
-        } else {
-            showToast("Impossibile trovare il post collegato.");
+        const postEl = document.getElementById(`post-${notif.post_id}`);
+        if (postEl) {
+            postEl.scrollIntoView({ behavior: "smooth", block: "center" });
+            postEl.style.boxShadow = "0 0 20px var(--orange-glow)";
+            setTimeout(() => { postEl.style.boxShadow = ""; }, 2000);
         }
     }
 }
 
-async function markAllNotificationsRead() {
+function openNotifications() {
+    if (notifOverlay) {
+        notifOverlay.classList.add("active");
+        document.body.classList.add("modal-open");
+        loadNotifications();
+    }
+}
+
+function closeNotifications() {
+    if (notifOverlay) {
+        notifOverlay.classList.remove("active");
+        document.body.classList.remove("modal-open");
+    }
+}
+
+notifClose?.addEventListener("click", closeNotifications);
+notifOverlay?.addEventListener("click", (e) => {
+    if (e.target === notifOverlay) closeNotifications();
+});
+
+notifMarkAllBtn?.addEventListener("click", async () => {
     if (!currentUser) return;
     try {
-        const { error } = await supabase
+        await supabase
             .from("notifications")
             .update({ is_read: true })
             .eq("user_id", currentUser.id)
             .eq("is_read", false);
 
-        if (error) throw error;
-
-        showToast("Tutte le notifiche segnate come lette.");
         updateNotificationBadge();
         loadNotifications();
+        showToast("Tutte le notifiche lette");
     } catch (err) {
-        console.error("Errore segna notifiche lette:", err);
-        showToast("Errore durante l'operazione.");
+        console.error(err);
     }
-}
-
-function openNotifications() {
-    loadNotifications();
-    notifOverlay.style.display = "flex";
-    setTimeout(() => {
-        notifOverlay.classList.add("active");
-    }, 10);
-    document.body.classList.add("modal-open");
-}
-
-function closeNotifications() {
-    notifOverlay.classList.remove("active");
-    setTimeout(() => {
-        if (!notifOverlay.classList.contains("active")) {
-            notifOverlay.style.display = "none";
-        }
-    }, 320);
-    document.body.classList.remove("modal-open");
-}
-
-notifClose.addEventListener("click", closeNotifications);
-notifMarkAllBtn.addEventListener("click", markAllNotificationsRead);
-notifOverlay.addEventListener("click", (e) => {
-    if (e.target === notifOverlay) closeNotifications();
 });
 
 /* =========================================================
-   SEARCH USERS
+   USER SEARCH
 ========================================================= */
-userSearchInput.addEventListener("input", (e) => {
+userSearchInput?.addEventListener("input", (e) => {
     const query = e.target.value.trim();
-
     if (query.length > 0) {
         searchClearBtn.style.display = "block";
     } else {
         searchClearBtn.style.display = "none";
         searchResults.classList.remove("active");
-        searchResults.innerHTML = "";
         return;
     }
 
     clearTimeout(searchDebounceTimer);
     searchDebounceTimer = setTimeout(() => {
-        searchUsers(query);
-    }, 250);
+        performUserSearch(query);
+    }, 300);
 });
 
-searchClearBtn.addEventListener("click", () => {
+searchClearBtn?.addEventListener("click", () => {
     userSearchInput.value = "";
     searchClearBtn.style.display = "none";
     searchResults.classList.remove("active");
-    searchResults.innerHTML = "";
-    userSearchInput.focus();
 });
 
-document.addEventListener("click", (e) => {
-    if (!e.target.closest(".user-search-wrapper")) {
-        searchResults.classList.remove("active");
-    }
-});
-
-userSearchInput.addEventListener("focus", () => {
-    if (userSearchInput.value.trim().length > 0 && searchResults.children.length > 0) {
-        searchResults.classList.add("active");
-    }
-});
-
-async function searchUsers(query) {
-    const cleanQuery = query.replace(/^@/, "").trim();
-    if (!cleanQuery) {
-        searchResults.classList.remove("active");
-        searchResults.innerHTML = "";
-        return;
-    }
-
+async function performUserSearch(query) {
     searchResults.innerHTML = `<div class="search-state-message">Ricerca in corso...</div>`;
     searchResults.classList.add("active");
 
     try {
+        const cleanQuery = query.replace(/^@/, "").toLowerCase();
         const { data, error } = await supabase
             .from("profiles")
-            .select("id, username, full_name, instagram, avatar_url, bio")
-            .or(`username.ilike.%${cleanQuery}%,full_name.ilike.%${cleanQuery}%`)
+            .select("*")
+            .or(`full_name.ilike.%${cleanQuery}%,username.ilike.%${cleanQuery}%`)
             .limit(8);
 
         if (error) throw error;
 
         if (!data || data.length === 0) {
-            searchResults.innerHTML = `<div class="search-state-message">Nessun utente trovato per "${escapeHtml(cleanQuery)}"</div>`;
+            searchResults.innerHTML = `<div class="search-state-message">Nessun utente trovato</div>`;
             return;
         }
 
         searchResults.innerHTML = "";
         data.forEach(profile => {
-            const author = {
-                id: profile.id,
-                name: profile.full_name || profile.username || "MEMBRO FUORISCHEMA",
-                username: profile.username || "",
-                instagram: profile.instagram || "",
-                avatar: profile.avatar_url || "",
-                bio: profile.bio || "Membro FUORISCHEMA."
-            };
-
             const item = document.createElement("div");
             item.className = "search-result-item";
 
-            const avatarContent = author.avatar
-                ? `<img src="${escapeHtml(author.avatar)}" alt="">`
-                : escapeHtml(getInitials(author.name));
+            const name = profile.full_name || "Membro Fuorischema";
+            const handle = profile.username ? `@${profile.username}` : "";
+            const avatar = profile.avatar_url;
+
+            const avatarHtml = avatar 
+                ? `<img src="${escapeHtml(avatar)}" alt="">` 
+                : escapeHtml(getInitials(name));
 
             item.innerHTML = `
-                <div class="search-result-avatar">${avatarContent}</div>
+                <div class="search-result-avatar">${avatarHtml}</div>
                 <div class="search-result-info">
-                    <div class="search-result-name">${escapeHtml(author.name)}</div>
-                    <div class="search-result-handle">${author.username ? "@" + escapeHtml(author.username) : "Membro FUORISCHEMA"}</div>
+                    <span class="search-result-name">${escapeHtml(name)}</span>
+                    <span class="search-result-handle">${escapeHtml(handle)}</span>
                 </div>
             `;
 
             item.addEventListener("click", () => {
                 searchResults.classList.remove("active");
-                openProfile(author);
+                openUserProfileModal(profile.id);
             });
 
             searchResults.appendChild(item);
         });
+
     } catch (err) {
-        console.error("Errore durante la ricerca utenti:", err);
+        console.error("Errore ricerca utenti:", err);
         searchResults.innerHTML = `<div class="search-state-message">Errore durante la ricerca</div>`;
     }
 }
 
 /* =========================================================
-   IMAGE POST
+   USER PROFILE MODAL
 ========================================================= */
-postImageInput.addEventListener("change", () => {
-    const file = postImageInput.files?.[0];
-    if(!file) return;
+const profileAuthorCache = {};
 
-    if(!file.type.startsWith("image/")){
-        showToast("Seleziona una foto.");
-        postImageInput.value = "";
-        return;
+async function resolveAuthor(userId) {
+    if (profileAuthorCache[userId]) return profileAuthorCache[userId];
+
+    try {
+        const { data } = await supabase
+            .from("profiles")
+            .select("full_name, username, avatar_url, bio, instagram")
+            .eq("id", userId)
+            .maybeSingle();
+
+        if (data) {
+            const res = {
+                name: data.full_name || "Membro Fuorischema",
+                username: data.username || "",
+                avatar: data.avatar_url || "",
+                bio: data.bio || "Membro Fuorischema.",
+                instagram: data.instagram || ""
+            };
+            profileAuthorCache[userId] = res;
+            return res;
+        }
+    } catch (err) {
+        console.error(err);
     }
 
-    if(file.size > 10 * 1024 * 1024){
-        showToast("La foto è troppo grande. Massimo 10 MB.");
-        postImageInput.value = "";
-        return;
+    const fallback = {
+        name: "Membro Fuorischema",
+        username: "",
+        avatar: "",
+        bio: "Membro Fuorischema.",
+        instagram: ""
+    };
+    profileAuthorCache[userId] = fallback;
+    return fallback;
+}
+
+async function openUserProfileModal(userId) {
+    const profile = await resolveAuthor(userId);
+
+    modalName.textContent = profile.name;
+    modalHandle.textContent = profile.username ? `@${profile.username}` : "";
+    modalBio.textContent = profile.bio || "Membro FUORISCHEMA.";
+
+    if (profile.avatar) {
+        modalAvatar.innerHTML = `<img src="${escapeHtml(profile.avatar)}" alt="">`;
+    } else {
+        modalAvatar.textContent = getInitials(profile.name);
     }
 
-    selectedImageFile = file;
+    if (profile.instagram) {
+        const igHandle = profile.instagram.replace(/^@/, "");
+        instagramLink.href = `https://instagram.com/${igHandle}`;
+        instagramLink.style.display = "flex";
+    } else {
+        instagramLink.style.display = "none";
+    }
 
-    if(selectedImageUrl) URL.revokeObjectURL(selectedImageUrl);
-    selectedImageUrl = URL.createObjectURL(file);
+    profilePageLink.href = `area-personale.html?id=${userId}`;
 
-    previewImage.src = selectedImageUrl;
-    postImagePreview.classList.add("active");
+    profileOverlay.classList.add("active");
+    document.body.classList.add("modal-open");
+}
+
+profileClose?.addEventListener("click", () => {
+    profileOverlay.classList.remove("active");
+    document.body.classList.remove("modal-open");
 });
 
-removeImageButton.addEventListener("click", () => {
+profileOverlay?.addEventListener("click", (e) => {
+    if (e.target === profileOverlay) {
+        profileOverlay.classList.remove("active");
+        document.body.classList.remove("modal-open");
+    }
+});
+
+/* =========================================================
+   CREATE POST & MEDIA UPLOAD
+========================================================= */
+postImageInput?.addEventListener("change", (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    selectedImageFile = file;
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+        previewImage.src = evt.target.result;
+        postImagePreview.classList.add("active");
+    };
+    reader.readAsDataURL(file);
+});
+
+removeImageButton?.addEventListener("click", () => {
     selectedImageFile = null;
     postImageInput.value = "";
-
-    if(selectedImageUrl) URL.revokeObjectURL(selectedImageUrl);
-    selectedImageUrl = null;
-
     previewImage.src = "";
     postImagePreview.classList.remove("active");
 });
 
-async function uploadPostImage(file){
-   const uniqueId = (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function")
-    ? crypto.randomUUID()
-    : `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
-
-    const path = `${currentUser.id}/${uniqueId}`;
-
-    const {error} = await supabase.storage
-        .from("post-images")
-        .upload(path,file,{cacheControl:"3600",upsert:false});
-
-    if(error) throw new Error("Non riesco a caricare la foto: " + error.message);
-
-    const {data} = supabase.storage.from("post-images").getPublicUrl(path);
-    return data?.publicUrl || null;
-}
-
-publishButton.addEventListener("click", async () => {
-    if(!currentUser){
-        showToast("Devi essere loggato.");
-        return;
-    }
-
+publishButton?.addEventListener("click", async () => {
     const content = postContent.value.trim();
-    if(!content && !selectedImageFile){
-        showToast("Scrivi qualcosa o aggiungi una foto.");
+    if (!content && !selectedImageFile) {
+        showToast("Inserisci un testo o un'immagine");
         return;
     }
 
     publishButton.disabled = true;
-    postStatus.textContent = "Pubblicazione...";
+    postStatus.textContent = "Caricamento...";
 
-    try{
+    try {
         let imageUrl = null;
-        if(selectedImageFile) imageUrl = await uploadPostImage(selectedImageFile);
 
-        const postData = {
-            user_id: currentUser.id,
-            content
-        };
-        if(imageUrl) postData.image_url = imageUrl;
+        if (selectedImageFile) {
+            const ext = selectedImageFile.name.split('.').pop();
+            const fileName = `${currentUser.id}/${Date.now()}.${ext}`;
 
-        const {error} = await supabase.from("posts").insert(postData);
-        if(error) throw error;
+            const { error: uploadErr } = await supabase.storage
+                .from("posts")
+                .upload(fileName, selectedImageFile);
+
+            if (uploadErr) throw uploadErr;
+
+            const { data: urlData } = supabase.storage
+                .from("posts")
+                .getPublicUrl(fileName);
+
+            imageUrl = urlData.publicUrl;
+        }
+
+        const { error: insertErr } = await supabase
+            .from("posts")
+            .insert({
+                user_id: currentUser.id,
+                content: content,
+                image_url: imageUrl
+            });
+
+        if (insertErr) throw insertErr;
 
         postContent.value = "";
         selectedImageFile = null;
         postImageInput.value = "";
-
-        if(selectedImageUrl) URL.revokeObjectURL(selectedImageUrl);
-        selectedImageUrl = null;
         previewImage.src = "";
         postImagePreview.classList.remove("active");
+        postStatus.textContent = "";
 
-        postStatus.textContent = "Pubblicato.";
-        showToast("Post pubblicato 🔥");
-        await loadFeed();
-    }catch(error){
-        console.error(error);
-        postStatus.textContent = "Errore";
-        showToast(error.message || "Errore durante la pubblicazione.");
-    }finally{
+        showToast("Post pubblicato!");
+        loadFeed();
+
+    } catch (err) {
+        console.error("Errore pubblicazione post:", err);
+        showToast("Errore durante la pubblicazione");
+        postStatus.textContent = "";
+    } finally {
         publishButton.disabled = false;
     }
 });
 
 /* =========================================================
-   PROFILES
+   FEED TABS & FEED LOADER
 ========================================================= */
-async function getProfile(userId){
-    if(!userId) return null;
-
-    const {data,error} = await supabase
-        .from("profiles")
-        .select("id,username,full_name,instagram,avatar_url,bio")
-        .eq("id",userId)
-        .maybeSingle();
-
-    if(error){
-        console.warn("Profilo non disponibile:",error.message);
-        return null;
-    }
-    return data || null;
-}
-
-async function resolveAuthor(userId){
-    const profile = await getProfile(userId);
-
-    if(profile){
-        return {
-            id:profile.id,
-            name:profile.full_name || profile.username || "MEMBRO FUORISCHEMA",
-            username:profile.username || "",
-            instagram:profile.instagram || "",
-            avatar:profile.avatar_url || "",
-            bio:profile.bio || "Membro FUORISCHEMA."
-        };
-    }
-
-    if(currentUser && userId === currentUser.id){
-        return {
-            id:currentUser.id,
-            name:getUserName(currentUser),
-            username:getUsername(currentUser),
-            instagram:getInstagram(currentUser),
-            avatar:getAvatar(currentUser),
-            bio:"Membro FUORISCHEMA."
-        };
-    }
-
-    return {
-        id:userId,
-        name:"MEMBRO FUORISCHEMA",
-        username:"",
-        instagram:"",
-        avatar:"",
-        bio:"Membro FUORISCHEMA."
-    };
-}
-
-function openProfile(author){
-    setAvatar(modalAvatar,author);
-    modalName.textContent = author.name;
-    modalHandle.textContent = author.username ? `@${author.username}` : "Membro FUORISCHEMA";
-    modalBio.textContent = author.bio || "Membro FUORISCHEMA.";
-
-    if(author.instagram){
-        const username = author.instagram.replace(/^@/,"").trim();
-        instagramLink.href = `https://instagram.com/${encodeURIComponent(username)}`;
-        instagramLink.style.display = "flex";
-    }else{
-        instagramLink.href = "#";
-        instagramLink.style.display = "none";
-    }
-
-    profilePageLink.href = author?.id ? `area-personale.html?id=${encodeURIComponent(author.id)}` : "area-personale.html";
-    profileOverlay.classList.add("active");
-    profileOverlay.style.display = "flex";
-    document.body.classList.add("modal-open");
-}
-
-function closeProfile(){
-    profileOverlay.classList.remove("active");
-    setTimeout(() => {
-        if(!profileOverlay.classList.contains("active")){
-            profileOverlay.style.display = "none";
-        }
-    }, 250);
-    document.body.classList.remove("modal-open");
-}
-
-profileClose.addEventListener("click",closeProfile);
-profileOverlay.addEventListener("click",event => {
-    if(event.target === profileOverlay) closeProfile();
-});
-
-/* =========================================================
-   FEED LOGIC WITH DYNAMIC WINDOW
-========================================================= */
-
-tabForYou.addEventListener("click", () => {
-    if (currentFeedType === "foryou") return;
-    currentFeedType = "foryou";
+tabForYou?.addEventListener("click", () => {
     tabForYou.classList.add("active");
     tabRecent.classList.remove("active");
+    currentFeedType = "foryou";
     loadFeed();
 });
 
-tabRecent.addEventListener("click", () => {
-    if (currentFeedType === "recent") return;
-    currentFeedType = "recent";
+tabRecent?.addEventListener("click", () => {
     tabRecent.classList.add("active");
     tabForYou.classList.remove("active");
+    currentFeedType = "recent";
     loadFeed();
 });
-
-async function fetchFeedWindow() {
-    const { count: totalPosts, error: countErr } = await supabase
-        .from("posts")
-        .select("id", { count: "exact", head: true });
-
-    if (countErr) throw countErr;
-
-    const N = totalPosts || 0;
-    const { K, T } = getDynamicWindowParams(N);
-
-    const cutoffDate = new Date(Date.now() - T * 60 * 60 * 1000).toISOString();
-
-    let { data: posts, error: fetchErr } = await supabase
-        .from("posts")
-        .select("*")
-        .gte("created_at", cutoffDate)
-        .order("created_at", { ascending: false })
-        .limit(K);
-
-    if (fetchErr) throw fetchErr;
-
-    if (!posts || posts.length === 0) {
-        const { data: fallbackPosts, error: fallbackErr } = await supabase
-            .from("posts")
-            .select("*")
-            .order("created_at", { ascending: false })
-            .limit(K);
-
-        if (fallbackErr) throw fallbackErr;
-        posts = fallbackPosts || [];
-    }
-
-    return posts;
-}
-
-async function fetchRecentPosts() {
-    const posts = await fetchFeedWindow();
-    return posts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-}
-
-async function fetchForYouPosts(){
-    let pool = await fetchFeedWindow();
-
-    if(!pool || pool.length === 0) return [];
-
-    const history = loadForYouHistory();
-
-    if(pool.length < 12){
-        const knownIds = new Set(pool.map(post => post.id));
-
-        const { data: olderPosts, error: olderError } = await supabase
-            .from("posts")
-            .select("*")
-            .order("created_at", { ascending: false })
-            .limit(50);
-
-        if(!olderError && olderPosts){
-            for(const post of olderPosts){
-                if(!knownIds.has(post.id)){
-                    pool.push(post);
-                    knownIds.add(post.id);
-                }
-                if(pool.length >= 50) break;
-            }
-        }
-    }
-
-    const postIds = pool.map(post => post.id);
-
-    let likesMap = {};
-    let commentsMap = {};
-
-    try{
-        const pLikes = supabase
-            .from("post_likes")
-            .select("post_id")
-            .in("post_id", postIds);
-
-        const pComments = supabase
-            .from("post_comments")
-            .select("post_id")
-            .in("post_id", postIds);
-
-        const [resLikes, resComments] = await Promise.all([pLikes, pComments]);
-
-        if(!resLikes.error && resLikes.data){
-            resLikes.data.forEach(l => {
-                likesMap[l.post_id] = (likesMap[l.post_id] || 0) + 1;
-            });
-        }
-
-        if(!resComments.error && resComments.data){
-            resComments.data.forEach(c => {
-                commentsMap[c.post_id] = (commentsMap[c.post_id] || 0) + 1;
-            });
-        }
-    }catch(engagementErr){
-        console.warn("Errore recupero engagement, proseguimento con conteggi a zero:", engagementErr);
-    }
-
-    const now = Date.now();
-
-    const poolWithScore = pool.map(post => {
-        const likes = likesMap[post.id] || 0;
-        const comments = commentsMap[post.id] || 0;
-        const createdAt = new Date(post.created_at).getTime();
-        const hoursSinceCreation = Math.max(
-            0,
-            (now - createdAt) / (1000 * 60 * 60)
-        );
-
-        const baseScore =
-            (1 + (likes * 1.5) + (comments * 2.0)) /
-            Math.pow(hoursSinceCreation + 2, 1.2);
-
-        const rotationPenalty = getRotationPenalty(post.id, history);
-        const randomNoise = getRandomFeedNoise();
-
-        return {
-            post,
-            baseScore: baseScore * rotationPenalty * randomNoise
-        };
-    });
-
-    const selectedPosts = [];
-    const authorSelectedCount = {};
-    let candidates = [...poolWithScore];
-
-    function getAuthorPenalty(count){
-        if(count === 0) return 1.0;
-        if(count === 1) return 0.50;
-        if(count === 2) return 0.25;
-        return 0.20;
-    }
-
-    while(candidates.length > 0){
-        let bestIndex = -1;
-        let bestDynamicScore = -1;
-
-        for(let i = 0; i < candidates.length; i++){
-            const cand = candidates[i];
-            const authorId = cand.post.user_id;
-            const count = authorSelectedCount[authorId] || 0;
-            const penalty = getAuthorPenalty(count);
-            const dynamicScore = cand.baseScore * penalty;
-
-            if(dynamicScore > bestDynamicScore){
-                bestDynamicScore = dynamicScore;
-                bestIndex = i;
-            }
-        }
-
-        if(bestIndex === -1) break;
-
-        const [chosen] = candidates.splice(bestIndex, 1);
-        selectedPosts.push(chosen.post);
-
-        const chosenAuthorId = chosen.post.user_id;
-        authorSelectedCount[chosenAuthorId] =
-            (authorSelectedCount[chosenAuthorId] || 0) + 1;
-    }
-
-    saveForYouHistory(selectedPosts);
-
-    return selectedPosts;
-}
 
 async function loadFeed() {
     feed.innerHTML = `
@@ -2532,376 +2227,297 @@ async function loadFeed() {
         </div>
     `;
 
-    let posts = [];
-
     try {
-        if (currentFeedType === "foryou") {
-            posts = await fetchForYouPosts();
-        } else {
-            posts = await fetchRecentPosts();
-        }
-    } catch (err) {
-        console.warn("Fallback attivato per errore durante il fetch del feed:", err);
-        try {
-            posts = await fetchRecentPosts();
-        } catch (fallbackErr) {
-            console.error("Errore irreversibile nel feed:", fallbackErr);
+        let query = supabase
+            .from("posts")
+            .select("*")
+            .neq("content", "__FS_STORY__")
+            .order("created_at", { ascending: false })
+            .limit(40);
+
+        const { data: posts, error } = await query;
+
+        if (error) throw error;
+
+        if (!posts || posts.length === 0) {
             feed.innerHTML = `
                 <div class="empty">
-                    <div class="empty-icon">!</div>
-                    <strong>ERRORE NEL FEED</strong>
-                    <span>${escapeHtml(fallbackErr.message)}</span>
+                    <div class="empty-icon">⚡</div>
+                    <strong>NESSUN POST PRESENTI</strong>
+                    <span>Sii il primo a condividere una traccia.</span>
                 </div>
             `;
             return;
         }
-    }
 
-    if (!posts || posts.length === 0) {
+        feed.innerHTML = "";
+
+        // Caricamento parallelo autori e likes
+        const authorIds = [...new Set(posts.map(p => p.user_id))];
+        const postIds = posts.map(p => p.id);
+
+        const [likesRes] = await Promise.all([
+            supabase.from("post_likes").select("post_id, user_id").in("post_id", postIds)
+        ]);
+
+        const likesData = likesRes.data || [];
+
+        for (const post of posts) {
+            const author = await resolveAuthor(post.user_id);
+            const postLikes = likesData.filter(l => l.post_id === post.id);
+            const isLiked = currentUser ? postLikes.some(l => l.user_id === currentUser.id) : false;
+
+            const postCard = renderPostCard(post, author, postLikes.length, isLiked);
+            feed.appendChild(postCard);
+        }
+
+    } catch (err) {
+        console.error("Errore caricamento feed:", err);
         feed.innerHTML = `
             <div class="empty">
-                <div class="empty-icon">◎</div>
-                <strong>IL FEED È VUOTO</strong>
-                <span>Sii il primo a lasciare il tuo segno.</span>
+                <div class="empty-icon">⚠️</div>
+                <strong>ERRORE CARICAMENTO</strong>
+                <span>Impossibile caricare il feed in questo momento.</span>
             </div>
         `;
-        return;
     }
-
-    feed.innerHTML = "";
-
-    const authors = await Promise.all(posts.map(post => resolveAuthor(post.user_id)));
-    await Promise.all(posts.map((post, index) => renderPost(post, authors[index])));
 }
 
-async function renderPost(post,author){
-    const article = document.createElement("article");
-    article.className = "post-card";
+function renderPostCard(post, author, likesCount, isLiked) {
+    const card = document.createElement("article");
+    card.className = "post-card";
+    card.id = `post-${post.id}`;
+
+    const isMyPost = currentUser && post.user_id === currentUser.id;
+    const authorName = author.name || "Membro Fuorischema";
+    const authorHandle = author.username ? `@${author.username}` : "";
 
     const avatarHtml = author.avatar
         ? `<img src="${escapeHtml(author.avatar)}" alt="">`
-        : escapeHtml(getInitials(author.name));
+        : escapeHtml(getInitials(authorName));
 
-    const imageHtml = post.image_url ? `
-        <div class="post-image">
-            <img src="${escapeHtml(post.image_url)}" alt="Post FUORISCHEMA" loading="lazy">
-        </div>
-    ` : "";
-
-    const handleOrName = author.username ? author.username : author.name;
-
-    article.innerHTML = `
+    card.innerHTML = `
         <div class="post-header">
-            <div class="post-author author-profile-trigger">
+            <div class="post-author">
                 <div class="post-avatar">${avatarHtml}</div>
                 <div class="post-author-info">
-                    <div class="post-author-name">${escapeHtml(author.name)}</div>
-                    <div class="post-author-handle">${author.username ? "@"+escapeHtml(author.username) : "Membro FUORISCHEMA"}</div>
+                    <span class="post-author-name">${escapeHtml(authorName)}</span>
+                    <span class="post-author-handle">${escapeHtml(authorHandle)}</span>
                 </div>
             </div>
-            <div class="post-date" title="${new Date(post.created_at).toLocaleString("it-IT")}">${escapeHtml(timeAgo(post.created_at))}</div>
+            <span class="post-date">${escapeHtml(timeAgo(post.created_at))}</span>
         </div>
 
-        ${imageHtml}
+        ${post.image_url ? `
+            <div class="post-image">
+                <img src="${escapeHtml(post.image_url)}" alt="Post Image" loading="lazy">
+            </div>
+        ` : ''}
 
         <div class="post-actions">
-            <button class="action-button like-button" type="button" aria-label="Mi piace">
-                <span class="action-icon">♡</span>
+            <button class="action-button like-btn ${isLiked ? 'liked' : ''}" type="button">
+                <span class="action-icon">${isLiked ? '❤️' : '🤍'}</span>
+                <span class="like-count">${likesCount}</span>
             </button>
-
-            <button class="action-button comment-toggle" type="button" aria-label="Commenta">
+            <button class="action-button comment-btn" type="button">
                 <span class="action-icon">💬</span>
             </button>
-
-            <button class="action-button share-button" type="button" aria-label="Condividi">
-                <span class="action-icon">✈</span>
-            </button>
-
-            ${post.user_id === currentUser.id ? `
-                <button class="action-button delete-button" type="button">ELIMINA</button>
-            ` : ""}
-        </div>
-
-        <div class="post-meta">
-            Piace a <strong class="like-count">0</strong> persone
+            ${isMyPost ? `
+                <button class="delete-button" type="button">ELIMINA</button>
+            ` : ''}
         </div>
 
         ${post.content ? `
             <div class="post-body">
                 <div class="post-caption">
-                    <span class="author-username-inline author-profile-trigger" style="cursor:pointer;">${escapeHtml(handleOrName)}</span>
+                    <span class="author-username-inline">${escapeHtml(authorHandle || authorName)}</span>
                     <span class="post-text">${escapeHtml(post.content)}</span>
                 </div>
             </div>
-        ` : ""}
+        ` : ''}
 
-        <div class="comments" id="comments-${escapeHtml(post.id)}">
+        <div class="comments">
             <div class="comments-list"></div>
             <div class="comment-box">
-                <input class="comment-input" type="text" maxlength="500" placeholder="Aggiungi un commento...">
-                <button class="comment-button" type="button">Pubblica</button>
+                <input class="comment-input" type="text" placeholder="Aggiungi un commento...">
+                <button class="comment-button" type="button">INVIA</button>
             </div>
         </div>
     `;
 
-    feed.appendChild(article);
+    // Eventi Autore
+    card.querySelector(".post-author")?.addEventListener("click", () => {
+        openUserProfileModal(post.user_id);
+    });
 
-    const likeButton = article.querySelector(".like-button");
-    const commentButton = article.querySelector(".comment-toggle");
-    const deleteButton = article.querySelector(".delete-button");
-    const shareButton = article.querySelector(".share-button");
-    const addCommentButton = article.querySelector(".comment-button");
-    const input = article.querySelector(".comment-input");
-    const authorTriggers = article.querySelectorAll(".author-profile-trigger");
+    // Evento Like
+    const likeBtn = card.querySelector(".like-btn");
+    likeBtn?.addEventListener("click", () => handleLikeToggle(post.id, likeBtn, post.user_id));
 
-    likeButton.addEventListener("click",() => toggleLike(post.id,likeButton,article));
-    commentButton.addEventListener("click",() => toggleComments(post.id,article));
-    addCommentButton.addEventListener("click",() => addComment(post.id,article));
-    input.addEventListener("keydown",event => {
-        if(event.key === "Enter"){
-            event.preventDefault();
-            addComment(post.id,article);
+    // Evento Commenti Toggle
+    const commentBtn = card.querySelector(".comment-btn");
+    const commentsSec = card.querySelector(".comments");
+    commentBtn?.addEventListener("click", () => {
+        commentsSec.classList.toggle("active");
+        if (commentsSec.classList.contains("active")) {
+            loadComments(post.id, card.querySelector(".comments-list"));
         }
     });
 
-    authorTriggers.forEach(trigger => {
-        trigger.addEventListener("click",(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            openProfile(author);
-        });
+    // Evento Invio Commento
+    const commentInput = card.querySelector(".comment-input");
+    const commentSendBtn = card.querySelector(".comment-button");
+    commentSendBtn?.addEventListener("click", () => {
+        submitComment(post.id, commentInput, card.querySelector(".comments-list"), post.user_id);
     });
 
-    if(deleteButton){
-        deleteButton.addEventListener("click",() => deletePost(post.id));
-    }
+    // Evento Elimina
+    const deleteBtn = card.querySelector(".delete-button");
+    deleteBtn?.addEventListener("click", () => deletePost(post.id, card));
 
-    shareButton.addEventListener("click",async () => {
-        const url = `${location.origin}${location.pathname}#post-${post.id}`;
-        try{
-            await navigator.clipboard.writeText(url);
-            showToast("Link del post copiato.");
-        }catch{
-            showToast("Non posso copiare il link da questo browser.");
-        }
-    });
-
-    await Promise.all([
-        updateLikeState(post.id,likeButton,article),
-        updateCommentCount(post.id,commentButton)
-    ]);
+    return card;
 }
 
 /* =========================================================
-   LIKES
+   LIKES & COMMENTS ACTIONS
 ========================================================= */
-async function updateLikeState(postId,button,article){
-    try{
-        const {count} = await supabase
+async function handleLikeToggle(postId, btnEl, postOwnerId) {
+    if (!currentUser) return;
+
+    const isLiked = btnEl.classList.contains("liked");
+    const countEl = btnEl.querySelector(".like-count");
+    const iconEl = btnEl.querySelector(".action-icon");
+    let count = parseInt(countEl.textContent, 10) || 0;
+
+    if (isLiked) {
+        btnEl.classList.remove("liked");
+        iconEl.textContent = "🤍";
+        count = Math.max(0, count - 1);
+        countEl.textContent = count;
+
+        await supabase
             .from("post_likes")
-            .select("id",{count:"exact",head:true})
-            .eq("post_id",postId);
+            .delete()
+            .eq("post_id", postId)
+            .eq("user_id", currentUser.id);
 
-        const likeCountEl = article.querySelector(".like-count");
-        if(likeCountEl) likeCountEl.textContent = count || 0;
+    } else {
+        btnEl.classList.add("liked");
+        iconEl.textContent = "❤️";
+        count += 1;
+        countEl.textContent = count;
 
-        const {data:existing} = await supabase
+        await supabase
             .from("post_likes")
-            .select("id")
-            .eq("post_id",postId)
-            .eq("user_id",currentUser.id)
-            .maybeSingle();
+            .insert({ post_id: postId, user_id: currentUser.id });
 
-        if(existing){
-            button.classList.add("liked");
-            button.querySelector(".action-icon").textContent = "♥";
+        // Notifica
+        if (postOwnerId !== currentUser.id) {
+            await supabase.from("notifications").insert({
+                user_id: postOwnerId,
+                actor_id: currentUser.id,
+                post_id: postId,
+                type: "like"
+            });
         }
-    }catch(error){
-        console.error("Errore stato like:",error);
     }
 }
 
-async function toggleLike(postId,button,article){
-    if(!currentUser){
-        showToast("Devi essere loggato.");
-        return;
-    }
-    if(button.disabled) return;
+async function loadComments(postId, listContainer) {
+    listContainer.innerHTML = `<div style="font-size:11px; color:var(--muted); text-align:center; padding:8px;">Caricamento commenti...</div>`;
 
-    button.disabled = true;
+    try {
+        const { data, error } = await supabase
+            .from("comments")
+            .select("*")
+            .eq("post_id", postId)
+            .order("created_at", { ascending: true });
 
-    try{
-        const {data:existing,error:checkError} = await supabase
-            .from("post_likes")
-            .select("id")
-            .eq("post_id",postId)
-            .eq("user_id",currentUser.id)
-            .maybeSingle();
+        if (error) throw error;
 
-        if(checkError) throw checkError;
-
-        if(existing){
-            const {error} = await supabase
-                .from("post_likes")
-                .delete()
-                .eq("id",existing.id);
-            if(error) throw error;
-
-            button.classList.remove("liked");
-            button.querySelector(".action-icon").textContent = "♡";
-        }else{
-            const {error} = await supabase
-                .from("post_likes")
-                .insert({post_id:postId,user_id:currentUser.id});
-            if(error) throw error;
-
-            button.classList.add("liked");
-            button.querySelector(".action-icon").textContent = "♥";
+        if (!data || data.length === 0) {
+            listContainer.innerHTML = `<div style="font-size:11px; color:var(--muted); text-align:center; padding:8px;">Nessun commento presente.</div>`;
+            return;
         }
 
-        const {count} = await supabase
-            .from("post_likes")
-            .select("id",{count:"exact",head:true})
-            .eq("post_id",postId);
+        listContainer.innerHTML = "";
+        for (const comment of data) {
+            const author = await resolveAuthor(comment.user_id);
+            const item = document.createElement("div");
+            item.className = "comment";
 
-        const likeCountEl = article.querySelector(".like-count");
-        if(likeCountEl) likeCountEl.textContent = count || 0;
-    }catch(error){
-        console.error(error);
-        showToast("Errore nel like: " + error.message);
-    }finally{
-        button.disabled = false;
+            const avatarHtml = author.avatar
+                ? `<img src="${escapeHtml(author.avatar)}" alt="">`
+                : escapeHtml(getInitials(author.name));
+
+            item.innerHTML = `
+                <div class="comment-avatar">${avatarHtml}</div>
+                <div class="comment-content">
+                    <span class="comment-user">${escapeHtml(author.username ? `@${author.username}` : author.name)}</span>
+                    <span class="comment-text">${escapeHtml(comment.content)}</span>
+                </div>
+            `;
+            listContainer.appendChild(item);
+        }
+
+    } catch (err) {
+        console.error("Errore caricamento commenti:", err);
+        listContainer.innerHTML = `<div style="font-size:11px; color:var(--muted); text-align:center; padding:8px;">Errore caricamento commenti.</div>`;
     }
 }
 
-/* =========================================================
-   COMMENTS
-========================================================= */
-async function updateCommentCount(postId,button){
-    try{
-        const {count} = await supabase
-            .from("post_comments")
-            .select("id",{count:"exact",head:true})
-            .eq("post_id",postId);
-    }catch(error){
-        console.error("Errore comment count:",error);
-    }
-}
+async function submitComment(postId, inputEl, listContainer, postOwnerId) {
+    const text = inputEl.value.trim();
+    if (!text || !currentUser) return;
 
-async function toggleComments(postId,article){
-    const box = document.getElementById(`comments-${postId}`);
-    if(!box) return;
+    inputEl.value = "";
 
-    box.classList.toggle("active");
-    if(box.classList.contains("active")) await loadComments(postId,box);
-}
-
-async function loadComments(postId,box){
-    const list = box.querySelector(".comments-list");
-    list.innerHTML = `<div class="comment-text">Caricamento...</div>`;
-
-    const {data,error} = await supabase
-        .from("post_comments")
-        .select("*")
-        .eq("post_id",postId)
-        .order("created_at",{ascending:true});
-
-    if(error){
-        list.innerHTML = `<div class="comment-text">${escapeHtml(error.message)}</div>`;
-        return;
-    }
-
-    list.innerHTML = "";
-
-    if(!data?.length){
-        list.innerHTML = `<div class="comment-text" style="color:var(--muted-2);">Nessun commento. Sii il primo.</div>`;
-        return;
-    }
-
-    const authors = await Promise.all(data.map(comment => resolveAuthor(comment.user_id)));
-
-    data.forEach((comment,index) => {
-        const author = authors[index];
-        const div = document.createElement("div");
-        div.className = "comment";
-
-        const avatar = author.avatar
-            ? `<img src="${escapeHtml(author.avatar)}" alt="">`
-            : escapeHtml(getInitials(author.name));
-
-        div.innerHTML = `
-            <div class="comment-avatar">${avatar}</div>
-            <div class="comment-content">
-                <span class="comment-user author-profile-trigger" style="cursor:pointer;">${escapeHtml(author.username ? "@"+author.username : author.name)}</span>
-                <span class="comment-text">${escapeHtml(comment.content)}</span>
-            </div>
-        `;
-
-        div.querySelector(".author-profile-trigger")?.addEventListener("click", (e) => {
-            e.stopPropagation();
-            openProfile(author);
-        });
-
-        list.appendChild(div);
-    });
-}
-
-async function addComment(postId,article){
-    if(!currentUser){
-        showToast("Devi essere loggato.");
-        return;
-    }
-
-    const box = document.getElementById(`comments-${postId}`);
-    const input = box.querySelector(".comment-input");
-    const button = box.querySelector(".comment-button");
-    const content = input.value.trim();
-
-    if(!content) return;
-
-    button.disabled = true;
-
-    try{
-        const {error} = await supabase
-            .from("post_comments")
+    try {
+        const { error } = await supabase
+            .from("comments")
             .insert({
-                post_id:postId,
-                user_id:currentUser.id,
-                content
+                post_id: postId,
+                user_id: currentUser.id,
+                content: text
             });
 
-        if(error) throw error;
+        if (error) throw error;
 
-        input.value = "";
-        await loadComments(postId,box);
-    }catch(error){
-        console.error(error);
-        showToast("Errore invio commento: " + error.message);
-    }finally{
-        button.disabled = false;
+        loadComments(postId, listContainer);
+
+        if (postOwnerId !== currentUser.id) {
+            await supabase.from("notifications").insert({
+                user_id: postOwnerId,
+                actor_id: currentUser.id,
+                post_id: postId,
+                type: "comment"
+            });
+        }
+
+    } catch (err) {
+        console.error("Errore invio commento:", err);
+        showToast("Errore durante l'invio del commento");
     }
 }
 
-/* =========================================================
-   DELETE POST
-========================================================= */
-async function deletePost(postId){
-    if(!confirm("Vuoi davvero eliminare questo post?")) return;
+async function deletePost(postId, cardEl) {
+    if (!confirm("Sei sicuro di voler eliminare questo post?")) return;
 
-    try{
-        const {error} = await supabase
+    try {
+        const { error } = await supabase
             .from("posts")
             .delete()
-            .eq("id",postId)
-            .eq("user_id",currentUser.id);
+            .eq("id", postId)
+            .eq("user_id", currentUser.id);
 
-        if(error) throw error;
+        if (error) throw error;
 
-        showToast("Post eliminato.");
-        await loadFeed();
-    }catch(error){
-        console.error(error);
-        showToast("Errore eliminazione post.");
+        cardEl.remove();
+        showToast("Post eliminato");
+
+    } catch (err) {
+        console.error("Errore eliminazione post:", err);
+        showToast("Impossibile eliminare il post");
     }
 }
 </script>
