@@ -2209,64 +2209,98 @@ async function loadFeed(){
 
         if(currentFeedType === "foryou"){
             /*
-             * FSocial "PER TE" = feed intelligente basato su dati reali:
-             * - Recenza bilanciata (senza dominare completamente il ranking)
-             * - Engagement effettivo (likes e commenti)
-             * - Segnali personali dell'utente e penalizzazione ripetizione autori (varietà)
+             * FSocial "PER TE" = ranking + diversità + discovery.
+             *
+             * Il vecchio algoritmo aveva due problemi:
+             * 1) il bonus "exploration" era deterministico, quindi ogni refresh
+             *    produceva la stessa graduatoria;
+             * 2) la penalità autore veniva calcolata sull'ordine originale dei post,
+             *    non sull'ordine realmente selezionato.
+             *
+             * Qui facciamo invece:
+             * - score reale basato su recenza, likes, commenti e segnali personali;
+             * - piccola esplorazione casuale ad ogni caricamento;
+             * - selezione greedy con penalità dinamica per evitare lo stesso autore
+             *   ripetuto nei primi posti.
+             *
+             * RECENTI resta rigorosamente cronologico.
              */
             const now = Date.now();
-            let authorAppearanceCount = {};
 
-            displayPosts = [...posts]
-                .map((post, index) => {
-                    const ageHours = Math.max(
-                        0.25,
-                        (now - new Date(post.created_at).getTime()) / 3600000
-                    );
+            const rankedCandidates = posts.map((post, index) => {
+                const ageHours = Math.max(
+                    0.25,
+                    (now - new Date(post.created_at).getTime()) / 3600000
+                );
 
-                    const likes = likesMap[post.id] || 0;
-                    const comments = commentsCountMap[post.id] || 0;
-                    const likedByMe = userLikesMap[post.id] ? 1 : 0;
-                    const ownPost = currentUser && post.user_id === currentUser.id ? 1 : 0;
+                const likes = likesMap[post.id] || 0;
+                const comments = commentsCountMap[post.id] || 0;
+                const likedByMe = userLikesMap[post.id] ? 1 : 0;
+                const ownPost = currentUser && post.user_id === currentUser.id ? 1 : 0;
 
-                    // Decadimento temporale moderato
-                    const freshness = 1 / Math.pow(1 + ageHours / 36, 0.65);
+                // La recenza conta, ma non domina.
+                const freshness = 1 / Math.pow(1 + ageHours / 48, 0.60);
 
-                    // Punteggio engagement basato su interazioni reali
-                    const engagement =
-                        Math.log1p(likes) * 3.50 +
-                        Math.log1p(comments) * 4.20;
+                // Engagement reale.
+                const engagement =
+                    Math.log1p(likes) * 2.60 +
+                    Math.log1p(comments) * 3.20;
 
-                    // Segnali personali
-                    const personal =
-                        likedByMe * 2.50 -
-                        ownPost * 0.50; // Contenuti propri moderati
+                // Segnali personali reali disponibili.
+                const personal =
+                    likedByMe * 2.50 -
+                    ownPost * 0.35;
 
-                    // Controllo varietà autore per evitare ripetizioni consecutive
-                    const prevCount = authorAppearanceCount[post.user_id] || 0;
-                    authorAppearanceCount[post.user_id] = prevCount + 1;
-                    const repetitionPenalty = prevCount * 1.80;
+                // Esplorazione: cambia a ogni caricamento del feed.
+                // Non è un random puro: il rumore è limitato e quindi il ranking
+                // resta guidato dai segnali reali.
+                const exploration = Math.random() * 2.25;
 
-                    // Piccola componente di esplorazione controllata deterministica
-                    const exploration = Math.sin(index * 13.7) * 0.25;
+                return {
+                    post,
+                    baseScore: freshness * 3.25 + engagement + personal + exploration,
+                    index
+                };
+            });
 
-                    const score =
-                        freshness * 3.0 +
-                        engagement +
-                        personal +
-                        exploration -
-                        repetitionPenalty;
+            const selected = [];
+            const selectedAuthorCounts = {};
 
-                    return { post, score, index };
-                })
-                .sort((a, b) => {
-                    if (Math.abs(b.score - a.score) > 0.001) {
-                        return b.score - a.score;
+            // Selezione progressiva: ad ogni posizione ricalcoliamo la penalità
+            // dell'autore in base a quanti suoi post abbiamo già mostrato.
+            while(selected.length < 30 && rankedCandidates.length > 0){
+                let bestIndex = 0;
+                let bestScore = -Infinity;
+
+                rankedCandidates.forEach((candidate, candidateIndex) => {
+                    const authorId = candidate.post.user_id || `post-${candidate.post.id}`;
+                    const alreadyShown = selectedAuthorCounts[authorId] || 0;
+
+                    // Penalità crescente: il primo post è libero, il secondo
+                    // viene leggermente penalizzato, i successivi molto di più.
+                    const diversityPenalty =
+                        alreadyShown === 0 ? 0 :
+                        alreadyShown === 1 ? 2.75 :
+                        alreadyShown === 2 ? 5.50 :
+                        8.00 + (alreadyShown - 3) * 1.50;
+
+                    const candidateScore = candidate.baseScore - diversityPenalty;
+
+                    if(candidateScore > bestScore){
+                        bestScore = candidateScore;
+                        bestIndex = candidateIndex;
                     }
-                    return a.index - b.index;
-                })
-                .slice(0, 30)
-                .map(item => item.post);
+                });
+
+                const [winner] = rankedCandidates.splice(bestIndex, 1);
+                const authorId = winner.post.user_id || `post-${winner.post.id}`;
+                selectedAuthorCounts[authorId] =
+                    (selectedAuthorCounts[authorId] || 0) + 1;
+
+                selected.push(winner.post);
+            }
+
+            displayPosts = selected;
         } else {
             // RECENTI = ordine cronologico puro, dal più nuovo al più vecchio.
             displayPosts = posts.slice(0, 30);
