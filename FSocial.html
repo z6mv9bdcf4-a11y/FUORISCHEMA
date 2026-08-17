@@ -877,6 +877,12 @@ a{
 .action-button:hover{color:#fff;background:rgba(255, 255, 255, 0.05)}
 .action-button:active{transform:scale(0.86)}
 .action-icon{font-size:19px;line-height:1;transition: transform 0.2s var(--ease-out), color 0.2s ease;}
+.comment-count{
+    min-width:12px;
+    font-size:11px;
+    font-weight:700;
+    color:var(--muted);
+}
 .action-button.liked .action-icon{
     color:var(--orange);
     animation: likePulse 0.35s var(--ease-out);
@@ -1390,6 +1396,7 @@ let selectedImageUrl = null;
 let currentFeedType = "foryou"; // "foryou" oppure "recent"
 let searchDebounceTimer = null;
 let notifPollInterval = null;
+const profileCache = new Map();
 
 /* =========================================================
    HELPERS
@@ -1542,21 +1549,31 @@ async function checkUser(){
 
     currentUser = data.user;
 
-    let profileAvatar = "";
-    const { data: profile } = await supabase
-        .from("profiles")
-        .select("avatar_url")
-        .eq("id", currentUser.id)
-        .maybeSingle();
+    let profile = null;
+    try{
+        const {data:profileData,error:profileError} = await supabase
+            .from("profiles")
+            .select("id,username,full_name,instagram,avatar_url,bio")
+            .eq("id",currentUser.id)
+            .maybeSingle();
 
-    if (profile && profile.avatar_url) {
-        profileAvatar = profile.avatar_url;
+        if(profileError){
+            console.warn("Profilo utente corrente non disponibile:",profileError.message);
+        }else{
+            profile = profileData || null;
+        }
+    }catch(profileError){
+        console.warn("Errore lettura profilo utente corrente:",profileError);
+    }
+
+    if(profile){
+        profileCache.set(currentUser.id,profile);
     }
 
     const me = {
-        name:getUserName(currentUser),
-        username:getUsername(currentUser),
-        avatar:profileAvatar || getAvatar(currentUser)
+        name:profile?.full_name || profile?.username || getUserName(currentUser),
+        username:profile?.username || getUsername(currentUser),
+        avatar:profile?.avatar_url || getAvatar(currentUser)
     };
 
     createUserName.textContent = me.name;
@@ -1676,13 +1693,14 @@ async function loadNotifications() {
 async function handleNotificationClick(notif) {
     if (!notif.is_read) {
         try {
-            await supabase
+            const {error} = await supabase
                 .from("notifications")
                 .update({ is_read: true })
                 .eq("id", notif.id)
                 .eq("user_id", currentUser.id);
-            
-            updateNotificationBadge();
+
+            if(error) throw error;
+            await updateNotificationBadge();
         } catch (err) {
             console.error("Errore aggiornamento notifica:", err);
         }
@@ -1730,8 +1748,8 @@ async function markAllNotificationsRead() {
         if (error) throw error;
 
         showToast("Tutte le notifiche segnate come lette.");
-        updateNotificationBadge();
-        loadNotifications();
+        await updateNotificationBadge();
+        await loadNotifications();
     } catch (err) {
         console.error("Errore segna notifiche lette:", err);
         showToast("Errore durante l'operazione.");
@@ -1909,20 +1927,35 @@ removeImageButton.addEventListener("click", () => {
 });
 
 async function uploadPostImage(file){
-   const uniqueId = (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function")
-    ? crypto.randomUUID()
-    : `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
+    if(!currentUser?.id) throw new Error("Utente non autenticato.");
+    if(!file) throw new Error("Nessuna foto selezionata.");
 
-const path = `${currentUser.id}/${uniqueId}`;
+    const uniqueId = (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function")
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
+
+    const path = `${currentUser.id}/${uniqueId}.${fileExtension(file)}`;
 
     const {error} = await supabase.storage
         .from("post-images")
-        .upload(path,file,{cacheControl:"3600",upsert:false});
+        .upload(path,file,{
+            cacheControl:"3600",
+            upsert:false,
+            contentType:file.type || "image/jpeg"
+        });
 
-    if(error) throw new Error("Non riesco a caricare la foto: " + error.message);
+    if(error){
+        throw new Error("Non riesco a caricare la foto: " + error.message);
+    }
 
     const {data} = supabase.storage.from("post-images").getPublicUrl(path);
-    return data?.publicUrl || null;
+    const publicUrl = data?.publicUrl || null;
+
+    if(!publicUrl){
+        throw new Error("La foto è stata caricata ma non è stato possibile ottenere l'URL pubblico.");
+    }
+
+    return {publicUrl,path};
 }
 
 publishButton.addEventListener("click", async () => {
@@ -1940,18 +1973,38 @@ publishButton.addEventListener("click", async () => {
     publishButton.disabled = true;
     postStatus.textContent = "Pubblicazione...";
 
+    let uploadedImagePath = null;
+
     try{
         let imageUrl = null;
-        if(selectedImageFile) imageUrl = await uploadPostImage(selectedImageFile);
+
+        if(selectedImageFile){
+            const uploadedImage = await uploadPostImage(selectedImageFile);
+            imageUrl = uploadedImage.publicUrl;
+            uploadedImagePath = uploadedImage.path;
+        }
 
         const postData = {
             user_id: currentUser.id,
             content
         };
+
         if(imageUrl) postData.image_url = imageUrl;
 
         const {error} = await supabase.from("posts").insert(postData);
-        if(error) throw error;
+
+        if(error){
+            if(uploadedImagePath){
+                const {error:cleanupError} = await supabase.storage
+                    .from("post-images")
+                    .remove([uploadedImagePath]);
+
+                if(cleanupError){
+                    console.warn("Impossibile rimuovere il file rimasto nello storage:",cleanupError.message);
+                }
+            }
+            throw error;
+        }
 
         postContent.value = "";
         selectedImageFile = null;
@@ -1966,7 +2019,7 @@ publishButton.addEventListener("click", async () => {
         showToast("Post pubblicato 🔥");
         await loadFeed();
     }catch(error){
-        console.error(error);
+        console.error("Errore pubblicazione post:",error);
         postStatus.textContent = "Errore";
         showToast(error.message || "Errore durante la pubblicazione.");
     }finally{
@@ -1979,18 +2032,22 @@ publishButton.addEventListener("click", async () => {
 ========================================================= */
 async function getProfile(userId){
     if(!userId) return null;
+    if(profileCache.has(userId)) return profileCache.get(userId);
 
     const {data,error} = await supabase
         .from("profiles")
         .select("id,username,full_name,instagram,avatar_url,bio")
         .eq("id",userId)
-        .maybeSingle();
+        .limit(1);
 
     if(error){
         console.warn("Profilo non disponibile:",error.message);
         return null;
     }
-    return data || null;
+
+    const profile = data?.[0] || null;
+    if(profile) profileCache.set(userId,profile);
+    return profile;
 }
 
 async function resolveAuthor(userId){
@@ -2360,6 +2417,7 @@ async function renderPost(post,author){
 
             <button class="action-button comment-toggle" type="button" aria-label="Commenta">
                 <span class="action-icon">💬</span>
+                <span class="comment-count">0</span>
             </button>
 
             <button class="action-button share-button" type="button" aria-label="Condividi">
@@ -2444,26 +2502,48 @@ async function renderPost(post,author){
 /* =========================================================
    LIKES
 ========================================================= */
+async function getLikeCount(postId){
+    const {count,error} = await supabase
+        .from("post_likes")
+        .select("id",{count:"exact",head:true})
+        .eq("post_id",postId);
+
+    if(error) throw error;
+    return count || 0;
+}
+
+async function getCurrentUserLike(postId){
+    if(!currentUser?.id) return null;
+
+    const {data,error} = await supabase
+        .from("post_likes")
+        .select("id")
+        .eq("post_id",postId)
+        .eq("user_id",currentUser.id)
+        .limit(1);
+
+    if(error) throw error;
+    return data?.[0] || null;
+}
+
 async function updateLikeState(postId,button,article){
     try{
-        const {count} = await supabase
-            .from("post_likes")
-            .select("id",{count:"exact",head:true})
-            .eq("post_id",postId);
+        const [count,existing] = await Promise.all([
+            getLikeCount(postId),
+            getCurrentUserLike(postId)
+        ]);
 
         const likeCountEl = article.querySelector(".like-count");
-        if(likeCountEl) likeCountEl.textContent = count || 0;
+        if(likeCountEl) likeCountEl.textContent = count;
 
-        const {data:existing} = await supabase
-            .from("post_likes")
-            .select("id")
-            .eq("post_id",postId)
-            .eq("user_id",currentUser.id)
-            .maybeSingle();
+        const icon = button.querySelector(".action-icon");
 
         if(existing){
             button.classList.add("liked");
-            button.querySelector(".action-icon").textContent = "♥";
+            if(icon) icon.textContent = "♥";
+        }else{
+            button.classList.remove("liked");
+            if(icon) icon.textContent = "♡";
         }
     }catch(error){
         console.error("Errore stato like:",error);
@@ -2480,44 +2560,41 @@ async function toggleLike(postId,button,article){
     button.disabled = true;
 
     try{
-        const {data:existing,error:checkError} = await supabase
-            .from("post_likes")
-            .select("id")
-            .eq("post_id",postId)
-            .eq("user_id",currentUser.id)
-            .maybeSingle();
-
-        if(checkError) throw checkError;
+        const existing = await getCurrentUserLike(postId);
 
         if(existing){
             const {error} = await supabase
                 .from("post_likes")
                 .delete()
-                .eq("id",existing.id);
+                .eq("post_id",postId)
+                .eq("user_id",currentUser.id);
+
             if(error) throw error;
 
             button.classList.remove("liked");
-            button.querySelector(".action-icon").textContent = "♡";
+            const icon = button.querySelector(".action-icon");
+            if(icon) icon.textContent = "♡";
         }else{
             const {error} = await supabase
                 .from("post_likes")
-                .insert({post_id:postId,user_id:currentUser.id});
+                .insert({
+                    post_id:postId,
+                    user_id:currentUser.id
+                });
+
             if(error) throw error;
 
             button.classList.add("liked");
-            button.querySelector(".action-icon").textContent = "♥";
+            const icon = button.querySelector(".action-icon");
+            if(icon) icon.textContent = "♥";
         }
 
-        const {count} = await supabase
-            .from("post_likes")
-            .select("id",{count:"exact",head:true})
-            .eq("post_id",postId);
-
+        const count = await getLikeCount(postId);
         const likeCountEl = article.querySelector(".like-count");
-        if(likeCountEl) likeCountEl.textContent = count || 0;
+        if(likeCountEl) likeCountEl.textContent = count;
     }catch(error){
-        console.error(error);
-        showToast("Errore nel like: " + error.message);
+        console.error("Errore toggle like:",error);
+        showToast("Errore nel like: " + (error?.message || "operazione non riuscita."));
     }finally{
         button.disabled = false;
     }
@@ -2528,12 +2605,15 @@ async function toggleLike(postId,button,article){
 ========================================================= */
 async function updateCommentCount(postId,button){
     try{
-        const {count} = await supabase
+        const {count,error} = await supabase
             .from("post_comments")
             .select("id",{count:"exact",head:true})
             .eq("post_id",postId);
 
-        // optional comment count display
+        if(error) throw error;
+
+        const countEl = button.querySelector(".comment-count");
+        if(countEl) countEl.textContent = count || 0;
     }catch(error){
         console.error("Errore comment count:",error);
     }
@@ -2558,6 +2638,7 @@ async function loadComments(postId,box){
         .order("created_at",{ascending:true});
 
     if(error){
+        console.error("Errore caricamento commenti:",error);
         list.innerHTML = `<div class="comment-text">${escapeHtml(error.message)}</div>`;
         return;
     }
@@ -2623,6 +2704,7 @@ async function addComment(postId,article){
         const box = document.getElementById(`comments-${postId}`);
         box.classList.add("active");
         await loadComments(postId,box);
+        await updateCommentCount(postId,article.querySelector(".comment-toggle"));
 
         showToast("Commento pubblicato.");
     }catch(error){
