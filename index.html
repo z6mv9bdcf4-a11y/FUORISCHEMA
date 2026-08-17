@@ -655,100 +655,153 @@
 
         .products {
             display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
+            grid-template-columns: minmax(0, 1.45fr) minmax(0, .85fr);
+            grid-template-rows: repeat(2, minmax(220px, 1fr));
             gap: 12px;
+            min-height: 620px;
         }
 
         .product {
             position: relative;
-
             background: #0a0a0a;
-
             border: 1px solid #252525;
-
             overflow: hidden;
-
-            aspect-ratio: .78;
-
+            min-width: 0;
+            min-height: 0;
             transition:
                 transform .45s cubic-bezier(.16,1,.3,1),
                 border-color .3s ease;
         }
 
-        .product:hover {
-            transform: translateY(-8px);
+        .product.featured {
+            grid-row: 1 / span 2;
+        }
 
+        .product:hover {
+            transform: translateY(-6px);
             border-color: #444;
         }
 
+        .product::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                transparent 42%,
+                rgba(0,0,0,.08) 55%,
+                rgba(0,0,0,.82) 100%
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
         .product img {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
-
-            object-fit: cover;
-
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            object-position: center center;
+            padding: 28px 26px 92px;
             display: block;
+            transition: transform .8s cubic-bezier(.16,1,.3,1);
+        }
 
-            transition:
-                transform .8s cubic-bezier(.16,1,.3,1);
+        .product.featured img {
+            padding: 38px 36px 105px;
         }
 
         .product:hover img {
-            transform: scale(1.015);
+            transform: scale(1.025);
         }
 
         .product-info {
             position: absolute;
-
-            left: 18px;
-            right: 18px;
-            bottom: 18px;
-
+            left: 22px;
+            right: 22px;
+            bottom: 20px;
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
+            gap: 18px;
+            z-index: 3;
+        }
 
-            z-index: 2;
+        .product-copy {
+            min-width: 0;
+        }
+
+        .product-label {
+            display: block;
+            color: var(--arancio);
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 7px;
         }
 
         .product-name {
-            font-size: 12px;
-            font-weight: 800;
-
+            display: block;
+            font-size: 14px;
+            font-weight: 850;
             text-transform: uppercase;
+            line-height: 1.05;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product.featured .product-name {
+            font-size: 21px;
         }
 
         .product-number {
-            color: var(--arancio);
-
-            font-size: 9px;
+            color: #aaa;
+            font-size: 8px;
             font-weight: 800;
+            letter-spacing: 2px;
+            flex: 0 0 auto;
+        }
 
-            letter-spacing: 3px;
+        .product-cta {
+            color: #fff;
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-top: 8px;
+        }
+
+        .product-cta span {
+            color: var(--arancio);
+            margin-left: 6px;
         }
 
         .badge {
             position: absolute;
-
-            top: 15px;
-            left: 15px;
-
+            top: 16px;
+            left: 16px;
             background: var(--arancio);
             color: #050505;
-
             padding: 8px 10px;
-
             font-size: 8px;
             font-weight: 900;
-
             letter-spacing: 2px;
-
-            z-index: 3;
+            z-index: 4;
         }
 
+        .product-meta {
+            position: absolute;
+            top: 17px;
+            right: 17px;
+            color: #666;
+            font-size: 7px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            z-index: 3;
+        }
 
         /* =========================================================
            CATEGORIE
@@ -1321,6 +1374,76 @@
 
         }
 
+        /* =========================================================
+           NUOVI ARRIVI — MOBILE
+        ========================================================= */
+        @media (max-width: 700px) {
+
+            .products {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+                gap: 10px;
+                min-height: 0;
+            }
+
+            .product,
+            .product.featured {
+                grid-row: auto;
+                min-height: 290px;
+            }
+
+            .product.featured {
+                min-height: 390px;
+            }
+
+            .product img,
+            .product.featured img {
+                padding: 28px 24px 92px;
+            }
+
+            .product-info {
+                left: 15px;
+                right: 15px;
+                bottom: 14px;
+                gap: 10px;
+            }
+
+            .product-name {
+                font-size: 11px;
+            }
+
+            .product.featured .product-name {
+                font-size: 18px;
+            }
+
+            .product-label {
+                font-size: 7px;
+                letter-spacing: 2px;
+            }
+
+            .product-cta {
+                font-size: 7px;
+                letter-spacing: 1.5px;
+            }
+
+            .product-number {
+                font-size: 7px;
+            }
+
+            .badge {
+                top: 11px;
+                left: 11px;
+                padding: 7px 8px;
+                font-size: 6px;
+            }
+
+            .product-meta {
+                top: 12px;
+                right: 12px;
+                font-size: 6px;
+            }
+        }
+
         /* =========================
            AUTH BUTTONS
         ========================= */
@@ -1811,18 +1934,15 @@
             <div class="section-head reveal">
 
                 <div>
-
                     <div class="section-number">
-                        01 / NUOVI ARRIVI
+                        01 / CURATED DROP
                     </div>
 
                     <h2 class="section-title">
                         NUOVI<br>
                         ARRIVI
                     </h2>
-
                 </div>
-
 
                 <a
                     href="catalogo.html"
@@ -1833,16 +1953,19 @@
 
             </div>
 
-
             <div class="products">
 
-                <!-- PRODOTTO 1 -->
+                <!-- PRODOTTO PROTAGONISTA -->
                 <a
                     href="nike.html"
-                    class="product reveal"
+                    class="product featured reveal"
                 >
                     <span class="badge">
                         PIÙ SCELTO
+                    </span>
+
+                    <span class="product-meta">
+                        DROP / 001
                     </span>
 
                     <img
@@ -1851,9 +1974,17 @@
                     >
 
                     <div class="product-info">
-                        <span class="product-name">
-                            Nike Air Force 1
-                        </span>
+                        <div class="product-copy">
+                            <span class="product-label">
+                                THE ICON
+                            </span>
+                            <span class="product-name">
+                                Nike Air Force 1
+                            </span>
+                            <span class="product-cta">
+                                SCOPRI IL PRODOTTO <span>→</span>
+                            </span>
+                        </div>
 
                         <span class="product-number">
                             #001
@@ -1870,15 +2001,27 @@
                         NUOVO
                     </span>
 
+                    <span class="product-meta">
+                        DROP / 002
+                    </span>
+
                     <img
                         src="images/adidas/adidas-01.jpeg"
                         alt="Adidas XLG Runner Deluxe — JR9633"
                     >
 
                     <div class="product-info">
-                        <span class="product-name">
-                            Adidas XLG Runner Deluxe
-                        </span>
+                        <div class="product-copy">
+                            <span class="product-label">
+                                NEW IN
+                            </span>
+                            <span class="product-name">
+                                Adidas XLG Runner Deluxe
+                            </span>
+                            <span class="product-cta">
+                                ESPLORA <span>→</span>
+                            </span>
+                        </div>
 
                         <span class="product-number">
                             JR9633
@@ -1895,15 +2038,27 @@
                         NUOVO
                     </span>
 
+                    <span class="product-meta">
+                        DROP / 003
+                    </span>
+
                     <img
                         src="images/asics/Asics-1.jpeg"
                         alt="ASICS GEL-NYC — 1201A789-103"
                     >
 
                     <div class="product-info">
-                        <span class="product-name">
-                            ASICS GEL-NYC
-                        </span>
+                        <div class="product-copy">
+                            <span class="product-label">
+                                NEW IN
+                            </span>
+                            <span class="product-name">
+                                ASICS GEL-NYC
+                            </span>
+                            <span class="product-cta">
+                                ESPLORA <span>→</span>
+                            </span>
+                        </div>
 
                         <span class="product-number">
                             1201A789-103
@@ -1911,31 +2066,9 @@
                     </div>
                 </a>
 
-                <!-- PRODOTTO 4 -->
-                <a
-                    href="nike.html"
-                    class="product reveal"
-                >
-                    <img
-                        src="images/nike shox bianca.jpeg"
-                        alt="Nike Shox White"
-                    >
-
-                    <div class="product-info">
-                        <span class="product-name">
-                            Nike Shox
-                        </span>
-
-                        <span class="product-number">
-                            #004
-                        </span>
-                    </div>
-                </a>
-
             </div>
 
         </section>
-
 
 
         <!-- =====================================================
@@ -2148,7 +2281,7 @@
             Installa FUORISCHEMA sulla schermata Home e aprilo come un'app.
         </div>
 
-        <div c<div class="pwa-ios-steps" id="pwaIosSteps">
+        <div class="pwa-ios-steps" id="pwaIosSteps">
     <div class="pwa-step-item">
         <span class="pwa-step-num">01.</span>
         <span>Premi i <strong>tre puntini</strong> in basso e poi <strong>Condividi</strong></span>
