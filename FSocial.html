@@ -1385,7 +1385,7 @@ a{
     </div>
 </header>
 
-<main class="page">
+<main id="fsocial-home" class="page">
     <div class="feed-shell">
 
         <section class="hero">
@@ -1450,7 +1450,7 @@ a{
 
 <!-- BOTTOM NAVIGATION BAR -->
 <nav class="bottom-nav">
-    <a id="navHome" href="index.html" class="bottom-nav-item" aria-label="Home">
+    <a id="navHome" href="#fsocial-home" class="bottom-nav-item" aria-label="Home">
         <span class="bottom-nav-icon">🏠</span>
         <span class="bottom-nav-label">Home</span>
     </a>
@@ -1560,6 +1560,11 @@ let selectedImageFile = null;
 let selectedImageUrl = null;
 let currentFeedType = "foryou";
 let searchDebounceTimer = null;
+
+navHome?.addEventListener("click", (event) => {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+});
 let notifPollInterval = null;
 
 function showToast(message){
@@ -2138,7 +2143,7 @@ async function loadFeed(){
             .select("id,content,image_url,created_at,user_id")
             .neq("content", "__FS_STORY__")
             .order("created_at", { ascending: false })
-            .limit(30);
+            .limit(60);
 
         if(postsError) throw postsError;
 
@@ -2211,7 +2216,43 @@ async function loadFeed(){
             }
         }
 
-        feed.innerHTML = posts.map(post => {
+        let displayPosts = posts;
+
+        if(currentFeedType === "foryou"){
+            const now = Date.now();
+
+            displayPosts = [...posts]
+                .map((post, index) => {
+                    const ageHours = Math.max(
+                        0.25,
+                        (now - new Date(post.created_at).getTime()) / 3600000
+                    );
+
+                    const likes = likesMap[post.id] || 0;
+                    const comments = commentsCountMap[post.id] || 0;
+                    const likedByMe = userLikesMap[post.id] ? 1 : 0;
+                    const ownPost = currentUser && post.user_id === currentUser.id ? 1 : 0;
+
+                    const freshness = 1 / Math.pow(1 + ageHours / 18, 1.15);
+                    const engagement = Math.log1p(likes) * 0.85
+                                     + Math.log1p(comments) * 1.15;
+                    const personal = likedByMe * 1.25 + ownPost * 0.35;
+
+                    const score = freshness * 8 + engagement + personal;
+
+                    return { post, score, index };
+                })
+                .sort((a, b) => {
+                    if(b.score !== a.score) return b.score - a.score;
+                    return a.index - b.index;
+                })
+                .slice(0, 30)
+                .map(item => item.post);
+        } else {
+            displayPosts = posts.slice(0, 30);
+        }
+
+        feed.innerHTML = displayPosts.map(post => {
             const author = profilesById[post.user_id] || {};
             const name = author.full_name || "Membro FUORISCHEMA";
             const username = author.username ? `@${author.username}` : "@member";
