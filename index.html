@@ -2533,5 +2533,54 @@
 
     <!-- Script Gestione Installazione PWA -->
     <script src="pwa-install.js" defer></script>
+    <!-- FUORISCHEMA — SCARICA L'APP -->
+<div id="pwaInstallLauncher">
+    <button id="pwaInstallOpen" type="button">
+        SCARICA L'APP <span>→</span>
+    </button>
+</div>
+
+<style>
+#pwaInstallLauncher {
+    position: fixed;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    z-index: 9998;
+}
+
+#pwaInstallOpen {
+    border: 1px solid rgba(255,255,255,.25);
+    background: #050505;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(0,0,0,.35);
+}
+
+#pwaInstallOpen span {
+    margin-left: 6px;
+}
+
+#pwaInstallOpen:active {
+    transform: scale(.97);
+}
+
+@media (max-width: 700px) {
+    #pwaInstallLauncher {
+        bottom: 14px;
+    }
+
+    #pwaInstallOpen {
+        font-size: 10px;
+        padding: 11px 16px;
+    }
+}
+</style>
 </body>
 </html>
