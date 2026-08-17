@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>FSocial — FUORISCHEMA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,6 +47,7 @@ body{
     -webkit-font-smoothing:antialiased;
     letter-spacing: -0.01em;
     -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
 }
 body.modal-open{overflow:hidden}
 button,input,textarea{font:inherit}
@@ -1181,25 +1182,208 @@ a{
 }
 .toast.show{opacity:1;transform:translate(-50%,0) scale(1)}
 
+/* BOTTOM NAVIGATION MOBILE */
+.bottom-nav {
+    display: none;
+}
+
 @media (max-width:550px){
-    .topbar{padding:0 16px;height:52px}
-    .brand{font-size:17px}
-    .top-btn{padding:0 11px;font-size:10px;min-height:30px}
-    .page{padding-top:16px}
-    .feed-shell{padding:0 10px}
-    .post-card{border-radius:14px}
-    .create-card{border-radius:14px;padding:14px 16px}
-    .hero{margin-bottom:14px}
-    .hero-title{font-size:26px}
-    .user-search-wrapper{margin-bottom:20px}
-    .user-search-input-box{padding:0 12px}
-    .user-search-input{height:38px;font-size:12px}
-    .post-header{padding:12px 14px}
-    .post-actions{padding:10px 14px 4px}
-    .post-meta{padding:2px 14px 4px}
-    .post-body{padding:2px 14px 12px}
+    /* HEADER COMPATTO MOBILE */
+    .topbar{
+        padding:0 16px;
+        height:52px;
+        width: 100vw;
+    }
+    .brand{
+        font-size:18px;
+        letter-spacing: -0.5px;
+    }
+    .topbar-actions .top-btn {
+        display: none !important;
+    }
+    .topbar-actions {
+        gap: 10px;
+    }
     
-    /* MOBILE FULLSCREEN NOTIFICATION DRAWER */
+    .page{
+        padding-top:12px;
+        padding-bottom:calc(76px + env(safe-area-inset-bottom, 0px));
+        width: 100vw;
+    }
+    .feed-shell{
+        padding:0 8px;
+        width: 100%;
+        max-width: 100vw;
+    }
+
+    /* FSOCIAL BRANDING STRIP (INTRO FEED) */
+    .hero {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        margin-bottom: 16px;
+        padding: 14px 16px;
+        background: linear-gradient(135deg, rgba(20,20,25,0.8) 0%, rgba(8,8,10,0.9) 100%);
+        border: 1px solid var(--panel-border);
+        border-radius: var(--radius);
+        gap: 2px;
+        pointer-events: none;
+    }
+    .hero-title {
+        font-size: 30px;
+        font-weight: 900;
+        letter-spacing: -1px;
+    }
+    .hero-meta {
+        font-size: 9px;
+        letter-spacing: 2px;
+        color: var(--muted);
+    }
+
+    /* FEED MOBILE IMMERSIVO */
+    .feed {
+        gap: 16px;
+    }
+    .post-card{
+        border-radius:16px;
+        border-left: 0;
+        border-right: 0;
+        border-radius: 0;
+        margin: 0 -8px;
+        border-top: 1px solid var(--panel-border);
+        border-bottom: 1px solid var(--panel-border);
+    }
+    .create-card{
+        border-radius:16px;
+        padding:14px 16px;
+        margin-bottom: 20px;
+    }
+    .user-search-wrapper{
+        margin-bottom:16px;
+    }
+    .user-search-input-box{
+        padding:0 14px;
+    }
+    .user-search-input{
+        height:40px;
+        font-size:13px;
+    }
+    .post-header{
+        padding:12px 14px;
+    }
+    
+    /* AZIONI POST PARTICOLARMENTE UTILIZZABILI COL POLLICE */
+    .post-actions{
+        padding:10px 14px 4px;
+        gap: 20px;
+    }
+    .action-button {
+        padding: 6px;
+    }
+    .action-icon {
+        font-size: 23px;
+    }
+    .post-meta{
+        padding:2px 14px 4px;
+    }
+    .post-body{
+        padding:2px 14px 12px;
+    }
+    
+    /* BOTTOM NAVIGATION BAR MOBILE */
+    .bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: calc(60px + env(safe-area-inset-bottom, 0px));
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        background: rgba(8, 8, 10, 0.88);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-top: 1px solid var(--panel-border);
+        z-index: 99990;
+        align-items: center;
+        justify-content: space-around;
+        box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+    }
+    .bottom-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+        height: 100%;
+        color: var(--muted);
+        transition: color 0.2s ease, transform 0.15s ease;
+        position: relative;
+    }
+    .bottom-nav-item:active {
+        transform: scale(0.88);
+    }
+    .bottom-nav-item.active,
+    .bottom-nav-item:hover {
+        color: #fff;
+    }
+    .bottom-nav-icon {
+        font-size: 20px;
+        line-height: 1;
+    }
+    .bottom-nav-label {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        margin-top: 3px;
+        text-transform: uppercase;
+    }
+
+    /* PLUS (+) BUTTON PARTICOLARMENTE EVIDENTE */
+    .bottom-nav-item.plus-btn {
+        flex: 0 0 48px;
+    }
+    .bottom-nav-item.plus-btn .plus-inner {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: var(--orange);
+        color: #000;
+        display: grid;
+        place-items: center;
+        font-size: 22px;
+        font-weight: 900;
+        box-shadow: 0 0 16px var(--orange-glow);
+        transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+    .bottom-nav-item.plus-btn:active .plus-inner {
+        transform: scale(0.92);
+        background: #fff;
+    }
+
+    /* BADGE NOTIFICHE IN BOTTOM NAV */
+    .bottom-nav-badge {
+        position: absolute;
+        top: 8px;
+        right: 22%;
+        background: var(--orange);
+        color: #000;
+        font-size: 9px;
+        font-weight: 900;
+        min-width: 14px;
+        height: 14px;
+        border-radius: 100px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 0 3px;
+        border: 2px solid var(--bg);
+    }
+    .bottom-nav-badge.active {
+        display: inline-flex;
+    }
+
+    /* FULLSCREEN NOTIFICATION DRAWER MOBILE */
     .notif-modal {
         max-width: 100%;
         border-left: none;
@@ -1209,6 +1393,9 @@ a{
     }
     .notif-item {
         padding: 14px 18px;
+    }
+    .toast {
+        bottom: calc(76px + env(safe-area-inset-bottom, 0px));
     }
 }
 </style>
@@ -1234,8 +1421,9 @@ a{
 <main class="page">
     <div class="feed-shell">
 
+        <!-- INTRO FASCIA IDENTITARIA FSOCIAL -->
         <section class="hero">
-            <div class="hero-title">F<span>Social</span></div>
+            <div class="hero-title"><span style="color:#fff;">FS</span><span style="color:var(--orange);">ocial</span></div>
             <div class="hero-meta">FUORISCHEMA COMMUNITY</div>
         </section>
 
@@ -1256,7 +1444,7 @@ a{
         </div>
 
         <!-- Create Post Section -->
-        <section class="create-card">
+        <section id="createPostCard" class="create-card">
             <div class="create-top">
                 <div id="createAvatar" class="avatar">F</div>
                 <div class="user-info">
@@ -1282,7 +1470,7 @@ a{
             </div>
         </section>
 
-        <!-- Instagram-style Posts Feed -->
+        <!-- Posts Feed -->
         <section id="feed" class="feed">
             <div class="empty">
                 <div class="empty-icon">◌</div>
@@ -1297,6 +1485,30 @@ a{
         </footer>
     </div>
 </main>
+
+<!-- BOTTOM NAVIGATION BAR MOBILE -->
+<nav class="bottom-nav">
+    <button id="navHome" class="bottom-nav-item active" type="button" aria-label="Home">
+        <span class="bottom-nav-icon">🏠</span>
+        <span class="bottom-nav-label">Home</span>
+    </button>
+    <button id="navSearch" class="bottom-nav-item" type="button" aria-label="Cerca">
+        <span class="bottom-nav-icon">🔍</span>
+        <span class="bottom-nav-label">Cerca</span>
+    </button>
+    <button id="navCreate" class="bottom-nav-item plus-btn" type="button" aria-label="Crea Post">
+        <div class="plus-inner">+</div>
+    </button>
+    <button id="navNotif" class="bottom-nav-item" type="button" aria-label="Notifiche">
+        <span class="bottom-nav-icon">🔔</span>
+        <span class="bottom-nav-label">Notifiche</span>
+        <span id="bottomNavBadge" class="bottom-nav-badge">0</span>
+    </button>
+    <a id="navProfile" href="area-personale.html" class="bottom-nav-item" aria-label="Profilo">
+        <span class="bottom-nav-icon">👤</span>
+        <span class="bottom-nav-label">Profilo</span>
+    </a>
+</nav>
 
 <!-- NOTIFICATIONS PANEL DRAWER -->
 <div id="notifOverlay" class="notif-overlay">
@@ -1370,6 +1582,7 @@ const profilePageLink = document.getElementById("profilePageLink");
 
 const notifButton = document.getElementById("notifButton");
 const notifBadge = document.getElementById("notifBadge");
+const bottomNavBadge = document.getElementById("bottomNavBadge");
 const notifOverlay = document.getElementById("notifOverlay");
 const notifClose = document.getElementById("notifClose");
 const notifList = document.getElementById("notifList");
@@ -1381,13 +1594,19 @@ const tabRecent = document.getElementById("tabRecent");
 
 const toast = document.getElementById("toast");
 
+/* Bottom Nav Controls */
+const navHome = document.getElementById("navHome");
+const navSearch = document.getElementById("navSearch");
+const navCreate = document.getElementById("navCreate");
+const navNotif = document.getElementById("navNotif");
+
 /* =========================================================
    STATE
 ========================================================= */
 let currentUser = null;
 let selectedImageFile = null;
 let selectedImageUrl = null;
-let currentFeedType = "foryou"; // "foryou" oppure "recent"
+let currentFeedType = "foryou";
 let searchDebounceTimer = null;
 let notifPollInterval = null;
 
@@ -1448,11 +1667,6 @@ function timeAgo(date){
     return new Date(date).toLocaleDateString("it-IT",{day:"2-digit",month:"2-digit",year:"numeric"});
 }
 
-function fileExtension(file){
-    const ext = file.name.split(".").pop()?.toLowerCase();
-    return ext && /^[a-z0-9]+$/.test(ext) ? ext : "jpg";
-}
-
 function setAvatar(element, author){
     if(author?.avatar){
         element.innerHTML = `<img src="${escapeHtml(author.avatar)}" alt="">`;
@@ -1461,7 +1675,6 @@ function setAvatar(element, author){
     }
 }
 
-/* Micro-noise deterministico stabile per utente/post (varia tra 0.995 e 1.005) */
 function getForYouHistoryKey(){
     return `fsocial_foryou_history_${currentUser?.id || "guest"}`;
 }
@@ -1485,7 +1698,6 @@ function saveForYouHistory(posts){
         }));
         localStorage.setItem(getForYouHistoryKey(), JSON.stringify(history));
     }catch{
-        // Il feed deve continuare a funzionare anche se localStorage non è disponibile.
     }
 }
 
@@ -1493,8 +1705,6 @@ function getRotationPenalty(postId, history){
     const item = history.find(entry => entry.id === postId);
     if(!item) return 1;
 
-    // Penalizza soprattutto ciò che era in cima al feed precedente.
-    // Non esclude mai il post: con pochi contenuti può comunque tornare.
     if(item.position === 0) return 0.18;
     if(item.position === 1) return 0.35;
     if(item.position === 2) return 0.55;
@@ -1503,13 +1713,9 @@ function getRotationPenalty(postId, history){
 }
 
 function getRandomFeedNoise(){
-    // Piccola variazione per evitare un ranking identico ad ogni apertura/refresh.
     return 0.88 + (Math.random() * 0.24);
 }
 
-/* =========================================================
-   DYNAMIC WINDOW ALGORITHM PARAMS
-========================================================= */
 function getDynamicWindowParams(N) {
     if (!N || N <= 0) {
         return { K: 150, T: 720 };
@@ -1574,6 +1780,28 @@ logoutButton.addEventListener("click", async () => {
 });
 
 /* =========================================================
+   BOTTOM NAVIGATION CONTROLS
+========================================================= */
+navHome?.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+navSearch?.addEventListener("click", () => {
+    userSearchInput.focus();
+    userSearchInput.scrollIntoView({ behavior: "smooth", block: "center" });
+});
+
+navCreate?.addEventListener("click", () => {
+    const card = document.getElementById("createPostCard");
+    card?.scrollIntoView({ behavior: "smooth", block: "center" });
+    postContent?.focus();
+});
+
+navNotif?.addEventListener("click", () => {
+    openNotifications();
+});
+
+/* =========================================================
    NOTIFICATIONS SYSTEM
 ========================================================= */
 async function updateNotificationBadge() {
@@ -1588,12 +1816,21 @@ async function updateNotificationBadge() {
         if (error) throw error;
 
         if (count && count > 0) {
-            notifBadge.textContent = count > 99 ? "99+" : count;
+            const val = count > 99 ? "99+" : count;
+            notifBadge.textContent = val;
             notifBadge.classList.add("active");
+            if (bottomNavBadge) {
+                bottomNavBadge.textContent = val;
+                bottomNavBadge.classList.add("active");
+            }
             if (notifHeaderDot) notifHeaderDot.classList.add("active");
         } else {
             notifBadge.textContent = "0";
             notifBadge.classList.remove("active");
+            if (bottomNavBadge) {
+                bottomNavBadge.textContent = "0";
+                bottomNavBadge.classList.remove("active");
+            }
             if (notifHeaderDot) notifHeaderDot.classList.remove("active");
         }
     } catch (err) {
@@ -1913,7 +2150,7 @@ async function uploadPostImage(file){
     ? crypto.randomUUID()
     : `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
 
-const path = `${currentUser.id}/${uniqueId}`;
+    const path = `${currentUser.id}/${uniqueId}`;
 
     const {error} = await supabase.storage
         .from("post-images")
@@ -2068,7 +2305,6 @@ profileOverlay.addEventListener("click",event => {
    FEED LOGIC WITH DYNAMIC WINDOW
 ========================================================= */
 
-// Event Listeners per i Tab
 tabForYou.addEventListener("click", () => {
     if (currentFeedType === "foryou") return;
     currentFeedType = "foryou";
@@ -2085,9 +2321,7 @@ tabRecent.addEventListener("click", () => {
     loadFeed();
 });
 
-// Funzione condivisa per il fetch del pool di candidati tramite Finestra Dinamica
 async function fetchFeedWindow() {
-    // 1. Calcolo del numero totale di post N
     const { count: totalPosts, error: countErr } = await supabase
         .from("posts")
         .select("id", { count: "exact", head: true });
@@ -2097,10 +2331,8 @@ async function fetchFeedWindow() {
     const N = totalPosts || 0;
     const { K, T } = getDynamicWindowParams(N);
 
-    // 2. Definizione del cutoff temporale
     const cutoffDate = new Date(Date.now() - T * 60 * 60 * 1000).toISOString();
 
-    // 3. Recupero dei post nella finestra T, al massimo K
     let { data: posts, error: fetchErr } = await supabase
         .from("posts")
         .select("*")
@@ -2110,7 +2342,6 @@ async function fetchFeedWindow() {
 
     if (fetchErr) throw fetchErr;
 
-    // 4. Fallback: Se la finestra T non restituisce post, recupera i più recenti fino a K
     if (!posts || posts.length === 0) {
         const { data: fallbackPosts, error: fallbackErr } = await supabase
             .from("posts")
@@ -2135,18 +2366,8 @@ async function fetchForYouPosts(){
 
     if(!pool || pool.length === 0) return [];
 
-    /*
-     * PER TE:
-     * - privilegia contenuti recenti + engagement;
-     * - mantiene diversità tra gli autori;
-     * - ruota i contenuti mostrati in precedenza;
-     * - non esclude definitivamente i post vecchi;
-     * - introduce una piccola variazione ad ogni caricamento.
-     */
     const history = loadForYouHistory();
 
-    // Se abbiamo pochi contenuti nella finestra dinamica, allarghiamo il pool
-    // per dare al feed la possibilità di ripescare post più vecchi.
     if(pool.length < 12){
         const knownIds = new Set(pool.map(post => post.id));
 
@@ -2169,7 +2390,6 @@ async function fetchForYouPosts(){
 
     const postIds = pool.map(post => post.id);
 
-    // Fetch dell'Engagement in Batch
     let likesMap = {};
     let commentsMap = {};
 
@@ -2203,7 +2423,6 @@ async function fetchForYouPosts(){
 
     const now = Date.now();
 
-    // Step 1: Score base + rotazione + variazione casuale.
     const poolWithScore = pool.map(post => {
         const likes = likesMap[post.id] || 0;
         const comments = commentsMap[post.id] || 0;
@@ -2226,7 +2445,6 @@ async function fetchForYouPosts(){
         };
     });
 
-    // Step 2: Reranking per diversità degli autori.
     const selectedPosts = [];
     const authorSelectedCount = {};
     let candidates = [...poolWithScore];
@@ -2265,8 +2483,6 @@ async function fetchForYouPosts(){
             (authorSelectedCount[chosenAuthorId] || 0) + 1;
     }
 
-    // Salviamo l'ordine appena mostrato per favorire una rotazione
-    // intelligente alla prossima apertura del feed.
     saveForYouHistory(selectedPosts);
 
     return selectedPosts;
@@ -2532,8 +2748,6 @@ async function updateCommentCount(postId,button){
             .from("post_comments")
             .select("id",{count:"exact",head:true})
             .eq("post_id",postId);
-
-        // optional comment count display
     }catch(error){
         console.error("Errore comment count:",error);
     }
