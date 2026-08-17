@@ -1763,22 +1763,52 @@ async function loadNotifications(){
     if(!currentUser) return;
 
     try {
-        const { data, error } = await supabase
+        /*
+         * IMPORTANT:
+         * Non usiamo più la relazione Supabase
+         * "actor:profiles!notifications_actor_id_fkey".
+         * Se il nome della foreign key cambia/non viene esposto da PostgREST,
+         * quella SELECT fallisce e manda in errore tutta la schermata notifiche.
+         *
+         * Carichiamo prima le notifiche e poi i profili degli actor separatamente.
+         */
+        const { data: notifications, error: notificationsError } = await supabase
             .from("notifications")
-            .select("*, actor:profiles!notifications_actor_id_fkey(full_name,username,avatar_url)")
+            .select("*")
             .eq("user_id", currentUser.id)
             .order("created_at", { ascending: false })
             .limit(30);
 
-        if(error) throw error;
+        if(notificationsError) throw notificationsError;
 
-        if(!data || data.length === 0){
+        if(!notifications || notifications.length === 0){
             notifList.innerHTML = `<div class="search-state-message">Nessuna notifica ricevuta.</div>`;
             return;
         }
 
-        notifList.innerHTML = data.map(n => {
-            const actor = n.actor || {};
+        const actorIds = [...new Set(
+            notifications
+                .map(n => n.actor_id)
+                .filter(Boolean)
+        )];
+
+        let actorsById = {};
+
+        if(actorIds.length > 0){
+            const { data: actors, error: actorsError } = await supabase
+                .from("profiles")
+                .select("id,full_name,username,avatar_url")
+                .in("id", actorIds);
+
+            if(actorsError) throw actorsError;
+
+            (actors || []).forEach(actor => {
+                actorsById[actor.id] = actor;
+            });
+        }
+
+        notifList.innerHTML = notifications.map(n => {
+            const actor = actorsById[n.actor_id] || {};
             const name = actor.full_name || "Membro";
             const avatar = actor.avatar_url;
             const initials = getInitials(name);
@@ -1790,6 +1820,8 @@ async function loadNotifications(){
             else if(n.type === "comment") actionText = "ha commentato il tuo post.";
             else if(n.type === "follow") actionText = "ha iniziato a seguirti.";
 
+            const actorUsername = actor.username || name;
+
             return `
                 <div class="notif-item ${unreadClass}" data-id="${n.id}" data-post="${n.post_id || ""}">
                     ${!n.is_read ? '<span class="notif-unread-dot"></span>' : ''}
@@ -1797,7 +1829,7 @@ async function loadNotifications(){
                         ${avatar ? `<img src="${escapeHtml(avatar)}" alt="">` : initials}
                     </div>
                     <div class="notif-content">
-                        <div class="notif-text"><span class="notif-username">@${escapeHtml(actor.username || name)}</span> ${actionText}</div>
+                        <div class="notif-text"><span class="notif-username">@${escapeHtml(actorUsername)}</span> ${actionText}</div>
                         <div class="notif-time">${time}</div>
                     </div>
                 </div>
@@ -1809,7 +1841,16 @@ async function loadNotifications(){
                 const notifId = item.getAttribute("data-id");
                 const postId = item.getAttribute("data-post");
 
-                await supabase.from("notifications").update({ is_read: true }).eq("id", notifId);
+                const { error: markReadError } = await supabase
+                    .from("notifications")
+                    .update({ is_read: true })
+                    .eq("id", notifId)
+                    .eq("user_id", currentUser.id);
+
+                if(markReadError){
+                    console.error("Errore segnando la notifica come letta:", markReadError);
+                }
+
                 item.classList.remove("unread");
                 const dot = item.querySelector(".notif-unread-dot");
                 if(dot) dot.remove();
@@ -1830,7 +1871,7 @@ async function loadNotifications(){
         });
 
     } catch(err) {
-        console.error(err);
+        console.error("Errore caricamento notifiche:", err);
         notifList.innerHTML = `<div class="search-state-message">Errore nel caricamento delle notifiche.</div>`;
     }
 }
@@ -2082,20 +2123,24 @@ async function loadFeed(){
     `;
 
     try {
-        let query = supabase
+        /*
+         * IMPORTANT:
+         * Evitiamo la JOIN automatica posts -> profiles.
+         * La relazione può non essere riconosciuta da PostgREST anche se
+         * entrambe le tabelle funzionano correttamente.
+         *
+         * 1) prendiamo i post;
+         * 2) prendiamo i profili degli autori separatamente;
+         * 3) li associamo in memoria.
+         */
+        const { data: posts, error: postsError } = await supabase
             .from("posts")
-            .select("id,content,image_url,created_at,user_id, profiles:profiles(id,full_name,username,avatar_url,bio,instagram)")
-            .neq("content", "__FS_STORY__");
+            .select("id,content,image_url,created_at,user_id")
+            .neq("content", "__FS_STORY__")
+            .order("created_at", { ascending: false })
+            .limit(30);
 
-        if(currentFeedType === "recent"){
-            query = query.order("created_at", { ascending: false });
-        } else {
-            query = query.order("created_at", { ascending: false });
-        }
-
-        const { data: posts, error } = await query.limit(30);
-
-        if(error) throw error;
+        if(postsError) throw postsError;
 
         if(!posts || posts.length === 0){
             feed.innerHTML = `
@@ -2109,40 +2154,65 @@ async function loadFeed(){
         }
 
         const postIds = posts.map(p => p.id);
+        const authorIds = [...new Set(posts.map(p => p.user_id).filter(Boolean))];
+
+        let profilesById = {};
+
+        if(authorIds.length > 0){
+            const { data: profiles, error: profilesError } = await supabase
+                .from("profiles")
+                .select("id,full_name,username,avatar_url,bio,instagram")
+                .in("id", authorIds);
+
+            if(profilesError) throw profilesError;
+
+            (profiles || []).forEach(profile => {
+                profilesById[profile.id] = profile;
+            });
+        }
 
         let likesMap = {};
         let userLikesMap = {};
         let commentsCountMap = {};
 
         if(postIds.length > 0){
-            const { data: likesData } = await supabase
+            const { data: likesData, error: likesError } = await supabase
                 .from("likes")
                 .select("post_id, user_id")
                 .in("post_id", postIds);
 
-            if(likesData){
+            /*
+             * Likes/comments non devono mai impedire al feed di apparire.
+             * Se una delle due tabelle non è leggibile, mostriamo comunque
+             * i post con conteggio 0.
+             */
+            if(!likesError && likesData){
                 likesData.forEach(l => {
                     likesMap[l.post_id] = (likesMap[l.post_id] || 0) + 1;
                     if(currentUser && l.user_id === currentUser.id){
                         userLikesMap[l.post_id] = true;
                     }
                 });
+            } else if(likesError){
+                console.error("Errore caricamento likes:", likesError);
             }
 
-            const { data: commentsData } = await supabase
+            const { data: commentsData, error: commentsError } = await supabase
                 .from("comments")
                 .select("post_id")
                 .in("post_id", postIds);
 
-            if(commentsData){
+            if(!commentsError && commentsData){
                 commentsData.forEach(c => {
                     commentsCountMap[c.post_id] = (commentsCountMap[c.post_id] || 0) + 1;
                 });
+            } else if(commentsError){
+                console.error("Errore caricamento conteggio commenti:", commentsError);
             }
         }
 
         feed.innerHTML = posts.map(post => {
-            const author = post.profiles || {};
+            const author = profilesById[post.user_id] || {};
             const name = author.full_name || "Membro FUORISCHEMA";
             const username = author.username ? `@${author.username}` : "@member";
             const avatar = author.avatar_url;
@@ -2214,11 +2284,17 @@ async function loadFeed(){
             el.addEventListener("click", async () => {
                 const authorId = el.getAttribute("data-author-id");
                 if(!authorId) return;
-                const { data: authorProfile } = await supabase
+
+                const { data: authorProfile, error: authorError } = await supabase
                     .from("profiles")
                     .select("*")
                     .eq("id", authorId)
                     .maybeSingle();
+
+                if(authorError){
+                    console.error("Errore caricamento profilo autore:", authorError);
+                    return;
+                }
 
                 if(authorProfile) openProfileModal(authorProfile);
             });
@@ -2236,17 +2312,31 @@ async function loadFeed(){
                 if(isLiked){
                     btn.classList.remove("liked");
                     countSpan.textContent = Math.max(0, count - 1);
-                    await supabase
+
+                    const { error } = await supabase
                         .from("likes")
                         .delete()
                         .eq("post_id", postId)
                         .eq("user_id", currentUser.id);
+
+                    if(error){
+                        console.error("Errore rimozione like:", error);
+                        btn.classList.add("liked");
+                        countSpan.textContent = count;
+                    }
                 } else {
                     btn.classList.add("liked");
                     countSpan.textContent = count + 1;
-                    await supabase
+
+                    const { error } = await supabase
                         .from("likes")
                         .insert({ post_id: postId, user_id: currentUser.id });
+
+                    if(error){
+                        console.error("Errore aggiunta like:", error);
+                        btn.classList.remove("liked");
+                        countSpan.textContent = count;
+                    }
                 }
             });
         });
@@ -2256,6 +2346,7 @@ async function loadFeed(){
                 const postId = btn.getAttribute("data-post-id");
                 const commentsSec = document.getElementById(`comments-${postId}`);
                 if(!commentsSec) return;
+
                 const isOpen = commentsSec.classList.contains("active");
                 if(isOpen){
                     commentsSec.classList.remove("active");
@@ -2285,6 +2376,7 @@ async function loadFeed(){
         feed.querySelectorAll(".delete-button").forEach(btn => {
             btn.addEventListener("click", async () => {
                 if(!confirm("Vuoi davvero eliminare questo post?")) return;
+
                 const postId = btn.getAttribute("data-post-id");
                 const { error } = await supabase
                     .from("posts")
@@ -2295,13 +2387,14 @@ async function loadFeed(){
                     showToast("Post eliminato");
                     document.getElementById(`post-${postId}`)?.remove();
                 } else {
+                    console.error("Errore eliminazione post:", error);
                     showToast("Impossibile eliminare il post");
                 }
             });
         });
 
     } catch(err) {
-        console.error(err);
+        console.error("Errore caricamento feed:", err);
         feed.innerHTML = `
             <div class="empty">
                 <div class="empty-icon">⚠</div>
@@ -2317,21 +2410,37 @@ async function loadComments(postId){
     if(!listEl) return;
 
     try {
-        const { data, error } = await supabase
+        const { data: comments, error: commentsError } = await supabase
             .from("comments")
-            .select("id,content,created_at,user_id, profiles:profiles(id,full_name,username,avatar_url)")
+            .select("id,content,created_at,user_id")
             .eq("post_id", postId)
             .order("created_at", { ascending: true });
 
-        if(error) throw error;
+        if(commentsError) throw commentsError;
 
-        if(!data || data.length === 0){
+        if(!comments || comments.length === 0){
             listEl.innerHTML = `<div class="search-state-message" style="padding:10px;">Nessun commento. Scrivi il primo!</div>`;
             return;
         }
 
-        listEl.innerHTML = data.map(c => {
-            const author = c.profiles || {};
+        const authorIds = [...new Set(comments.map(c => c.user_id).filter(Boolean))];
+        let profilesById = {};
+
+        if(authorIds.length > 0){
+            const { data: profiles, error: profilesError } = await supabase
+                .from("profiles")
+                .select("id,full_name,username,avatar_url")
+                .in("id", authorIds);
+
+            if(profilesError) throw profilesError;
+
+            (profiles || []).forEach(profile => {
+                profilesById[profile.id] = profile;
+            });
+        }
+
+        listEl.innerHTML = comments.map(c => {
+            const author = profilesById[c.user_id] || {};
             const name = author.full_name || "Membro";
             const username = author.username ? `@${author.username}` : "@member";
             const avatar = author.avatar_url;
@@ -2351,7 +2460,7 @@ async function loadComments(postId){
         }).join("");
 
     } catch(err) {
-        console.error(err);
+        console.error("Errore caricamento commenti:", err);
         listEl.innerHTML = `<div class="search-state-message" style="padding:10px;">Errore caricamento commenti.</div>`;
     }
 }
