@@ -1187,6 +1187,98 @@ a{
 }
 .toast.show{opacity:1;transform:translate(-50%,0) scale(1)}
 
+
+/* BOTTOM NAVIGATION BAR — MOBILE ONLY
+   Added without changing existing FSocial styles/logic. */
+.bottom-nav{
+    display:none;
+}
+@media (max-width:550px){
+    .bottom-nav{
+        display:flex;
+        position:fixed;
+        left:0;
+        right:0;
+        bottom:0;
+        height:calc(60px + env(safe-area-inset-bottom, 0px));
+        padding-bottom:env(safe-area-inset-bottom, 0px);
+        background:rgba(8,8,10,0.95);
+        backdrop-filter:blur(20px);
+        -webkit-backdrop-filter:blur(20px);
+        border-top:1px solid var(--panel-border);
+        z-index:100000;
+        align-items:center;
+        justify-content:space-around;
+        box-shadow:0 -10px 30px rgba(0,0,0,0.5);
+    }
+    .bottom-nav-item{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        flex:1;
+        height:100%;
+        color:var(--muted);
+        transition:color .2s ease,transform .15s ease;
+        position:relative;
+        background:transparent;
+        border:none;
+        cursor:pointer;
+    }
+    .bottom-nav-item:active{transform:scale(.88)}
+    .bottom-nav-item.active,
+    .bottom-nav-item:hover{color:#fff}
+    .bottom-nav-icon{
+        font-size:20px;
+        line-height:1;
+    }
+    .bottom-nav-label{
+        font-size:9px;
+        font-weight:700;
+        letter-spacing:.5px;
+        margin-top:3px;
+        text-transform:uppercase;
+    }
+    .bottom-nav-item.plus-btn{
+        flex:0 0 48px;
+    }
+    .bottom-nav-item.plus-btn .plus-inner{
+        width:42px;
+        height:42px;
+        border-radius:50%;
+        background:var(--orange);
+        color:#000;
+        display:grid;
+        place-items:center;
+        font-size:22px;
+        font-weight:900;
+        box-shadow:0 0 16px var(--orange-glow);
+        transition:transform .2s ease,background-color .2s ease;
+    }
+    .bottom-nav-item.plus-btn:active .plus-inner{
+        transform:scale(.92);
+        background:#fff;
+    }
+    .bottom-nav-badge{
+        position:absolute;
+        top:8px;
+        right:22%;
+        background:var(--orange);
+        color:#000;
+        font-size:9px;
+        font-weight:900;
+        min-width:14px;
+        height:14px;
+        border-radius:100px;
+        display:none;
+        align-items:center;
+        justify-content:center;
+        padding:0 3px;
+        border:2px solid var(--bg);
+    }
+    .bottom-nav-badge.active{display:inline-flex}
+}
+
 @media (max-width:550px){
     .topbar{padding:0 16px;height:52px}
     .brand{font-size:17px}
@@ -1304,6 +1396,30 @@ a{
     </div>
 </main>
 
+<!-- BOTTOM NAVIGATION BAR — MOBILE ONLY -->
+<nav class="bottom-nav" aria-label="Navigazione FSocial">
+    <a id="navHome" href="#fsocial-home" class="bottom-nav-item active" aria-label="Home">
+        <span class="bottom-nav-icon">🏠</span>
+        <span class="bottom-nav-label">Home</span>
+    </a>
+    <button id="navSearch" class="bottom-nav-item" type="button" aria-label="Cerca">
+        <span class="bottom-nav-icon">🔍</span>
+        <span class="bottom-nav-label">Cerca</span>
+    </button>
+    <button id="navCreate" class="bottom-nav-item plus-btn" type="button" aria-label="Crea Post">
+        <div class="plus-inner">+</div>
+    </button>
+    <button id="navNotif" class="bottom-nav-item" type="button" aria-label="Notifiche">
+        <span class="bottom-nav-icon">🔔</span>
+        <span class="bottom-nav-label">Notifiche</span>
+        <span id="bottomNavBadge" class="bottom-nav-badge">0</span>
+    </button>
+    <a id="navProfile" href="area-personale.html" class="bottom-nav-item" aria-label="Profilo">
+        <span class="bottom-nav-icon">👤</span>
+        <span class="bottom-nav-label">Profilo</span>
+    </a>
+</nav>
+
 <!-- NOTIFICATIONS PANEL DRAWER -->
 <div id="notifOverlay" class="notif-overlay">
     <div class="notif-modal">
@@ -1381,6 +1497,12 @@ const notifClose = document.getElementById("notifClose");
 const notifList = document.getElementById("notifList");
 const notifMarkAllBtn = document.getElementById("notifMarkAllBtn");
 const notifHeaderDot = document.getElementById("notifHeaderDot");
+const bottomNavBadge = document.getElementById("bottomNavBadge");
+const navHome = document.getElementById("navHome");
+const navSearch = document.getElementById("navSearch");
+const navCreate = document.getElementById("navCreate");
+const navNotif = document.getElementById("navNotif");
+
 
 const tabForYou = document.getElementById("tabForYou");
 const tabRecent = document.getElementById("tabRecent");
@@ -1605,12 +1727,21 @@ async function updateNotificationBadge() {
         if (error) throw error;
 
         if (count && count > 0) {
-            notifBadge.textContent = count > 99 ? "99+" : count;
+            const badgeValue = count > 99 ? "99+" : count;
+            notifBadge.textContent = badgeValue;
             notifBadge.classList.add("active");
+            if (bottomNavBadge) {
+                bottomNavBadge.textContent = badgeValue;
+                bottomNavBadge.classList.add("active");
+            }
             if (notifHeaderDot) notifHeaderDot.classList.add("active");
         } else {
             notifBadge.textContent = "0";
             notifBadge.classList.remove("active");
+            if (bottomNavBadge) {
+                bottomNavBadge.textContent = "0";
+                bottomNavBadge.classList.remove("active");
+            }
             if (notifHeaderDot) notifHeaderDot.classList.remove("active");
         }
     } catch (err) {
@@ -1780,6 +1911,35 @@ notifClose.addEventListener("click", closeNotifications);
 notifMarkAllBtn.addEventListener("click", markAllNotificationsRead);
 notifOverlay.addEventListener("click", (e) => {
     if (e.target === notifOverlay) closeNotifications();
+});
+
+
+/* =========================================================
+   MOBILE BOTTOM NAVIGATION
+   Reuses the existing FSocial functions; no feed/upload logic changed.
+========================================================= */
+navHome?.addEventListener("click", (event) => {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+navSearch?.addEventListener("click", () => {
+    userSearchInput?.scrollIntoView({ behavior: "smooth", block: "center" });
+    userSearchInput?.focus();
+});
+
+navCreate?.addEventListener("click", () => {
+    const card = document.querySelector(".create-card");
+    card?.scrollIntoView({ behavior: "smooth", block: "center" });
+    postContent?.focus();
+});
+
+navNotif?.addEventListener("click", () => {
+    if (notifOverlay?.classList.contains("active")) {
+        closeNotifications();
+    } else {
+        openNotifications();
+    }
 });
 
 /* =========================================================
