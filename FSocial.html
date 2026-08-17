@@ -1935,6 +1935,11 @@ async function uploadPostImage(file){
         : `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
 
     const path = `${currentUser.id}/${uniqueId}.${fileExtension(file)}`;
+    const { data: { user: authUser } } = await supabase.auth.getUser();
+console.log("AUTH USER ID:", authUser?.id);
+console.log("CURRENT USER ID:", currentUser?.id);
+console.log("STORAGE PATH:", path);
+console.log("IDS MATCH:", authUser?.id === currentUser?.id);
 
     const {error} = await supabase.storage
         .from("post-images")
