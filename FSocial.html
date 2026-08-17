@@ -2263,7 +2263,7 @@ async function loadFeed(){
             const remaining = [...candidates];
             const authorCounts = {};
 
-            while(selected.length < Math.min(30, remaining.length)){
+            while(selected.length < Math.min(30, posts.length) && remaining.length > 0){
                 let winnerIndex = 0;
                 let winnerScore = -Infinity;
 
