@@ -48,6 +48,7 @@ body{
     letter-spacing: -0.01em;
     -webkit-overflow-scrolling: touch;
     overflow-x: hidden;
+    padding-bottom: 70px;
 }
 body.modal-open{overflow:hidden}
 button,input,textarea{font:inherit}
@@ -63,7 +64,7 @@ a{
     touch-action: manipulation;
 }
 
-/* Topbar Header */
+/* Topbar Header SENZA pulsanti HOME e PROFILO superiori */
 .topbar{
     position:sticky;
     top:0;
@@ -132,7 +133,6 @@ a{
     box-shadow:0 0 22px rgba(255,255,255,0.3);
 }
 
-/* NOTIFICATIONS ICON & BADGE (Desktop Header) */
 .notif-btn {
     position: relative;
     width: 34px;
@@ -179,7 +179,6 @@ a{
     display: inline-flex;
 }
 
-/* NOTIFICATIONS OVERLAY & DRAWER SIDE PANEL */
 .notif-overlay {
     position: fixed;
     inset: 0;
@@ -324,17 +323,6 @@ a{
 .notif-item.unread:hover {
     background: rgba(255, 77, 0, 0.06);
 }
-.notif-unread-dot {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--orange);
-    box-shadow: 0 0 6px var(--orange);
-}
 .notif-avatar {
     width: 40px;
     height: 40px;
@@ -417,7 +405,6 @@ a{
     text-transform:uppercase;
 }
 
-/* User Search Bar */
 .user-search-wrapper {
     position: relative;
     margin-bottom: 24px;
@@ -553,7 +540,6 @@ a{
     letter-spacing: 0.3px;
 }
 
-/* Feed Tabs Switcher */
 .feed-tabs {
     position: relative;
     display: flex;
@@ -596,7 +582,6 @@ a{
     box-shadow: 0 4px 16px rgba(255, 255, 255, 0.18);
 }
 
-/* Editorial Create Post Box */
 .create-card{
     position:relative;
     margin-bottom:32px;
@@ -738,7 +723,6 @@ a{
 .publish-button:active{transform:translateY(0) scale(0.97)}
 .publish-button:disabled{opacity:.4;cursor:wait;box-shadow:none;transform:none}
 
-/* Feed & Street-Editorial Post Cards */
 .feed{display:flex;flex-direction:column;gap:24px}
 
 @keyframes cardEnter {
@@ -937,7 +921,6 @@ a{
     white-space:pre-wrap;
 }
 
-/* Comments Section */
 .comments{
     display:none;
     padding:14px 16px;
@@ -1035,7 +1018,6 @@ a{
     letter-spacing:2px;
 }
 
-/* Profile modal */
 .profile-overlay{
     position:fixed;
     inset:0;
@@ -1182,13 +1164,100 @@ a{
 }
 .toast.show{opacity:1;transform:translate(-50%,0) scale(1)}
 
-/* BOTTOM NAVIGATION MOBILE */
+/* BOTTOM NAVIGATION MOBILE & DESKTOP */
 .bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: calc(60px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: rgba(8, 8, 10, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--panel-border);
+    z-index: 100000;
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+}
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 100%;
+    color: var(--muted);
+    transition: color 0.2s ease, transform 0.15s ease;
+    position: relative;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+.bottom-nav-item:active {
+    transform: scale(0.88);
+}
+.bottom-nav-item.active,
+.bottom-nav-item:hover {
+    color: #fff;
+}
+.bottom-nav-icon {
+    font-size: 20px;
+    line-height: 1;
+}
+.bottom-nav-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-top: 3px;
+    text-transform: uppercase;
+}
+
+.bottom-nav-item.plus-btn {
+    flex: 0 0 48px;
+}
+.bottom-nav-item.plus-btn .plus-inner {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: #000;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    font-weight: 900;
+    box-shadow: 0 0 16px var(--orange-glow);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.bottom-nav-item.plus-btn:active .plus-inner {
+    transform: scale(0.92);
+    background: #fff;
+}
+
+.bottom-nav-badge {
+    position: absolute;
+    top: 8px;
+    right: 22%;
+    background: var(--orange);
+    color: #000;
+    font-size: 9px;
+    font-weight: 900;
+    min-width: 14px;
+    height: 14px;
+    border-radius: 100px;
     display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+    border: 2px solid var(--bg);
+}
+.bottom-nav-badge.active {
+    display: inline-flex;
 }
 
 @media (max-width:550px){
-    /* HEADER COMPATTO MOBILE */
     .topbar{
         padding:0 16px;
         height:52px;
@@ -1201,7 +1270,7 @@ a{
     .topbar-actions .top-btn {
         display: none !important;
     }
-    .topbar-actions .top-btn.home-main-btn {
+    .topbar-actions .top-btn.logout-main-btn {
         display: inline-flex !important;
     }
     .topbar-actions {
@@ -1219,7 +1288,6 @@ a{
         max-width: 100vw;
     }
 
-    /* FSOCIAL BRANDING STRIP (INTRO FEED) */
     .hero {
         display: flex;
         flex-direction: column;
@@ -1244,14 +1312,10 @@ a{
         color: var(--muted);
     }
 
-    /* FEED MOBILE IMMERSIVO */
     .feed {
         gap: 16px;
     }
     .post-card{
-        border-radius:16px;
-        border-left: 0;
-        border-right: 0;
         border-radius: 0;
         margin: 0 -8px;
         border-top: 1px solid var(--panel-border);
@@ -1275,8 +1339,6 @@ a{
     .post-header{
         padding:12px 14px;
     }
-    
-    /* AZIONI POST PARTICOLARMENTE UTILIZZABILI COL POLLICE */
     .post-actions{
         padding:10px 14px 4px;
         gap: 20px;
@@ -1293,100 +1355,6 @@ a{
     .post-body{
         padding:2px 14px 12px;
     }
-    
-    /* BOTTOM NAVIGATION BAR MOBILE */
-    .bottom-nav {
-        display: flex;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: calc(60px + env(safe-area-inset-bottom, 0px));
-        padding-bottom: env(safe-area-inset-bottom, 0px);
-        background: rgba(8, 8, 10, 0.88);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-top: 1px solid var(--panel-border);
-        z-index: 100000;
-        align-items: center;
-        justify-content: space-around;
-        box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
-    }
-    .bottom-nav-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        flex: 1;
-        height: 100%;
-        color: var(--muted);
-        transition: color 0.2s ease, transform 0.15s ease;
-        position: relative;
-    }
-    .bottom-nav-item:active {
-        transform: scale(0.88);
-    }
-    .bottom-nav-item.active,
-    .bottom-nav-item:hover {
-        color: #fff;
-    }
-    .bottom-nav-icon {
-        font-size: 20px;
-        line-height: 1;
-    }
-    .bottom-nav-label {
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        margin-top: 3px;
-        text-transform: uppercase;
-    }
-
-    /* PLUS (+) BUTTON PARTICOLARMENTE EVIDENTE */
-    .bottom-nav-item.plus-btn {
-        flex: 0 0 48px;
-    }
-    .bottom-nav-item.plus-btn .plus-inner {
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        background: var(--orange);
-        color: #000;
-        display: grid;
-        place-items: center;
-        font-size: 22px;
-        font-weight: 900;
-        box-shadow: 0 0 16px var(--orange-glow);
-        transition: transform 0.2s ease, background-color 0.2s ease;
-    }
-    .bottom-nav-item.plus-btn:active .plus-inner {
-        transform: scale(0.92);
-        background: #fff;
-    }
-
-    /* BADGE NOTIFICHE IN BOTTOM NAV */
-    .bottom-nav-badge {
-        position: absolute;
-        top: 8px;
-        right: 22%;
-        background: var(--orange);
-        color: #000;
-        font-size: 9px;
-        font-weight: 900;
-        min-width: 14px;
-        height: 14px;
-        border-radius: 100px;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        padding: 0 3px;
-        border: 2px solid var(--bg);
-    }
-    .bottom-nav-badge.active {
-        display: inline-flex;
-    }
-
-    /* FULLSCREEN NOTIFICATION DRAWER MOBILE */
     .notif-modal {
         max-width: 100%;
         border-left: none;
@@ -1412,22 +1380,19 @@ a{
         <span class="brand-white">FUORI</span><span class="brand-orange">SCHEMA</span>
     </a>
     <div class="topbar-actions">
-        <a href="index.html" class="top-btn home-main-btn">HOME</a>
-        <a href="area-personale.html" class="top-btn">PROFILO</a>
-        <button id="logoutButton" class="top-btn primary" type="button">ESCI</button>
+        <!-- Rimosso HOME e PROFILO superiori come richiesto -->
+        <button id="logoutButton" class="top-btn primary logout-main-btn" type="button">ESCI</button>
     </div>
 </header>
 
 <main class="page">
     <div class="feed-shell">
 
-        <!-- INTRO FASCIA IDENTITARIA FSOCIAL -->
         <section class="hero">
             <div class="hero-title"><span style="color:#fff;">FS</span><span style="color:var(--orange);">ocial</span></div>
             <div class="hero-meta">FUORISCHEMA COMMUNITY</div>
         </section>
 
-        <!-- User Search Bar -->
         <div class="user-search-wrapper">
             <div class="user-search-input-box">
                 <span class="search-icon">🔍</span>
@@ -1437,13 +1402,11 @@ a{
             <div id="searchResults" class="search-results"></div>
         </div>
 
-        <!-- Feed Selector Tabs -->
         <div class="feed-tabs">
             <button id="tabForYou" class="tab-btn active" type="button">Per Te</button>
             <button id="tabRecent" class="tab-btn" type="button">Recenti</button>
         </div>
 
-        <!-- Create Post Section -->
         <section id="createPostCard" class="create-card">
             <div class="create-top">
                 <div id="createAvatar" class="avatar">F</div>
@@ -1470,7 +1433,6 @@ a{
             </div>
         </section>
 
-        <!-- Posts Feed -->
         <section id="feed" class="feed">
             <div class="empty">
                 <div class="empty-icon">◌</div>
@@ -1486,12 +1448,12 @@ a{
     </div>
 </main>
 
-<!-- BOTTOM NAVIGATION BAR MOBILE -->
+<!-- BOTTOM NAVIGATION BAR -->
 <nav class="bottom-nav">
-    <button id="navHome" class="bottom-nav-item active" type="button" aria-label="Home">
+    <a id="navHome" href="index.html" class="bottom-nav-item" aria-label="Home">
         <span class="bottom-nav-icon">🏠</span>
         <span class="bottom-nav-label">Home</span>
-    </button>
+    </a>
     <button id="navSearch" class="bottom-nav-item" type="button" aria-label="Cerca">
         <span class="bottom-nav-icon">🔍</span>
         <span class="bottom-nav-label">Cerca</span>
@@ -1510,7 +1472,6 @@ a{
     </a>
 </nav>
 
-<!-- NOTIFICATIONS PANEL DRAWER -->
 <div id="notifOverlay" class="notif-overlay">
     <div class="notif-modal">
         <div class="notif-header">
@@ -1529,7 +1490,6 @@ a{
     </div>
 </div>
 
-<!-- PROFILE MODAL -->
 <div id="profileOverlay" class="profile-overlay">
     <div class="profile-modal">
         <button id="profileClose" class="profile-close" type="button" aria-label="Chiudi">✕</button>
@@ -1551,9 +1511,6 @@ a{
 <script type="module">
 import { supabase } from "./supabase.js";
 
-/* =========================================================
-   ELEMENTS
-========================================================= */
 const feed = document.getElementById("feed");
 const postContent = document.getElementById("postContent");
 const publishButton = document.getElementById("publishButton");
@@ -1592,15 +1549,12 @@ const tabRecent = document.getElementById("tabRecent");
 
 const toast = document.getElementById("toast");
 
-/* Bottom Nav Controls */
 const navHome = document.getElementById("navHome");
 const navSearch = document.getElementById("navSearch");
 const navCreate = document.getElementById("navCreate");
 const navNotif = document.getElementById("navNotif");
+const navProfile = document.getElementById("navProfile");
 
-/* =========================================================
-   STATE
-========================================================= */
 let currentUser = null;
 let selectedImageFile = null;
 let selectedImageUrl = null;
@@ -1608,9 +1562,6 @@ let currentFeedType = "foryou";
 let searchDebounceTimer = null;
 let notifPollInterval = null;
 
-/* =========================================================
-   HELPERS
-========================================================= */
 function showToast(message){
     toast.textContent = message;
     toast.classList.add("show");
@@ -1673,9 +1624,6 @@ function setAvatar(element, author){
     }
 }
 
-/* =========================================================
-   AUTH
-========================================================= */
 async function checkUser(){
     const {data,error} = await supabase.auth.getUser();
 
@@ -1710,7 +1658,6 @@ async function checkUser(){
     updateNotificationBadge();
     loadFeed();
 
-    // Gestione parametri URL per azioni da altre pagine (es. Area Personale)
     const urlParams = new URLSearchParams(window.location.search);
     const action = urlParams.get("action");
     
@@ -1718,14 +1665,12 @@ async function checkUser(){
         openNotifications();
         window.history.replaceState({}, document.title, window.location.pathname);
     } else if (action === "search") {
-        updateBottomNavActiveState("navSearch");
         setTimeout(() => {
             userSearchInput?.scrollIntoView({ behavior: "smooth", block: "center" });
             userSearchInput?.focus();
         }, 300);
         window.history.replaceState({}, document.title, window.location.pathname);
     } else if (action === "create") {
-        updateBottomNavActiveState("navCreate");
         setTimeout(() => {
             const card = document.getElementById("createPostCard");
             card?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -1746,47 +1691,19 @@ logoutButton?.addEventListener("click", async () => {
     window.location.href = "index.html";
 });
 
-/* =========================================================
-   BOTTOM NAVIGATION CONTROLS
-========================================================= */
-function updateBottomNavActiveState(activeId) {
-    [navHome, navSearch, navCreate, navNotif].forEach(btn => {
-        if (btn) btn.classList.remove("active");
-    });
-    const profileItem = document.getElementById("navProfile");
-    if (profileItem) profileItem.classList.remove("active");
-
-    const target = document.getElementById(activeId);
-    if (target) target.classList.add("active");
-}
-
-navHome?.addEventListener("click", () => {
-    closeNotifications();
-    updateBottomNavActiveState("navHome");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-});
-
 navSearch?.addEventListener("click", async () => {
-    updateBottomNavActiveState("navSearch");
     if (notifOverlay?.classList.contains("active")) {
         closeNotifications();
         await new Promise(resolve => setTimeout(resolve, 350));
     }
-
-    userSearchInput?.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-    });
-
-    setTimeout(() => {
-        userSearchInput?.focus();
-    }, 350);
+    userSearchInput?.scrollIntoView({ behavior: "smooth", block: "center" });
+    userSearchInput?.focus();
 });
 
-navCreate?.addEventListener("click", () => {
-    updateBottomNavActiveState("navCreate");
+navCreate?.addEventListener("click", async () => {
     if (notifOverlay?.classList.contains("active")) {
         closeNotifications();
+        await new Promise(resolve => setTimeout(resolve, 350));
     }
     const card = document.getElementById("createPostCard");
     card?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -1794,15 +1711,31 @@ navCreate?.addEventListener("click", () => {
 });
 
 navNotif?.addEventListener("click", () => {
-    updateBottomNavActiveState("navNotif");
-    openNotifications();
+    if (notifOverlay?.classList.contains("active")) {
+        closeNotifications();
+    } else {
+        openNotifications();
+    }
 });
 
-/* =========================================================
-   NOTIFICATIONS SYSTEM
-========================================================= */
+notifClose?.addEventListener("click", closeNotifications);
+notifOverlay?.addEventListener("click", (e) => {
+    if (e.target === notifOverlay) closeNotifications();
+});
+
+function openNotifications(){
+    notifOverlay.classList.add("active");
+    document.body.classList.add("modal-open");
+    loadNotifications();
+}
+
+function closeNotifications(){
+    notifOverlay.classList.remove("active");
+    document.body.classList.remove("modal-open");
+}
+
 async function updateNotificationBadge() {
-    if (!currentUser) return;
+    if(!currentUser) return;
     try {
         const { count, error } = await supabase
             .from("notifications")
@@ -1810,141 +1743,100 @@ async function updateNotificationBadge() {
             .eq("user_id", currentUser.id)
             .eq("is_read", false);
 
-        if (error) throw error;
-
-        if (count && count > 0) {
-            const val = count > 99 ? "99+" : count;
-            if (bottomNavBadge) {
-                bottomNavBadge.textContent = val;
-                bottomNavBadge.classList.add("active");
-            }
-            if (notifHeaderDot) notifHeaderDot.classList.add("active");
+        if(!error && count !== null && count > 0) {
+            const val = count > 99 ? "99+" : String(count);
+            bottomNavBadge.textContent = val;
+            bottomNavBadge.classList.add("active");
+            if(notifHeaderDot) notifHeaderDot.classList.add("active");
         } else {
-            if (bottomNavBadge) {
-                bottomNavBadge.textContent = "0";
-                bottomNavBadge.classList.remove("active");
-            }
-            if (notifHeaderDot) notifHeaderDot.classList.remove("active");
+            bottomNavBadge.textContent = "0";
+            bottomNavBadge.classList.remove("active");
+            if(notifHeaderDot) notifHeaderDot.classList.remove("active");
         }
-    } catch (err) {
-        console.error("Errore aggiornamento conteggio notifiche:", err);
+    } catch(err) {
+        console.error(err);
     }
 }
 
-async function loadNotifications() {
-    if (!currentUser) return;
+async function loadNotifications(){
     notifList.innerHTML = `<div class="search-state-message">Caricamento notifiche...</div>`;
+    if(!currentUser) return;
 
     try {
         const { data, error } = await supabase
             .from("notifications")
-            .select("*")
+            .select("*, actor:profiles!notifications_actor_id_fkey(full_name,username,avatar_url)")
             .eq("user_id", currentUser.id)
             .order("created_at", { ascending: false })
             .limit(30);
 
-        if (error) throw error;
+        if(error) throw error;
 
-        if (!data || data.length === 0) {
-            notifList.innerHTML = `<div class="search-state-message">Nessuna notifica presente.</div>`;
+        if(!data || data.length === 0){
+            notifList.innerHTML = `<div class="search-state-message">Nessuna notifica ricevuta.</div>`;
             return;
         }
 
-        notifList.innerHTML = "";
+        notifList.innerHTML = data.map(n => {
+            const actor = n.actor || {};
+            const name = actor.full_name || "Membro";
+            const avatar = actor.avatar_url;
+            const initials = getInitials(name);
+            const time = timeAgo(n.created_at);
+            const unreadClass = n.is_read ? "" : "unread";
 
-        const actorIds = [...new Set(data.map(n => n.actor_id))];
-        const actorProfiles = {};
-        await Promise.all(actorIds.map(async id => {
-            actorProfiles[id] = await resolveAuthor(id);
-        }));
+            let actionText = "ha interagito con te.";
+            if(n.type === "like") actionText = "ha messo mi piace al tuo post.";
+            else if(n.type === "comment") actionText = "ha commentato il tuo post.";
+            else if(n.type === "follow") actionText = "ha iniziato a seguirti.";
 
-        data.forEach(notif => {
-            const actor = actorProfiles[notif.actor_id] || {
-                name: "Un utente",
-                username: "utente",
-                avatar: ""
-            };
-
-            const item = document.createElement("div");
-            const isUnread = !notif.is_read;
-            item.className = `notif-item ${isUnread ? 'unread' : ''}`;
-
-            const avatarHtml = actor.avatar
-                ? `<img src="${escapeHtml(actor.avatar)}" alt="">`
-                : escapeHtml(getInitials(actor.name));
-
-            const usernameDisplay = actor.username ? `@${actor.username}` : (actor.name || "Utente");
-            let actionText = "";
-            if (notif.type === "like") {
-                actionText = `ha messo Mi piace al tuo post`;
-            } else if (notif.type === "comment") {
-                actionText = `ha commentato il tuo post`;
-            } else {
-                actionText = `ha interagito con il tuo post`;
-            }
-
-            item.innerHTML = `
-                ${isUnread ? '<span class="notif-unread-dot"></span>' : ''}
-                <div class="notif-avatar">${avatarHtml}</div>
-                <div class="notif-content">
-                    <div class="notif-text">
-                        <span class="notif-username">${escapeHtml(usernameDisplay)}</span>${actionText}
+            return `
+                <div class="notif-item ${unreadClass}" data-id="${n.id}" data-post="${n.post_id || ""}">
+                    ${!n.is_read ? '<span class="notif-unread-dot"></span>' : ''}
+                    <div class="notif-avatar">
+                        ${avatar ? `<img src="${escapeHtml(avatar)}" alt="">` : initials}
                     </div>
-                    <div class="notif-time">${escapeHtml(timeAgo(notif.created_at))}</div>
+                    <div class="notif-content">
+                        <div class="notif-text"><span class="notif-username">@${escapeHtml(actor.username || name)}</span> ${actionText}</div>
+                        <div class="notif-time">${time}</div>
+                    </div>
                 </div>
             `;
+        }).join("");
 
-            item.addEventListener("click", () => handleNotificationClick(notif));
-            notifList.appendChild(item);
+        notifList.querySelectorAll(".notif-item").forEach(item => {
+            item.addEventListener("click", async () => {
+                const notifId = item.getAttribute("data-id");
+                const postId = item.getAttribute("data-post");
+
+                await supabase.from("notifications").update({ is_read: true }).eq("id", notifId);
+                item.classList.remove("unread");
+                const dot = item.querySelector(".notif-unread-dot");
+                if(dot) dot.remove();
+                updateNotificationBadge();
+
+                closeNotifications();
+
+                if(postId){
+                    const postEl = document.getElementById(`post-${postId}`);
+                    if(postEl){
+                        postEl.scrollIntoView({ behavior: "smooth", block: "center" });
+                        postEl.style.transition = "border-color 0.4s ease";
+                        postEl.style.borderColor = "var(--orange)";
+                        setTimeout(() => postEl.style.borderColor = "", 1500);
+                    }
+                }
+            });
         });
-    } catch (err) {
-        console.error("Errore caricamento notifiche:", err);
-        notifList.innerHTML = `<div class="search-state-message">Impossibile caricare le notifiche.</div>`;
+
+    } catch(err) {
+        console.error(err);
+        notifList.innerHTML = `<div class="search-state-message">Errore nel caricamento delle notifiche.</div>`;
     }
 }
-
-async function handleNotificationClick(notif) {
-    if (!notif.is_read) {
-        await supabase
-            .from("notifications")
-            .update({ is_read: true })
-            .eq("id", notif.id);
-        updateNotificationBadge();
-    }
-    closeNotifications();
-
-    if (notif.post_id) {
-        const postEl = document.getElementById(`post-${notif.post_id}`);
-        if (postEl) {
-            postEl.scrollIntoView({ behavior: "smooth", block: "center" });
-            postEl.style.boxShadow = "0 0 20px var(--orange-glow)";
-            setTimeout(() => { postEl.style.boxShadow = ""; }, 2000);
-        }
-    }
-}
-
-function openNotifications() {
-    if (notifOverlay) {
-        notifOverlay.classList.add("active");
-        document.body.classList.add("modal-open");
-        loadNotifications();
-    }
-}
-
-function closeNotifications() {
-    if (notifOverlay) {
-        notifOverlay.classList.remove("active");
-        document.body.classList.remove("modal-open");
-    }
-}
-
-notifClose?.addEventListener("click", closeNotifications);
-notifOverlay?.addEventListener("click", (e) => {
-    if (e.target === notifOverlay) closeNotifications();
-});
 
 notifMarkAllBtn?.addEventListener("click", async () => {
-    if (!currentUser) return;
+    if(!currentUser) return;
     try {
         await supabase
             .from("notifications")
@@ -1952,156 +1844,124 @@ notifMarkAllBtn?.addEventListener("click", async () => {
             .eq("user_id", currentUser.id)
             .eq("is_read", false);
 
-        updateNotificationBadge();
         loadNotifications();
-        showToast("Tutte le notifiche lette");
-    } catch (err) {
+        updateNotificationBadge();
+        showToast("Tutte le notifiche segnate come lette");
+    } catch(err) {
         console.error(err);
     }
 });
 
-/* =========================================================
-   USER SEARCH
-========================================================= */
+notifPollInterval = setInterval(updateNotificationBadge, 30000);
+
 userSearchInput?.addEventListener("input", (e) => {
-    const query = e.target.value.trim();
-    if (query.length > 0) {
-        searchClearBtn.style.display = "block";
-    } else {
-        searchClearBtn.style.display = "none";
-        searchResults.classList.remove("active");
-        return;
-    }
+    const q = e.target.value.trim();
+    if(q.length > 0) searchClearBtn.style.display = "block";
+    else searchClearBtn.style.display = "none";
 
     clearTimeout(searchDebounceTimer);
-    searchDebounceTimer = setTimeout(() => {
-        performUserSearch(query);
-    }, 300);
+    searchDebounceTimer = setTimeout(() => performUserSearch(q), 300);
 });
 
 searchClearBtn?.addEventListener("click", () => {
     userSearchInput.value = "";
     searchClearBtn.style.display = "none";
     searchResults.classList.remove("active");
+    searchResults.innerHTML = "";
 });
 
-async function performUserSearch(query) {
-    searchResults.innerHTML = `<div class="search-state-message">Ricerca in corso...</div>`;
+async function performUserSearch(query){
+    if(!query || query.length === 0){
+        searchResults.classList.remove("active");
+        searchResults.innerHTML = "";
+        return;
+    }
+
     searchResults.classList.add("active");
+    searchResults.innerHTML = `<div class="search-state-message">Ricerca in corso...</div>`;
 
     try {
-        const cleanQuery = query.replace(/^@/, "").toLowerCase();
+        const cleanQ = query.replace(/^@/, "");
         const { data, error } = await supabase
             .from("profiles")
-            .select("*")
-            .or(`full_name.ilike.%${cleanQuery}%,username.ilike.%${cleanQuery}%`)
-            .limit(8);
+            .select("id,full_name,username,avatar_url,bio,instagram")
+            .or(`full_name.ilike.%${cleanQ}%,username.ilike.%${cleanQ}%`)
+            .limit(15);
 
-        if (error) throw error;
+        if(error) throw error;
 
-        if (!data || data.length === 0) {
-            searchResults.innerHTML = `<div class="search-state-message">Nessun utente trovato</div>`;
+        if(!data || data.length === 0){
+            searchResults.innerHTML = `<div class="search-state-message">Nessun utente trovato.</div>`;
             return;
         }
 
-        searchResults.innerHTML = "";
-        data.forEach(profile => {
-            const item = document.createElement("div");
-            item.className = "search-result-item";
+        searchResults.innerHTML = data.map(u => {
+            const name = u.full_name || "Membro";
+            const username = u.username ? `@${u.username}` : "@member";
+            const initials = getInitials(name);
+            const avatar = u.avatar_url;
 
-            const name = profile.full_name || "Membro Fuorischema";
-            const handle = profile.username ? `@${profile.username}` : "";
-            const avatar = profile.avatar_url;
-
-            const avatarHtml = avatar 
-                ? `<img src="${escapeHtml(avatar)}" alt="">` 
-                : escapeHtml(getInitials(name));
-
-            item.innerHTML = `
-                <div class="search-result-avatar">${avatarHtml}</div>
-                <div class="search-result-info">
-                    <span class="search-result-name">${escapeHtml(name)}</span>
-                    <span class="search-result-handle">${escapeHtml(handle)}</span>
+            return `
+                <div class="search-result-item" data-id="${u.id}">
+                    <div class="search-result-avatar">
+                        ${avatar ? `<img src="${escapeHtml(avatar)}" alt="">` : initials}
+                    </div>
+                    <div class="search-result-info">
+                        <span class="search-result-name">${escapeHtml(name)}</span>
+                        <span class="search-result-handle">${escapeHtml(username)}</span>
+                    </div>
                 </div>
             `;
+        }).join("");
 
+        searchResults.querySelectorAll(".search-result-item").forEach(item => {
             item.addEventListener("click", () => {
+                const userId = item.getAttribute("data-id");
+                const targetProfile = data.find(p => p.id === userId);
+                if(targetProfile) openProfileModal(targetProfile);
                 searchResults.classList.remove("active");
-                openUserProfileModal(profile.id);
             });
-
-            searchResults.appendChild(item);
         });
 
-    } catch (err) {
-        console.error("Errore ricerca utenti:", err);
-        searchResults.innerHTML = `<div class="search-state-message">Errore durante la ricerca</div>`;
-    }
-}
-
-/* =========================================================
-   USER PROFILE MODAL
-========================================================= */
-const profileAuthorCache = {};
-
-async function resolveAuthor(userId) {
-    if (profileAuthorCache[userId]) return profileAuthorCache[userId];
-
-    try {
-        const { data } = await supabase
-            .from("profiles")
-            .select("full_name, username, avatar_url, bio, instagram")
-            .eq("id", userId)
-            .maybeSingle();
-
-        if (data) {
-            const res = {
-                name: data.full_name || "Membro Fuorischema",
-                username: data.username || "",
-                avatar: data.avatar_url || "",
-                bio: data.bio || "Membro Fuorischema.",
-                instagram: data.instagram || ""
-            };
-            profileAuthorCache[userId] = res;
-            return res;
-        }
-    } catch (err) {
+    } catch(err) {
         console.error(err);
+        searchResults.innerHTML = `<div class="search-state-message">Errore durante la ricerca.</div>`;
     }
-
-    const fallback = {
-        name: "Membro Fuorischema",
-        username: "",
-        avatar: "",
-        bio: "Membro Fuorischema.",
-        instagram: ""
-    };
-    profileAuthorCache[userId] = fallback;
-    return fallback;
 }
 
-async function openUserProfileModal(userId) {
-    const profile = await resolveAuthor(userId);
+document.addEventListener("click", (e) => {
+    if(!userSearchInput?.contains(e.target) && !searchResults?.contains(e.target)){
+        searchResults?.classList.remove("active");
+    }
+});
 
-    modalName.textContent = profile.name;
-    modalHandle.textContent = profile.username ? `@${profile.username}` : "";
-    modalBio.textContent = profile.bio || "Membro FUORISCHEMA.";
+function openProfileModal(profile){
+    const name = profile.full_name || "Membro FUORISCHEMA";
+    const username = profile.username ? `@${profile.username}` : "@member";
+    const bio = profile.bio || "Membro FUORISCHEMA.";
+    const avatar = profile.avatar_url;
+    const initials = getInitials(name);
 
-    if (profile.avatar) {
-        modalAvatar.innerHTML = `<img src="${escapeHtml(profile.avatar)}" alt="">`;
+    modalName.textContent = name;
+    modalHandle.textContent = username;
+    modalBio.textContent = bio;
+
+    if(avatar){
+        modalAvatar.innerHTML = `<img src="${escapeHtml(avatar)}" alt="">`;
     } else {
-        modalAvatar.textContent = getInitials(profile.name);
+        modalAvatar.innerHTML = initials;
     }
 
-    if (profile.instagram) {
-        const igHandle = profile.instagram.replace(/^@/, "");
-        instagramLink.href = `https://instagram.com/${igHandle}`;
+    if(profile.instagram){
+        let ig = profile.instagram.trim();
+        if(!ig.startsWith("http")) ig = `https://instagram.com/${ig.replace(/^@/,"")}`;
+        instagramLink.href = ig;
         instagramLink.style.display = "flex";
     } else {
         instagramLink.style.display = "none";
     }
 
-    profilePageLink.href = `area-personale.html?id=${userId}`;
+    profilePageLink.href = `area-personale.html?id=${profile.id}`;
 
     profileOverlay.classList.add("active");
     document.body.classList.add("modal-open");
@@ -2113,97 +1973,12 @@ profileClose?.addEventListener("click", () => {
 });
 
 profileOverlay?.addEventListener("click", (e) => {
-    if (e.target === profileOverlay) {
+    if(e.target === profileOverlay){
         profileOverlay.classList.remove("active");
         document.body.classList.remove("modal-open");
     }
 });
 
-/* =========================================================
-   CREATE POST & MEDIA UPLOAD
-========================================================= */
-postImageInput?.addEventListener("change", (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    selectedImageFile = file;
-    const reader = new FileReader();
-    reader.onload = (evt) => {
-        previewImage.src = evt.target.result;
-        postImagePreview.classList.add("active");
-    };
-    reader.readAsDataURL(file);
-});
-
-removeImageButton?.addEventListener("click", () => {
-    selectedImageFile = null;
-    postImageInput.value = "";
-    previewImage.src = "";
-    postImagePreview.classList.remove("active");
-});
-
-publishButton?.addEventListener("click", async () => {
-    const content = postContent.value.trim();
-    if (!content && !selectedImageFile) {
-        showToast("Inserisci un testo o un'immagine");
-        return;
-    }
-
-    publishButton.disabled = true;
-    postStatus.textContent = "Caricamento...";
-
-    try {
-        let imageUrl = null;
-
-        if (selectedImageFile) {
-            const ext = selectedImageFile.name.split('.').pop();
-            const fileName = `${currentUser.id}/${Date.now()}.${ext}`;
-
-            const { error: uploadErr } = await supabase.storage
-                .from("posts")
-                .upload(fileName, selectedImageFile);
-
-            if (uploadErr) throw uploadErr;
-
-            const { data: urlData } = supabase.storage
-                .from("posts")
-                .getPublicUrl(fileName);
-
-            imageUrl = urlData.publicUrl;
-        }
-
-        const { error: insertErr } = await supabase
-            .from("posts")
-            .insert({
-                user_id: currentUser.id,
-                content: content,
-                image_url: imageUrl
-            });
-
-        if (insertErr) throw insertErr;
-
-        postContent.value = "";
-        selectedImageFile = null;
-        postImageInput.value = "";
-        previewImage.src = "";
-        postImagePreview.classList.remove("active");
-        postStatus.textContent = "";
-
-        showToast("Post pubblicato!");
-        loadFeed();
-
-    } catch (err) {
-        console.error("Errore pubblicazione post:", err);
-        showToast("Errore durante la pubblicazione");
-        postStatus.textContent = "";
-    } finally {
-        publishButton.disabled = false;
-    }
-});
-
-/* =========================================================
-   FEED TABS & FEED LOADER
-========================================================= */
 tabForYou?.addEventListener("click", () => {
     tabForYou.classList.add("active");
     tabRecent.classList.remove("active");
@@ -2218,7 +1993,86 @@ tabRecent?.addEventListener("click", () => {
     loadFeed();
 });
 
-async function loadFeed() {
+postImageInput?.addEventListener("change", (e) => {
+    const file = e.target.files?.[0];
+    if(!file) return;
+    selectedImageFile = file;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+        selectedImageUrl = ev.target.result;
+        previewImage.src = selectedImageUrl;
+        postImagePreview.classList.add("active");
+    };
+    reader.readAsDataURL(file);
+});
+
+removeImageButton?.addEventListener("click", () => {
+    selectedImageFile = null;
+    selectedImageUrl = null;
+    previewImage.src = "";
+    postImagePreview.classList.remove("active");
+    postImageInput.value = "";
+});
+
+publishButton?.addEventListener("click", async () => {
+    const content = postContent.value.trim();
+    if(!content && !selectedImageFile){
+        showToast("Scrivi qualcosa o seleziona una foto.");
+        return;
+    }
+
+    publishButton.disabled = true;
+    postStatus.textContent = "Pubblicazione...";
+
+    try {
+        let imageUrl = null;
+        if(selectedImageFile){
+            const ext = selectedImageFile.name.split(".").pop();
+            const filePath = `${currentUser.id}/${Date.now()}.${ext}`;
+            const { error: uploadError } = await supabase.storage
+                .from("posts")
+                .upload(filePath, selectedImageFile);
+
+            if(uploadError) throw uploadError;
+
+            const { data: pubData } = supabase.storage
+                .from("posts")
+                .getPublicUrl(filePath);
+
+            imageUrl = pubData.publicUrl;
+        }
+
+        const { error: insertError } = await supabase
+            .from("posts")
+            .insert({
+                user_id: currentUser.id,
+                content: content || null,
+                image_url: imageUrl
+            });
+
+        if(insertError) throw insertError;
+
+        postContent.value = "";
+        selectedImageFile = null;
+        selectedImageUrl = null;
+        previewImage.src = "";
+        postImagePreview.classList.remove("active");
+        postImageInput.value = "";
+        postStatus.textContent = "";
+        publishButton.disabled = false;
+
+        showToast("Post pubblicato con successo!");
+        loadFeed();
+
+    } catch(err) {
+        console.error(err);
+        postStatus.textContent = "";
+        publishButton.disabled = false;
+        showToast("Errore durante la pubblicazione.");
+    }
+});
+
+async function loadFeed(){
     feed.innerHTML = `
         <div class="empty">
             <div class="empty-icon">◌</div>
@@ -2230,247 +2084,286 @@ async function loadFeed() {
     try {
         let query = supabase
             .from("posts")
-            .select("*")
-            .neq("content", "__FS_STORY__")
-            .order("created_at", { ascending: false })
-            .limit(40);
+            .select("id,content,image_url,created_at,user_id, profiles:profiles(id,full_name,username,avatar_url,bio,instagram)")
+            .neq("content", "__FS_STORY__");
 
-        const { data: posts, error } = await query;
+        if(currentFeedType === "recent"){
+            query = query.order("created_at", { ascending: false });
+        } else {
+            query = query.order("created_at", { ascending: false });
+        }
 
-        if (error) throw error;
+        const { data: posts, error } = await query.limit(30);
 
-        if (!posts || posts.length === 0) {
+        if(error) throw error;
+
+        if(!posts || posts.length === 0){
             feed.innerHTML = `
                 <div class="empty">
-                    <div class="empty-icon">⚡</div>
-                    <strong>NESSUN POST PRESENTI</strong>
-                    <span>Sii il primo a condividere una traccia.</span>
+                    <div class="empty-icon">❖</div>
+                    <strong>NESSUN POST</strong>
+                    <span>Sii il primo a lasciare una traccia.</span>
                 </div>
             `;
             return;
         }
 
-        feed.innerHTML = "";
-
-        // Caricamento parallelo autori e likes
-        const authorIds = [...new Set(posts.map(p => p.user_id))];
         const postIds = posts.map(p => p.id);
 
-        const [likesRes] = await Promise.all([
-            supabase.from("post_likes").select("post_id, user_id").in("post_id", postIds)
-        ]);
+        let likesMap = {};
+        let userLikesMap = {};
+        let commentsCountMap = {};
 
-        const likesData = likesRes.data || [];
+        if(postIds.length > 0){
+            const { data: likesData } = await supabase
+                .from("likes")
+                .select("post_id, user_id")
+                .in("post_id", postIds);
 
-        for (const post of posts) {
-            const author = await resolveAuthor(post.user_id);
-            const postLikes = likesData.filter(l => l.post_id === post.id);
-            const isLiked = currentUser ? postLikes.some(l => l.user_id === currentUser.id) : false;
+            if(likesData){
+                likesData.forEach(l => {
+                    likesMap[l.post_id] = (likesMap[l.post_id] || 0) + 1;
+                    if(currentUser && l.user_id === currentUser.id){
+                        userLikesMap[l.post_id] = true;
+                    }
+                });
+            }
 
-            const postCard = renderPostCard(post, author, postLikes.length, isLiked);
-            feed.appendChild(postCard);
+            const { data: commentsData } = await supabase
+                .from("comments")
+                .select("post_id")
+                .in("post_id", postIds);
+
+            if(commentsData){
+                commentsData.forEach(c => {
+                    commentsCountMap[c.post_id] = (commentsCountMap[c.post_id] || 0) + 1;
+                });
+            }
         }
 
-    } catch (err) {
-        console.error("Errore caricamento feed:", err);
+        feed.innerHTML = posts.map(post => {
+            const author = post.profiles || {};
+            const name = author.full_name || "Membro FUORISCHEMA";
+            const username = author.username ? `@${author.username}` : "@member";
+            const avatar = author.avatar_url;
+            const initials = getInitials(name);
+            const time = timeAgo(post.created_at);
+            const isLiked = userLikesMap[post.id] ? "liked" : "";
+            const likesCount = likesMap[post.id] || 0;
+            const commentsCount = commentsCountMap[post.id] || 0;
+            const isOwnPost = currentUser && post.user_id === currentUser.id;
+
+            return `
+                <article class="post-card" id="post-${post.id}">
+                    <div class="post-header">
+                        <div class="post-author" data-author-id="${post.user_id}">
+                            <div class="post-avatar">
+                                ${avatar ? `<img src="${escapeHtml(avatar)}" alt="">` : initials}
+                            </div>
+                            <div class="post-author-info">
+                                <div class="post-author-name">${escapeHtml(name)}</div>
+                                <div class="post-author-handle">${escapeHtml(username)}</div>
+                            </div>
+                        </div>
+                        <div class="post-date">${time}</div>
+                    </div>
+
+                    ${post.image_url ? `
+                        <div class="post-image">
+                            <img src="${escapeHtml(post.image_url)}" alt="Post image" loading="lazy">
+                        </div>
+                    ` : ""}
+
+                    <div class="post-actions">
+                        <button class="action-button like-btn ${isLiked}" data-post-id="${post.id}" type="button">
+                            <span class="action-icon">♥</span>
+                            <span class="likes-count">${likesCount}</span>
+                        </button>
+                        <button class="action-button comment-toggle-btn" data-post-id="${post.id}" type="button">
+                            <span class="action-icon">💬</span>
+                            <span class="comments-count">${commentsCount}</span>
+                        </button>
+                        ${isOwnPost ? `
+                            <button class="delete-button" data-post-id="${post.id}" type="button">ELIMINA</button>
+                        ` : ""}
+                    </div>
+
+                    ${post.content ? `
+                        <div class="post-body">
+                            <div class="post-caption">
+                                <span class="author-username-inline" data-author-id="${post.user_id}">${escapeHtml(username)}</span>
+                                <span class="post-text">${escapeHtml(post.content)}</span>
+                            </div>
+                        </div>
+                    ` : ""}
+
+                    <div class="comments" id="comments-${post.id}">
+                        <div class="comments-list" id="comments-list-${post.id}">
+                            <div class="search-state-message">Caricamento commenti...</div>
+                        </div>
+                        <div class="comment-box">
+                            <input class="comment-input" id="comment-input-${post.id}" type="text" placeholder="Scrivi un commento..." autocomplete="off">
+                            <button class="comment-button comment-submit-btn" data-post-id="${post.id}" type="button">Invia</button>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }).join("");
+
+        feed.querySelectorAll(".post-author, .author-username-inline").forEach(el => {
+            el.addEventListener("click", async () => {
+                const authorId = el.getAttribute("data-author-id");
+                if(!authorId) return;
+                const { data: authorProfile } = await supabase
+                    .from("profiles")
+                    .select("*")
+                    .eq("id", authorId)
+                    .maybeSingle();
+
+                if(authorProfile) openProfileModal(authorProfile);
+            });
+        });
+
+        feed.querySelectorAll(".like-btn").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                const postId = btn.getAttribute("data-post-id");
+                if(!currentUser || !postId) return;
+
+                const isLiked = btn.classList.contains("liked");
+                const countSpan = btn.querySelector(".likes-count");
+                let count = parseInt(countSpan.textContent) || 0;
+
+                if(isLiked){
+                    btn.classList.remove("liked");
+                    countSpan.textContent = Math.max(0, count - 1);
+                    await supabase
+                        .from("likes")
+                        .delete()
+                        .eq("post_id", postId)
+                        .eq("user_id", currentUser.id);
+                } else {
+                    btn.classList.add("liked");
+                    countSpan.textContent = count + 1;
+                    await supabase
+                        .from("likes")
+                        .insert({ post_id: postId, user_id: currentUser.id });
+                }
+            });
+        });
+
+        feed.querySelectorAll(".comment-toggle-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const postId = btn.getAttribute("data-post-id");
+                const commentsSec = document.getElementById(`comments-${postId}`);
+                if(!commentsSec) return;
+                const isOpen = commentsSec.classList.contains("active");
+                if(isOpen){
+                    commentsSec.classList.remove("active");
+                } else {
+                    commentsSec.classList.add("active");
+                    loadComments(postId);
+                }
+            });
+        });
+
+        feed.querySelectorAll(".comment-submit-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const postId = btn.getAttribute("data-post-id");
+                submitComment(postId);
+            });
+        });
+
+        feed.querySelectorAll(".comment-input").forEach(input => {
+            input.addEventListener("keydown", (e) => {
+                if(e.key === "Enter"){
+                    const postId = input.getAttribute("id").replace("comment-input-", "");
+                    submitComment(postId);
+                }
+            });
+        });
+
+        feed.querySelectorAll(".delete-button").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                if(!confirm("Vuoi davvero eliminare questo post?")) return;
+                const postId = btn.getAttribute("data-post-id");
+                const { error } = await supabase
+                    .from("posts")
+                    .delete()
+                    .eq("id", postId);
+
+                if(!error){
+                    showToast("Post eliminato");
+                    document.getElementById(`post-${postId}`)?.remove();
+                } else {
+                    showToast("Impossibile eliminare il post");
+                }
+            });
+        });
+
+    } catch(err) {
+        console.error(err);
         feed.innerHTML = `
             <div class="empty">
-                <div class="empty-icon">⚠️</div>
-                <strong>ERRORE CARICAMENTO</strong>
-                <span>Impossibile caricare il feed in questo momento.</span>
+                <div class="empty-icon">⚠</div>
+                <strong>ERRORE</strong>
+                <span>Impossibile caricare il feed.</span>
             </div>
         `;
     }
 }
 
-function renderPostCard(post, author, likesCount, isLiked) {
-    const card = document.createElement("article");
-    card.className = "post-card";
-    card.id = `post-${post.id}`;
-
-    const isMyPost = currentUser && post.user_id === currentUser.id;
-    const authorName = author.name || "Membro Fuorischema";
-    const authorHandle = author.username ? `@${author.username}` : "";
-
-    const avatarHtml = author.avatar
-        ? `<img src="${escapeHtml(author.avatar)}" alt="">`
-        : escapeHtml(getInitials(authorName));
-
-    card.innerHTML = `
-        <div class="post-header">
-            <div class="post-author">
-                <div class="post-avatar">${avatarHtml}</div>
-                <div class="post-author-info">
-                    <span class="post-author-name">${escapeHtml(authorName)}</span>
-                    <span class="post-author-handle">${escapeHtml(authorHandle)}</span>
-                </div>
-            </div>
-            <span class="post-date">${escapeHtml(timeAgo(post.created_at))}</span>
-        </div>
-
-        ${post.image_url ? `
-            <div class="post-image">
-                <img src="${escapeHtml(post.image_url)}" alt="Post Image" loading="lazy">
-            </div>
-        ` : ''}
-
-        <div class="post-actions">
-            <button class="action-button like-btn ${isLiked ? 'liked' : ''}" type="button">
-                <span class="action-icon">${isLiked ? '❤️' : '🤍'}</span>
-                <span class="like-count">${likesCount}</span>
-            </button>
-            <button class="action-button comment-btn" type="button">
-                <span class="action-icon">💬</span>
-            </button>
-            ${isMyPost ? `
-                <button class="delete-button" type="button">ELIMINA</button>
-            ` : ''}
-        </div>
-
-        ${post.content ? `
-            <div class="post-body">
-                <div class="post-caption">
-                    <span class="author-username-inline">${escapeHtml(authorHandle || authorName)}</span>
-                    <span class="post-text">${escapeHtml(post.content)}</span>
-                </div>
-            </div>
-        ` : ''}
-
-        <div class="comments">
-            <div class="comments-list"></div>
-            <div class="comment-box">
-                <input class="comment-input" type="text" placeholder="Aggiungi un commento...">
-                <button class="comment-button" type="button">INVIA</button>
-            </div>
-        </div>
-    `;
-
-    // Eventi Autore
-    card.querySelector(".post-author")?.addEventListener("click", () => {
-        openUserProfileModal(post.user_id);
-    });
-
-    // Evento Like
-    const likeBtn = card.querySelector(".like-btn");
-    likeBtn?.addEventListener("click", () => handleLikeToggle(post.id, likeBtn, post.user_id));
-
-    // Evento Commenti Toggle
-    const commentBtn = card.querySelector(".comment-btn");
-    const commentsSec = card.querySelector(".comments");
-    commentBtn?.addEventListener("click", () => {
-        commentsSec.classList.toggle("active");
-        if (commentsSec.classList.contains("active")) {
-            loadComments(post.id, card.querySelector(".comments-list"));
-        }
-    });
-
-    // Evento Invio Commento
-    const commentInput = card.querySelector(".comment-input");
-    const commentSendBtn = card.querySelector(".comment-button");
-    commentSendBtn?.addEventListener("click", () => {
-        submitComment(post.id, commentInput, card.querySelector(".comments-list"), post.user_id);
-    });
-
-    // Evento Elimina
-    const deleteBtn = card.querySelector(".delete-button");
-    deleteBtn?.addEventListener("click", () => deletePost(post.id, card));
-
-    return card;
-}
-
-/* =========================================================
-   LIKES & COMMENTS ACTIONS
-========================================================= */
-async function handleLikeToggle(postId, btnEl, postOwnerId) {
-    if (!currentUser) return;
-
-    const isLiked = btnEl.classList.contains("liked");
-    const countEl = btnEl.querySelector(".like-count");
-    const iconEl = btnEl.querySelector(".action-icon");
-    let count = parseInt(countEl.textContent, 10) || 0;
-
-    if (isLiked) {
-        btnEl.classList.remove("liked");
-        iconEl.textContent = "🤍";
-        count = Math.max(0, count - 1);
-        countEl.textContent = count;
-
-        await supabase
-            .from("post_likes")
-            .delete()
-            .eq("post_id", postId)
-            .eq("user_id", currentUser.id);
-
-    } else {
-        btnEl.classList.add("liked");
-        iconEl.textContent = "❤️";
-        count += 1;
-        countEl.textContent = count;
-
-        await supabase
-            .from("post_likes")
-            .insert({ post_id: postId, user_id: currentUser.id });
-
-        // Notifica
-        if (postOwnerId !== currentUser.id) {
-            await supabase.from("notifications").insert({
-                user_id: postOwnerId,
-                actor_id: currentUser.id,
-                post_id: postId,
-                type: "like"
-            });
-        }
-    }
-}
-
-async function loadComments(postId, listContainer) {
-    listContainer.innerHTML = `<div style="font-size:11px; color:var(--muted); text-align:center; padding:8px;">Caricamento commenti...</div>`;
+async function loadComments(postId){
+    const listEl = document.getElementById(`comments-list-${postId}`);
+    if(!listEl) return;
 
     try {
         const { data, error } = await supabase
             .from("comments")
-            .select("*")
+            .select("id,content,created_at,user_id, profiles:profiles(id,full_name,username,avatar_url)")
             .eq("post_id", postId)
             .order("created_at", { ascending: true });
 
-        if (error) throw error;
+        if(error) throw error;
 
-        if (!data || data.length === 0) {
-            listContainer.innerHTML = `<div style="font-size:11px; color:var(--muted); text-align:center; padding:8px;">Nessun commento presente.</div>`;
+        if(!data || data.length === 0){
+            listEl.innerHTML = `<div class="search-state-message" style="padding:10px;">Nessun commento. Scrivi il primo!</div>`;
             return;
         }
 
-        listContainer.innerHTML = "";
-        for (const comment of data) {
-            const author = await resolveAuthor(comment.user_id);
-            const item = document.createElement("div");
-            item.className = "comment";
+        listEl.innerHTML = data.map(c => {
+            const author = c.profiles || {};
+            const name = author.full_name || "Membro";
+            const username = author.username ? `@${author.username}` : "@member";
+            const avatar = author.avatar_url;
+            const initials = getInitials(name);
 
-            const avatarHtml = author.avatar
-                ? `<img src="${escapeHtml(author.avatar)}" alt="">`
-                : escapeHtml(getInitials(author.name));
-
-            item.innerHTML = `
-                <div class="comment-avatar">${avatarHtml}</div>
-                <div class="comment-content">
-                    <span class="comment-user">${escapeHtml(author.username ? `@${author.username}` : author.name)}</span>
-                    <span class="comment-text">${escapeHtml(comment.content)}</span>
+            return `
+                <div class="comment">
+                    <div class="comment-avatar">
+                        ${avatar ? `<img src="${escapeHtml(avatar)}" alt="">` : initials}
+                    </div>
+                    <div class="comment-content">
+                        <span class="comment-user">${escapeHtml(username)}</span>
+                        <span class="comment-text">${escapeHtml(c.content)}</span>
+                    </div>
                 </div>
             `;
-            listContainer.appendChild(item);
-        }
+        }).join("");
 
-    } catch (err) {
-        console.error("Errore caricamento commenti:", err);
-        listContainer.innerHTML = `<div style="font-size:11px; color:var(--muted); text-align:center; padding:8px;">Errore caricamento commenti.</div>`;
+    } catch(err) {
+        console.error(err);
+        listEl.innerHTML = `<div class="search-state-message" style="padding:10px;">Errore caricamento commenti.</div>`;
     }
 }
 
-async function submitComment(postId, inputEl, listContainer, postOwnerId) {
-    const text = inputEl.value.trim();
-    if (!text || !currentUser) return;
+async function submitComment(postId){
+    const inputEl = document.getElementById(`comment-input-${postId}`);
+    if(!inputEl || !currentUser) return;
+    const content = inputEl.value.trim();
+    if(!content) return;
 
     inputEl.value = "";
+    inputEl.disabled = true;
 
     try {
         const { error } = await supabase
@@ -2478,46 +2371,25 @@ async function submitComment(postId, inputEl, listContainer, postOwnerId) {
             .insert({
                 post_id: postId,
                 user_id: currentUser.id,
-                content: text
+                content: content
             });
 
-        if (error) throw error;
+        if(error) throw error;
 
-        loadComments(postId, listContainer);
+        inputEl.disabled = false;
+        inputEl.focus();
+        loadComments(postId);
 
-        if (postOwnerId !== currentUser.id) {
-            await supabase.from("notifications").insert({
-                user_id: postOwnerId,
-                actor_id: currentUser.id,
-                post_id: postId,
-                type: "comment"
-            });
+        const toggleBtn = document.querySelector(`.comment-toggle-btn[data-post-id="${postId}"] .comments-count`);
+        if(toggleBtn){
+            const current = parseInt(toggleBtn.textContent) || 0;
+            toggleBtn.textContent = current + 1;
         }
 
-    } catch (err) {
-        console.error("Errore invio commento:", err);
-        showToast("Errore durante l'invio del commento");
-    }
-}
-
-async function deletePost(postId, cardEl) {
-    if (!confirm("Sei sicuro di voler eliminare questo post?")) return;
-
-    try {
-        const { error } = await supabase
-            .from("posts")
-            .delete()
-            .eq("id", postId)
-            .eq("user_id", currentUser.id);
-
-        if (error) throw error;
-
-        cardEl.remove();
-        showToast("Post eliminato");
-
-    } catch (err) {
-        console.error("Errore eliminazione post:", err);
-        showToast("Impossibile eliminare il post");
+    } catch(err) {
+        console.error(err);
+        inputEl.disabled = false;
+        showToast("Impossibile inviare il commento.");
     }
 }
 </script>

@@ -18,7 +18,7 @@ body{
   display:flex;
   flex-direction:column;
   overflow-x:hidden;
-  padding-bottom: 70px; /* Spazio per evitare che la bottom nav copra il contenuto */
+  padding-bottom: 70px;
 }
 a{color:inherit;text-decoration:none;touch-action:manipulation}
 button,input,textarea{font:inherit}
@@ -38,7 +38,6 @@ button{cursor:pointer;touch-action:manipulation}
   --font-title:'Syne',sans-serif;
 }
 
-/* HEADER PULITO */
 header{
   height:70px;
   border-bottom:1px solid var(--line);
@@ -62,7 +61,6 @@ header{
 }
 .logo span{color:var(--orange)}
 
-/* MAIN CONTENT CONTAINER */
 .profile-container{
   width:min(935px,92%);
   margin:0 auto;
@@ -70,7 +68,6 @@ header{
   flex:1;
 }
 
-/* PROFILE HEADER */
 .profile-header{
   display:grid;
   grid-template-columns:180px 1fr;
@@ -142,7 +139,6 @@ header{
   letter-spacing:1.2px;
 }
 
-/* STATS BAR */
 .profile-stats{
   display:flex;
   gap:28px;
@@ -199,7 +195,6 @@ header{
 .action-btn.orange{background:var(--orange);border-color:var(--orange);color:#050505}
 .action-btn.orange:hover{background:var(--orange-hover);border-color:var(--orange-hover)}
 
-/* POSTS SECTION GRID */
 .posts-section{padding-top:32px}
 .section-head{
   display:flex;
@@ -316,7 +311,6 @@ header{
 .empty-posts strong{font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--text)}
 .empty-posts span{margin-top:8px;color:var(--muted);font-size:10px;letter-spacing:1.5px;text-transform:uppercase}
 
-/* MODAL */
 .modal-backdrop{
   position:fixed;
   inset:0;
@@ -369,7 +363,6 @@ header{
 .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px}
 .status{font-size:11px;color:var(--muted);margin-top:10px;min-height:16px}
 
-/* FOOTER */
 footer{
   border-top:1px solid var(--line);
   padding:24px 5vw 40px;
@@ -382,7 +375,7 @@ footer{
   background:#050505;
 }
 
-/* BOTTOM NAVIGATION MOBILE & DESKTOP DEDICATED BAR */
+/* BOTTOM NAVIGATION */
 .bottom-nav {
     display: flex !important;
     position: fixed !important;
@@ -476,11 +469,9 @@ footer{
     display: inline-flex;
 }
 
-/* RESPONSIVE DESIGN */
 @media(max-width:768px){
   header{height:62px;padding:0 16px}
   .logo{font-size:17px}
-  
   .profile-container{width:100%;padding:24px 16px 24px}
   .profile-header{
     grid-template-columns:100px 1fr;
@@ -490,11 +481,9 @@ footer{
   .avatar{width:96px;height:96px}
   .avatar-placeholder{font-size:32px}
   .change-avatar{font-size:8px;letter-spacing:1px;margin-top:10px}
-  
   .profile-name{font-size:22px}
   .profile-username{font-size:11px}
   .profile-bio{font-size:12px}
-  
   .posts-grid{
     grid-template-columns:repeat(3,1fr);
     gap:3px;
@@ -657,7 +646,6 @@ let currentProfile = null;
 let viewedUserId = null;
 let isOwnProfile = true;
 
-// Funzione di Logout
 export async function handleLogout(){
   await supabase.auth.signOut();
   window.location.href = "index.html";
