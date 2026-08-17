@@ -432,6 +432,7 @@
                 gap: 10px;
             }
         
+        }
     </style>
 </head>
 
@@ -741,14 +742,14 @@
         );
 
         setTimeout(() => {
-            window.location.href = "area-personale.html";
+           window.location.href = "FSocial.html";
         }, 1150);
     });
 
     // --- RICHIESTA RECUPERO PASSWORD ---
     resetBtn.addEventListener("click", async () => {
         const email = resetEmailInput.value.trim();
-
+        
         if (!email) {
             showFeedback(
                 "error",
