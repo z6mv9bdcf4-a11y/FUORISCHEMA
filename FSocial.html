@@ -1565,7 +1565,10 @@ navHome?.addEventListener("click", (event) => {
     event.preventDefault();
 
     // HOME della barra = home interna di FSocial, mai la home commerciale.
-    if (window.location.pathname.toLowerCase().endsWith("/fsocial.html")) {
+    const path = window.location.pathname.toLowerCase();
+    const isFSocialPage = path.endsWith("fsocial.html") || path.endsWith("/fsocial") || document.getElementById("fsocial-home");
+
+    if (isFSocialPage) {
         window.history.replaceState(null, "", "FSocial.html#fsocial-home");
         document.getElementById("fsocial-home")?.scrollIntoView({
             behavior: "smooth",
@@ -1778,15 +1781,6 @@ async function loadNotifications(){
     if(!currentUser) return;
 
     try {
-        /*
-         * IMPORTANT:
-         * Non usiamo più la relazione Supabase
-         * "actor:profiles!notifications_actor_id_fkey".
-         * Se il nome della foreign key cambia/non viene esposto da PostgREST,
-         * quella SELECT fallisce e manda in errore tutta la schermata notifiche.
-         *
-         * Carichiamo prima le notifiche e poi i profili degli actor separatamente.
-         */
         const { data: notifications, error: notificationsError } = await supabase
             .from("notifications")
             .select("*")
@@ -2138,16 +2132,6 @@ async function loadFeed(){
     `;
 
     try {
-        /*
-         * IMPORTANT:
-         * Evitiamo la JOIN automatica posts -> profiles.
-         * La relazione può non essere riconosciuta da PostgREST anche se
-         * entrambe le tabelle funzionano correttamente.
-         *
-         * 1) prendiamo i post;
-         * 2) prendiamo i profili degli autori separatamente;
-         * 3) li associamo in memoria.
-         */
         const { data: posts, error: postsError } = await supabase
             .from("posts")
             .select("id,content,image_url,created_at,user_id")
@@ -2196,11 +2180,6 @@ async function loadFeed(){
                 .select("post_id, user_id")
                 .in("post_id", postIds);
 
-            /*
-             * Likes/comments non devono mai impedire al feed di apparire.
-             * Se una delle due tabelle non è leggibile, mostriamo comunque
-             * i post con conteggio 0.
-             */
             if(!likesError && likesData){
                 likesData.forEach(l => {
                     likesMap[l.post_id] = (likesMap[l.post_id] || 0) + 1;
@@ -2230,19 +2209,13 @@ async function loadFeed(){
 
         if(currentFeedType === "foryou"){
             /*
-             * FSocial "PER TE" = feed intelligente.
-             *
-             * Non è un semplice ordine per created_at:
-             * - freschezza: premia i contenuti nuovi, ma senza schiacciare tutto il resto;
-             * - engagement: likes e commenti indicano contenuti che stanno interessando
-             *   la community;
-             * - segnali personali: interazioni dell'utente e propri contenuti;
-             * - qualità minima: i contenuti con interazioni reali ricevono un vantaggio
-             *   rispetto a post completamente ignorati.
-             *
-             * "RECENTI" resta invece rigorosamente cronologico.
+             * FSocial "PER TE" = feed intelligente basato su dati reali:
+             * - Recenza bilanciata (senza dominare completamente il ranking)
+             * - Engagement effettivo (likes e commenti)
+             * - Segnali personali dell'utente e penalizzazione ripetizione autori (varietà)
              */
             const now = Date.now();
+            let authorAppearanceCount = {};
 
             displayPosts = [...posts]
                 .map((post, index) => {
@@ -2256,33 +2229,33 @@ async function loadFeed(){
                     const likedByMe = userLikesMap[post.id] ? 1 : 0;
                     const ownPost = currentUser && post.user_id === currentUser.id ? 1 : 0;
 
-                    // Decadimento graduale: la novità conta, ma non domina il ranking.
-                    const freshness = 1 / Math.pow(1 + ageHours / 24, 0.72);
+                    // Decadimento temporale moderato
+                    const freshness = 1 / Math.pow(1 + ageHours / 36, 0.65);
 
-                    // L'interazione della community pesa molto di più della sola data.
+                    // Punteggio engagement basato su interazioni reali
                     const engagement =
-                        Math.log1p(likes) * 2.20 +
-                        Math.log1p(comments) * 2.80;
+                        Math.log1p(likes) * 3.50 +
+                        Math.log1p(comments) * 4.20;
 
-                    // Segnali direttamente collegati all'utente.
+                    // Segnali personali
                     const personal =
-                        likedByMe * 4.00 +
-                        ownPost * 0.75;
+                        likedByMe * 2.50 -
+                        ownPost * 0.50; // Contenuti propri moderati
 
-                    // Piccolo bonus ai contenuti che hanno già dimostrato interesse.
-                    const interactionBonus =
-                        (likes > 0 ? 0.75 : 0) +
-                        (comments > 0 ? 1.00 : 0);
+                    // Controllo varietà autore per evitare ripetizioni consecutive
+                    const prevCount = authorAppearanceCount[post.user_id] || 0;
+                    authorAppearanceCount[post.user_id] = prevCount + 1;
+                    const repetitionPenalty = prevCount * 1.80;
 
-                    // Piccola componente di esplorazione per evitare un feed troppo rigido.
-                    const exploration = Math.max(0, 0.35 - index * 0.004);
+                    // Piccola componente di esplorazione controllata deterministica
+                    const exploration = Math.sin(index * 13.7) * 0.25;
 
                     const score =
-                        freshness * 4.0 +
+                        freshness * 3.0 +
                         engagement +
                         personal +
-                        interactionBonus +
-                        exploration;
+                        exploration -
+                        repetitionPenalty;
 
                     return { post, score, index };
                 })
@@ -2290,7 +2263,6 @@ async function loadFeed(){
                     if (Math.abs(b.score - a.score) > 0.001) {
                         return b.score - a.score;
                     }
-                    // A parità quasi perfetta, il più recente vince.
                     return a.index - b.index;
                 })
                 .slice(0, 30)
