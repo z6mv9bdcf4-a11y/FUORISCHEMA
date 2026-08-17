@@ -2208,23 +2208,6 @@ async function loadFeed(){
         let displayPosts = posts;
 
         if(currentFeedType === "foryou"){
-            /*
-             * FSocial "PER TE" = ranking + diversità + discovery.
-             *
-             * Il vecchio algoritmo aveva due problemi:
-             * 1) il bonus "exploration" era deterministico, quindi ogni refresh
-             *    produceva la stessa graduatoria;
-             * 2) la penalità autore veniva calcolata sull'ordine originale dei post,
-             *    non sull'ordine realmente selezionato.
-             *
-             * Qui facciamo invece:
-             * - score reale basato su recenza, likes, commenti e segnali personali;
-             * - piccola esplorazione casuale ad ogni caricamento;
-             * - selezione greedy con penalità dinamica per evitare lo stesso autore
-             *   ripetuto nei primi posti.
-             *
-             * RECENTI resta rigorosamente cronologico.
-             */
             const now = Date.now();
 
             const rankedCandidates = posts.map((post, index) => {
@@ -2238,27 +2221,20 @@ async function loadFeed(){
                 const likedByMe = userLikesMap[post.id] ? 1 : 0;
                 const ownPost = currentUser && post.user_id === currentUser.id ? 1 : 0;
 
-                // La recenza conta, ma non domina.
-                const freshness = 1 / Math.pow(1 + ageHours / 48, 0.60);
-
-                // Engagement reale.
+                const freshness = 1 / Math.pow(1 + ageHours / 36, 0.50);
                 const engagement =
-                    Math.log1p(likes) * 2.60 +
-                    Math.log1p(comments) * 3.20;
+                    Math.log1p(likes) * 3.50 +
+                    Math.log1p(comments) * 4.00;
 
-                // Segnali personali reali disponibili.
                 const personal =
-                    likedByMe * 2.50 -
-                    ownPost * 0.35;
+                    likedByMe * 3.00 -
+                    ownPost * 0.20;
 
-                // Esplorazione: cambia a ogni caricamento del feed.
-                // Non è un random puro: il rumore è limitato e quindi il ranking
-                // resta guidato dai segnali reali.
-                const exploration = Math.random() * 2.25;
+                const exploration = Math.random() * 3.50;
 
                 return {
                     post,
-                    baseScore: freshness * 3.25 + engagement + personal + exploration,
+                    baseScore: freshness * 2.00 + engagement + personal + exploration,
                     index
                 };
             });
@@ -2266,8 +2242,6 @@ async function loadFeed(){
             const selected = [];
             const selectedAuthorCounts = {};
 
-            // Selezione progressiva: ad ogni posizione ricalcoliamo la penalità
-            // dell'autore in base a quanti suoi post abbiamo già mostrato.
             while(selected.length < 30 && rankedCandidates.length > 0){
                 let bestIndex = 0;
                 let bestScore = -Infinity;
@@ -2276,13 +2250,11 @@ async function loadFeed(){
                     const authorId = candidate.post.user_id || `post-${candidate.post.id}`;
                     const alreadyShown = selectedAuthorCounts[authorId] || 0;
 
-                    // Penalità crescente: il primo post è libero, il secondo
-                    // viene leggermente penalizzato, i successivi molto di più.
                     const diversityPenalty =
                         alreadyShown === 0 ? 0 :
-                        alreadyShown === 1 ? 2.75 :
-                        alreadyShown === 2 ? 5.50 :
-                        8.00 + (alreadyShown - 3) * 1.50;
+                        alreadyShown === 1 ? 3.50 :
+                        alreadyShown === 2 ? 7.00 :
+                        10.00 + (alreadyShown - 3) * 2.00;
 
                     const candidateScore = candidate.baseScore - diversityPenalty;
 
@@ -2302,7 +2274,6 @@ async function loadFeed(){
 
             displayPosts = selected;
         } else {
-            // RECENTI = ordine cronologico puro, dal più nuovo al più vecchio.
             displayPosts = posts.slice(0, 30);
         }
 
