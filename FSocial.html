@@ -1304,7 +1304,7 @@ a{
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border-top: 1px solid var(--panel-border);
-        z-index: 99990;
+        z-index: 100000;
         align-items: center;
         justify-content: space-around;
         box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
@@ -1387,6 +1387,7 @@ a{
     .notif-modal {
         max-width: 100%;
         border-left: none;
+        padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
     }
     .notif-header {
         padding: 16px 18px;
@@ -1769,8 +1770,13 @@ async function checkUser(){
     createUserHandle.textContent = me.username ? `@${me.username}` : "Cosa c'è di nuovo?";
     setAvatar(createAvatar, me);
 
+    updateNotificationBadge();
+    loadFeed();
+
     return true;
 }
+
+checkUser();
 
 logoutButton.addEventListener("click", async () => {
     logoutButton.disabled = true;
@@ -1783,6 +1789,7 @@ logoutButton.addEventListener("click", async () => {
    BOTTOM NAVIGATION CONTROLS
 ========================================================= */
 navHome?.addEventListener("click", () => {
+    closeNotifications();
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
@@ -2837,46 +2844,38 @@ async function addComment(postId,article){
         const box = document.getElementById(`comments-${postId}`);
         box.classList.add("active");
         await loadComments(postId,box);
-
-        showToast("Commento pubblicato.");
+        await updateCommentCount(postId,article.querySelector(".comment-toggle"));
     }catch(error){
         console.error(error);
-        showToast("Errore: " + error.message);
+        showToast("Errore nel commento: " + error.message);
     }finally{
         button.disabled = false;
     }
 }
 
 /* =========================================================
-   DELETE
+   DELETE POST
 ========================================================= */
 async function deletePost(postId){
-    if(!confirm("Vuoi davvero eliminare questo post?")) return;
+    if(!currentUser) return;
+    if(!confirm("Vuoi eliminare questo post?")) return;
 
-    const {error} = await supabase
-        .from("posts")
-        .delete()
-        .eq("id",postId);
+    try{
+        const {error} = await supabase
+            .from("posts")
+            .delete()
+            .eq("id",postId)
+            .eq("user_id",currentUser.id);
 
-    if(error){
-        showToast("Errore: " + error.message);
-        return;
+        if(error) throw error;
+
+        showToast("Post eliminato.");
+        await loadFeed();
+    }catch(error){
+        console.error(error);
+        showToast("Non riesco a eliminare il post: " + error.message);
     }
-
-    showToast("Post eliminato.");
-    await loadFeed();
-}
-
-/* =========================================================
-   START
-========================================================= */
-const logged = await checkUser();
-if(logged) {
-    await loadFeed();
-    await updateNotificationBadge();
-    notifPollInterval = setInterval(updateNotificationBadge, 15000);
 }
 </script>
-
 </body>
 </html>
