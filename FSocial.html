@@ -1920,6 +1920,11 @@ notifOverlay.addEventListener("click", (e) => {
 ========================================================= */
 navHome?.addEventListener("click", (event) => {
     event.preventDefault();
+
+    if (notifOverlay?.classList.contains("active")) {
+        closeNotifications();
+    }
+
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
