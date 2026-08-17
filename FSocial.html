@@ -660,6 +660,7 @@ a{
     -webkit-user-drag: none;
     user-select: none;
     -webkit-user-select: none;
+    pointer-events: none;
 }
 .remove-image{
     position:absolute;
@@ -1569,8 +1570,6 @@ navHome?.addEventListener("click", (event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    // HOME è sempre la Home interna di FSocial.
-    // Chiudi SEMPRE eventuali pannelli/modal prima di navigare.
     closeNotifications();
 
     document.body.classList.remove("modal-open");
@@ -2129,6 +2128,7 @@ publishButton?.addEventListener("click", async () => {
 });
 
 async function loadFeed(){
+    console.log("[FSOCIAL] FEED TYPE:", currentFeedType);
     feed.innerHTML = `
         <div class="empty">
             <div class="empty-icon">◌</div>
@@ -2157,6 +2157,8 @@ async function loadFeed(){
             `;
             return;
         }
+
+        console.log("[FSOCIAL] POSTS BEFORE RANKING:", posts.map(p => p.id));
 
         const postIds = posts.map(p => p.id);
         const authorIds = [...new Set(posts.map(p => p.user_id).filter(Boolean))];
@@ -2214,17 +2216,7 @@ async function loadFeed(){
         let displayPosts = posts;
 
         if(currentFeedType === "foryou"){
-            /*
-             * PER TE:
-             * Ranking reale, non cronologico.
-             * Usiamo solo dati realmente caricati: recenza, likes, commenti,
-             * like dell'utente e autore. La diversità viene applicata durante
-             * la selezione. Una piccola componente di sessione rompe i pareggi
-             * senza trasformare il feed in uno shuffle.
-             */
             const now = Date.now();
-
-            // Seed stabile per questa apertura di pagina, diverso al refresh.
             const feedSeed = window.__fsocialFeedSeed ??= Math.random();
 
             const candidates = posts.map((post, index) => {
@@ -2238,20 +2230,15 @@ async function loadFeed(){
                 const likedByMe = userLikesMap[post.id] ? 1 : 0;
                 const ownPost = currentUser && post.user_id === currentUser.id ? 1 : 0;
 
-                // La recenza conta, ma non può da sola determinare l'ordine.
                 const freshness = 1 / Math.pow(1 + ageHours / 72, 0.45);
-
-                // Engagement reale.
                 const engagement =
                     Math.log1p(likes) * 4.0 +
                     Math.log1p(comments) * 5.0;
 
-                // Segnali personali.
                 const personal =
                     likedByMe * 3.0 -
                     ownPost * 0.5;
 
-                // Tie-break/session signal: cambia dopo un refresh ma pesa poco.
                 const sessionSignal =
                     Math.sin((post.id + "").length * 12.9898 + feedSeed * 78.233 + index * 0.37) * 0.8;
 
@@ -2262,15 +2249,16 @@ async function loadFeed(){
                 };
             });
 
-            // Prima ordiniamo per qualità reale.
             candidates.sort((a, b) => {
                 if (Math.abs(b.score - a.score) > 0.001) {
                     return b.score - a.score;
                 }
                 return a.originalIndex - b.originalIndex;
             });
+            
+            console.log("[FSOCIAL] CANDIDATES AFTER SORT:", candidates.map(c => c.post.id));
+            console.log("[FSOCIAL] POST SCORES:", candidates.map(c => ({ id: c.post.id, score: c.score })));
 
-            // Poi costruiamo il feed applicando la diversificazione per autore.
             const selected = [];
             const remaining = [...candidates];
             const authorCounts = {};
@@ -2307,9 +2295,10 @@ async function loadFeed(){
 
             displayPosts = selected;
         } else {
-            // RECENTI = cronologico puro, senza ranking.
             displayPosts = posts.slice(0, 30);
         }
+
+        console.log("[FSOCIAL] DISPLAY POSTS:", displayPosts.map(p => p.id));
 
         feed.innerHTML = displayPosts.map(post => {
             const author = profilesById[post.user_id] || {};
@@ -2403,40 +2392,20 @@ async function loadFeed(){
         feed.querySelectorAll(".like-btn").forEach(btn => {
             btn.addEventListener("click", async () => {
                 const postId = btn.getAttribute("data-post-id");
-                if(!currentUser || !postId) return;
+                if(!postId || !currentUser) return;
 
                 const isLiked = btn.classList.contains("liked");
-                const countSpan = btn.querySelector(".likes-count");
-                let count = parseInt(countSpan.textContent) || 0;
+                const likesCountEl = btn.querySelector(".likes-count");
+                let currentCount = parseInt(likesCountEl.textContent);
 
                 if(isLiked){
                     btn.classList.remove("liked");
-                    countSpan.textContent = Math.max(0, count - 1);
-
-                    const { error } = await supabase
-                        .from("likes")
-                        .delete()
-                        .eq("post_id", postId)
-                        .eq("user_id", currentUser.id);
-
-                    if(error){
-                        console.error("Errore rimozione like:", error);
-                        btn.classList.add("liked");
-                        countSpan.textContent = count;
-                    }
+                    likesCountEl.textContent = Math.max(0, currentCount - 1);
+                    await supabase.from("likes").delete().eq("post_id", postId).eq("user_id", currentUser.id);
                 } else {
                     btn.classList.add("liked");
-                    countSpan.textContent = count + 1;
-
-                    const { error } = await supabase
-                        .from("likes")
-                        .insert({ post_id: postId, user_id: currentUser.id });
-
-                    if(error){
-                        console.error("Errore aggiunta like:", error);
-                        btn.classList.remove("liked");
-                        countSpan.textContent = count;
-                    }
+                    likesCountEl.textContent = currentCount + 1;
+                    await supabase.from("likes").insert({ post_id: postId, user_id: currentUser.id });
                 }
             });
         });
@@ -2444,16 +2413,18 @@ async function loadFeed(){
         feed.querySelectorAll(".comment-toggle-btn").forEach(btn => {
             btn.addEventListener("click", () => {
                 const postId = btn.getAttribute("data-post-id");
-                const commentsSec = document.getElementById(`comments-${postId}`);
-                if(!commentsSec) return;
+                const commentSection = document.getElementById(`comments-${postId}`);
+                commentSection.classList.toggle("active");
+                if(commentSection.classList.contains("active")) loadComments(postId);
+            });
+        });
 
-                const isOpen = commentsSec.classList.contains("active");
-                if(isOpen){
-                    commentsSec.classList.remove("active");
-                } else {
-                    commentsSec.classList.add("active");
-                    loadComments(postId);
-                }
+        feed.querySelectorAll(".delete-button").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                if(!confirm("Eliminare il post?")) return;
+                const postId = btn.getAttribute("data-post-id");
+                await supabase.from("posts").delete().eq("id", postId);
+                document.getElementById(`post-${postId}`).remove();
             });
         });
 
@@ -2464,87 +2435,33 @@ async function loadFeed(){
             });
         });
 
-        feed.querySelectorAll(".comment-input").forEach(input => {
-            input.addEventListener("keydown", (e) => {
-                if(e.key === "Enter"){
-                    const postId = input.getAttribute("id").replace("comment-input-", "");
-                    submitComment(postId);
-                }
-            });
-        });
-
-        feed.querySelectorAll(".delete-button").forEach(btn => {
-            btn.addEventListener("click", async () => {
-                if(!confirm("Vuoi davvero eliminare questo post?")) return;
-
-                const postId = btn.getAttribute("data-post-id");
-                const { error } = await supabase
-                    .from("posts")
-                    .delete()
-                    .eq("id", postId);
-
-                if(!error){
-                    showToast("Post eliminato");
-                    document.getElementById(`post-${postId}`)?.remove();
-                } else {
-                    console.error("Errore eliminazione post:", error);
-                    showToast("Impossibile eliminare il post");
-                }
-            });
-        });
-
     } catch(err) {
         console.error("Errore caricamento feed:", err);
-        feed.innerHTML = `
-            <div class="empty">
-                <div class="empty-icon">⚠</div>
-                <strong>ERRORE</strong>
-                <span>Impossibile caricare il feed.</span>
-            </div>
-        `;
+        feed.innerHTML = `<div class="empty"><strong>ERRORE</strong><span>Impossibile caricare il feed.</span></div>`;
     }
 }
 
 async function loadComments(postId){
     const listEl = document.getElementById(`comments-list-${postId}`);
-    if(!listEl) return;
-
     try {
-        const { data: comments, error: commentsError } = await supabase
+        const { data: comments, error } = await supabase
             .from("comments")
-            .select("id,content,created_at,user_id")
+            .select("id, content, created_at, user_id, profiles(full_name, username, avatar_url)")
             .eq("post_id", postId)
             .order("created_at", { ascending: true });
 
-        if(commentsError) throw commentsError;
+        if(error) throw error;
 
         if(!comments || comments.length === 0){
-            listEl.innerHTML = `<div class="search-state-message" style="padding:10px;">Nessun commento. Scrivi il primo!</div>`;
+            listEl.innerHTML = `<div class="search-state-message">Nessun commento.</div>`;
             return;
         }
 
-        const authorIds = [...new Set(comments.map(c => c.user_id).filter(Boolean))];
-        let profilesById = {};
-
-        if(authorIds.length > 0){
-            const { data: profiles, error: profilesError } = await supabase
-                .from("profiles")
-                .select("id,full_name,username,avatar_url")
-                .in("id", authorIds);
-
-            if(profilesError) throw profilesError;
-
-            (profiles || []).forEach(profile => {
-                profilesById[profile.id] = profile;
-            });
-        }
-
         listEl.innerHTML = comments.map(c => {
-            const author = profilesById[c.user_id] || {};
-            const name = author.full_name || "Membro";
-            const username = author.username ? `@${author.username}` : "@member";
-            const avatar = author.avatar_url;
+            const p = c.profiles || {};
+            const name = p.full_name || "Membro";
             const initials = getInitials(name);
+            const avatar = p.avatar_url;
 
             return `
                 <div class="comment">
@@ -2552,53 +2469,41 @@ async function loadComments(postId){
                         ${avatar ? `<img src="${escapeHtml(avatar)}" alt="">` : initials}
                     </div>
                     <div class="comment-content">
-                        <span class="comment-user">${escapeHtml(username)}</span>
-                        <span class="comment-text">${escapeHtml(c.content)}</span>
+                        <div class="comment-user">${escapeHtml(name)}</div>
+                        <div class="comment-text">${escapeHtml(c.content)}</div>
                     </div>
                 </div>
             `;
         }).join("");
-
     } catch(err) {
-        console.error("Errore caricamento commenti:", err);
-        listEl.innerHTML = `<div class="search-state-message" style="padding:10px;">Errore caricamento commenti.</div>`;
+        console.error(err);
+        listEl.innerHTML = `<div class="search-state-message">Errore caricamento.</div>`;
     }
 }
 
 async function submitComment(postId){
-    const inputEl = document.getElementById(`comment-input-${postId}`);
-    if(!inputEl || !currentUser) return;
-    const content = inputEl.value.trim();
+    const input = document.getElementById(`comment-input-${postId}`);
+    const content = input.value.trim();
     if(!content) return;
 
-    inputEl.value = "";
-    inputEl.disabled = true;
-
+    input.disabled = true;
     try {
         const { error } = await supabase
             .from("comments")
-            .insert({
-                post_id: postId,
-                user_id: currentUser.id,
-                content: content
-            });
-
+            .insert({ post_id: postId, user_id: currentUser.id, content: content });
+        
         if(error) throw error;
 
-        inputEl.disabled = false;
-        inputEl.focus();
+        input.value = "";
         loadComments(postId);
-
-        const toggleBtn = document.querySelector(`.comment-toggle-btn[data-post-id="${postId}"] .comments-count`);
-        if(toggleBtn){
-            const current = parseInt(toggleBtn.textContent) || 0;
-            toggleBtn.textContent = current + 1;
-        }
-
+        
+        const countEl = document.querySelector(`.comment-toggle-btn[data-post-id="${postId}"] .comments-count`);
+        countEl.textContent = parseInt(countEl.textContent) + 1;
     } catch(err) {
         console.error(err);
-        inputEl.disabled = false;
-        showToast("Impossibile inviare il commento.");
+        showToast("Errore invio commento.");
+    } finally {
+        input.disabled = false;
     }
 }
 </script>
