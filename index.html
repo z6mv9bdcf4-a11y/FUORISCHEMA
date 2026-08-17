@@ -11,6 +11,17 @@
         content="FUORISCHEMA — Una selezione di footwear e abbigliamento per chi sceglie la propria strada."
     >
 
+    <!-- PWA & Mobile Web App Config -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#050505">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- Configurazione Apple iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="FUORISCHEMA">
+    <link rel="apple-touch-icon" href="images/icon-192.png">
+
     <style>
 
         /* =========================================================
@@ -1308,71 +1319,70 @@
                 padding-top: 22px;
             }
 
-        }/* =========================
-   AUTH BUTTONS
-========================= */
+        }
 
-.auth-buttons {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-left: 30px;
-}
+        /* =========================
+           AUTH BUTTONS
+        ========================= */
 
-.auth-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 11px 18px;
-    border: 1px solid #444;
-    color: #fff;
-    background: transparent;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: all 0.25s ease;
-    white-space: nowrap;
-}
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 30px;
+        }
 
-.auth-btn:hover {
-    border-color: #ff4d00;
-    color: #ff4d00;
-}
+        .auth-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 18px;
+            border: 1px solid #444;
+            color: #fff;
+            background: transparent;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
 
-.auth-btn-orange {
-    background: #ff4d00;
-    border-color: #ff4d00;
-    color: #050505;
-}
+        .auth-btn:hover {
+            border-color: #ff4d00;
+            color: #ff4d00;
+        }
 
-.auth-btn-orange:hover {
-    background: transparent;
-    color: #ff4d00;
-}
+        .auth-btn-orange {
+            background: #ff4d00;
+            border-color: #ff4d00;
+            color: #050505;
+        }
 
-@media (max-width: 700px) {
+        .auth-btn-orange:hover {
+            background: transparent;
+            color: #ff4d00;
+        }
 
-    .auth-buttons {
-        gap: 6px;
-        margin-left: 10px;
-    }
+        @media (max-width: 700px) {
 
-    .auth-btn {
-        padding: 9px 11px;
-        font-size: 9px;
-    }
+            .auth-buttons {
+                gap: 6px;
+                margin-left: 10px;
+            }
 
-}
+            .auth-btn {
+                padding: 9px 11px;
+                font-size: 9px;
+            }
 
-
+        }
 
         /* =========================================================
            FIX LAYOUT / OVERFLOW
            ========================================================= */
 
-        /* Le immagini restano sempre fisicamente dentro il riquadro */
         .product {
             overflow: hidden;
             min-width: 0;
@@ -1391,7 +1401,6 @@
             box-sizing: border-box;
         }
 
-        /* Testi delle card: mai uscire lateralmente dal riquadro */
         .product-info {
             min-width: 0;
             max-width: calc(100% - 36px);
@@ -1404,7 +1413,6 @@
             text-overflow: ellipsis;
         }
 
-        /* Categorie: le parole lunghe non possono uscire dal box */
         .category-bottom {
             min-width: 0;
             width: 100%;
@@ -1427,7 +1435,6 @@
             flex: 0 0 auto;
         }
 
-        /* Manifesto: dimensione forte ma proporzionata e contenuta */
         .manifesto-title {
             max-width: 1050px;
             font-size: clamp(48px, 6.5vw, 104px);
@@ -1461,6 +1468,122 @@
             }
         }
 
+        /* =========================================================
+           PWA INSTALL CARD / MODAL SYSTEM
+           ========================================================= */
+
+        .pwa-install-card {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(120%);
+            width: min(440px, calc(100vw - 32px));
+            background: #0a0a0a;
+            border: 1px solid var(--arancio);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.88);
+            padding: 22px 24px;
+            z-index: 9999;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .pwa-install-card.visible {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .pwa-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .pwa-card-kicker {
+            color: var(--arancio);
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .pwa-close-btn {
+            background: transparent;
+            border: none;
+            color: #888;
+            font-size: 20px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 4px;
+            transition: color 0.2s ease;
+        }
+
+        .pwa-close-btn:hover {
+            color: var(--bianco);
+        }
+
+        .pwa-card-title {
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+            margin-bottom: 6px;
+        }
+
+        .pwa-card-subtext {
+            color: var(--grigio);
+            font-size: 12px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .pwa-ios-steps {
+            display: none;
+            background: #111;
+            border: 1px solid #222;
+            padding: 14px;
+            margin-top: 10px;
+        }
+
+        .pwa-step-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: #ccc;
+            margin-bottom: 8px;
+        }
+
+        .pwa-step-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .pwa-step-num {
+            color: var(--arancio);
+            font-weight: 800;
+            font-size: 11px;
+            min-width: 18px;
+        }
+
+        .pwa-action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px;
+            background: var(--arancio);
+            color: #050505;
+            border: none;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .pwa-action-btn:hover {
+            opacity: 0.9;
+        }
+
     </style>
 </head>
 
@@ -1469,15 +1592,8 @@
 
 
     <!-- =========================================================
-         MENU OVERLAY
-    ========================================================= -->
-
-    <div class="menu-overlay" id="menuOverlay"></div>
-
-
-    <!-- =========================================================
          MENU OVERLAY + MENU LATERALE
-         ========================================================= -->
+    ========================================================= -->
 
     <div class="menu-overlay" id="menuOverlay"></div>
 
@@ -1552,8 +1668,6 @@
                 FAQ
             </a>
 
-            
-
             <a class="menu-link" href="#">
                 Resi
             </a>
@@ -1597,17 +1711,18 @@
         <a href="index.html" class="logo-small">
             FUORI<span>SCHEMA</span>
         </a>
-<div class="auth-buttons" id="authButtons">
 
-    <a href="login.html" class="auth-btn">
-        ACCEDI
-    </a>
+        <div class="auth-buttons" id="authButtons">
 
-    <a href="account.html" class="auth-btn auth-btn-orange">
-        REGISTRATI
-    </a>
+            <a href="login.html" class="auth-btn">
+                ACCEDI
+            </a>
 
-</div>
+            <a href="account.html" class="auth-btn auth-btn-orange">
+                REGISTRATI
+            </a>
+
+        </div>
     </header>
 
 
@@ -1817,7 +1932,7 @@
                     </div>
                 </a>
 
-</div>
+            </div>
 
         </section>
 
@@ -1921,7 +2036,7 @@
 
                 </a>
 
-</div>
+            </div>
 
         </section>
 
@@ -2016,6 +2131,42 @@
         </section>
 
     </main>
+
+
+
+    <!-- =========================================================
+         PWA INSTALLATION CARD / MODAL
+    ========================================================= -->
+
+    <div class="pwa-install-card" id="pwaInstallCard" role="dialog" aria-labelledby="pwaTitle" aria-describedby="pwaInstallSubtext">
+        <div class="pwa-card-header">
+            <span class="pwa-card-kicker">APP FUORISCHEMA</span>
+            <button class="pwa-close-btn" id="pwaInstallClose" aria-label="Chiudi avviso installazione">×</button>
+        </div>
+        <div class="pwa-card-title" id="pwaTitle">PORTA FUORISCHEMA CON TE</div>
+        <div class="pwa-card-subtext" id="pwaInstallSubtext">
+            Installa FUORISCHEMA sulla schermata Home e aprilo come un'app.
+        </div>
+
+        <div class="pwa-ios-steps" id="pwaIosSteps">
+            <div class="pwa-step-item">
+                <span class="pwa-step-num">01.</span>
+                <span>Premi il pulsante <strong>Condividi</strong> (icona in basso)</span>
+            </div>
+            <div class="pwa-step-item">
+                <span class="pwa-step-num">02.</span>
+                <span>Scorri e premi <strong>"Altro"</strong> se necessario</span>
+            </div>
+            <div class="pwa-step-item">
+                <span class="pwa-step-num">03.</span>
+                <span>Seleziona <strong>"Aggiungi alla schermata Home"</strong></span>
+            </div>
+        </div>
+
+        <button class="pwa-action-btn" id="pwaInstallAction" style="display: none;">
+            INSTALLA ORA →
+        </button>
+    </div>
 
 
 
@@ -2272,112 +2423,115 @@
            NEWSLETTER
         ===================================================== */
 
-       const emailForm = document.getElementById("emailForm");
+        const emailForm = document.getElementById("emailForm");
 
-if (emailForm) {
-    emailForm.addEventListener("submit", async function (event) {
-        event.preventDefault();
+        if (emailForm) {
+            emailForm.addEventListener("submit", async function (event) {
+                event.preventDefault();
 
-        const button = emailForm.querySelector("button");
-        const input = emailForm.querySelector("input");
-        const email = input.value.trim();
+                const button = emailForm.querySelector("button");
+                const input = emailForm.querySelector("input");
+                const email = input.value.trim();
 
-        if (!email) return;
+                if (!email) return;
 
-        button.disabled = true;
-        button.textContent = "ISCRIZIONE...";
+                button.disabled = true;
+                button.textContent = "ISCRIZIONE...";
 
-        try {
-            const { supabase } = await import("./supabase.js");
+                try {
+                    const { supabase } = await import("./supabase.js");
 
-            const { data, error } = await supabase.functions.invoke(
-                "newsletter",
-                {
-                    body: {
-                        email: email
+                    const { data, error } = await supabase.functions.invoke(
+                        "newsletter",
+                        {
+                            body: {
+                                email: email
+                            }
+                        }
+                    );
+
+                    if (error) {
+                        throw error;
                     }
+
+                    if (!data || data.success !== true) {
+                        throw new Error(
+                            data?.message || "Iscrizione non riuscita."
+                        );
+                    }
+
+                    button.textContent = "ISCRITTO ✓";
+                    button.style.color = "#ffffff";
+
+                    input.value = "";
+
+                } catch (error) {
+                    console.error("Newsletter error:", error);
+
+                    button.textContent = "RIPROVA →";
+                    button.style.color = "#ff4d00";
+
+                } finally {
+                    setTimeout(() => {
+                        button.disabled = false;
+
+                        if (button.textContent === "RIPROVA →") {
+                            button.textContent = "ENTRA →";
+                            button.style.color = "";
+                        }
+                    }, 3000);
                 }
-            );
-
-            if (error) {
-                throw error;
-            }
-
-            if (!data || data.success !== true) {
-                throw new Error(
-                    data?.message || "Iscrizione non riuscita."
-                );
-            }
-
-            button.textContent = "ISCRITTO ✓";
-            button.style.color = "#ffffff";
-
-            input.value = "";
-
-        } catch (error) {
-            console.error("Newsletter error:", error);
-
-            button.textContent = "RIPROVA →";
-            button.style.color = "#ff4d00";
-
-        } finally {
-            setTimeout(() => {
-                button.disabled = false;
-
-                if (button.textContent === "RIPROVA →") {
-                    button.textContent = "ENTRA →";
-                    button.style.color = "";
-                }
-            }, 3000);
+            });
         }
-    });
-}
 
     </script>
-<script type="module">
-import { supabase } from "./supabase.js";
+    <script type="module">
+        import { supabase } from "./supabase.js";
 
-const authButtons = document.getElementById("authButtons");
+        const authButtons = document.getElementById("authButtons");
 
-async function aggiornaAccesso() {
-    if (!authButtons) return;
+        async function aggiornaAccesso() {
+            if (!authButtons) return;
 
-    const { data: { session } } = await supabase.auth.getSession();
+            const { data: { session } } = await supabase.auth.getSession();
 
-    if (session) {
-        authButtons.innerHTML = `
-            <a href="area-personale.html" class="auth-btn">
-                AREA PERSONALE
-            </a>
+            if (session) {
+                authButtons.innerHTML = `
+                    <a href="area-personale.html" class="auth-btn">
+                        AREA PERSONALE
+                    </a>
 
-            <button id="logoutButton" class="auth-btn auth-btn-orange">
-                ESCI
-            </button>
-        `;
+                    <button id="logoutButton" class="auth-btn auth-btn-orange">
+                        ESCI
+                    </button>
+                `;
 
-        document.getElementById("logoutButton").addEventListener("click", async () => {
-            await supabase.auth.signOut();
-            window.location.reload();
+                document.getElementById("logoutButton").addEventListener("click", async () => {
+                    await supabase.auth.signOut();
+                    window.location.reload();
+                });
+
+            } else {
+                authButtons.innerHTML = `
+                    <a href="login.html" class="auth-btn">
+                        ACCEDI
+                    </a>
+
+                    <a href="account.html" class="auth-btn auth-btn-orange">
+                        REGISTRATI
+                    </a>
+                `;
+            }
+        }
+
+        aggiornaAccesso();
+
+        supabase.auth.onAuthStateChange(() => {
+            aggiornaAccesso();
         });
+    </script>
 
-    } else {
-        authButtons.innerHTML = `
-            <a href="login.html" class="auth-btn">
-                ACCEDI
-            </a>
-
-            <a href="account.html" class="auth-btn auth-btn-orange">
-                REGISTRATI
-            </a>
-        `;
-    }
-}
-
-aggiornaAccesso();
-
-supabase.auth.onAuthStateChange(() => {
-    aggiornaAccesso();
-});
-</script>
+    <!-- Script Gestione Installazione PWA -->
+    <script src="pwa-install.js" defer></script>
 </body>
 </html>
