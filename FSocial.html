@@ -2103,24 +2103,33 @@ async function updateNotificationBadge() {
 
         if (count && count > 0) {
             const badgeValue = count > 99 ? "99+" : count;
-            notifBadge.textContent = badgeValue;
-            notifBadge.classList.add("active");
+            if (notifBadge) {
+    notifBadge.textContent = badgeValue;
+    notifBadge.classList.add("active");
+}
             if (bottomNavBadge) {
                 bottomNavBadge.textContent = badgeValue;
                 bottomNavBadge.classList.add("active");
             }
             if (notifHeaderDot) notifHeaderDot.classList.add("active");
-        } else {
-           if (notifBadge) {
-    notifBadge.textContent = "0";
-    notifBadge.classList.remove("active");
+       } else {
+
+    if (notifBadge) {
+        notifBadge.textContent = "0";
+        notifBadge.classList.remove("active");
+    }
+
+    if (bottomNavBadge) {
+        bottomNavBadge.textContent = "0";
+        bottomNavBadge.classList.remove("active");
+    }
+
+    if (notifHeaderDot) {
+        notifHeaderDot.classList.remove("active");
+    }
+
 }
-            if (bottomNavBadge) {
-                bottomNavBadge.textContent = "0";
-                bottomNavBadge.classList.remove("active");
-            }
-            if (notifHeaderDot) notifHeaderDot.classList.remove("active");
-        }
+           
     } catch (err) {
         console.error("Errore aggiornamento conteggio notifiche:", err);
     }
