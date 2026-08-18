@@ -3388,7 +3388,22 @@ const logged = await checkUser();
 if(logged) {
     await loadFeed();
     await updateNotificationBadge();
-    notifPollInterval = setInterval(updateNotificationBadge, 15000);
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        if (notifPollInterval) {
+            clearInterval(notifPollInterval);
+            notifPollInterval = null;
+        }
+    } else {
+        updateNotificationBadge();
+
+        if (!notifPollInterval) {
+            notifPollInterval = setInterval(updateNotificationBadge, 15000);
+        }
+    }
+});
+
+notifPollInterval = setInterval(updateNotificationBadge, 15000);
 }
 </script>
 
