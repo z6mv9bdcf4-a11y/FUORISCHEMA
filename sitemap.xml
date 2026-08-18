@@ -1,39 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-    <url>
-        <loc>https://fuorischemastore.it/</loc>
-        <priority>1.0</priority>
-    </url>
-
-    <url>
-        <loc>https://fuorischemastore.it/abbigliamento.html</loc>
-        <priority>0.8</priority>
-    </url>
-
-    <url>
-        <loc>https://fuorischemastore.it/accessori.html</loc>
-        <priority>0.8</priority>
-    </url>
-
-    <url>
-        <loc>https://fuorischemastore.it/catalogo.html</loc>
-        <priority>0.9</priority>
-    </url>
-
-    <url>
-        <loc>https://fuorischemastore.it/Fsocial.html</loc>
-        <priority>0.7</priority>
-    </url>
-
-    <url>
-        <loc>https://fuorischemastore.it/contatti.html</loc>
-        <priority>0.6</priority>
-    </url>
-
-    <url>
-        <loc>https://fuorischemastore.it/faq.html</loc>
-        <priority>0.6</priority>
-    </url>
-
+  <url><loc>https://fuorischemastore.it/</loc><priority>1.0</priority></url>
+  <url><loc>https://fuorischemastore.it/catalogo.html</loc><priority>0.9</priority></url>
+  <url><loc>https://fuorischemastore.it/abbigliamento.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/accessori.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/scarpe.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/nike.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/adidas.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/asics.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/asics-prodotto.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/jordan.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/puma.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/timberland.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/travis-scott.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/prodotto.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/tshirt.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/jeans.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/pantaloni.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/maglieria.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/giacche.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/borse.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/cappelli.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/portafogli.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/contatti.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/faq.html</loc><priority>0.8</priority></url>
+  <url><loc>https://fuorischemastore.it/Fsocial.html</loc><priority>0.7</priority></url>
 </urlset>

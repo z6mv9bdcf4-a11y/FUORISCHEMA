@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /account.html
+Disallow: /login.html
+Disallow: /reset-password.html
+Disallow: /area-personale.html
+Sitemap: https://fuorischemastore.it/sitemap.xml
