@@ -1309,6 +1309,389 @@ a{
         padding: 14px 18px;
     }
 }
+/* =========================================================
+   FUORISCHEMA — SFIDA / VISUAL ONLY
+   ========================================================= */
+
+.fs-challenge {
+    position: relative !important;
+    width: min(680px, calc(100% - 32px)) !important;
+    min-height: 560px !important;
+    margin: 55px auto !important;
+    padding: 70px 45px 42px !important;
+    box-sizing: border-box !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    text-align: center !important;
+    overflow: hidden !important;
+    isolation: isolate !important;
+
+    background:
+        radial-gradient(
+            circle at 50% 30%,
+            rgba(255, 78, 0, .13),
+            transparent 42%
+        ),
+        linear-gradient(
+            145deg,
+            #111111,
+            #070707
+        ) !important;
+
+    border: 1px solid rgba(255,255,255,.10) !important;
+    border-radius: 28px !important;
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.55),
+        inset 0 1px 0 rgba(255,255,255,.05) !important;
+
+    animation: fsChallengeEnter .7s cubic-bezier(.2,.8,.2,1) both !important;
+}
+
+/* luce */
+.fs-challenge-glow {
+    position: absolute !important;
+    width: 320px !important;
+    height: 320px !important;
+    left: 50% !important;
+    top: 45% !important;
+    transform: translate(-50%, -50%) !important;
+
+    background: rgba(255,78,0,.07) !important;
+    filter: blur(60px) !important;
+    border-radius: 50% !important;
+
+    pointer-events: none !important;
+    z-index: -1 !important;
+
+    animation: fsChallengeGlow 4s ease-in-out infinite !important;
+}
+
+/* orbite sottili */
+.fs-orbit-1 {
+    width: 330px !important;
+    height: 330px !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 48% !important;
+    transform: translate(-50%,-50%) !important;
+    border: 1px solid rgba(255,78,0,.12) !important;
+    border-radius: 50% !important;
+    pointer-events: none !important;
+}
+
+.fs-orbit-2 {
+    width: 470px !important;
+    height: 470px !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 48% !important;
+    transform: translate(-50%,-50%) !important;
+    border: 1px solid rgba(255,255,255,.035) !important;
+    border-radius: 50% !important;
+    pointer-events: none !important;
+}
+
+/* contenuto */
+.fs-challenge-center {
+    position: relative !important;
+    z-index: 5 !important;
+    width: 100% !important;
+    max-width: 540px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+
+    animation: fsChallengeContent .9s .08s cubic-bezier(.2,.8,.2,1) both !important;
+}
+
+/* FS */
+.fs-mark {
+    width: 48px !important;
+    height: 48px !important;
+    margin-bottom: 22px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: 1px solid rgba(255,78,0,.35) !important;
+    border-radius: 50% !important;
+
+    background: rgba(255,78,0,.04) !important;
+    box-shadow: 0 0 25px rgba(255,78,0,.10) !important;
+}
+
+.fs-mark b {
+    color: #fff !important;
+    font-size: 14px !important;
+    letter-spacing: 1px !important;
+}
+
+.fs-mark span {
+    position: absolute !important;
+    width: 5px !important;
+    height: 5px !important;
+    margin: -35px 0 0 35px !important;
+    border-radius: 50% !important;
+    background: #ff4e00 !important;
+    box-shadow: 0 0 12px rgba(255,78,0,.8) !important;
+}
+
+/* micro-label */
+.fs-eyebrow {
+    margin-bottom: 18px !important;
+
+    color: rgba(255,255,255,.45) !important;
+    font-size: 9px !important;
+    font-weight: 700 !important;
+    letter-spacing: 3.5px !important;
+    text-transform: uppercase !important;
+}
+
+/* TITOLO */
+.fs-challenge-center h2 {
+    margin: 0 !important;
+
+    color: #fff !important;
+    font-size: clamp(42px, 6vw, 64px) !important;
+    line-height: .94 !important;
+    font-weight: 900 !important;
+    letter-spacing: -3px !important;
+    text-transform: uppercase !important;
+}
+
+.fs-challenge-center h2 span {
+    display: block !important;
+    margin-top: 9px !important;
+
+    color: #ff4e00 !important;
+
+    text-shadow:
+        0 0 28px rgba(255,78,0,.20) !important;
+}
+
+/* linea */
+.fs-divider {
+    width: min(100%, 340px) !important;
+    margin: 27px auto 20px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+.fs-divider span {
+    flex: 1 !important;
+    height: 1px !important;
+    background: rgba(255,255,255,.10) !important;
+}
+
+.fs-divider b {
+    color: #ff4e00 !important;
+    font-size: 9px !important;
+    letter-spacing: 2px !important;
+}
+
+/* sottotitolo */
+.fs-challenge-subtitle {
+    margin: 0 !important;
+
+    color: rgba(255,255,255,.58) !important;
+    font-size: 13px !important;
+    letter-spacing: .5px !important;
+    text-transform: uppercase !important;
+}
+
+.fs-challenge-subtitle strong {
+    color: #fff !important;
+}
+
+/* testo */
+.fs-challenge-copy {
+    max-width: 430px !important;
+    margin: 16px auto 0 !important;
+
+    color: rgba(255,255,255,.48) !important;
+    font-size: 13px !important;
+    line-height: 1.7 !important;
+}
+
+.fs-challenge-copy strong {
+    color: rgba(255,255,255,.90) !important;
+}
+
+/* bottone */
+.fs-challenge-btn {
+    position: relative !important;
+    z-index: 10 !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+
+    margin-top: 28px !important;
+    padding: 14px 25px !important;
+
+    color: #050505 !important;
+    background: #ff4e00 !important;
+
+    border: 0 !important;
+    border-radius: 999px !important;
+
+    font-size: 9px !important;
+    font-weight: 900 !important;
+    letter-spacing: 2px !important;
+    text-decoration: none !important;
+    text-transform: uppercase !important;
+
+    box-shadow: 0 12px 30px rgba(255,78,0,.20) !important;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease !important;
+}
+
+.fs-challenge-btn:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 17px 40px rgba(255,78,0,.32) !important;
+}
+
+.fs-challenge-btn b {
+    font-size: 15px !important;
+    font-weight: 400 !important;
+}
+
+/* footer */
+.fs-challenge-bottom {
+    position: relative !important;
+    z-index: 5 !important;
+
+    width: 100% !important;
+    margin-top: 30px !important;
+    padding-top: 18px !important;
+
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 15px !important;
+
+    border-top: 1px solid rgba(255,255,255,.07) !important;
+
+    color: rgba(255,255,255,.25) !important;
+    font-size: 7px !important;
+    font-weight: 700 !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase !important;
+}
+
+.fs-challenge-bottom span:last-child {
+    color: rgba(255,78,0,.65) !important;
+}
+
+/* linea animata */
+.fs-scanline {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 1px !important;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,78,0,.8),
+        transparent
+    ) !important;
+
+    animation: fsScanLine 4s ease-in-out infinite !important;
+    pointer-events: none !important;
+}
+
+/* ANIMAZIONI */
+@keyframes fsChallengeEnter {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fsChallengeContent {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fsChallengeGlow {
+    0%,100% {
+        opacity: .55;
+        transform: translate(-50%,-50%) scale(.95);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%,-50%) scale(1.05);
+    }
+}
+
+@keyframes fsScanLine {
+    0%,100% {
+        top: 0;
+        opacity: .15;
+    }
+    50% {
+        top: 100%;
+        opacity: .55;
+    }
+}
+
+/* MOBILE */
+@media (max-width:700px) {
+
+    .fs-challenge {
+        width: calc(100% - 24px) !important;
+        min-height: 510px !important;
+        margin: 35px auto !important;
+        padding: 52px 22px 32px !important;
+        border-radius: 23px !important;
+    }
+
+    .fs-challenge-center h2 {
+        font-size: 36px !important;
+        letter-spacing: -1.8px !important;
+    }
+
+    .fs-challenge-copy {
+        font-size: 12px !important;
+    }
+
+    .fs-challenge-bottom {
+        font-size: 6px !important;
+        letter-spacing: 1px !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fs-challenge,
+    .fs-challenge-center,
+    .fs-challenge-glow,
+    .fs-scanline {
+        animation: none !important;
+    }
+}
 </style>
 </head>
 
@@ -1342,10 +1725,10 @@ a{
         </div>
 
         <!-- Feed Selector Tabs -->
-        <div class="feed-tabs">
-            <button id="tabForYou" class="tab-btn active" type="button">Per Te</button>
-            <button id="tabRecent" class="tab-btn" type="button">Recenti</button>
-        </div>
+       <div class="feed-tabs">
+    <button id="tabForYou" class="tab-btn active" type="button">Per Te</button>
+    <button id="tabRecent" class="tab-btn" type="button">Sfida</button>
+</div>
 
         <!-- Create Post Section -->
         <section class="create-card">
@@ -2306,11 +2689,86 @@ tabForYou.addEventListener("click", () => {
 });
 
 tabRecent.addEventListener("click", () => {
-    if (currentFeedType === "recent") return;
-    currentFeedType = "recent";
+    if (currentFeedType === "sfida") return;
+
+    currentFeedType = "sfida";
+
     tabRecent.classList.add("active");
     tabForYou.classList.remove("active");
-    loadFeed();
+
+    feed.innerHTML = `
+    <div class="fs-challenge">
+
+    <div class="fs-challenge-grid"></div>
+    <div class="fs-challenge-glow"></div>
+
+    <div class="fs-orbit fs-orbit-1"></div>
+    <div class="fs-orbit fs-orbit-2"></div>
+
+    <div class="fs-challenge-top">
+        <div class="fs-challenge-index">
+            <span>01</span>
+            <i></i>
+            <span>CHALLENGE 001</span>
+        </div>
+
+        <div class="fs-live">
+            <span></span>
+            IN ARRIVO
+        </div>
+    </div>
+
+    <div class="fs-challenge-center">
+
+        <div class="fs-mark">
+            <span></span>
+            <b>FS</b>
+        </div>
+
+        <div class="fs-eyebrow">
+            FUORISCHEMA / COMMUNITY
+        </div>
+
+        <h2>
+            NON È ANCORA<br>
+            <span>INIZIATA.</span>
+        </h2>
+
+        <div class="fs-divider">
+            <span></span>
+            <b>01</b>
+            <span></span>
+        </div>
+
+        <p class="fs-challenge-subtitle">
+            MA TU SEI GIÀ <strong>IN RITARDO.</strong>
+        </p>
+
+        <p class="fs-challenge-copy">
+            La prossima sfida FUORISCHEMA sta arrivando.
+            <br>
+            <strong>Premi. Sconti. Vantaggi.</strong>
+            <br>
+            Tutto riservato a chi è dentro.
+        </p>
+
+        <a href="index.html" class="fs-challenge-btn">
+            <span>SEGUI FUORISCHEMA</span>
+            <b>↗</b>
+        </a>
+
+    </div>
+
+    <div class="fs-challenge-bottom">
+        <span>FUORISCHEMA</span>
+        <span>CHALLENGE / 001</span>
+        <span>PROSSIMA SFIDA IN ARRIVO</span>
+    </div>
+
+    <div class="fs-scanline"></div>
+
+</div>
+    `;
 });
 
 // Funzione condivisa per il fetch del pool di candidati tramite Finestra Dinamica
