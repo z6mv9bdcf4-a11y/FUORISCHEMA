@@ -1627,7 +1627,7 @@ function getRotationPenalty(postId, history){
 
 function getRandomFeedNoise(){
     // Piccola variazione per evitare un ranking identico ad ogni apertura/refresh.
-    return 0.88 + (Math.random() * 0.24);
+    return 0.95 + (Math.random() * 0.10);
 }
 
 /* =========================================================
@@ -2401,11 +2401,12 @@ async function fetchForYouPosts(){
     // Fetch dell'Engagement in Batch
     let likesMap = {};
     let commentsMap = {};
+    let likedMap = {};
 
     try{
         const pLikes = supabase
             .from("post_likes")
-            .select("post_id")
+            .select("post_id,user_id")
             .in("post_id", postIds);
 
         const pComments = supabase
@@ -2415,10 +2416,14 @@ async function fetchForYouPosts(){
 
         const [resLikes, resComments] = await Promise.all([pLikes, pComments]);
 
-        if(!resLikes.error && resLikes.data){
-            resLikes.data.forEach(l => {
-                likesMap[l.post_id] = (likesMap[l.post_id] || 0) + 1;
-            });
+       if(!resLikes.error && resLikes.data){
+    resLikes.data.forEach(l => {
+        likesMap[l.post_id] = (likesMap[l.post_id] || 0) + 1;
+
+        if(currentUser?.id && l.user_id === currentUser.id){
+            likedMap[l.post_id] = true;
+        }
+    });
         }
 
         if(!resComments.error && resComments.data){
@@ -2497,7 +2502,11 @@ async function fetchForYouPosts(){
     // Salviamo l'ordine appena mostrato per favorire una rotazione
     // intelligente alla prossima apertura del feed.
     saveForYouHistory(selectedPosts);
-
+selectedPosts.forEach(post => {
+    post._likeCount = likesMap[post.id] || 0;
+    post._commentCount = commentsMap[post.id] || 0;
+    post._likedByCurrentUser = Boolean(likedMap[post.id]);
+});
     return selectedPosts;
 }
 
@@ -2665,10 +2674,10 @@ async function renderPost(post,author){
         }
     });
 
-    await Promise.all([
-        updateLikeState(post.id,likeButton,article),
-        updateCommentCount(post.id,commentButton)
-    ]);
+   await updateLikeState(post,likeButton,article);
+
+const commentCountEl = commentButton.querySelector(".comment-count");
+if(commentCountEl) commentCountEl.textContent = post._commentCount || 0;
 }
 
 /* =========================================================
@@ -2698,12 +2707,10 @@ async function getCurrentUserLike(postId){
     return data?.[0] || null;
 }
 
-async function updateLikeState(postId,button,article){
+async function updateLikeState(post,button,article){
     try{
-        const [count,existing] = await Promise.all([
-            getLikeCount(postId),
-            getCurrentUserLike(postId)
-        ]);
+       const count = post._likeCount || 0;
+const existing = post._likedByCurrentUser;
 
         const likeCountEl = article.querySelector(".like-count");
         if(likeCountEl) likeCountEl.textContent = count;
