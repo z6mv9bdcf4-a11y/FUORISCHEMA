@@ -484,6 +484,7 @@ button{font:inherit;border:0}
     .meta-value{font-size:8px}
 }
 </style>
+    <link rel="stylesheet" href="cart.css">
 </head>
 
 <body>
@@ -583,6 +584,8 @@ button{font:inherit;border:0}
 
 </main>
 
+<script src="products.js"></script>
+
 <script>
 /*
     MASTER ADIDAS FUORISCHEMA
@@ -596,50 +599,7 @@ button{font:inherit;border:0}
       adidas.html?product=adidas-07
 */
 
-const products = [
-    {
-        id: "adidas-01",
-        name: "Adidas XLG Runner Deluxe – JR9633",
-        code: "JR9633",
-        image: "images/adidas/adidas-01.jpeg"
-    },
-    {
-        id: "adidas-02",
-        name: "Adidas XLG Runner Deluxe – JP5761",
-        code: "JP5761",
-        image: "images/adidas/adidas-02.jpeg"
-    },
-    {
-        id: "adidas-03",
-        name: "Adidas XLG Runner Deluxe – JS1590",
-        code: "JS1590",
-        image: "images/adidas/adidas-03.jpeg"
-    },
-    {
-        id: "adidas-04",
-        name: "Adidas XLG Runner Deluxe – JS1588",
-        code: "JS1588",
-        image: "images/adidas/adidas-04.jpeg"
-    },
-    {
-        id: "adidas-05",
-        name: "Adidas XLG Runner Deluxe – JR0861",
-        code: "JR0861",
-        image: "images/adidas/adidas-05.jpeg"
-    },
-    {
-        id: "adidas-06",
-        name: "Adidas Vento XLG Deluxe – IH7799",
-        code: "IH7799",
-        image: "images/adidas/adidas-06.jpeg"
-    },
-    {
-        id: "adidas-07",
-        name: "Adidas Vento XLG Deluxe – IH0070",
-        code: "IH0070",
-        image: "images/adidas/adidas-07.jpeg"
-    }
-];
+const products = Object.values(FUORISCHEMA_PRODUCTS).filter(product => product.brand === "ADIDAS");
 
 const catalogView = document.getElementById("catalogView");
 const productDetail = document.getElementById("productDetail");
@@ -707,7 +667,7 @@ function renderCatalog(){
             card.querySelector(".product-image").appendChild(fallback);
         }, { once:true });
 
-        card.addEventListener("click", () => openProduct(product.id));
+        card.addEventListener("click", () => { window.location.href = `prodotto.html?id=${encodeURIComponent(product.id)}`; });
         productGrid.appendChild(card);
     });
 }
@@ -799,5 +759,6 @@ if(initialProduct){
 }
 </script>
 
+    <script src="cart.js"></script>
 </body>
 </html>

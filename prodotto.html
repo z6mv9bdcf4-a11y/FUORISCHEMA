@@ -312,6 +312,7 @@ button{font:inherit;border:0}
     .gallery-main{aspect-ratio:1 / 1}
 }
 </style>
+    <link rel="stylesheet" href="cart.css">
 </head>
 
 <body>
@@ -406,6 +407,8 @@ button{font:inherit;border:0}
 
 </main>
 
+<script src="products.js"></script>
+
 <script>
 /*
     MASTER SCHEDA PRODOTTO
@@ -431,59 +434,9 @@ button{font:inherit;border:0}
     Per ora usiamo un esempio vuoto per vedere la struttura.
 */
 
-const products = {
-    "nike-air-force-1-triple-white": {
-        name: "Air Force 1 Triple White",
-        brand: "NIKE",
-        category: "SCARPE",
-        type: "SNEAKER / FUORISCHEMA",
-        description: "Nike Air Force 1 Triple White. Una delle silhouette più iconiche di Nike, proposta nella classica colorazione Triple White.",
-        image: "images/airforce bianca.jpeg",
-        code: "",
-        label: "PIÙ SCELTO",
-        categoryUrl: "scarpe.html"
-    },
-
-    "nike-air-force-1-triple-black": {
-        name: "Air Force 1 Triple Black",
-        brand: "NIKE",
-        category: "SCARPE",
-        type: "SNEAKER / FUORISCHEMA",
-        description: "Nike Air Force 1 Triple Black. Una versione completamente nera dell'iconica Air Force 1, pensata per un look essenziale e deciso.",
-        image: "images/airforce black.jpeg",
-        code: "",
-        label: "",
-        categoryUrl: "scarpe.html"
-    },
-
-    "nike-shox-tl-white": {
-        name: "Shox TL White",
-        brand: "NIKE",
-        category: "SCARPE",
-        type: "SNEAKER / FUORISCHEMA",
-        description: "Nike Shox TL White. Una silhouette caratterizzata dall'iconica tecnologia Shox e da una presenza forte e contemporanea.",
-        image: "images/nike shox bianca.jpeg",
-        code: "",
-        label: "NUOVO",
-        categoryUrl: "scarpe.html"
-    },
-
-    "nike-shox-tl-triple-black": {
-        name: "Shox TL Triple Black",
-        brand: "NIKE",
-        category: "SCARPE",
-        type: "SNEAKER / FUORISCHEMA",
-        description: "Nike Shox TL Triple Black. Una colorazione total black dell'iconica silhouette Shox TL.",
-        image: "images/nike shox black.jpeg",
-        code: "",
-        label: "",
-        categoryUrl: "scarpe.html"
-    }
-};
-
 const params = new URLSearchParams(window.location.search);
 const productId = params.get("id");
-const product = products[productId] || products["nike-air-force-1-triple-white"];
+const product = FUORISCHEMA_PRODUCTS[productId] || FUORISCHEMA_PRODUCTS["nike-air-force-1-triple-white"];
 
 function setText(id,value){
     const element = document.getElementById(id);
@@ -531,5 +484,6 @@ dmButton.href = "https://www.instagram.com/_fuori.schema_/";
 
 </script>
 
+    <script src="cart.js"></script>
 </body>
 </html>

@@ -609,6 +609,7 @@ button{font:inherit}
 }
 
 </style>
+    <link rel="stylesheet" href="cart.css">
 </head>
 
 <body>
@@ -673,6 +674,8 @@ button{font:inherit}
 
 </main>
 
+<script src="products.js"></script>
+
 <script>
 /*
     MASTER STRUTTURA PRODOTTO
@@ -680,40 +683,7 @@ button{font:inherit}
     Quando inizieremo a caricare i prodotti, basterà aggiungerli
     qui. Per ora NON inseriamo i vecchi prodotti di prova.
 */
-const products = [
-    {
-        id: "nike-air-force-1-triple-white",
-        name: "Air Force 1 Triple White",
-        type: "Sneaker",
-        image: "images/airforce bianca.jpeg",
-        badge: "PIÙ SCELTO",
-        filter: "selected"
-    },
-    {
-        id: "nike-air-force-1-triple-black",
-        name: "Air Force 1 Triple Black",
-        type: "Sneaker",
-        image: "images/airforce black.jpeg",
-        badge: "",
-        filter: "all"
-    },
-    {
-        id: "nike-shox-tl-white",
-        name: "Shox TL White",
-        type: "Sneaker",
-        image: "images/nike shox bianca.jpeg",
-        badge: "NUOVO",
-        filter: "new"
-    },
-    {
-        id: "nike-shox-tl-triple-black",
-        name: "Shox TL Triple Black",
-        type: "Sneaker",
-        image: "images/nike shox black.jpeg",
-        badge: "",
-        filter: "all"
-    }
-];
+const products = Object.values(FUORISCHEMA_PRODUCTS).filter(product => product.brand === "NIKE");
 
 const productGrid = document.getElementById("productGrid");
 const emptyState = document.getElementById("emptyState");
@@ -821,5 +791,6 @@ if(productSearch){
 renderProducts();
 </script>
 
+    <script src="cart.js"></script>
 </body>
 </html>

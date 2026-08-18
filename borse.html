@@ -547,6 +547,7 @@ button{font:inherit}
 }
 
 </style>
+    <link rel="stylesheet" href="cart.css">
 </head>
 
 <body>
@@ -602,6 +603,8 @@ button{font:inherit}
 
 </main>
 
+<script src="products.js"></script>
+
 <script>
 /*
     MASTER STRUTTURA PRODOTTO
@@ -609,20 +612,7 @@ button{font:inherit}
     Quando inizieremo a caricare i prodotti, basterà aggiungerli
     qui. Per ora NON inseriamo i vecchi prodotti di prova.
 */
-const products = [
-    // =====================================================
-    // BORSE — PRODOTTI DA INSERIRE
-    //
-    // {
-    //     id: "borse-esempio",
-    //     name: "Nome prodotto",
-    //     type: "Borse",
-    //     image: "images/nome-foto.jpeg",
-    //     badge: "",
-    //     filter: "all"
-    // }
-    // =====================================================
-];
+const products = Object.values(FUORISCHEMA_PRODUCTS).filter(product => product.category === "BORSE");
 
 const productGrid = document.getElementById("productGrid");
 const emptyState = document.getElementById("emptyState");
@@ -708,5 +698,6 @@ filters.forEach(filter => {
 renderProducts();
 </script>
 
+    <script src="cart.js"></script>
 </body>
 </html>

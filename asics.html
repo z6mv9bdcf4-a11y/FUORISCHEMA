@@ -583,6 +583,7 @@ button{font:inherit}
 }
 
 </style>
+    <link rel="stylesheet" href="cart.css">
 </head>
 
 <body>
@@ -642,6 +643,8 @@ button{font:inherit}
 
 </main>
 
+<script src="products.js"></script>
+
 <script>
 /*
     MASTER STRUTTURA PRODOTTO
@@ -649,16 +652,7 @@ button{font:inherit}
     Quando inizieremo a caricare i prodotti, basterà aggiungerli
     qui. Per ora NON inseriamo i vecchi prodotti di prova.
 */
-const products = [
-        {
-        id: "asics-01",
-        name: "ASICS GEL-NYC — 1201A789-103",
-        type: "Sneaker",
-        image: "images/asics/Asics-1.jpeg",
-        badge: "NUOVO",
-        filter: "all"
-    }
-];
+const products = Object.values(FUORISCHEMA_PRODUCTS).filter(product => product.brand === "ASICS");
 
 const productGrid = document.getElementById("productGrid");
 const emptyState = document.getElementById("emptyState");
@@ -690,7 +684,7 @@ function renderProducts(){
     visible.forEach(product => {
         const card = document.createElement("a");
         card.className = "product-card";
-        card.href = `asics-prodotto.html?id=${encodeURIComponent(product.id)}`;
+        card.href = `prodotto.html?id=${encodeURIComponent(product.id)}`;
 
         card.innerHTML = `
             <div class="product-image">
@@ -755,5 +749,6 @@ if(searchInput){
 renderProducts();
 </script>
 
+    <script src="cart.js"></script>
 </body>
 </html>
