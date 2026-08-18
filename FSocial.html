@@ -2376,6 +2376,15 @@ userSearchInput.addEventListener("focus", () => {
 
 async function searchUsers(query) {
     const cleanQuery = query.replace(/^@/, "").trim();
+    
+const safeQuery = cleanQuery
+    .replace(/\\/g, "\\\\")
+    .replace(/,/g, "\\,")
+    .replace(/\./g, "\\.")
+    .replace(/%/g, "\\%")
+    .replace(/_/g, "\\_");
+
+
     if (!cleanQuery) {
         searchResults.classList.remove("active");
         searchResults.innerHTML = "";
@@ -2389,7 +2398,7 @@ async function searchUsers(query) {
         const { data, error } = await supabase
             .from("profiles")
             .select("id, username, full_name, instagram, avatar_url, bio")
-            .or(`username.ilike.%${cleanQuery}%,full_name.ilike.%${cleanQuery}%`)
+            .or(`username.ilike.%${safeQuery}%,full_name.ilike.%${safeQuery}%`)
             .limit(8);
 
         if (error) throw error;
