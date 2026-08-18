@@ -3328,11 +3328,14 @@ async function addComment(postId,article){
 
     const input = article.querySelector(".comment-input");
     const button = article.querySelector(".comment-button");
-    const content = input.value.trim();
 
-    if(!content) return;
+if(button.disabled) return;
 
-    button.disabled = true;
+const content = input.value.trim();
+
+if(!content) return;
+
+button.disabled = true;
 
     try{
         const {error} = await supabase
