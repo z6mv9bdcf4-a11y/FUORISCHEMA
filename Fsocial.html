@@ -881,7 +881,25 @@ a{
 }
 .action-button:hover{color:#fff;background:rgba(255, 255, 255, 0.05)}
 .action-button:active{transform:scale(0.86)}
-.action-icon{font-size:19px;line-height:1;transition: transform 0.2s var(--ease-out), color 0.2s ease;}
+.action-icon{font-size:19px;line-height:1;transition:transform 0.2s var(--ease-out),color 0.2s ease;}
+.like-icon{
+    width:19px;
+    height:19px;
+    display:inline-block;
+    position:relative;
+    flex:0 0 19px;
+}
+.like-icon::before{
+    content:"♡";
+    display:block;
+    font-size:21px;
+    line-height:19px;
+    font-family:"Arial Unicode MS","Segoe UI Symbol","Noto Sans Symbols 2",sans-serif;
+}
+.action-button.liked .like-icon::before{
+    content:"♥";
+    color:var(--orange);
+}
 .comment-count{
     min-width:12px;
     font-size:11px;
@@ -2887,7 +2905,7 @@ async function fetchForYouPosts(){
 
         const [resLikes, resComments] = await Promise.all([pLikes, pComments]);
 
-       if(!resLikes.error && resLikes.data){
+     if(!resLikes.error && resLikes.data){
     resLikes.data.forEach(l => {
         likesMap[l.post_id] = (likesMap[l.post_id] || 0) + 1;
 
@@ -3063,9 +3081,9 @@ async function renderPost(post,author){
         ${imageHtml}
 
         <div class="post-actions">
-            <button class="action-button like-button" type="button" aria-label="Mi piace">
-                <span class="action-icon">♡</span>
-            </button>
+            <button class="action-button like-button ${post._likedByCurrentUser ? "liked" : ""}" type="button" aria-label="Mi piace">
+    <span class="action-icon like-icon" aria-hidden="true"></span>
+</button>
 
             <button class="action-button comment-toggle" type="button" aria-label="Commenta">
                 <span class="action-icon">💬</span>
@@ -3145,7 +3163,7 @@ async function renderPost(post,author){
         }
     });
 
-   await updateLikeState(post,likeButton,article);
+    
 
 const commentCountEl = commentButton.querySelector(".comment-count");
 if(commentCountEl) commentCountEl.textContent = post._commentCount || 0;
@@ -3180,8 +3198,9 @@ async function getCurrentUserLike(postId){
 
 async function updateLikeState(post,button,article){
     try{
-       const count = post._likeCount || 0;
-const existing = post._likedByCurrentUser;
+        const count = post._likeCount || 0;
+
+        const existing = await getCurrentUserLike(post.id);
 
         const likeCountEl = article.querySelector(".like-count");
         if(likeCountEl) likeCountEl.textContent = count;
@@ -3205,7 +3224,8 @@ async function toggleLike(postId,button,article){
         showToast("Devi essere loggato.");
         return;
     }
-    if(button.disabled) return;
+    if(button.dataset.likeBusy === "1") return;
+button.dataset.likeBusy = "1";
 
     button.disabled = true;
 
@@ -3245,8 +3265,9 @@ async function toggleLike(postId,button,article){
     }catch(error){
         console.error("Errore toggle like:",error);
         showToast("Errore nel like: " + (error?.message || "operazione non riuscita."));
-    }finally{
-        button.disabled = false;
+    }finally{   button.disabled = false;
+      button.disabled = false;
+    delete button.dataset.likeBusy;
     }
 }
 
