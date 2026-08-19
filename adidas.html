@@ -525,7 +525,7 @@ button{font:inherit;border:0}
         </section>
     </section>
 
-    <!-- SCHEDA PRODOTTO INTERNA: NON APRE prodotto.html -->
+    <!-- DETTAGLIO GESTITO DA prodotto.html -->
     <section id="productDetail" class="product-detail" aria-live="polite">
         <button class="detail-back" id="detailBack" type="button">← TORNA AD ADIDAS</button>
 
@@ -590,13 +590,10 @@ button{font:inherit;border:0}
 /*
     MASTER ADIDAS FUORISCHEMA
     - 7 prodotti reali forniti dall'utente
-    - Le card NON puntano a prodotto.html
-    - Il dettaglio viene gestito direttamente da questa pagina
-    - URL supportati:
-      adidas.html
-      adidas.html?product=adidas-01
-      ...
-      adidas.html?product=adidas-07
+    - Le card aprono esclusivamente prodotto.html?id=...
+    - prodotto.html è la scheda prodotto canonica del sito
+    - Il vecchio formato adidas.html?product=... viene mantenuto
+      compatibile tramite redirect alla scheda canonica.
 */
 
 const products = Object.values(FUORISCHEMA_PRODUCTS).filter(product => product.brand === "ADIDAS");
@@ -667,82 +664,29 @@ function renderCatalog(){
             card.querySelector(".product-image").appendChild(fallback);
         }, { once:true });
 
-        card.addEventListener("click", () => { window.location.href = `prodotto.html?id=${encodeURIComponent(product.id)}`; });
+        card.addEventListener("click", () => {
+            window.location.href = `prodotto.html?id=${encodeURIComponent(product.id)}`;
+        });
         productGrid.appendChild(card);
     });
 }
 
-function openProduct(id, updateHistory = true){
+function openProduct(id){
     const product = products.find(item => item.id === id);
 
     if(!product){
-        showCatalog(false);
+        window.location.href = "adidas.html";
         return;
     }
 
-    detailImage.src = product.image;
-    detailImage.alt = product.name;
-    detailTitle.textContent = product.name;
-    detailCode.textContent = product.code;
-
-    detailDescription.textContent =
-        `${product.name}. Prodotto Adidas selezionato da FUORISCHEMA. Per prezzo, taglie e disponibilità aggiornata, scrivici in DM.`;
-
-    const index = products.indexOf(product) + 1;
-    document.getElementById("detailKicker").textContent =
-        `${String(index).padStart(2,"0")} / PRODOTTO`;
-
-    footerSection.textContent =
-        `ADIDAS / ${String(index).padStart(2,"0")}`;
-
-    sectionBackButton.textContent = "← ADIDAS";
-    sectionBackButton.onclick = () => showCatalog();
-
-    catalogView.classList.add("hidden");
-    productDetail.classList.add("show");
-    window.scrollTo({top:0,behavior:"smooth"});
-
-    if(updateHistory){
-        history.pushState(
-            {product:id},
-            "",
-            `adidas.html?product=${encodeURIComponent(id)}`
-        );
-    }
+    /* Compatibilità: qualunque vecchio link adidas.html?product=... 
+       viene portato allo stesso sistema usato dalle card. */
+    window.location.href = `prodotto.html?id=${encodeURIComponent(product.id)}`;
 }
-
-function showCatalog(updateHistory = true){
-    sectionBackButton.textContent = "← SCARPE";
-    sectionBackButton.onclick = () => {
-        window.location.href = "scarpe.html";
-    };
-
-    productDetail.classList.remove("show");
-    catalogView.classList.remove("hidden");
-    footerSection.textContent = "ADIDAS / 01";
-    window.scrollTo({top:0,behavior:"smooth"});
-
-    if(updateHistory){
-        history.pushState({}, "", "adidas.html");
-    }
-}
-
-detailBack.addEventListener("click", () => showCatalog());
 
 if(searchInput){
     searchInput.addEventListener("input", renderCatalog);
 }
-
-window.addEventListener("popstate", () => {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("product");
-
-    if(id){
-        openProduct(id, false);
-    }else{
-        showCatalog(false);
-    }
-});
 
 sectionBackButton.onclick = () => {
     window.location.href = "scarpe.html";
@@ -750,12 +694,12 @@ sectionBackButton.onclick = () => {
 
 renderCatalog();
 
-/* Se la pagina viene aperta direttamente con ?product=adidas-XX */
+/* Compatibilità con eventuali vecchi URL Adidas. */
 const initialParams = new URLSearchParams(window.location.search);
 const initialProduct = initialParams.get("product");
 
 if(initialProduct){
-    openProduct(initialProduct, false);
+    openProduct(initialProduct);
 }
 </script>
 
