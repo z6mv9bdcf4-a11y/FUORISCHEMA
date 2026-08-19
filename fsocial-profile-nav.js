@@ -4,126 +4,91 @@
   if (window.__FUORISCHEMA_PROFILE_NAV__) return;
   window.__FUORISCHEMA_PROFILE_NAV__ = true;
 
+  const icon = (name) => {
+    const paths = {
+      home: '<path d="M3 10.8 12 3l9 7.8"/><path d="M5.5 9.5V21h13V9.5"/><path d="M9.5 21v-6h5v6"/>',
+      search: '<circle cx="10.8" cy="10.8" r="6.3"/><path d="m16 16 5 5"/>',
+      bell: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/>',
+      user: '<circle cx="12" cy="8" r="3.5"/><path d="M5 21a7 7 0 0 1 14 0"/>'
+    };
+    return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths[name] || ""}</g></svg>`;
+  };
+
   const css = `
-    .bottom-nav {
-      height: 72px !important;
-      padding: 6px 18px calc(6px + env(safe-area-inset-bottom)) !important;
-      background: rgba(10,10,12,.94) !important;
-      border-top: 1px solid rgba(255,255,255,.08) !important;
-      backdrop-filter: blur(22px) !important;
-      -webkit-backdrop-filter: blur(22px) !important;
-      box-shadow: 0 -12px 35px rgba(0,0,0,.35) !important;
-      justify-content: center !important;
-      gap: 6px !important;
-    }
-
-    .bottom-nav-item {
-      height: 100% !important;
-      min-width: 0 !important;
-      flex: 1 1 0 !important;
-      max-width: 152px !important;
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 4px !important;
-      color: #77777d !important;
-      background: transparent !important;
-      border: 0 !important;
-      text-decoration: none !important;
-      font: 800 9px Inter,Arial,sans-serif !important;
-      letter-spacing: 1px !important;
-      text-transform: uppercase !important;
-      transition: color .2s ease, transform .15s ease !important;
-    }
-
-    .bottom-nav-item:hover,
-    .bottom-nav-item.active {
-      color: #fff !important;
-    }
-
-    .bottom-nav-item:active {
-      transform: scale(.94) !important;
-    }
-
-    .bottom-nav-icon {
-      font-size: 18px !important;
-      line-height: 1 !important;
-      font-family: Inter,Arial,sans-serif !important;
-      font-weight: 500 !important;
-    }
-
-    .bottom-nav-label {
-      margin-top: 0 !important;
-      font-size: 9px !important;
-      font-weight: 800 !important;
-      letter-spacing: 1px !important;
-    }
-
-    .bottom-nav-item.plus-btn {
-      flex: 1 1 0 !important;
-      max-width: 152px !important;
-    }
-
-    .bottom-nav-item.plus-btn .plus-inner {
-      width: 46px !important;
-      height: 46px !important;
-      border-radius: 50% !important;
-      display: grid !important;
-      place-items: center !important;
-      background: #ff4d00 !important;
-      color: #000 !important;
-      font: 900 25px Inter,Arial,sans-serif !important;
-      box-shadow: 0 0 22px rgba(255,77,0,.28) !important;
-      transition: transform .15s ease, background .2s ease !important;
-    }
-
-    .bottom-nav-item.plus-btn:hover .plus-inner {
-      background: #fff !important;
-    }
-
-    .bottom-nav-item.plus-btn:active .plus-inner {
-      transform: scale(.94) !important;
-    }
-
-    .bottom-nav-badge {
-      top: 8px !important;
-      right: 28% !important;
-    }
-
+    /* =========================================================
+       FSOCIAL PROFILE — CLEAN PASS / VISUAL ONLY
+    ========================================================= */
     body {
-      padding-bottom: 72px !important;
+      background:#050505 !important;
+      color:#f5f5f5 !important;
     }
+    header {
+      background:rgba(5,5,5,.90) !important;
+      border-bottom-color:rgba(255,255,255,.055) !important;
+      backdrop-filter:blur(18px) !important;
+      -webkit-backdrop-filter:blur(18px) !important;
+    }
+    .profile-container { padding-top:34px !important; }
+    .profile-header { border-bottom-color:rgba(255,255,255,.065) !important; }
+    .avatar {
+      box-shadow:none !important;
+      border-color:rgba(255,255,255,.10) !important;
+    }
+    .action-btn { border-color:rgba(255,255,255,.09) !important; }
+    .action-btn.orange { box-shadow:none !important; }
+    .posts-section { padding-top:28px !important; }
+    .post-tile { border-color:rgba(255,255,255,.055) !important; }
+    .post-tile:hover { border-color:rgba(255,255,255,.10) !important; }
 
-    @media (max-width: 650px) {
-      .bottom-nav {
-        height: 68px !important;
-        padding-left: 8px !important;
-        padding-right: 8px !important;
-      }
+    .bottom-nav {
+      height:72px !important;
+      padding:6px 18px calc(6px + env(safe-area-inset-bottom)) !important;
+      background:rgba(8,8,10,.96) !important;
+      border-top:1px solid rgba(255,255,255,.065) !important;
+      backdrop-filter:blur(18px) !important;
+      -webkit-backdrop-filter:blur(18px) !important;
+      box-shadow:0 -10px 28px rgba(0,0,0,.28) !important;
+      justify-content:center !important;
+      gap:2px !important;
+    }
+    .bottom-nav-item {
+      height:100% !important;
+      min-width:0 !important;
+      flex:1 1 0 !important;
+      max-width:152px !important;
+      color:#74747a !important;
+      font:800 9px Inter,Arial,sans-serif !important;
+      letter-spacing:.9px !important;
+      gap:4px !important;
+    }
+    .bottom-nav-item:hover,
+    .bottom-nav-item.active { color:#fff !important; }
+    .bottom-nav-icon {
+      width:20px !important;
+      height:20px !important;
+      font-size:0 !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      font-family:Inter,Arial,sans-serif !important;
+    }
+    .bottom-nav-icon svg { width:18px; height:18px; display:block; }
+    .bottom-nav-label { margin-top:0 !important; font-size:9px !important; letter-spacing:.9px !important; }
+    .bottom-nav-item.plus-btn .plus-inner {
+      box-shadow:0 0 14px rgba(255,77,0,.18) !important;
+      width:46px !important;
+      height:46px !important;
+    }
+    .bottom-nav-badge { top:8px !important; right:28% !important; }
 
-      body {
-        padding-bottom: 68px !important;
-      }
-
-      .bottom-nav-item {
-        font-size: 8px !important;
-        letter-spacing: .8px !important;
-      }
-
-      .bottom-nav-icon {
-        font-size: 17px !important;
-      }
-
-      .bottom-nav-label {
-        font-size: 8px !important;
-        letter-spacing: .8px !important;
-      }
-
-      .bottom-nav-item.plus-btn .plus-inner {
-        width: 44px !important;
-        height: 44px !important;
-      }
+    @media(max-width:650px){
+      .profile-container { padding-top:24px !important; }
+      .bottom-nav { height:68px !important; padding-left:8px !important; padding-right:8px !important; }
+      .bottom-nav-item { font-size:8px !important; letter-spacing:.8px !important; }
+      .bottom-nav-icon { width:19px !important; height:19px !important; }
+      .bottom-nav-icon svg { width:17px; height:17px; }
+      .bottom-nav-label { font-size:8px !important; letter-spacing:.8px !important; }
+      .bottom-nav-item.plus-btn .plus-inner { width:44px !important; height:44px !important; }
     }
   `;
 
@@ -131,15 +96,17 @@
     const nav = document.querySelector('.bottom-nav');
     if (!nav) return;
 
-    const style = document.createElement('style');
-    style.id = 'fsocialProfileNavStyle';
-    style.textContent = css;
-    document.head.appendChild(style);
+    if (!document.getElementById('fsocialProfileNavStyle')) {
+      const style = document.createElement('style');
+      style.id = 'fsocialProfileNavStyle';
+      style.textContent = css;
+      document.head.appendChild(style);
+    }
 
     const icons = nav.querySelectorAll('.bottom-nav-icon');
-    const iconMap = ['⌂', '⌕', null, '♟', '●'];
-    icons.forEach((icon, index) => {
-      if (iconMap[index] !== null) icon.textContent = iconMap[index];
+    const replacements = [icon('home'), icon('search'), null, icon('bell'), icon('user')];
+    icons.forEach((el, index) => {
+      if (replacements[index] !== null) el.innerHTML = replacements[index];
     });
 
     const profile = nav.querySelector('#navProfile');
