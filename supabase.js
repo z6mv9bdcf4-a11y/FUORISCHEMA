@@ -18,6 +18,10 @@ if (currentPath.endsWith("/fsocial.html")) {
     import("./fsocial-safety.js").catch((error) => {
         console.error("FSocial safety module failed to load:", error);
     });
+
+    import("./fsocial-owner-tools.js").catch((error) => {
+        console.error("FSocial owner tools failed to load:", error);
+    });
 }
 
 // Owner-only moderation UI. The module performs its own authenticated owner check
