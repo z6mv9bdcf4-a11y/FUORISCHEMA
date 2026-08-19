@@ -26,6 +26,10 @@ if (currentPath.endsWith("/fsocial.html")) {
     import("./fsocial-bottom-nav.js").catch((error) => {
         console.error("FSocial bottom navigation failed to load:", error);
     });
+
+    import("./fsocial-notification-bridge.js").catch((error) => {
+        console.error("FSocial notification bridge failed to load:", error);
+    });
 }
 
 // Profile page: reuse the same FSocial bottom-bar visual language without
