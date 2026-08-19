@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
@@ -19,7 +19,7 @@
 
     <meta
         name="description"
-        content="FUORISCHEMA è lo store online di scarpe, abbigliamento e accessori per chi sceglie la propria strada. Scopri nuovi arrivi, footwear e streetwear."
+        content="FUORISCHEMA Ã¨ lo store online di scarpe, abbigliamento e accessori per chi sceglie la propria strada. Scopri nuovi arrivi, footwear e streetwear."
     >
 
     <!-- PWA & Mobile Web App Config -->
@@ -150,8 +150,8 @@
 
 
         /* =========================================================
-           MENU LATERALE — HAMBURGER
-           Tutto ciò che segue riguarda esclusivamente il menu.
+           MENU LATERALE â€” HAMBURGER
+           Tutto ciÃ² che segue riguarda esclusivamente il menu.
         ========================================================= */
 
         .menu-overlay {
@@ -876,16 +876,22 @@
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
+            gap: 20px;
+            width: 100%;
         }
 
         .category h3 {
-            font-size: clamp(32px, 4.5vw, 72px);
+            flex: 1 1 auto;
+            min-width: 0;
 
+            font-size: clamp(28px, 3.5vw, 58px);
             line-height: .85;
-
             font-weight: 900;
+            letter-spacing: -3px;
 
-            letter-spacing: -5px;
+            white-space: nowrap;
+            overflow: visible;
+            text-overflow: clip;
         }
 
         .category-arrow {
@@ -1395,7 +1401,7 @@
         }
 
         /* =========================================================
-           NUOVI ARRIVI — MOBILE (PREMIUM & COMPATTO)
+           NUOVI ARRIVI â€” MOBILE (PREMIUM & COMPATTO)
         ========================================================= */
         @media (max-width: 768px) {
 
@@ -1552,14 +1558,14 @@
 
         .category h3 {
             min-width: 0;
-            max-width: calc(100% - 48px);
+            max-width: none;
             margin: 0;
-            font-size: clamp(24px, 2.65vw, 42px);
+            font-size: clamp(22px, 2.4vw, 38px);
             line-height: .92;
-            letter-spacing: -1.8px;
+            letter-spacing: -2px;
             white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            overflow: visible;
+            text-overflow: clip;
         }
 
         .category-arrow {
@@ -1717,6 +1723,140 @@
 
     </style>
     <link rel="stylesheet" href="cart.css">
+<style id="fuorischema-install-cta-style">
+
+    .fuorischema-install-cta {
+        position: absolute;
+        top: 72px;
+        right: 0;
+        z-index: 5;
+
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+
+        color: #f4f4f2;
+        text-decoration: none;
+
+        cursor: pointer;
+    }
+
+    .fuorischema-install-label {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+
+        color: #ff4d00;
+
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+
+        transition: gap .3s ease;
+    }
+
+    .fuorischema-install-arrow {
+        display: inline-block;
+
+        font-size: 18px;
+        line-height: 1;
+
+        transition:
+            transform .35s ease,
+            opacity .35s ease;
+    }
+
+    .fuorischema-install-line {
+        width: 170px;
+        height: 1px;
+
+        background: #ff4d00;
+
+        transform-origin: left center;
+        transition:
+            width .4s ease,
+            opacity .3s ease;
+    }
+
+    .fuorischema-install-sub {
+        color: #777;
+
+        font-size: 8px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+
+        opacity: .8;
+    }
+
+    .fuorischema-install-cta:hover .fuorischema-install-label {
+        gap: 22px;
+    }
+
+    .fuorischema-install-cta:hover .fuorischema-install-arrow {
+        transform: translateX(7px);
+    }
+
+    .fuorischema-install-cta:hover .fuorischema-install-line {
+        width: 215px;
+    }
+
+    @keyframes fuorischemaInstallPulse {
+        0%, 100% {
+            opacity: .65;
+        }
+
+        50% {
+            opacity: 1;
+        }
+    }
+
+    .fuorischema-install-line {
+        animation: fuorischemaInstallPulse 2.4s ease-in-out infinite;
+    }
+
+
+    @media (max-width: 900px) {
+
+        .fuorischema-install-cta {
+            position: relative;
+
+            top: auto;
+            right: auto;
+
+            margin-top: 35px;
+            margin-left: auto;
+            margin-right: 0;
+        }
+
+    }
+
+
+    @media (max-width: 600px) {
+
+        .fuorischema-install-cta {
+            margin-top: 28px;
+            align-self: flex-end;
+        }
+
+        .fuorischema-install-label {
+            font-size: 9px;
+            letter-spacing: 3px;
+        }
+
+        .fuorischema-install-line {
+            width: 145px;
+        }
+
+        .fuorischema-install-sub {
+            font-size: 7px;
+        }
+
+    }
+
+</style>
 </head>
 
 
@@ -1732,8 +1872,8 @@
     <aside class="side-menu" id="sideMenu">
 
         <button class="menu-close" id="menuClose" aria-label="Chiudi menu">
-            ×
-        </button>
+            Ã—
+        </a>
 
         <div class="menu-top">
             <div class="menu-number">00 / MENU</div>
@@ -1898,6 +2038,24 @@
                 </h1>
 
 
+<a
+    href="installazione.html"
+    class="fuorischema-install-cta"
+    aria-label="Scopri come aggiungere FUORISCHEMA alla schermata Home"
+>
+
+    <div class="fuorischema-install-label">
+        SCARICA L'APP
+        <span class="fuorischema-install-arrow">→</span>
+    </div>
+
+    <div class="fuorischema-install-line"></div>
+
+    <div class="fuorischema-install-sub">
+        Porta FUORISCHEMA con te
+    </div>
+
+</a>
                 <div class="hero-bottom">
 
                     <div class="hero-description">
@@ -1932,7 +2090,7 @@
 
 
         <!-- =====================================================
-             NUOVI ARRIVI — CURATED DROP (2 PRODOTTI EDITORIALI)
+             NUOVI ARRIVI â€” CURATED DROP (2 PRODOTTI EDITORIALI)
         ===================================================== -->
 
         <section
@@ -1970,7 +2128,7 @@
                     class="product featured reveal"
                 >
                     <span class="badge">
-                        PIÙ SCELTO
+                        PIÃ™ SCELTO
                     </span>
 
                     <span class="product-meta">
@@ -1978,7 +2136,7 @@
                     </span>
 
                     <img
-                        src="images/airforce bianca.jpeg"
+                        src="images/products/nike/air-force-1-triple-white.png"
                         alt="Nike Air Force 1 Triple White"
                     >
 
@@ -2003,7 +2161,7 @@
 
                 <!-- PRODOTTO 2 -->
                 <a
-                    href="adidas.html"
+                    href="borse.html"
                     class="product reveal"
                 >
                     <span class="badge">
@@ -2015,17 +2173,17 @@
                     </span>
 
                     <img
-                        src="images/adidas/adidas-01.jpeg"
-                        alt="Adidas XLG Runner Deluxe — JR9633"
+                        src="images/products/borse/tracolla-lacoste.png"
+                        alt="Tracolla Lacoste â€” #002"
                     >
 
                     <div class="product-info">
                         <div class="product-copy">
                             <span class="product-label">
-                                NEW IN
+                                ACCESSORI
                             </span>
                             <span class="product-name">
-                                Adidas XLG Runner Deluxe
+                                Tracolla Lacoste
                             </span>
                             <span class="product-cta">
                                 ESPLORA <span>→</span>
@@ -2033,7 +2191,7 @@
                         </div>
 
                         <span class="product-number">
-                            JR9633
+                            #002
                         </span>
                     </div>
                 </a>
@@ -2177,7 +2335,7 @@
             <p class="manifesto-text reveal">
 
                 FUORISCHEMA nasce per chi non ha bisogno
-                di seguire una strada già tracciata.
+                di seguire una strada giÃ  tracciata.
                 Calzature, abbigliamento e cultura
                 per costruire il proprio stile senza
                 seguire quello degli altri.
@@ -2240,7 +2398,7 @@
 
                         <button type="submit">
                             ENTRA →
-                        </button>
+                        </a>
 
                     </form>
 
@@ -2267,7 +2425,7 @@
     <div class="pwa-install-card" id="pwaInstallCard" role="dialog" aria-labelledby="pwaTitle" aria-describedby="pwaInstallSubtext">
         <div class="pwa-card-header">
             <span class="pwa-card-kicker">APP FUORISCHEMA</span>
-            <button class="pwa-close-btn" id="pwaInstallClose" aria-label="Chiudi avviso installazione">×</button>
+            <button class="pwa-close-btn" id="pwaInstallClose" aria-label="Chiudi avviso installazione">Ã—</a>
         </div>
         <div class="pwa-card-title" id="pwaTitle">PORTA FUORISCHEMA CON TE</div>
         <div class="pwa-card-subtext" id="pwaInstallSubtext">
@@ -2294,7 +2452,7 @@
 
         <button class="pwa-action-btn" id="pwaInstallAction" style="display: none;">
             INSTALLA ORA →
-        </button>
+        </a>
     </div>
 
 
@@ -2401,7 +2559,7 @@
         <div class="footer-bottom">
 
             <span>
-                © 2026 FUORISCHEMA
+                Â© 2026 FUORISCHEMA
             </span>
 
             <span>
@@ -2549,7 +2707,7 @@
 
 
         /* =====================================================
-           NEWSLETTER — FUORISCHEMA
+           NEWSLETTER â€” FUORISCHEMA
         ===================================================== */
 
         const emailForm = document.getElementById("emailForm");
@@ -2612,13 +2770,13 @@
                     newsletterEmail.value = "";
 
                     if (data.alreadySubscribed) {
-                        button.textContent = "GIÀ ISCRITTO ✓";
+                        button.textContent = "GIÃ€ ISCRITTO âœ“";
                         setNewsletterFeedback(
-                            "Questa email è già dentro FUORISCHEMA.",
+                            "Questa email Ã¨ giÃ  dentro FUORISCHEMA.",
                             "success"
                         );
                     } else {
-                        button.textContent = "ISCRITTO ✓";
+                        button.textContent = "ISCRITTO âœ“";
                         setNewsletterFeedback(
                             "Sei dentro. Ti scriveremo solo quando ne vale la pena.",
                             "success"
@@ -2661,7 +2819,7 @@
 
                     <button id="logoutButton" class="auth-btn auth-btn-orange">
                         ESCI
-                    </button>
+                    </a>
                 `;
 
                 document.getElementById("logoutButton").addEventListener("click", async () => {
@@ -2690,56 +2848,16 @@
     </script>
 
     <!-- Script Gestione Installazione PWA -->
-    <script src="pwa-install.js" defer></script>
-    <!-- FUORISCHEMA — SCARICA L'APP -->
-<div id="pwaInstallLauncher">
-    <button id="pwaInstallOpen" type="button">
-        SCARICA L'APP <span>→</span>
-    </button>
-</div>
 
-<style>
-#pwaInstallLauncher {
-    position: fixed;
-    left: 50%;
-    bottom: 18px;
-    transform: translateX(-50%);
-    z-index: 9998;
-}
-
-#pwaInstallOpen {
-    border: 1px solid rgba(255,255,255,.25);
-    background: #050505;
-    color: #fff;
-    padding: 12px 18px;
-    border-radius: 999px;
-    font-family: inherit;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.2px;
-    cursor: pointer;
-    box-shadow: 0 8px 30px rgba(0,0,0,.35);
-}
-
-#pwaInstallOpen span {
-    margin-left: 6px;
-}
-
-#pwaInstallOpen:active {
-    transform: scale(.97);
-}
-
-@media (max-width: 700px) {
-    #pwaInstallLauncher {
-        bottom: 14px;
-    }
-
-    #pwaInstallOpen {
-        font-size: 10px;
-        padding: 11px 16px;
-    }
-}
-</style>
     <script src="cart.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+

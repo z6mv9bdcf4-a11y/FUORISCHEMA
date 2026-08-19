@@ -1,0 +1,407 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Come aggiungere FUORISCHEMA alla Home</title>
+
+    <meta name="description"
+          content="Scopri come aggiungere FUORISCHEMA alla schermata Home del tuo iPhone o Android.">
+
+    <link rel="icon" type="image/png" sizes="192x192" href="images/icon-192.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#050505">
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+
+    <style>
+        :root {
+            --nero: #050505;
+            --nero-soft: #0b0b0b;
+            --bianco: #f4f4f2;
+            --grigio: #9b9b9b;
+            --linea: rgba(244,244,242,.12);
+            --accent: #ff5a00;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--nero);
+            color: var(--bianco);
+            font-family: Inter, Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .page {
+            width: min(1100px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 28px 0 80px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--linea);
+        }
+
+        .logo {
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+        }
+
+        .back {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--grigio);
+            transition: color .2s ease;
+        }
+
+        .back:hover {
+            color: var(--bianco);
+        }
+
+        .hero {
+            padding: 90px 0 70px;
+            max-width: 850px;
+        }
+
+        .kicker {
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            color: var(--accent);
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            font-size: clamp(38px, 7vw, 82px);
+            line-height: .92;
+            letter-spacing: -4px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .intro {
+            margin-top: 28px;
+            max-width: 620px;
+            color: var(--grigio);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .devices {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .device {
+            background: var(--nero-soft);
+            border: 1px solid var(--linea);
+            padding: 32px 26px;
+        }
+
+        .device-number {
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 18px;
+        }
+
+        .device h2 {
+            font-size: 22px;
+            line-height: 1.05;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .browser {
+            color: var(--grigio);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+        }
+
+        .steps {
+            list-style: none;
+        }
+
+        .steps li {
+            display: grid;
+            grid-template-columns: 28px 1fr;
+            gap: 10px;
+            padding: 13px 0;
+            border-top: 1px solid var(--linea);
+            font-size: 11px;
+            line-height: 1.5;
+            color: #d2d2d0;
+        }
+
+        .steps li:first-child {
+            border-top: 0;
+            padding-top: 0;
+        }
+
+        .step-number {
+            color: var(--grigio);
+            font-weight: 800;
+        }
+
+        .note {
+            margin-top: 40px;
+            padding: 28px;
+            border: 1px solid var(--linea);
+            background: linear-gradient(135deg, #0d0d0d, #080808);
+        }
+
+        .note-title {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .note p {
+            color: var(--grigio);
+            font-size: 11px;
+            line-height: 1.7;
+            max-width: 700px;
+        }
+
+        .footer {
+            margin-top: 80px;
+            padding-top: 24px;
+            border-top: 1px solid var(--linea);
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            color: var(--grigio);
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 800px) {
+            .devices {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 65px 0 50px;
+            }
+
+            h1 {
+                letter-spacing: -2.5px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .page {
+                width: min(100% - 28px, 1100px);
+            }
+
+            .topbar {
+                padding-bottom: 20px;
+            }
+
+            .device {
+                padding: 26px 20px;
+            }
+
+            .footer {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <header class="topbar">
+        <a href="index.html" class="logo">FUORISCHEMA</a>
+
+        <a href="index.html" class="back">
+            ← Torna alla Home
+        </a>
+    </header>
+
+    <main>
+
+        <section class="hero">
+            <div class="kicker">ACCESSO DIRETTO / FUORISCHEMA</div>
+
+            <h1>
+                Porta<br>
+                FUORISCHEMA<br>
+                con te.
+            </h1>
+
+            <p class="intro">
+                Non devi scaricare nessuna applicazione.
+                Puoi aggiungere FUORISCHEMA direttamente alla schermata Home
+                del tuo dispositivo e aprirlo rapidamente come un'app.
+            </p>
+        </section>
+
+        <section class="devices">
+
+            <article class="device">
+
+                <div class="device-number">01 / IPHONE</div>
+
+                <h2>Safari</h2>
+
+                <div class="browser">
+                    Browser consigliato
+                </div>
+
+                <ol class="steps">
+                    <li>
+                        <span class="step-number">01</span>
+                        <span>Apri <strong>fuorischemastore.it</strong> con Safari.</span>
+                    </li>
+
+                    <li>
+                        <span class="step-number">02</span>
+                        <span>Premi il pulsante <strong>Condividi</strong>.</span>
+                    </li>
+
+                    <li>
+                        <span class="step-number">03</span>
+                        <span>Scorri le opzioni e seleziona <strong>Aggiungi alla schermata Home</strong>.</span>
+                    </li>
+
+                    <li>
+                        <span class="step-number">04</span>
+                        <span>Se disponibile, attiva <strong>Apri come app web</strong>.</span>
+                    </li>
+
+                    <li>
+                        <span class="step-number">05</span>
+                        <span>Premi <strong>Aggiungi</strong>.</span>
+                    </li>
+                </ol>
+
+            </article>
+
+
+            <article class="device">
+
+                <div class="device-number">02 / IPHONE</div>
+
+                <h2>Chrome</h2>
+
+                <div class="browser">
+                    Google Chrome
+                </div>
+
+                <ol class="steps">
+                    <li>
+                        <span class="step-number">01</span>
+                        <span>Apri <strong>fuorischemastore.it</strong> con Chrome.</span>
+                    </li>
+
+                    <li>
+                        <span class="step-number">02</span>
+                        <span>Premi <strong>Condividi</strong>.</span>
+                    </li>
+
+                    <li>
+                        <span class="step-number">03</span>
+                        <span>Seleziona <strong>Aggiungi alla schermata Home</strong>.</span>
+                    </li>
+
+                    <li>
+                        <span class="step-number">04</span>
+                        <span>Premi <strong>Aggiungi</strong> per confermare.</span>
+                    </li>
+                </ol>
+
+            </article>
+
+
+            <article class="device">
+
+                <div class="device-number">03 / ANDROID</div>
+
+                <h2>Chrome</h2>
+
+                <div class="browser">
+                    Google Chrome
+                </div>
+
+                <ol class="steps">
+                    <li>
+                        <span class="step-number">01</span>
+                        <span>Apri <strong>fuorischemastore.it</strong> con Chrome.</span>
+                    </li>
+
+                    <li>
+                        <span class="step-number">02</span>
+                        <span>Premi il menu <strong>⋮</strong> in alto a destra.</span>
+                    </li>
+
+                    <li>
+                        <span class="step-number">03</span>
+                        <span>Cerca <strong>Installa app</strong> oppure <strong>Installa e crea scorciatoia</strong>.</span>
+                    </li>
+
+                    <li>
+                        <span class="step-number">04</span>
+                        <span>Conferma l'installazione o l'aggiunta alla schermata Home.</span>
+                    </li>
+                </ol>
+
+            </article>
+
+        </section>
+
+
+        <section class="note">
+
+            <div class="note-title">
+                NESSUN DOWNLOAD. NESSUNO STORE.
+            </div>
+
+            <p>
+                FUORISCHEMA rimane un sito web: aggiungendolo alla schermata Home
+                crei semplicemente un accesso diretto al nostro mondo.
+                Quando vorrai, potrai aprirlo dalla tua Home come qualsiasi altra app.
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <footer class="footer">
+        <span>FUORISCHEMA</span>
+        <span>STAY OUTSIDE THE ORDINARY.</span>
+    </footer>
+
+</div>
+
+</body>
+</html>
