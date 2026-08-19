@@ -16,79 +16,50 @@
 
   const css = `
     /* =========================================================
-       FSOCIAL PROFILE — CLEAN PASS / VISUAL ONLY
+       FSOCIAL PROFILE — SHARED CLEAN VISUAL SYSTEM
+       VISUAL ONLY: no profile, auth or navigation logic changes.
     ========================================================= */
-    body {
-      background:#050505 !important;
-      color:#f5f5f5 !important;
-    }
-    header {
-      background:rgba(5,5,5,.90) !important;
-      border-bottom-color:rgba(255,255,255,.055) !important;
-      backdrop-filter:blur(18px) !important;
-      -webkit-backdrop-filter:blur(18px) !important;
-    }
-    .profile-container { padding-top:34px !important; }
-    .profile-header { border-bottom-color:rgba(255,255,255,.065) !important; }
-    .avatar {
-      box-shadow:none !important;
-      border-color:rgba(255,255,255,.10) !important;
-    }
-    .action-btn { border-color:rgba(255,255,255,.09) !important; }
-    .action-btn.orange { box-shadow:none !important; }
-    .posts-section { padding-top:28px !important; }
-    .post-tile { border-color:rgba(255,255,255,.055) !important; }
-    .post-tile:hover { border-color:rgba(255,255,255,.10) !important; }
+    body{background:#050505!important;color:#f5f5f5!important}
+    header{background:rgba(5,5,5,.94)!important;border-bottom-color:rgba(255,255,255,.055)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important}
+    .profile-container{padding-top:28px!important;padding-bottom:88px!important}
+    .profile-header{border-bottom-color:rgba(255,255,255,.055)!important}
+    .avatar{box-shadow:none!important;border-color:rgba(255,255,255,.10)!important}
+    .action-btn{border-color:rgba(255,255,255,.09)!important;box-shadow:none!important}
+    .action-btn.orange{box-shadow:none!important}
+    .posts-section{padding-top:24px!important}
+    .post-tile{border-color:rgba(255,255,255,.055)!important;box-shadow:none!important}
+    .post-tile:hover{border-color:rgba(255,255,255,.10)!important}
 
-    .bottom-nav {
-      height:72px !important;
-      padding:6px 18px calc(6px + env(safe-area-inset-bottom)) !important;
-      background:rgba(8,8,10,.96) !important;
-      border-top:1px solid rgba(255,255,255,.065) !important;
-      backdrop-filter:blur(18px) !important;
-      -webkit-backdrop-filter:blur(18px) !important;
-      box-shadow:0 -10px 28px rgba(0,0,0,.28) !important;
-      justify-content:center !important;
-      gap:2px !important;
+    /* Same navigation grammar as Home. */
+    .bottom-nav{
+      position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:99990!important;
+      height:70px!important;padding:5px 18px calc(5px + env(safe-area-inset-bottom))!important;
+      background:rgba(8,8,10,.97)!important;border-top:1px solid rgba(255,255,255,.055)!important;
+      backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important;
+      box-shadow:0 -8px 24px rgba(0,0,0,.24)!important;justify-content:center!important;gap:2px!important;
     }
-    .bottom-nav-item {
-      height:100% !important;
-      min-width:0 !important;
-      flex:1 1 0 !important;
-      max-width:152px !important;
-      color:#74747a !important;
-      font:800 9px Inter,Arial,sans-serif !important;
-      letter-spacing:.9px !important;
-      gap:4px !important;
+    .bottom-nav-item{
+      height:100%!important;min-width:0!important;flex:1 1 0!important;max-width:152px!important;
+      color:#77777d!important;font:700 9px Inter,Arial,sans-serif!important;letter-spacing:.85px!important;gap:4px!important;
+      transition:color .18s ease,transform .15s ease!important;
     }
-    .bottom-nav-item:hover,
-    .bottom-nav-item.active { color:#fff !important; }
-    .bottom-nav-icon {
-      width:20px !important;
-      height:20px !important;
-      font-size:0 !important;
-      display:flex !important;
-      align-items:center !important;
-      justify-content:center !important;
-      font-family:Inter,Arial,sans-serif !important;
-    }
-    .bottom-nav-icon svg { width:18px; height:18px; display:block; }
-    .bottom-nav-label { margin-top:0 !important; font-size:9px !important; letter-spacing:.9px !important; }
-    .bottom-nav-item.plus-btn .plus-inner {
-      box-shadow:0 0 14px rgba(255,77,0,.18) !important;
-      width:46px !important;
-      height:46px !important;
-    }
-    .bottom-nav-badge { top:8px !important; right:28% !important; }
+    .bottom-nav-item:hover,.bottom-nav-item.active{color:#fff!important}
+    .bottom-nav-item:active{transform:scale(.96)!important}
+    .bottom-nav-icon{width:20px!important;height:20px!important;font-size:0!important;display:flex!important;align-items:center!important;justify-content:center!important;font-family:Inter,Arial,sans-serif!important}
+    .bottom-nav-icon svg{width:18px;height:18px;display:block}
+    .bottom-nav-label{margin-top:0!important;font-size:9px!important;letter-spacing:.85px!important}
+    .bottom-nav-item.plus-btn .plus-inner{box-shadow:0 0 12px rgba(255,77,0,.14)!important;width:44px!important;height:44px!important}
+    .bottom-nav-badge{top:8px!important;right:28%!important}
 
     @media(max-width:650px){
-      .profile-container { padding-top:24px !important; }
-      .bottom-nav { height:68px !important; padding-left:8px !important; padding-right:8px !important; }
-      .bottom-nav-item { font-size:8px !important; letter-spacing:.8px !important; }
-      .bottom-nav-icon { width:19px !important; height:19px !important; }
-      .bottom-nav-icon svg { width:17px; height:17px; }
-      .bottom-nav-label { font-size:8px !important; letter-spacing:.8px !important; }
-      .bottom-nav-item.plus-btn .plus-inner { width:44px !important; height:44px !important; }
+      .profile-container{padding-top:20px!important;padding-bottom:84px!important}
+      .posts-section{padding-top:20px!important}
+      .bottom-nav{height:68px!important;padding-left:8px!important;padding-right:8px!important}
+      .bottom-nav-item{font-size:8px!important;letter-spacing:.75px!important}
+      .bottom-nav-icon{width:19px!important;height:19px!important}
+      .bottom-nav-icon svg{width:17px;height:17px}
+      .bottom-nav-label{font-size:8px!important;letter-spacing:.75px!important}
+      .bottom-nav-item.plus-btn .plus-inner{width:44px!important;height:44px!important}
     }
   `;
 
