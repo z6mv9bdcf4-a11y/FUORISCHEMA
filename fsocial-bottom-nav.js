@@ -7,129 +7,181 @@
   const path = window.location.pathname.toLowerCase();
   const isProfilePage = path.endsWith("/area-personale.html");
 
-  const css = `
-    #fsocialBottomNav {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 99990;
-      height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(10,10,12,.94);
-      border-top: 1px solid rgba(255,255,255,.08);
-      backdrop-filter: blur(22px);
-      -webkit-backdrop-filter: blur(22px);
-      box-shadow: 0 -12px 35px rgba(0,0,0,.35);
-      padding: 6px 18px calc(6px + env(safe-area-inset-bottom));
-    }
-    #fsocialBottomNav .fsbn-inner {
-      width: min(760px, 100%);
-      height: 100%;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      align-items: center;
-      gap: 6px;
-    }
-    #fsocialBottomNav .fsbn-item {
-      height: 100%;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      color: #77777d;
-      background: transparent;
-      border: 0;
-      text-decoration: none;
-      font: 800 9px Inter,Arial,sans-serif;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: color .2s ease, transform .15s ease;
-    }
-    #fsocialBottomNav .fsbn-item:hover { color:#fff; }
-    #fsocialBottomNav .fsbn-item:active { transform:scale(.94); }
-    #fsocialBottomNav .fsbn-icon { font-size: 18px; line-height: 1; }
-    #fsocialBottomNav .fsbn-item.active { color:#fff; }
-    #fsocialBottomNav .fsbn-add {
-      width: 46px;
-      height: 46px;
-      margin: 0 auto;
-      border-radius: 50%;
-      display:grid;
-      place-items:center;
-      background:#ff4d00;
-      color:#000;
-      font: 900 25px Inter,Arial,sans-serif;
-      box-shadow:0 0 22px rgba(255,77,0,.28);
-    }
-    #fsocialBottomNav .fsbn-add:hover { background:#fff; color:#000; }
+  const icon = (name) => {
+    const paths = {
+      home: '<path d="M3 10.8 12 3l9 7.8"/><path d="M5.5 9.5V21h13V9.5"/><path d="M9.5 21v-6h5v6"/>',
+      search: '<circle cx="10.8" cy="10.8" r="6.3"/><path d="m16 16 5 5"/>',
+      bell: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/>',
+      user: '<circle cx="12" cy="8" r="3.5"/><path d="M5 21a7 7 0 0 1 14 0"/>',
+      camera: '<path d="M4 7.5h3l1.4-2h7.2l1.4 2h3v11H4z"/><circle cx="12" cy="13" r="3.2"/>'
+    };
+    return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths[name] || ""}</g></svg>`;
+  };
 
-    .bottom-nav {
-      height: 72px !important;
-      padding: 6px 18px calc(6px + env(safe-area-inset-bottom)) !important;
-      background: rgba(10,10,12,.94) !important;
-      backdrop-filter: blur(22px) !important;
-      -webkit-backdrop-filter: blur(22px) !important;
-      -webkit-backdrop-filter: blur(22px) !important;
-      border-top: 1px solid rgba(255,255,255,.08) !important;
-      box-shadow: 0 -12px 35px rgba(0,0,0,.35) !important;
+  const css = `
+    /* =========================================================
+       FSOCIAL — CLEAN PASS / VISUAL ONLY
+       No data, auth, Supabase or interaction logic is changed.
+    ========================================================= */
+    body {
+      background: #050505 !important;
+      color: #f5f5f5 !important;
+    }
+
+    .topbar {
+      background: rgba(5,5,5,.90) !important;
+      border-bottom-color: rgba(255,255,255,.055) !important;
+      backdrop-filter: blur(18px) !important;
+      -webkit-backdrop-filter: blur(18px) !important;
+    }
+    .brand { letter-spacing: -.7px !important; }
+    .top-btn { box-shadow: none !important; }
+    .top-btn.primary { box-shadow: none !important; }
+    .top-btn.primary:hover { box-shadow: none !important; }
+
+    .page { padding-top: 24px !important; }
+    .feed-shell { max-width: 540px !important; }
+    .hero { margin-bottom: 18px !important; }
+    .hero-title { font-size: 30px !important; letter-spacing: -.9px !important; }
+    .hero-meta { letter-spacing: 1.5px !important; }
+
+    .user-search-input-box {
+      background: #0b0b0d !important;
+      border-color: rgba(255,255,255,.065) !important;
+      box-shadow: none !important;
+    }
+    .user-search-input-box:focus-within {
+      border-color: rgba(255,255,255,.18) !important;
+      box-shadow: none !important;
+    }
+    .search-icon {
+      display: inline-flex !important;
+      align-items: center !important;
       justify-content: center !important;
+      width: 17px !important;
+      height: 17px !important;
+      margin-right: 9px !important;
+      font-size: 0 !important;
+      color: #8e8e93 !important;
+    }
+    .search-icon svg { width: 16px; height: 16px; display:block; }
+
+    .feed-tabs {
+      border-color: rgba(255,255,255,.065) !important;
+      background: #09090b !important;
+    }
+    .tab-btn.active { box-shadow: none !important; }
+
+    .create-card {
+      background: #0b0b0d !important;
+      border-color: rgba(255,255,255,.065) !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+    .create-card:focus-within {
+      border-color: rgba(255,255,255,.16) !important;
+      box-shadow: none !important;
+    }
+    .photo-label {
+      display: inline-flex !important;
+      align-items: center !important;
       gap: 6px !important;
     }
-    .bottom-nav-item {
-      height: 100% !important;
-      min-width: 0;
-      flex: 1 !important;
-      max-width: 152px;
+    .photo-label svg { width: 15px; height: 15px; display:block; }
+
+    .post-card {
+      background: #0b0b0d !important;
+      border-color: rgba(255,255,255,.065) !important;
+      box-shadow: none !important;
+    }
+    .post-card:hover {
+      border-color: rgba(255,255,255,.11) !important;
+      box-shadow: none !important;
+    }
+    .post-actions { gap: 14px !important; }
+    .action-icon {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    .action-icon svg { width: 19px; height: 19px; display:block; }
+
+    .notif-overlay {
+      background: rgba(0,0,0,.58) !important;
+      backdrop-filter: blur(8px) !important;
+      -webkit-backdrop-filter: blur(8px) !important;
+    }
+    .notif-modal {
+      background: #0a0a0c !important;
+      box-shadow: -18px 0 45px rgba(0,0,0,.55) !important;
+      border-left-color: rgba(255,255,255,.065) !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+    .notif-header { background: #0b0b0d !important; }
+
+    #fsocialBottomNav {
+      height: 72px;
+      background: rgba(8,8,10,.96) !important;
+      border-top: 1px solid rgba(255,255,255,.065) !important;
+      box-shadow: 0 -10px 28px rgba(0,0,0,.28) !important;
+      backdrop-filter: blur(18px) !important;
+      -webkit-backdrop-filter: blur(18px) !important;
+    }
+    #fsocialBottomNav .fsbn-inner { gap: 2px !important; }
+    #fsocialBottomNav .fsbn-item {
+      color: #74747a !important;
+      font-size: 9px !important;
+      font-weight: 800 !important;
+      letter-spacing: .9px !important;
+    }
+    #fsocialBottomNav .fsbn-item:hover,
+    #fsocialBottomNav .fsbn-item.active { color: #fff !important; }
+    #fsocialBottomNav .fsbn-icon {
+      width: 20px !important;
+      height: 20px !important;
+      font-size: 0 !important;
       display:flex !important;
-      flex-direction:column !important;
       align-items:center !important;
       justify-content:center !important;
-      gap:4px !important;
-      color:#77777d !important;
-      background:transparent !important;
-      border:0 !important;
-      font:800 9px Inter,Arial,sans-serif !important;
-      letter-spacing:1px !important;
-      text-transform:uppercase !important;
-      transition:color .2s ease,transform .15s ease !important;
     }
-    .bottom-nav-item:hover,
-    .bottom-nav-item.active { color:#fff !important; }
-    .bottom-nav-item:active { transform:scale(.94) !important; }
-    .bottom-nav-icon { font-size:18px !important; line-height:1 !important; }
-    .bottom-nav-label { margin-top:0 !important; font-size:9px !important; letter-spacing:1px !important; }
-    .bottom-nav-item.plus-btn { flex:1 !important; max-width:152px; }
-    .bottom-nav-item.plus-btn .plus-inner {
-      width:46px !important;
-      height:46px !important;
-      border-radius:50% !important;
-      display:grid !important;
-      place-items:center !important;
-      background:#ff4d00 !important;
-      color:#000 !important;
-      font:900 25px Inter,Arial,sans-serif !important;
-      box-shadow:0 0 22px rgba(255,77,0,.28) !important;
+    #fsocialBottomNav .fsbn-icon svg { width:18px; height:18px; display:block; }
+    #fsocialBottomNav .fsbn-add {
+      box-shadow: 0 0 14px rgba(255,77,0,.18) !important;
+      width: 46px !important;
+      height: 46px !important;
     }
-    .bottom-nav-item.plus-btn:active .plus-inner { transform:scale(.94); background:#fff; }
-    .bottom-nav-badge { top:8px !important; right:28% !important; }
 
-    body { padding-bottom:72px !important; }
-    @media (max-width:650px) {
-      #fsocialBottomNav { height:68px; padding-left:8px; padding-right:8px; }
-      .bottom-nav { height:68px !important; padding-left:8px !important; padding-right:8px !important; }
-      body { padding-bottom:68px !important; }
-      #fsocialBottomNav .fsbn-item,
-      .bottom-nav-item { font-size:8px !important; letter-spacing:.8px !important; }
-      #fsocialBottomNav .fsbn-icon,
-      .bottom-nav-icon { font-size:17px !important; }
-      #fsocialBottomNav .fsbn-add,
-      .bottom-nav-item.plus-btn .plus-inner { width:44px !important; height:44px !important; }
+    .bottom-nav {
+      background: rgba(8,8,10,.96) !important;
+      border-top-color: rgba(255,255,255,.065) !important;
+      box-shadow: 0 -10px 28px rgba(0,0,0,.28) !important;
+      backdrop-filter: blur(18px) !important;
+      -webkit-backdrop-filter: blur(18px) !important;
+    }
+    .bottom-nav-item { color: #74747a !important; }
+    .bottom-nav-item:hover,
+    .bottom-nav-item.active { color: #fff !important; }
+    .bottom-nav-icon {
+      width: 20px !important;
+      height: 20px !important;
+      font-size: 0 !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+    }
+    .bottom-nav-icon svg { width:18px; height:18px; display:block; }
+    .bottom-nav-item.plus-btn .plus-inner {
+      box-shadow: 0 0 14px rgba(255,77,0,.18) !important;
+    }
+
+    @media (max-width: 650px) {
+      #fsocialBottomNav { height: 68px !important; }
+      .page { padding-top: 16px !important; }
+      .feed-shell { padding-left: 10px !important; padding-right: 10px !important; }
+      .hero-title { font-size: 27px !important; }
+      .create-card, .post-card { border-radius: 14px !important; }
     }
   `;
 
@@ -141,14 +193,33 @@
     document.head.appendChild(style);
   }
 
+  function cleanUiIcons() {
+    const searchIcon = document.querySelector(".search-icon");
+    if (searchIcon) searchIcon.innerHTML = icon("search");
+
+    document.querySelectorAll(".photo-label").forEach(label => {
+      if (!label.querySelector("svg")) {
+        label.innerHTML = `${icon("camera")}<span>FOTO</span>`;
+      }
+    });
+
+    document.querySelectorAll(".comment-toggle .action-icon").forEach(el => {
+      el.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5a7.5 7.5 0 0 1-7.9 7.5c-1.2 0-2.4-.3-3.4-.8L4 20l1.4-3.7A7.2 7.2 0 0 1 4.5 12 7.5 7.5 0 0 1 12 4.5a7.5 7.5 0 0 1 8 7z"/></g></svg>';
+    });
+
+    document.querySelectorAll(".share-button .action-icon").forEach(el => {
+      el.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3 10.5 13.5"/><path d="m21 3-7 18-3.5-7L3 10.5z"/></g></svg>';
+    });
+  }
+
   function styleExistingProfileNav() {
     const nav = document.querySelector(".bottom-nav");
     if (!nav) return false;
 
     const icons = nav.querySelectorAll(".bottom-nav-icon");
-    const replacements = ["⌂", "⌕", null, "♟", "●"];
-    icons.forEach((icon, index) => {
-      if (replacements[index]) icon.textContent = replacements[index];
+    const replacements = [icon("home"), icon("search"), null, icon("bell"), icon("user")];
+    icons.forEach((el, index) => {
+      if (replacements[index] !== null) el.innerHTML = replacements[index];
     });
 
     const active = nav.querySelector("#navProfile");
@@ -165,19 +236,19 @@
     nav.innerHTML = `
       <div class="fsbn-inner">
         <a class="fsbn-item active" href="Fsocial.html" data-nav="home" aria-label="Home">
-          <span class="fsbn-icon">⌂</span><span>HOME</span>
+          <span class="fsbn-icon">${icon("home")}</span><span>HOME</span>
         </a>
         <button class="fsbn-item" type="button" data-nav="search" aria-label="Cerca">
-          <span class="fsbn-icon">⌕</span><span>CERCA</span>
+          <span class="fsbn-icon">${icon("search")}</span><span>CERCA</span>
         </button>
         <button class="fsbn-item" type="button" data-nav="create" aria-label="Crea un post">
           <span class="fsbn-add">+</span>
         </button>
         <button class="fsbn-item" type="button" data-nav="notifications" aria-label="Notifiche">
-          <span class="fsbn-icon">♟</span><span>NOTIFICHE</span>
+          <span class="fsbn-icon">${icon("bell")}</span><span>NOTIFICHE</span>
         </button>
         <a class="fsbn-item" href="area-personale.html" data-nav="profile" aria-label="Profilo">
-          <span class="fsbn-icon">●</span><span>PROFILO</span>
+          <span class="fsbn-icon">${icon("user")}</span><span>PROFILO</span>
         </a>
       </div>
     `;
@@ -200,8 +271,6 @@
     });
 
     nav.querySelector('[data-nav="notifications"]').addEventListener("click", () => {
-      // The real FSocial notification logic already lives on #navNotif.
-      // Reuse that handler instead of looking for the removed topbar button.
       const button = document.getElementById("navNotif");
       if (button) button.click();
     });
@@ -223,6 +292,11 @@
       return;
     }
     injectHomeNav();
+    cleanUiIcons();
+
+    const observer = new MutationObserver(() => cleanUiIcons());
+    observer.observe(document.body, { childList: true, subtree: true });
+    setTimeout(() => observer.disconnect(), 12000);
   }
 
   if (document.readyState === "loading") {
