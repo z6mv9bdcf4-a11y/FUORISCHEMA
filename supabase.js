@@ -11,18 +11,17 @@ export const supabase = createClient(
 
 const currentPath = window.location.pathname.toLowerCase();
 
+globalThis.__FUORISCHEMA_SUPABASE__ = supabase;
+
 // FSocial safety module: loaded only on FSocial to avoid affecting the rest of the store.
 if (currentPath.endsWith("/fsocial.html")) {
-    globalThis.__FUORISCHEMA_SUPABASE__ = supabase;
     import("./fsocial-safety.js").catch((error) => {
         console.error("FSocial safety module failed to load:", error);
     });
 }
 
-// Admin UI: loaded only where owner-only controls are relevant.
-if (currentPath.endsWith("/area-personale.html") || currentPath.endsWith("/fsocial-moderazione.html")) {
-    globalThis.__FUORISCHEMA_SUPABASE__ = supabase;
-    import("./fsocial-admin-ui.js").catch((error) => {
-        console.error("FSocial admin module failed to load:", error);
-    });
-}
+// Owner-only moderation UI. The module performs its own authenticated owner check
+// and remains invisible to all other users.
+import("./fsocial-admin-ui.js").catch((error) => {
+    console.error("FSocial admin module failed to load:", error);
+});
