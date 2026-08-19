@@ -1,0 +1,138 @@
+name: Surgical like fix
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/_surgical-like-fix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch only toggleLike
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          import subprocess
+
+          path = Path('Fsocial.html')
+          text = path.read_text(encoding='utf-8')
+
+          pattern = re.compile(r'async function toggleLike\(postId,button,article\)\{.*?\n\}\n\n/\* =========================================================\n   COMMENTS', re.S)
+          match = pattern.search(text)
+          if not match:
+              raise SystemExit('ABORT: toggleLike block not found exactly once')
+          if len(pattern.findall(text)) != 1:
+              raise SystemExit('ABORT: unexpected number of toggleLike blocks')
+
+          replacement = r'''async function toggleLike(postId,button,article){
+    if(!currentUser){
+        showToast("Devi essere loggato.");
+        return;
+    }
+    if(button.dataset.likeBusy === "1") return;
+
+    button.dataset.likeBusy = "1";
+    button.disabled = true;
+
+    const ensureIcon = () => {
+        let icon = button.querySelector(".action-icon");
+        if(!icon){
+            icon = document.createElement("span");
+            icon.className = "action-icon";
+            button.prepend(icon);
+        }
+        return icon;
+    };
+
+    const setVisualState = (liked) => {
+        const icon = ensureIcon();
+        button.classList.toggle("liked", liked);
+        icon.textContent = liked ? "♥" : "♡";
+    };
+
+    const likeCountEl = article.querySelector(".like-count");
+    const previousLiked = button.classList.contains("liked");
+    const previousCount = Number.parseInt(likeCountEl?.textContent || "0", 10) || 0;
+
+    try{
+        const existing = await getCurrentUserLike(postId);
+        const nextLiked = !existing;
+
+        if(existing){
+            const {error} = await supabase
+                .from("post_likes")
+                .delete()
+                .eq("post_id",postId)
+                .eq("user_id",currentUser.id);
+            if(error) throw error;
+        }else{
+            const {error} = await supabase
+                .from("post_likes")
+                .upsert(
+                    {post_id:postId,user_id:currentUser.id},
+                    {onConflict:"post_id,user_id",ignoreDuplicates:true}
+                );
+            if(error) throw error;
+        }
+
+        // UI is updated independently from the count query so a count/RLS
+        // problem can never make the heart disappear.
+        setVisualState(nextLiked);
+        if(likeCountEl) likeCountEl.textContent = Math.max(0, previousCount + (nextLiked ? 1 : -1));
+
+        try{
+            const count = await getLikeCount(postId);
+            if(likeCountEl) likeCountEl.textContent = count;
+        }catch(countError){
+            console.warn("Conteggio like non aggiornato:",countError);
+        }
+    }catch(error){
+        // Restore the exact visual state that was present before the request.
+        setVisualState(previousLiked);
+        if(likeCountEl) likeCountEl.textContent = previousCount;
+        console.error("Errore toggle like:",error);
+        showToast("Errore nel like: " + (error?.message || "operazione non riuscita."));
+    }finally{
+        button.disabled = false;
+        delete button.dataset.likeBusy;
+        // Final DOM guard: the action button must always retain its heart icon.
+        ensureIcon();
+    }
+}
+
+/* =========================================================
+   COMMENTS'''
+
+          new_text, count = pattern.subn(replacement, text, count=1)
+          if count != 1:
+              raise SystemExit('ABORT: replacement count was not exactly 1')
+
+          path.write_text(new_text, encoding='utf-8')
+
+          # Surgical verification: only the intended function may have changed.
+          diff = subprocess.check_output(['git', 'diff', '--', 'Fsocial.html'], text=True)
+          if diff.count('async function toggleLike(postId,button,article){') < 1:
+              raise SystemExit('ABORT: patched function missing')
+          subprocess.run(['git', 'diff', '--check'], check=True)
+          print(diff)
+
+      - name: Commit patch and remove temporary workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Fsocial.html
+          git rm .github/workflows/_surgical-like-fix.yml
+          git commit -m "Fix FSocial like toggle stability"
+          git push origin HEAD:main
