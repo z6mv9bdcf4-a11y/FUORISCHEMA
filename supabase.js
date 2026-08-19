@@ -28,6 +28,14 @@ if (currentPath.endsWith("/fsocial.html")) {
     });
 }
 
+// Profile page: reuse the same FSocial bottom-bar visual language without
+// replacing the existing navigation or changing its working destinations.
+if (currentPath.endsWith("/area-personale.html")) {
+    import("./fsocial-profile-nav.js").catch((error) => {
+        console.error("FSocial profile navigation styling failed to load:", error);
+    });
+}
+
 // Owner-only moderation UI. The module performs its own authenticated owner check
 // and remains invisible to all other users.
 import("./fsocial-admin-ui.js").catch((error) => {
