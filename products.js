@@ -9,6 +9,7 @@ const FUORISCHEMA_PRODUCTS = {
         image: "images/products/nike/air-force-1-triple-white.png",
         code: "",
         label: "PIÙ SCELTO",
+        filter: "selected",
         categoryUrl: "scarpe.html"
     },
 
@@ -35,6 +36,7 @@ const FUORISCHEMA_PRODUCTS = {
         image: "images/products/nike/shox-tl-white.png",
         code: "",
         label: "NUOVO",
+        filter: "new",
         categoryUrl: "scarpe.html"
     },
 
