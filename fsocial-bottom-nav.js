@@ -13,7 +13,8 @@
       search: '<circle cx="10.8" cy="10.8" r="6.3"/><path d="m16 16 5 5"/>',
       bell: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/>',
       user: '<circle cx="12" cy="8" r="3.5"/><path d="M5 21a7 7 0 0 1 14 0"/>',
-      camera: '<path d="M4 7.5h3l1.4-2h7.2l1.4 2h3v11H4z"/><circle cx="12" cy="13" r="3.2"/>'
+      camera: '<path d="M4 7.5h3l1.4-2h7.2l1.4 2h3v11H4z"/><circle cx="12" cy="13" r="3.2"/>',
+      heart: '<path d="M20.8 8.8c0 5.1-8.8 10.2-8.8 10.2S3.2 13.9 3.2 8.8A4.7 4.7 0 0 1 12 6.1a4.7 4.7 0 0 1 8.8 2.7Z"/>'
     };
     return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths[name] || ""}</g></svg>`;
   };
@@ -23,13 +24,10 @@
 
   const css = `
     /* =========================================================
-       FUORISCHEMA / FSOCIAL — VISUAL SYSTEM
+       FUORISCHEMA / FSOCIAL — CLEAN VISUAL SYSTEM
        VISUAL ONLY: no data, auth, storage or interaction logic.
     ========================================================= */
-    body{
-      background:#050505!important;
-      color:#f5f5f5!important;
-    }
+    body{background:#050505!important;color:#f5f5f5!important}
 
     .topbar{
       background:rgba(5,5,5,.94)!important;
@@ -40,42 +38,32 @@
     }
     .brand{letter-spacing:-.7px!important}
     .topbar-actions{gap:7px!important}
-    .top-btn,.top-btn.primary,.top-btn.primary:hover{
-      box-shadow:none!important;
-    }
-    .top-btn.primary:hover{background:#fff!important;border-color:#fff!important}
+    .top-btn,.top-btn.primary,.top-btn.primary:hover{box-shadow:none!important}
+    .top-btn.primary{background:var(--orange)!important;border-color:var(--orange)!important;color:#000!important}
+    .top-btn.primary:hover{background:#fff!important;border-color:#fff!important;color:#000!important}
 
-    .page{
-      padding-top:22px!important;
-      padding-bottom:104px!important;
-    }
-    .feed-shell{max-width:540px!important}
-    .hero{margin-bottom:18px!important}
-    .hero-title{font-size:30px!important;letter-spacing:-.9px!important}
-    .hero-meta{letter-spacing:1.5px!important}
+    /* More content, less empty space. */
+    .page{padding-top:18px!important;padding-bottom:98px!important}
+    .feed-shell{max-width:600px!important;padding-left:14px!important;padding-right:14px!important}
+    .hero{margin-bottom:16px!important;padding:0 2px!important}
+    .hero-title{font-size:29px!important;letter-spacing:-.8px!important}
+    .hero-meta{letter-spacing:1.4px!important}
 
+    .user-search-wrapper{margin-bottom:18px!important}
     .user-search-input-box{
       background:#0a0a0c!important;
       border-color:rgba(255,255,255,.065)!important;
       box-shadow:none!important;
     }
-    .user-search-input-box:focus-within{
-      border-color:rgba(255,255,255,.16)!important;
-      box-shadow:none!important;
-    }
+    .user-search-input-box:focus-within{border-color:rgba(255,255,255,.16)!important;box-shadow:none!important}
     .search-icon{
-      display:inline-flex!important;
-      align-items:center!important;
-      justify-content:center!important;
-      width:17px!important;
-      height:17px!important;
-      margin-right:9px!important;
-      font-size:0!important;
-      color:#85858c!important;
+      display:inline-flex!important;align-items:center!important;justify-content:center!important;
+      width:17px!important;height:17px!important;margin-right:9px!important;font-size:0!important;color:#85858c!important;
     }
     .search-icon svg{width:16px;height:16px;display:block}
 
     .feed-tabs{
+      margin-bottom:20px!important;
       border-color:rgba(255,255,255,.065)!important;
       background:#09090b!important;
       box-shadow:none!important;
@@ -84,141 +72,79 @@
     .tab-btn.active{box-shadow:none!important}
 
     .create-card{
+      margin-bottom:20px!important;
       background:#0a0a0c!important;
       border-color:rgba(255,255,255,.065)!important;
       box-shadow:none!important;
       backdrop-filter:none!important;
       -webkit-backdrop-filter:none!important;
     }
-    .create-card:focus-within{
-      border-color:rgba(255,255,255,.14)!important;
-      box-shadow:none!important;
-    }
-    .photo-label{
-      display:inline-flex!important;
-      align-items:center!important;
-      gap:6px!important;
-    }
+    .create-card:focus-within{border-color:rgba(255,255,255,.14)!important;box-shadow:none!important}
+    .photo-label{display:inline-flex!important;align-items:center!important;gap:6px!important}
     .photo-label svg{width:15px;height:15px;display:block}
     .publish-button{box-shadow:none!important}
 
+    /* Posts are the visual priority. */
     .post-card{
       background:#0a0a0c!important;
       border-color:rgba(255,255,255,.065)!important;
       box-shadow:none!important;
       overflow:hidden!important;
+      margin-bottom:18px!important;
     }
-    .post-card:hover{
-      border-color:rgba(255,255,255,.10)!important;
-      box-shadow:none!important;
-    }
-    .post-header{padding-top:14px!important;padding-bottom:12px!important}
-    .post-actions{gap:14px!important}
+    .post-card:hover{border-color:rgba(255,255,255,.10)!important;box-shadow:none!important}
+    .post-header{padding:14px 16px 12px!important}
+    .post-actions{gap:15px!important;padding-top:11px!important}
     .action-button{transition:color .18s ease,transform .15s ease!important}
     .action-button:hover{transform:none!important}
-    .action-icon{
-      display:inline-flex!important;
-      align-items:center!important;
-      justify-content:center!important;
-    }
+    .action-icon{display:inline-flex!important;align-items:center!important;justify-content:center!important}
     .action-icon svg{width:19px;height:19px;display:block}
-    .like-button .action-icon{font-size:23px!important;line-height:1!important}
+    .like-button .action-icon{font-size:0!important;line-height:1!important}
+    .like-button .action-icon svg{width:20px;height:20px}
     .comment-count,.like-count{font-variant-numeric:tabular-nums}
 
-    .notif-overlay{
-      background:rgba(0,0,0,.58)!important;
-      backdrop-filter:blur(8px)!important;
-      -webkit-backdrop-filter:blur(8px)!important;
-    }
-    .notif-modal{
-      background:#0a0a0c!important;
-      box-shadow:-18px 0 45px rgba(0,0,0,.55)!important;
-      border-left-color:rgba(255,255,255,.065)!important;
-      backdrop-filter:none!important;
-      -webkit-backdrop-filter:none!important;
-    }
+    /* Remove decorative glow from ordinary UI. */
+    .notif-overlay{background:rgba(0,0,0,.58)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
+    .notif-modal{background:#0a0a0c!important;box-shadow:-18px 0 45px rgba(0,0,0,.55)!important;border-left-color:rgba(255,255,255,.065)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
     .notif-header{background:#0a0a0c!important}
 
     /* =========================================================
-       FSOCIAL BOTTOM NAV — fixed, shared visual grammar
+       FSOCIAL BOTTOM NAV — fixed, quiet, app-like
     ========================================================= */
     #fsocialBottomNav{
-      position:fixed!important;
-      left:0!important;
-      right:0!important;
-      bottom:0!important;
-      z-index:99990!important;
-      width:100%!important;
-      height:72px!important;
-      padding:6px 18px calc(6px + env(safe-area-inset-bottom))!important;
-      background:rgba(8,8,10,.96)!important;
-      border-top:1px solid rgba(255,255,255,.065)!important;
-      box-shadow:0 -10px 28px rgba(0,0,0,.28)!important;
-      backdrop-filter:blur(18px)!important;
-      -webkit-backdrop-filter:blur(18px)!important;
+      position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:99990!important;width:100%!important;
+      height:70px!important;padding:5px 18px calc(5px + env(safe-area-inset-bottom))!important;
+      background:rgba(8,8,10,.97)!important;border-top:1px solid rgba(255,255,255,.055)!important;
+      box-shadow:0 -8px 24px rgba(0,0,0,.24)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important;
     }
-    #fsocialBottomNav .fsbn-inner{
-      width:min(560px,100%)!important;
-      height:100%!important;
-      margin:0 auto!important;
-      display:flex!important;
-      align-items:center!important;
-      justify-content:space-between!important;
-      gap:2px!important;
-    }
+    #fsocialBottomNav .fsbn-inner{width:min(600px,100%)!important;height:100%!important;margin:0 auto!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:2px!important}
     #fsocialBottomNav .fsbn-item{
-      height:100%!important;
-      min-width:0!important;
-      flex:1 1 0!important;
-      display:flex!important;
-      flex-direction:column!important;
-      align-items:center!important;
-      justify-content:center!important;
-      gap:4px!important;
-      color:#74747a!important;
-      background:transparent!important;
-      border:0!important;
-      font:800 9px Inter,Arial,sans-serif!important;
-      letter-spacing:.9px!important;
-      text-transform:uppercase!important;
-      text-decoration:none!important;
+      height:100%!important;min-width:0!important;flex:1 1 0!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;
+      color:#77777d!important;background:transparent!important;border:0!important;font:700 9px Inter,Arial,sans-serif!important;letter-spacing:.85px!important;text-transform:uppercase!important;text-decoration:none!important;
       transition:color .18s ease,transform .15s ease!important;
     }
-    #fsocialBottomNav .fsbn-item:hover,
-    #fsocialBottomNav .fsbn-item.active{color:#fff!important}
+    #fsocialBottomNav .fsbn-item:hover,#fsocialBottomNav .fsbn-item.active{color:#fff!important}
     #fsocialBottomNav .fsbn-item:active{transform:scale(.96)!important}
-    #fsocialBottomNav .fsbn-icon{
-      width:20px!important;
-      height:20px!important;
-      display:flex!important;
-      align-items:center!important;
-      justify-content:center!important;
-      font-size:0!important;
-    }
+    #fsocialBottomNav .fsbn-icon{width:20px!important;height:20px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:0!important}
     #fsocialBottomNav .fsbn-icon svg{width:18px;height:18px;display:block}
     #fsocialBottomNav .fsbn-add{
-      width:46px!important;
-      height:46px!important;
-      border-radius:50%!important;
-      display:grid!important;
-      place-items:center!important;
-      background:var(--orange)!important;
-      color:#000!important;
-      font-size:21px!important;
-      font-weight:900!important;
-      line-height:1!important;
-      box-shadow:0 0 14px rgba(255,77,0,.18)!important;
+      width:44px!important;height:44px!important;border-radius:50%!important;display:grid!important;place-items:center!important;
+      background:var(--orange)!important;color:#000!important;font-size:21px!important;font-weight:900!important;line-height:1!important;box-shadow:0 0 12px rgba(255,77,0,.14)!important;
       transition:transform .18s ease,background-color .18s ease!important;
     }
-    #fsocialBottomNav .fsbn-item:active .fsbn-add{transform:scale(.94)!important}
 
     @media(max-width:650px){
-      .page{padding-top:16px!important;padding-bottom:94px!important}
-      .feed-shell{padding-left:10px!important;padding-right:10px!important}
+      .page{padding-top:12px!important;padding-bottom:88px!important}
+      .feed-shell{max-width:620px!important;padding-left:8px!important;padding-right:8px!important}
+      .hero{margin-bottom:14px!important}
       .hero-title{font-size:27px!important}
+      .user-search-wrapper{margin-bottom:15px!important}
+      .feed-tabs{margin-bottom:16px!important}
       .create-card,.post-card{border-radius:14px!important}
+      .post-card{margin-bottom:14px!important}
+      .post-header{padding:13px 14px 11px!important}
       #fsocialBottomNav{height:68px!important;padding-left:8px!important;padding-right:8px!important}
-      #fsocialBottomNav .fsbn-item{font-size:8px!important;letter-spacing:.8px!important}
+      #fsocialBottomNav .fsbn-item{font-size:8px!important;letter-spacing:.75px!important}
       #fsocialBottomNav .fsbn-icon{width:19px!important;height:19px!important}
       #fsocialBottomNav .fsbn-icon svg{width:17px;height:17px}
       #fsocialBottomNav .fsbn-add{width:44px!important;height:44px!important}
@@ -247,6 +173,10 @@
 
     document.querySelectorAll(".share-button .action-icon").forEach(el=>{
       if(!el.querySelector("svg")) el.innerHTML=shareIcon;
+    });
+
+    document.querySelectorAll(".like-button .action-icon").forEach(el=>{
+      if(!el.querySelector("svg")) el.innerHTML=icon("heart");
     });
   }
 
