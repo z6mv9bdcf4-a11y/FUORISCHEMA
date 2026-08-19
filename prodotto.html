@@ -8,7 +8,23 @@
     <link rel="icon" type="image/png" href="images/icon-192.png">
     <link rel="apple-touch-icon" href="images/icon-192.png">
     <meta name="description" content="Scopri i dettagli del prodotto FUORISCHEMA, disponibilità e informazioni sul modello.">
-    <link rel="canonical" href="https://fuorischemastore.it/prodotto.html">
+    <link rel="canonical" id="canonicalUrl" href="https://fuorischemastore.it/prodotto.html">
+    <script>
+    /*
+        CANONICAL SEO DINAMICO
+        prodotto.html è una scheda condivisa da più prodotti tramite ?id=...
+        Ogni URL prodotto deve quindi avere come canonical il proprio URL completo.
+    */
+    (function(){
+        const params = new URLSearchParams(window.location.search);
+        const productId = params.get("id");
+        const canonical = document.getElementById("canonicalUrl");
+
+        if(canonical && productId){
+            canonical.href = `${window.location.origin}/prodotto.html?id=${encodeURIComponent(productId)}`;
+        }
+    })();
+    </script>
 
 <style>
 :root{
@@ -457,31 +473,57 @@ setText("backBrand", `${product.brand} / 01`);
 
 const categoryLink = document.getElementById("categoryLink");
 const backLink = document.getElementById("backLink");
-categoryLink.href = product.categoryUrl;
-backLink.href = product.categoryUrl;
+
+if(product.category === "Scarpe"){
+    categoryLink.href = "scarpe.html";
+    backLink.href = "scarpe.html";
+}else{
+    categoryLink.href = "catalogo.html";
+    backLink.href = "catalogo.html";
+}
 
 const image = document.getElementById("productImage");
 const placeholder = document.getElementById("imagePlaceholder");
 
-if(product.image){
-    image.src = product.image;
-    image.alt = product.name;
-    image.hidden = false;
+image.src = product.image;
+image.alt = product.name;
+image.hidden = false;
+
+image.addEventListener("load", () => {
     placeholder.hidden = true;
-}
+}, { once:true });
 
-if(product.code){
-    document.getElementById("codeRow").hidden = false;
-}
-
-if(product.label){
-    document.getElementById("labelRow").hidden = false;
-}
+image.addEventListener("error", () => {
+    image.hidden = true;
+    placeholder.hidden = false;
+    placeholder.textContent = "IMMAGINE NON DISPONIBILE";
+}, { once:true });
 
 const dmButton = document.getElementById("dmButton");
-dmButton.href = "https://www.instagram.com/_fuori.schema_/";
+if(dmButton){
+    dmButton.href = "https://www.instagram.com/_fuori.schema_/";
+}
 
+const codeRow = document.getElementById("codeRow");
+if(codeRow){
+    codeRow.hidden = !product.code;
+}
 
+const labelRow = document.getElementById("labelRow");
+if(labelRow){
+    labelRow.hidden = !product.label;
+}
+
+/* SEO: il contenuto della scheda resta dinamico, ma il canonical
+   è già stato impostato nell'head sulla base dell'ID presente nell'URL. */
+if(productId){
+    document.title = `${product.name} — ${product.brand} | FUORISCHEMA`;
+
+    const description = document.querySelector('meta[name="description"]');
+    if(description){
+        description.content = `${product.name} di ${product.brand}: scopri la scheda prodotto FUORISCHEMA e contattaci in DM per prezzo, taglie e disponibilità.`;
+    }
+}
 </script>
 
     <script src="cart.js"></script>
