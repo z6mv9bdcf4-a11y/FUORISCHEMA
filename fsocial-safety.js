@@ -1,4 +1,4 @@
-import { supabase } from "./supabase.js";
+const supabase = globalThis.__FUORISCHEMA_SUPABASE__;
 
 (() => {
   "use strict";
@@ -67,15 +67,12 @@ import { supabase } from "./supabase.js";
   function buildActions() {
     const social = document.querySelector("#profileOverlay .profile-social");
     if (!social || document.getElementById(ACTIONS_ID)) return;
-
     const actions = document.createElement("div");
     actions.id = ACTIONS_ID;
     actions.innerHTML = `
       <button type="button" class="fs-safety-btn" data-safety-action="report">Segnala utente</button>
-      <button type="button" class="fs-safety-btn danger" data-safety-action="block">Blocca utente</button>
-    `;
+      <button type="button" class="fs-safety-btn danger" data-safety-action="block">Blocca utente</button>`;
     social.parentElement.appendChild(actions);
-
     actions.querySelector('[data-safety-action="report"]').addEventListener("click", openReport);
     actions.querySelector('[data-safety-action="block"]').addEventListener("click", blockUser);
   }
@@ -90,20 +87,14 @@ import { supabase } from "./supabase.js";
       <div class="fs-safety-modal" role="dialog" aria-modal="true" aria-labelledby="fsReportTitle">
         <h3 id="fsReportTitle">Segnala utente</h3>
         <p>La segnalazione verrà inviata per la revisione. Scegli il motivo e, se vuoi, aggiungi dettagli.</p>
-        <div class="fs-safety-reasons">
-          ${REASONS.map(([value,label]) => `<label class="fs-safety-reason"><input type="radio" name="fs-report-reason" value="${value}"> <span>${label}</span></label>`).join("")}
-        </div>
+        <div class="fs-safety-reasons">${REASONS.map(([value,label]) => `<label class="fs-safety-reason"><input type="radio" name="fs-report-reason" value="${value}"> <span>${label}</span></label>`).join("")}</div>
         <textarea id="fsReportDescription" class="fs-safety-description" maxlength="1000" placeholder="Dettagli opzionali..."></textarea>
-        <div class="fs-safety-actions">
-          <button type="button" class="fs-safety-cancel" id="fsReportCancel">Annulla</button>
-          <button type="button" class="fs-safety-submit" id="fsReportSubmit">Invia segnalazione</button>
-        </div>
+        <div class="fs-safety-actions"><button type="button" class="fs-safety-cancel" id="fsReportCancel">Annulla</button><button type="button" class="fs-safety-submit" id="fsReportSubmit">Invia segnalazione</button></div>
         <div id="fsReportMessage" class="fs-safety-message"></div>
-      </div>
-    `;
+      </div>`;
     document.body.appendChild(overlay);
     overlay.querySelector("#fsReportCancel").addEventListener("click", () => overlay.remove());
-    overlay.addEventListener("click", (event) => { if (event.target === overlay) overlay.remove(); });
+    overlay.addEventListener("click", event => { if (event.target === overlay) overlay.remove(); });
     overlay.querySelector("#fsReportSubmit").addEventListener("click", async () => {
       const reason = overlay.querySelector('input[name="fs-report-reason"]:checked')?.value;
       const description = overlay.querySelector("#fsReportDescription").value.trim() || null;
@@ -113,18 +104,13 @@ import { supabase } from "./supabase.js";
       if (!user) { message.textContent = "Devi essere autenticato."; return; }
       if (user.id === reportedId) { message.textContent = "Non puoi segnalare te stesso."; return; }
       const button = overlay.querySelector("#fsReportSubmit");
-      button.disabled = true;
-      button.textContent = "INVIO...";
+      button.disabled = true; button.textContent = "INVIO...";
       const { error } = await supabase.from("user_reports").insert({ reporter_id: user.id, reported_id: reportedId, reason, description });
       if (error) {
-        button.disabled = false;
-        button.textContent = "INVIA SEGNALAZIONE";
-        message.textContent = error.code === "23505" ? "Segnalazione già registrata." : (error.message || "Errore durante l'invio.");
-        return;
+        button.disabled = false; button.textContent = "INVIA SEGNALAZIONE";
+        message.textContent = error.message || "Errore durante l'invio."; return;
       }
-      overlay.remove();
-      closeProfile();
-      toast("Segnalazione inviata.");
+      overlay.remove(); closeProfile(); toast("Segnalazione inviata.");
     });
   }
 
@@ -134,29 +120,19 @@ import { supabase } from "./supabase.js";
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return toast("Devi essere autenticato.");
     if (user.id === blockedId) return toast("Non puoi bloccare te stesso.");
-    const confirmed = window.confirm("Bloccare questo utente? Non vedrai più i suoi contenuti e non potrà interagire con te.");
-    if (!confirmed) return;
+    if (!window.confirm("Bloccare questo utente? Non vedrai più i suoi contenuti e non potrà interagire con te.")) return;
     const { error } = await supabase.from("user_blocks").insert({ blocker_id: user.id, blocked_id: blockedId });
     if (error && error.code !== "23505") return toast(error.message || "Errore durante il blocco.");
-    closeProfile();
-    toast("Utente bloccato.");
-    setTimeout(() => window.location.reload(), 500);
+    closeProfile(); toast("Utente bloccato."); setTimeout(() => window.location.reload(), 500);
   }
 
   function observeProfile() {
     const overlay = document.getElementById("profileOverlay");
     if (!overlay) return;
-    const observer = new MutationObserver(() => {
-      if (overlay.classList.contains("active")) buildActions();
-    });
+    const observer = new MutationObserver(() => { if (overlay.classList.contains("active")) buildActions(); });
     observer.observe(overlay, { attributes: true, attributeFilter: ["class"] });
   }
 
-  function init() {
-    injectStyles();
-    observeProfile();
-  }
-
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
-  else init();
+  function init() { if (!supabase) return; injectStyles(); observeProfile(); }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true }); else init();
 })();
