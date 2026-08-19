@@ -25,6 +25,14 @@ const supabase = globalThis.__FUORISCHEMA_SUPABASE__;
 
       if (owner) {
         addHamburgerModerationLink();
+        if (!document.querySelector(".side-menu")) {
+          const observer = new MutationObserver(() => {
+            addHamburgerModerationLink();
+            if (document.querySelector("[data-fsocial-owner-menu]")) observer.disconnect();
+          });
+          observer.observe(document.documentElement, { childList: true, subtree: true });
+          setTimeout(() => observer.disconnect(), 10000);
+        }
       }
 
       if (!path.endsWith("/area-personale.html") && !path.endsWith("/fsocial-moderazione.html")) return;
@@ -74,6 +82,7 @@ const supabase = globalThis.__FUORISCHEMA_SUPABASE__;
     box.setAttribute("data-fsocial-owner-menu", "true");
     box.className = "menu-feature";
     box.style.marginBottom = "42px";
+    box.style.display = "block";
     box.innerHTML = `
       <div class="menu-feature-top">
         <span class="menu-feature-label">OWNER / MODERAZIONE</span>
@@ -83,10 +92,10 @@ const supabase = globalThis.__FUORISCHEMA_SUPABASE__;
       <span class="menu-feature-text">Segnalazioni e strumenti riservati ai proprietari di FUORISCHEMA.</span>
     `;
 
+    const existingFeature = sideMenu.querySelector(".menu-feature");
     const firstSection = sideMenu.querySelector(".menu-section");
-    const menuTop = sideMenu.querySelector(".menu-top");
-    if (firstSection) sideMenu.insertBefore(box, firstSection);
-    else if (menuTop?.nextSibling) sideMenu.insertBefore(box, menuTop.nextSibling);
+    if (existingFeature) existingFeature.insertAdjacentElement("afterend", box);
+    else if (firstSection) sideMenu.insertBefore(box, firstSection);
     else sideMenu.appendChild(box);
   }
 
