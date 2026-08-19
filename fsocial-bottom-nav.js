@@ -69,12 +69,12 @@
     }
     #fsocialBottomNav .fsbn-add:hover { background:#fff; color:#000; }
 
-    /* Same visual language on the existing profile nav, without replacing its links. */
     .bottom-nav {
       height: 72px !important;
       padding: 6px 18px calc(6px + env(safe-area-inset-bottom)) !important;
       background: rgba(10,10,12,.94) !important;
       backdrop-filter: blur(22px) !important;
+      -webkit-backdrop-filter: blur(22px) !important;
       -webkit-backdrop-filter: blur(22px) !important;
       border-top: 1px solid rgba(255,255,255,.08) !important;
       box-shadow: 0 -12px 35px rgba(0,0,0,.35) !important;
@@ -200,7 +200,9 @@
     });
 
     nav.querySelector('[data-nav="notifications"]').addEventListener("click", () => {
-      const button = document.querySelector(".notif-btn");
+      // The real FSocial notification logic already lives on #navNotif.
+      // Reuse that handler instead of looking for the removed topbar button.
+      const button = document.getElementById("navNotif");
       if (button) button.click();
     });
 
