@@ -2528,16 +2528,71 @@ async function uploadPostImage(file){
         ? crypto.randomUUID()
         : `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
 
-    const path = `${currentUser.id}/${uniqueId}.${fileExtension(file)}`;
+ const path = `${currentUser.id}/${uniqueId}.jpg`;
 
-   const fileBuffer = await file.arrayBuffer();
+const compressedFile = await new Promise((resolve, reject) => {
+    const image = new Image();
+    const objectUrl = URL.createObjectURL(file);
+
+    image.onload = () => {
+        try {
+            const maxSize = 1600;
+            const scale = Math.min(
+                1,
+                maxSize / Math.max(image.naturalWidth, image.naturalHeight)
+            );
+
+            const width = Math.max(1, Math.round(image.naturalWidth * scale));
+            const height = Math.max(1, Math.round(image.naturalHeight * scale));
+
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext("2d", {alpha:false});
+
+            if(!ctx){
+                URL.revokeObjectURL(objectUrl);
+                reject(new Error("Impossibile preparare l'immagine."));
+                return;
+            }
+
+            ctx.drawImage(image, 0, 0, width, height);
+
+            canvas.toBlob(
+                blob => {
+                    URL.revokeObjectURL(objectUrl);
+
+                    if(!blob){
+                        reject(new Error("Impossibile comprimere l'immagine."));
+                        return;
+                    }
+
+                    resolve(blob);
+                },
+                "image/jpeg",
+                0.80
+            );
+        }catch(error){
+            URL.revokeObjectURL(objectUrl);
+            reject(error);
+        }
+    };
+
+    image.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        reject(new Error("Impossibile leggere l'immagine."));
+    };
+
+    image.src = objectUrl;
+});
 
 const {error} = await supabase.storage
     .from("post-images")
-    .upload(path, fileBuffer, {
+    .upload(path, compressedFile, {
         cacheControl: "3600",
         upsert: false,
-        contentType: file.type || "image/jpeg"
+        contentType: "image/jpeg"
     });
 
     if(error){
