@@ -2576,6 +2576,38 @@
          JAVASCRIPT
     ========================================================= -->
 
+    <script src="products.js"></script>
+    <script>
+        const homeProducts = FUORISCHEMA_PRODUCTS;
+
+        const homeFeatured = homeProducts["nike-air-force-1-triple-white"];
+        const homeSecondary = homeProducts["lacoste-tracolla"];
+
+        const featuredCard = document.querySelector(".product.featured");
+        const secondaryCard = document.querySelector(".products .product:not(.featured)");
+
+        if (featuredCard && homeFeatured) {
+            const image = featuredCard.querySelector("img");
+
+            featuredCard.href = homeFeatured.categoryUrl;
+
+            if (image) {
+                image.src = homeFeatured.image;
+                image.alt = homeFeatured.name;
+            }
+        }
+
+        if (secondaryCard && homeSecondary) {
+            const image = secondaryCard.querySelector("img");
+
+            secondaryCard.href = homeSecondary.categoryUrl;
+
+            if (image) {
+                image.src = homeSecondary.image;
+                image.alt = homeSecondary.name;
+            }
+        }
+    </script>
     <script>
 
         /* =====================================================

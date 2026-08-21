@@ -50,6 +50,7 @@ const FUORISCHEMA_PRODUCTS = {
         image: "images/products/nike/shox-tl-triple-black.webp",
         code: "",
         label: "",
+        filter: "new",
         categoryUrl: "scarpe.html"
     },
 
@@ -154,6 +155,7 @@ const FUORISCHEMA_PRODUCTS = {
         image: "images/products/asics/gel-nyc-1201a789-103.webp",
         code: "1201A789-103",
         label: "NUOVO",
+        filter: "new",
         categoryUrl: "asics.html"
     },
     "lacoste-tracolla": {
