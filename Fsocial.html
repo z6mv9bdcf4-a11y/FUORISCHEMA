@@ -46,7 +46,10 @@ html{
 }
 body{
     min-height:100vh;
-    background: var(--bg);
+    background:
+    radial-gradient(circle at 15% 10%, rgba(255,78,0,.14), transparent 32%),
+    radial-gradient(circle at 85% 85%, rgba(255,120,40,.10), transparent 35%),
+    linear-gradient(135deg, #ffffff 0%, #fffaf7 48%, #fff0e8 100%);
     color:var(--text);
     font-family: var(--font-body);
     -webkit-font-smoothing:antialiased;
@@ -390,7 +393,13 @@ a{
     padding:28px 0 90px;
     display:flex;
     justify-content:center;
+    background:
+
+        radial-gradient(circle at 15% 10%, rgba(255,78,0,.20), transparent 32%),
+        radial-gradient(circle at 85% 85%, rgba(255,120,40,.14), transparent 35%),
+        linear-gradient(135deg, #ffffff 0%, #fffaf7 48%, #fff0e8 100%);
 }
+
 .feed-shell{
     width:100%;
     max-width:var(--feed-width);
@@ -411,6 +420,7 @@ a{
     font-weight:900;
     letter-spacing:-1.2px;
     line-height:1;
+    color:#171717;
 }
 .hero-title span{color:var(--orange)}
 .hero-meta{
