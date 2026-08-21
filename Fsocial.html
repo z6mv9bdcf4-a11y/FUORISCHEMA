@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>FSocial â€” FUORISCHEMA</title>
+<title>FSocial — FUORISCHEMA</title>
     <meta name="theme-color" content="#050505">
     <link rel="icon" type="image/png" href="images/icon-192.png">
     <link rel="apple-touch-icon" href="images/icon-192.png">
-    <meta name="description" content="FSocial Ã¨ la community di FUORISCHEMA: condividi contenuti, scopri profili e interagisci con la community.">
+    <meta name="description" content="FSocial è la community di FUORISCHEMA: condividi contenuti, scopri profili e interagisci con la community.">
     <link rel="canonical" href="https://fuorischemastore.it/Fsocial.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -890,14 +890,14 @@ a{
     flex:0 0 19px;
 }
 .like-icon::before{
-    content:"â™¡";
+    content:"♡";
     display:block;
     font-size:21px;
     line-height:19px;
     font-family:"Arial Unicode MS","Segoe UI Symbol","Noto Sans Symbols 2",sans-serif;
 }
 .action-button.liked .like-icon::before{
-    content:"â™¥";
+    content:"♥";
     color:var(--orange);
 }
 .comment-count{
@@ -1211,7 +1211,7 @@ a{
 .toast.show{opacity:1;transform:translate(-50%,0) scale(1)}
 
 
-/* BOTTOM NAVIGATION BAR â€” MOBILE ONLY
+/* BOTTOM NAVIGATION BAR — MOBILE ONLY
    Added without changing existing FSocial styles/logic. */
 .bottom-nav{
     display:none;
@@ -1333,7 +1333,7 @@ a{
     }
 }
 /* =========================================================
-   FUORISCHEMA â€” SFIDA / VISUAL ONLY
+   FUORISCHEMA — SFIDA / VISUAL ONLY
    ========================================================= */
 
 .fs-challenge {
@@ -1740,9 +1740,9 @@ a{
         <!-- User Search Bar -->
         <div class="user-search-wrapper">
             <div class="user-search-input-box">
-                <span class="search-icon">ðŸ”</span>
+                <span class="search-icon">🔍</span>
                 <input id="userSearchInput" class="user-search-input" type="text" placeholder="Cerca utenti per nome o @username..." autocomplete="off">
-                <button id="searchClearBtn" class="search-clear-btn" type="button" aria-label="Cancella ricerca">âœ•</button>
+                <button id="searchClearBtn" class="search-clear-btn" type="button" aria-label="Cancella ricerca">✕</button>
             </div>
             <div id="searchResults" class="search-results"></div>
         </div>
@@ -1759,7 +1759,7 @@ a{
                 <div id="createAvatar" class="avatar">F</div>
                 <div class="user-info">
                     <div id="createUserName" class="user-name">FUORISCHEMA MEMBER</div>
-                    <div id="createUserHandle" class="user-handle">Cosa c'Ã¨ di nuovo?</div>
+                    <div id="createUserHandle" class="user-handle">Cosa c'è di nuovo?</div>
                 </div>
             </div>
 
@@ -1767,12 +1767,12 @@ a{
 
             <div id="postImagePreview" class="create-image">
                 <img id="previewImage" src="" alt="Anteprima">
-                <button id="removeImageButton" class="remove-image" type="button" aria-label="Rimuovi foto">Ã—</button>
+                <button id="removeImageButton" class="remove-image" type="button" aria-label="Rimuovi foto">×</button>
             </div>
 
             <div class="create-footer">
                 <div class="create-tools">
-                    <label for="postImageInput" class="photo-label">ðŸ“· FOTO</label>
+                    <label for="postImageInput" class="photo-label">📷 FOTO</label>
                     <input id="postImageInput" type="file" accept="image/*">
                     <span id="postStatus"></span>
                 </div>
@@ -1783,7 +1783,7 @@ a{
         <!-- Instagram-style Posts Feed -->
         <section id="feed" class="feed">
             <div class="empty">
-                <div class="empty-icon">â—Œ</div>
+                <div class="empty-icon">◌</div>
                 <strong>CARICAMENTO...</strong>
                 <span>Stiamo preparando FSocial.</span>
             </div>
@@ -1796,16 +1796,16 @@ a{
     </div>
 </main>
 
-<!-- BOTTOM NAVIGATION BAR â€” MOBILE ONLY -->
-<!-- BOTTOM NAVIGATION BAR â€” MOBILE ONLY -->
+<!-- BOTTOM NAVIGATION BAR — MOBILE ONLY -->
+<!-- BOTTOM NAVIGATION BAR — MOBILE ONLY -->
 <nav class="bottom-nav" aria-label="Navigazione FSocial">
     <a id="navHome" href="#fsocial-home" class="bottom-nav-item active" aria-label="Home">
-        <span class="bottom-nav-icon">âŒ‚</span>
+        <span class="bottom-nav-icon">⌂</span>
         <span class="bottom-nav-label">Home</span>
     </a>
 
     <button id="navSearch" class="bottom-nav-item" type="button" aria-label="Cerca">
-        <span class="bottom-nav-icon">âŒ•</span>
+        <span class="bottom-nav-icon">⌕</span>
         <span class="bottom-nav-label">Cerca</span>
     </button>
 
@@ -1826,7 +1826,7 @@ a{
     </button>
 
     <a id="navProfile" href="area-personale.html" class="bottom-nav-item" aria-label="Profilo">
-        <span class="bottom-nav-icon">â™™</span>
+        <span class="bottom-nav-icon">♙</span>
         <span class="bottom-nav-label">Profilo</span>
     </a>
 </nav>
@@ -1841,7 +1841,7 @@ a{
             </div>
             <div class="notif-header-actions">
                 <button id="notifMarkAllBtn" class="notif-mark-all" type="button">SEGNA TUTTE COME LETTE</button>
-                <button id="notifClose" class="notif-close" type="button" aria-label="Chiudi notifiche">âœ•</button>
+                <button id="notifClose" class="notif-close" type="button" aria-label="Chiudi notifiche">✕</button>
             </div>
         </div>
         <div id="notifList" class="notif-list">
@@ -1853,7 +1853,7 @@ a{
 <!-- PROFILE MODAL -->
 <div id="profileOverlay" class="profile-overlay">
     <div class="profile-modal">
-        <button id="profileClose" class="profile-close" type="button" aria-label="Chiudi">âœ•</button>
+        <button id="profileClose" class="profile-close" type="button" aria-label="Chiudi">✕</button>
         <div class="profile-modal-top">
             <div id="modalAvatar" class="profile-modal-avatar">F</div>
             <div id="modalName" class="profile-modal-name">FUORISCHEMA MEMBER</div>
@@ -1861,8 +1861,8 @@ a{
             <div id="modalBio" class="profile-modal-bio">Membro FUORISCHEMA.</div>
         </div>
         <div class="profile-social">
-            <a id="instagramLink" class="instagram" href="#" target="_blank" rel="noopener noreferrer">INSTAGRAM â†—</a>
-            <a id="profilePageLink" href="area-personale.html">PROFILO FS â†—</a>
+            <a id="instagramLink" class="instagram" href="#" target="_blank" rel="noopener noreferrer">INSTAGRAM ↗</a>
+            <a id="profilePageLink" href="area-personale.html">PROFILO FS ↗</a>
         </div>
     </div>
 </div>
@@ -2025,7 +2025,7 @@ function saveForYouHistory(posts){
         }));
         localStorage.setItem(getForYouHistoryKey(), JSON.stringify(history));
     }catch{
-        // Il feed deve continuare a funzionare anche se localStorage non Ã¨ disponibile.
+        // Il feed deve continuare a funzionare anche se localStorage non è disponibile.
     }
 }
 
@@ -2108,7 +2108,7 @@ async function checkUser(){
     };
 
     createUserName.textContent = me.name;
-    createUserHandle.textContent = me.username ? `@${me.username}` : "Cosa c'Ã¨ di nuovo?";
+    createUserHandle.textContent = me.username ? `@${me.username}` : "Cosa c'è di nuovo?";
     setAvatar(createAvatar, me);
 
     return true;
@@ -2495,7 +2495,7 @@ postImageInput.addEventListener("change", () => {
     }
 
     if(file.size > 10 * 1024 * 1024){
-        showToast("La foto Ã¨ troppo grande. Massimo 10 MB.");
+        showToast("La foto è troppo grande. Massimo 10 MB.");
         postImageInput.value = "";
         return;
     }
@@ -2604,7 +2604,7 @@ const {error} = await supabase.storage
     const publicUrl = data?.publicUrl || null;
 
     if(!publicUrl){
-        throw new Error("La foto Ã¨ stata caricata ma non Ã¨ stato possibile ottenere l'URL pubblico.");
+        throw new Error("La foto è stata caricata ma non è stato possibile ottenere l'URL pubblico.");
     }
 
     return {publicUrl,path};
@@ -2668,7 +2668,7 @@ publishButton.addEventListener("click", async () => {
         postImagePreview.classList.remove("active");
 
         postStatus.textContent = "Pubblicato.";
-        showToast("Post pubblicato ðŸ”¥");
+        showToast("Post pubblicato 🔥");
         await loadFeed();
     }catch(error){
         console.error("Errore pubblicazione post:",error);
@@ -2828,7 +2828,7 @@ tabRecent.addEventListener("click", () => {
         </div>
 
         <h2>
-            NON Ãˆ ANCORA<br>
+            NON È ANCORA<br>
             <span>INIZIATA.</span>
         </h2>
 
@@ -2839,7 +2839,7 @@ tabRecent.addEventListener("click", () => {
         </div>
 
         <p class="fs-challenge-subtitle">
-            MA TU SEI GIÃ€ <strong>IN RITARDO.</strong>
+            MA TU SEI GIÀ <strong>IN RITARDO.</strong>
         </p>
 
         <p class="fs-challenge-copy">
@@ -2847,12 +2847,12 @@ tabRecent.addEventListener("click", () => {
             <br>
             <strong>Premi. Sconti. Vantaggi.</strong>
             <br>
-            Tutto riservato a chi Ã¨ dentro.
+            Tutto riservato a chi è dentro.
         </p>
 
         <a href="index.html" class="fs-challenge-btn">
             <span>SEGUI FUORISCHEMA</span>
-            <b>â†—</b>
+            <b>↗</b>
         </a>
 
     </div>
@@ -2895,7 +2895,7 @@ async function fetchFeedWindow() {
     if (fetchErr) throw fetchErr;
     console.log("POSTS CARICATI:", posts);
 
-    // 4. Fallback: Se la finestra T non restituisce post, recupera i piÃ¹ recenti fino a K
+    // 4. Fallback: Se la finestra T non restituisce post, recupera i più recenti fino a K
     if (!posts || posts.length === 0) {
         const { data: fallbackPosts, error: fallbackErr } = await supabase
             .from("posts")
@@ -2923,7 +2923,7 @@ async function fetchForYouPosts(){
     /*
      * PER TE:
      * - privilegia contenuti recenti + engagement;
-     * - mantiene diversitÃ  tra gli autori;
+     * - mantiene diversità tra gli autori;
      * - ruota i contenuti mostrati in precedenza;
      * - non esclude definitivamente i post vecchi;
      * - introduce una piccola variazione ad ogni caricamento.
@@ -2931,7 +2931,7 @@ async function fetchForYouPosts(){
     const history = loadForYouHistory();
 
     // Se abbiamo pochi contenuti nella finestra dinamica, allarghiamo il pool
-    // per dare al feed la possibilitÃ  di ripescare post piÃ¹ vecchi.
+    // per dare al feed la possibilità di ripescare post più vecchi.
     if(pool.length < 12){
         const knownIds = new Set(pool.map(post => post.id));
 
@@ -3016,7 +3016,7 @@ async function fetchForYouPosts(){
         };
     });
 
-    // Step 2: Reranking per diversitÃ  degli autori.
+    // Step 2: Reranking per diversità degli autori.
     const selectedPosts = [];
     const authorSelectedCount = {};
     let candidates = [...poolWithScore];
@@ -3069,7 +3069,7 @@ selectedPosts.forEach(post => {
 async function loadFeed() {
     feed.innerHTML = `
         <div class="empty">
-            <div class="empty-icon">â—Œ</div>
+            <div class="empty-icon">◌</div>
             <strong>CARICAMENTO...</strong>
             <span>Stiamo preparando FSocial.</span>
         </div>
@@ -3103,8 +3103,8 @@ async function loadFeed() {
     if (!posts || posts.length === 0) {
         feed.innerHTML = `
             <div class="empty">
-                <div class="empty-icon">â—Ž</div>
-                <strong>IL FEED Ãˆ VUOTO</strong>
+                <div class="empty-icon">◎</div>
+                <strong>IL FEED È VUOTO</strong>
                 <span>Sii il primo a lasciare il tuo segno.</span>
             </div>
         `;
@@ -3153,12 +3153,12 @@ async function renderPost(post,author){
 </button>
 
             <button class="action-button comment-toggle" type="button" aria-label="Commenta">
-                <span class="action-icon">ðŸ’¬</span>
+                <span class="action-icon">💬</span>
                 <span class="comment-count">0</span>
             </button>
 
             <button class="action-button share-button" type="button" aria-label="Condividi">
-                <span class="action-icon">âœˆ</span>
+                <span class="action-icon">✈</span>
             </button>
 
             ${post.user_id === currentUser.id ? `
@@ -3276,10 +3276,10 @@ async function updateLikeState(post,button,article){
 
         if(existing){
             button.classList.add("liked");
-            if(icon) icon.textContent = "â™¥";
+            if(icon) icon.textContent = "♥";
         }else{
             button.classList.remove("liked");
-            if(icon) icon.textContent = "â™¡";
+            if(icon) icon.textContent = "♡";
         }
     }catch(error){
         console.error("Errore stato like:",error);
@@ -3310,7 +3310,7 @@ button.dataset.likeBusy = "1";
 
             button.classList.remove("liked");
             const icon = button.querySelector(".action-icon");
-            if(icon) icon.textContent = "â™¡";
+            if(icon) icon.textContent = "♡";
         }else{
             const {error} = await supabase
                 .from("post_likes")
@@ -3323,7 +3323,7 @@ button.dataset.likeBusy = "1";
 
             button.classList.add("liked");
             const icon = button.querySelector(".action-icon");
-            if(icon) icon.textContent = "â™¥";
+            if(icon) icon.textContent = "♥";
         }
 
         const count = await getLikeCount(postId);
