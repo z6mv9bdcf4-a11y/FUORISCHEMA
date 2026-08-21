@@ -15,7 +15,7 @@
 
 <style>
 :root {
-    --bg: #050505;
+    --bg: #160A05;
     --panel: #0d0d0f;
     --panel-border: rgba(255, 255, 255, 0.08);
     --line: rgba(255, 255, 255, 0.05);
@@ -77,7 +77,7 @@ a{
     align-items:center;
     justify-content:space-between;
     padding:0 24px;
-    background:rgba(5, 5, 5, 0.82);
+    background:rgba(22, 10, 5, 0.82);
     backdrop-filter:blur(24px);
     -webkit-backdrop-filter:blur(24px);
     border-bottom:1px solid var(--panel-border);
@@ -1361,8 +1361,8 @@ a{
         ),
         linear-gradient(
             145deg,
-            #111111,
-            #070707
+            #1A0803,
+            #080201
         ) !important;
 
     border: 1px solid rgba(255,255,255,.10) !important;
@@ -1716,6 +1716,7 @@ a{
     }
 }
 </style>
+    <script src="fs-notifications.js"></script>
 </head>
 
 <body>
@@ -3460,7 +3461,13 @@ button.disabled = true;
    DELETE
 ========================================================= */
 async function deletePost(postId){
-    if(!confirm("Vuoi davvero eliminare questo post?")) return;
+    const confirmed = await FSNotifications.confirm(
+        "ELIMINARE POST?",
+        "Vuoi davvero eliminare questo post? Questa operazione non può essere annullata.",
+        "ELIMINA"
+    );
+
+    if (!confirmed) return;
 
     const {error} = await supabase
         .from("posts")

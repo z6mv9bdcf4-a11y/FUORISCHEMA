@@ -33,7 +33,29 @@ async function auth(){const {data,error}=await supabase.auth.getUser();if(error|
 async function loadProfiles(ids){const unique=[...new Set(ids.filter(Boolean))];if(!unique.length)return;if(unique.length){const {data}=await supabase.from('profiles').select('id,username,full_name,avatar_url').in('id',unique);(data||[]).forEach(p=>profiles.set(p.id,p))}}
 function person(id){const p=profiles.get(id);return `<strong>${esc(p?.full_name||'Utente')}</strong><span>@${esc(p?.username||'—')}</span>`}
 async function load(){stateEl.innerHTML='';reportsEl.innerHTML='<div class="empty">CARICAMENTO SEGNALAZIONI...</div>';const user=await auth();if(!user)return;const {data,error}=await supabase.from('user_reports').select('id,reporter_id,reported_id,reason,description,status,created_at,reviewed_at,reviewed_by,admin_note,action_taken,comment_id').order('created_at',{ascending:false});if(error){stateEl.innerHTML=`<div class="error">Impossibile caricare le segnalazioni.<br>${esc(error.message)}</div>`;reportsEl.innerHTML='';return}const rows=data||[];await loadProfiles(rows.flatMap(r=>[r.reporter_id,r.reported_id]));counts.pending.textContent=rows.filter(r=>r.status==='pending').length;counts.review.textContent=rows.filter(r=>r.status==='review').length;counts.resolved.textContent=rows.filter(r=>['resolved','rejected'].includes(r.status)).length;if(!rows.length){reportsEl.innerHTML='<div class="empty">NESSUNA SEGNALAZIONE. FSocial è pulito. ✓</div>';return}reportsEl.innerHTML=rows.map(r=>`<article class="report" data-id="${r.id}"><div class="report-head"><div><div class="report-id">SEGNALAZIONE #${r.id}</div><div style="margin-top:7px"><span class="status ${esc(r.status)}">${esc(r.status||'pending')}</span></div></div><div class="report-date">${date(r.created_at)}</div></div><div class="people"><div class="person"><small>Segnalato da</small>${person(r.reporter_id)}</div><div class="person"><small>Utente segnalato</small>${person(r.reported_id)}</div></div><div class="reason">${esc(reasonLabels[r.reason]||r.reason||'Motivo non specificato')}</div>${r.description?`<div class="description">${esc(r.description)}</div>`:''}${r.comment_id?`<div class="description" style="border-left-color:#666">COMMENTO COLLEGATO · #${esc(r.comment_id)}</div>`:''}<textarea class="admin-note" maxlength="1000" placeholder="Nota interna della moderazione...">${esc(r.admin_note||'')}</textarea><div class="actions"><button class="action" data-action="review">In revisione</button><button class="action orange" data-action="resolve">Chiudi come risolta</button><button class="action" data-action="reject">Rifiuta segnalazione</button>${r.comment_id?'<button class="action danger" data-action="delete-comment">Elimina commento</button>':''}</div></article>`).join('');reportsEl.querySelectorAll('.report').forEach(card=>{card.querySelectorAll('[data-action]').forEach(btn=>btn.addEventListener('click',()=>act(card,btn.dataset.action,btn)))})}
-async function act(card,action,button){const id=Number(card.dataset.id);const note=card.querySelector('.admin-note').value.trim()||null;button.disabled=true;const {data:{user}}=await supabase.auth.getUser();if(!user){button.disabled=false;return}if(action==='delete-comment'){const {data:report,error:readErr}=await supabase.from('user_reports').select('comment_id').eq('id',id).single();if(readErr||!report?.comment_id){button.disabled=false;return}if(!confirm('Eliminare il commento segnalato? Questa azione non può essere annullata.')){button.disabled=false;return}const {error}=await supabase.from('post_comments').delete().eq('id',report.comment_id);if(error){alert(error.message);button.disabled=false;return}action='resolve'}const status=action==='review'?'review':action==='reject'?'rejected':'resolved';const actionTaken=action==='reject'?'Nessuna violazione confermata':action==='review'?'Segnalazione presa in carico':action==='resolve'?'Segnalazione esaminata':'Azione moderazione';const {error}=await supabase.from('user_reports').update({status,reviewed_at:new Date().toISOString(),reviewed_by:user.id,admin_note:note,action_taken:actionTaken}).eq('id',id);if(error){alert(error.message);button.disabled=false;return}await load()}
+async function act(card,action,button){const id=Number(card.dataset.id);const note=card.querySelector('.admin-note').value.trim()||null;button.disabled=true;const {data:{user}}=await supabase.auth.getUser();if(!user){button.disabled=false;return}if(action==='delete-comment'){const {data:report,error:readErr}=await supabase.from('user_reports').select('comment_id').eq('id',id).single();if(readErr||!report?.comment_id){button.disabled=false;return}const confirmed = await window.FSNotifications.confirm(
+    "ELIMINARE COMMENTO?",
+    "Questa azione non può essere annullata.",
+    "ELIMINA COMMENTO"
+);
+if(!confirmed){
+    button.disabled=false;
+    return;
+}const {error}=await supabase.from('post_comments').delete().eq('id',report.comment_id);if(error){
+    window.FSNotifications.notify(
+        "ERRORE MODERAZIONE",
+        error.message || "Errore durante l'eliminazione del commento."
+    );
+    button.disabled=false;
+    return;
+}action='resolve'}const status=action==='review'?'review':action==='reject'?'rejected':'resolved';const actionTaken=action==='reject'?'Nessuna violazione confermata':action==='review'?'Segnalazione presa in carico':action==='resolve'?'Segnalazione esaminata':'Azione moderazione';const {error}=await supabase.from('user_reports').update({status,reviewed_at:new Date().toISOString(),reviewed_by:user.id,admin_note:note,action_taken:actionTaken}).eq('id',id);if(error){
+    window.FSNotifications.notify(
+        "ERRORE MODERAZIONE",
+        error.message || "Errore durante l'eliminazione del commento."
+    );
+    button.disabled=false;
+    return;
+}await load()}
 document.getElementById('refresh').addEventListener('click',load);load();
 </script>
 </body>

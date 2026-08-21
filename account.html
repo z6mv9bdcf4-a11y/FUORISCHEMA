@@ -287,7 +287,106 @@
                 gap: 10px;
             }
         }
-    </style>
+    <style>
+/* FUORISCHEMA — NOTIFICATION SYSTEM */
+.fs-notification-wrap{
+    position:fixed !important;
+    top:24px !important;
+    right:24px !important;
+    bottom:auto !important;
+    left:auto !important;
+    z-index:2147483647 !important;
+    width:min(390px,calc(100vw - 32px));
+    margin:0 !important;
+    pointer-events:none;
+}
+
+.fs-notification{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    padding:17px 18px;
+    background:rgba(18,8,5,.96);
+    border:1px solid rgba(255,78,0,.35);
+    border-left:3px solid #ff4e00;
+    box-shadow:0 20px 60px rgba(0,0,0,.45);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    transform:translateX(120%);
+    opacity:0;
+    transition:
+        transform .45s cubic-bezier(.2,.8,.2,1),
+        opacity .3s ease;
+    pointer-events:auto;
+}
+
+.fs-notification.is-visible{
+    transform:translateX(0);
+    opacity:1;
+}
+
+.fs-notification.is-leaving{
+    transform:translateX(120%);
+    opacity:0;
+}
+
+.fs-notification-icon{
+    width:32px;
+    height:32px;
+    flex:0 0 32px;
+    display:grid;
+    place-items:center;
+    border:1px solid rgba(255,78,0,.4);
+    color:#ff4e00;
+    font-size:15px;
+    font-weight:900;
+}
+
+.fs-notification.success{
+    border-color:rgba(100,220,130,.3);
+    border-left-color:#69d58a;
+}
+
+.fs-notification.success .fs-notification-icon{
+    color:#69d58a;
+    border-color:rgba(105,213,138,.4);
+}
+
+.fs-notification-title{
+    margin:0 0 5px;
+    color:#fff;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.fs-notification-text{
+    margin:0;
+    color:#aaa;
+    font-size:12px;
+    line-height:1.5;
+}
+
+@media(max-width:600px){
+    .fs-notification-wrap{
+        position:fixed !important;
+        top:max(14px, env(safe-area-inset-top)) !important;
+        right:12px !important;
+        left:12px !important;
+        bottom:auto !important;
+        width:auto !important;
+        max-width:none !important;
+        margin:0 !important;
+        z-index:2147483647 !important;
+    }
+
+    .fs-notification{
+        width:100%;
+        box-sizing:border-box;
+        padding:15px 14px;
+    }
+}
+</style>
     <meta name="robots" content="noindex, nofollow, noarchive">
 </head>
 
@@ -437,6 +536,46 @@
     <script type="module">
     import { supabase } from "./supabase.js";
 
+    function showFsNotification(title, message, type = "error") {
+        let wrap = document.querySelector(".fs-notification-wrap");
+
+        if (!wrap) {
+            wrap = document.createElement("div");
+            wrap.className = "fs-notification-wrap";
+            document.body.appendChild(wrap);
+        }
+
+        wrap.innerHTML = `
+            <div class="fs-notification ${type === "success" ? "success" : ""}" role="alert">
+                <div class="fs-notification-icon">
+                    ${type === "success" ? "✓" : "!"}
+                </div>
+                <div>
+                    <div class="fs-notification-title">${title}</div>
+                    <p class="fs-notification-text">${message}</p>
+                </div>
+            </div>
+        `;
+
+        const notification = wrap.querySelector(".fs-notification");
+
+        requestAnimationFrame(() => {
+            notification.classList.add("is-visible");
+        });
+
+        clearTimeout(window.fsNotificationTimer);
+
+        window.fsNotificationTimer = setTimeout(() => {
+            notification.classList.remove("is-visible");
+            notification.classList.add("is-leaving");
+
+            setTimeout(() => {
+                if (wrap && wrap.parentNode) {
+                    wrap.remove();
+                }
+            }, 450);
+        }, 4200);
+    }
     const createAccountButton = document.querySelector(".submit-button");
 
     createAccountButton.addEventListener("click", async () => {
@@ -454,12 +593,32 @@
         const password = passwordInput.value;
 
         if (!name || !email || !instagram || !password) {
-            alert("COMPILA TUTTI I CAMPI.");
+            showFsNotification(
+                "CAMPI INCOMPLETI",
+                "Compila tutti i campi prima di continuare."
+            );
             return;
         }
 
-        if (password.length < 6) {
-            alert("LA PASSWORD DEVE AVERE ALMENO 6 CARATTERI.");
+        const passwordRules = {
+            length: password.length >= 6,
+            lowercase: /[a-z]/.test(password),
+            uppercase: /[A-Z]/.test(password),
+            number: /[0-9]/.test(password),
+            special: /[^A-Za-z0-9]/.test(password)
+        };
+
+        if (
+            !passwordRules.length ||
+            !passwordRules.lowercase ||
+            !passwordRules.uppercase ||
+            !passwordRules.number ||
+            !passwordRules.special
+        ) {
+            showFsNotification(
+                "PASSWORD NON VALIDA",
+                "Usa almeno 6 caratteri con una minuscola, una maiuscola, un numero e un carattere speciale."
+            );
             return;
         }
 
@@ -503,7 +662,20 @@
 
             console.error("ERRORE REGISTRAZIONE:", error);
 
-            alert("ERRORE: " + error.message);
+            let message = error.message || "Si è verificato un errore durante la registrazione.";
+
+            if (/password/i.test(message)) {
+                message = "La password non rispetta i requisiti richiesti.";
+            } else if (/already registered|already exists|user already/i.test(message)) {
+                message = "Questa email è già associata a un account.";
+            } else if (/invalid email/i.test(message)) {
+                message = "Inserisci un indirizzo email valido.";
+            }
+
+            showFsNotification(
+                "REGISTRAZIONE NON RIUSCITA",
+                message
+            );
 
             createAccountButton.disabled = false;
             createAccountButton.style.opacity = "1";

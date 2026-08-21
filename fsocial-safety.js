@@ -64,7 +64,14 @@ const supabase = globalThis.__FUORISCHEMA_SUPABASE__;
       window.__fsSafetyToast = setTimeout(() => existing.classList.remove("show"), 2600);
       return;
     }
-    alert(message);
+    if (window.FSNotifications?.notify) {
+      window.FSNotifications.notify(
+        "FSOCIAL",
+        message
+      );
+    } else {
+      console.error(message);
+    }
   }
 
   function getProfileId() {

@@ -82,7 +82,12 @@ const supabase = globalThis.__FUORISCHEMA_SUPABASE__;
     button.addEventListener("click", async (event) => {
       event.preventDefault();
       event.stopPropagation();
-      if (!window.confirm("Rimuovere questo post come owner? L'azione eliminerà il contenuto per tutti.")) return;
+      const confirmed = await window.FSNotifications.confirm(
+        "RIMUOVERE POST?",
+        "Questa azione eliminerà il contenuto per tutti.",
+        "RIMUOVI POST"
+      );
+      if (!confirmed) return;
 
       button.disabled = true;
       button.textContent = "RIMOZIONE...";
