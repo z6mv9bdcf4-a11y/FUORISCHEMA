@@ -1006,6 +1006,50 @@ a{
     border-radius:12px;
     border: 1px solid rgba(255,255,255,0.04);
 }
+.comment-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    min-width:0;
+}
+
+.comment-delete{
+    flex:0 0 auto;
+    width:24px;
+    height:24px;
+    display:grid;
+    place-items:center;
+    padding:0;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:7px;
+    background:transparent;
+    color:rgba(255,255,255,.38);
+    font-size:15px;
+    line-height:1;
+    cursor:pointer;
+    transition:
+        color .2s ease,
+        border-color .2s ease,
+        background .2s ease,
+        transform .15s ease;
+}
+
+.comment-delete:hover{
+    color:#ff6258;
+    border-color:rgba(255,59,48,.35);
+    background:rgba(255,59,48,.08);
+}
+
+.comment-delete:active{
+    transform:scale(.9);
+}
+
+.comment-delete:disabled{
+    opacity:.45;
+    cursor:wait;
+}
+
 .comment-user{font-size:12px;font-weight:700;color:#fff;display:inline;margin-right:6px}
 .comment-text{color:#ccc;display:inline;word-break:break-word}
 
@@ -3401,18 +3445,91 @@ async function loadComments(postId,box){
             : escapeHtml(getInitials(author.name));
 
         const authorHandleOrName = author.username ? author.username : author.name;
+        const isOwnComment = Boolean(currentUser?.id && comment.user_id === currentUser.id);
 
         div.innerHTML = `
             <div class="comment-avatar">${avatar}</div>
             <div class="comment-content">
-                <span class="comment-user">${escapeHtml(authorHandleOrName)}</span>
+                <div class="comment-head">
+                    <span class="comment-user">${escapeHtml(authorHandleOrName)}</span>
+                    ${
+                        isOwnComment
+                            ? `<button type="button" class="comment-delete" aria-label="Elimina il tuo commento" title="Elimina commento">×</button>`
+                            : ""
+                    }
+                </div>
                 <span class="comment-text">${escapeHtml(comment.content)}</span>
             </div>
         `;
+
+        if (isOwnComment) {
+            div.querySelector(".comment-delete")?.addEventListener("click", () => {
+                deleteOwnComment(comment.id, postId, div, box);
+            });
+        }
+
         list.appendChild(div);
     });
 }
 
+async function deleteOwnComment(commentId,postId,commentElement,box){
+    if(!currentUser?.id) return;
+
+    const confirmed = await window.FSNotifications.confirm(
+        "ELIMINARE COMMENTO?",
+        "Il tuo commento verrà rimosso definitivamente.",
+        "ELIMINA COMMENTO"
+    );
+
+    if(!confirmed) return;
+
+    const deleteButton = commentElement.querySelector(".comment-delete");
+    if(deleteButton){
+        deleteButton.disabled = true;
+        deleteButton.textContent = "…";
+    }
+
+    try{
+        const {error} = await supabase
+            .from("post_comments")
+            .delete()
+            .eq("id",commentId)
+            .eq("user_id",currentUser.id);
+
+        if(error) throw error;
+
+        commentElement.remove();
+
+        const remainingComments = box.querySelectorAll(".comment");
+
+        if(!remainingComments.length){
+            box.querySelector(".comments-list").innerHTML =
+                `<div class="comment-text" style="color:var(--muted-2);">Nessun commento. Sii il primo.</div>`;
+        }
+
+        const article = box.closest(".post-card");
+        const commentToggle = article?.querySelector(".comment-toggle");
+
+        if(commentToggle){
+            await updateCommentCount(postId,commentToggle);
+        }
+
+        showToast("Commento eliminato.");
+
+    }catch(error){
+        console.error("Errore eliminazione commento:",error);
+
+        if(deleteButton){
+            deleteButton.disabled = false;
+            deleteButton.textContent = "×";
+        }
+
+        window.FSNotifications.notify(
+            "ERRORE",
+            error?.message || "Impossibile eliminare il commento."
+        );
+    }
+}
 async function addComment(postId,article){
     if(!currentUser){
         showToast("Devi essere loggato.");
