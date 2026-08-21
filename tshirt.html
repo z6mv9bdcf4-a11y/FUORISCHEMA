@@ -641,7 +641,7 @@ function renderProducts(filter = "all"){
 
         card.innerHTML = `
             <div class="product-image">
-                ${product.badge ? `<div class="product-badge">${escapeHtml(product.badge)}</div>` : ""}
+                ${product.label ? `<div class="product-badge">${escapeHtml(product.label)}</div>` : ""}
                 <img
                     src="${escapeHtml(product.image)}"
                     alt="${escapeHtml(product.name)}"
