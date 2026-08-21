@@ -75,7 +75,7 @@
     }
 
     const icons = nav.querySelectorAll('.bottom-nav-icon');
-    const replacements = [icon('home'), icon('search'), null, icon('bell'), icon('user')];
+    const replacements = [icon('home'), icon('search'), icon('bell'), icon('user')];
     icons.forEach((el, index) => {
       if (replacements[index] !== null) el.innerHTML = replacements[index];
     });
