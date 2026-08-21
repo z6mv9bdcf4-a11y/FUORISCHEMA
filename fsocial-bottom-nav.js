@@ -27,7 +27,7 @@
        FUORISCHEMA / FSOCIAL — CLEAN VISUAL SYSTEM
        VISUAL ONLY: no data, auth, storage or interaction logic.
     ========================================================= */
-    body{background:#050505!important;color:#f5f5f5!important}
+    body{background:transparent!important;color:#f5f5f5!important}
 
     .topbar{
       background:rgba(5,5,5,.94)!important;
@@ -51,7 +51,7 @@
 
     .user-search-wrapper{margin-bottom:18px!important}
     .user-search-input-box{
-      background:#0a0a0c!important;
+      background:rgba(8,8,10,.60)!important;backdrop-filter:blur(28px) saturate(155%)!important;-webkit-backdrop-filter:blur(28px) saturate(155%)!important;
       border-color:rgba(255,255,255,.065)!important;
       box-shadow:none!important;
     }
@@ -65,7 +65,7 @@
     .feed-tabs{
       margin-bottom:20px!important;
       border-color:rgba(255,255,255,.065)!important;
-      background:#09090b!important;
+      background:rgba(8,8,10,.60)!important;backdrop-filter:blur(28px) saturate(155%)!important;-webkit-backdrop-filter:blur(28px) saturate(155%)!important;
       box-shadow:none!important;
     }
     .tab-btn{font-size:10px!important;letter-spacing:.9px!important}
@@ -73,7 +73,7 @@
 
     .create-card{
       margin-bottom:20px!important;
-      background:#0a0a0c!important;
+      background:rgba(8,8,10,.60)!important;backdrop-filter:blur(28px) saturate(155%)!important;-webkit-backdrop-filter:blur(28px) saturate(155%)!important;
       border-color:rgba(255,255,255,.065)!important;
       box-shadow:none!important;
       backdrop-filter:none!important;
@@ -86,7 +86,7 @@
 
     /* Posts are the visual priority. */
     .post-card{
-      background:#0a0a0c!important;
+      background:rgba(8,8,10,.60)!important;backdrop-filter:blur(28px) saturate(155%)!important;-webkit-backdrop-filter:blur(28px) saturate(155%)!important;
       border-color:rgba(255,255,255,.065)!important;
       box-shadow:none!important;
       overflow:hidden!important;
@@ -105,7 +105,7 @@
 
     /* Remove decorative glow from ordinary UI. */
     .notif-overlay{background:rgba(0,0,0,.58)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
-    .notif-modal{background:#0a0a0c!important;box-shadow:-18px 0 45px rgba(0,0,0,.55)!important;border-left-color:rgba(255,255,255,.065)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+    .notif-modal{background:rgba(8,8,10,.60)!important;backdrop-filter:blur(28px) saturate(155%)!important;-webkit-backdrop-filter:blur(28px) saturate(155%)!important;box-shadow:-18px 0 45px rgba(0,0,0,.55)!important;border-left-color:rgba(255,255,255,.065)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
     .notif-header{background:#0a0a0c!important}
 
     /* =========================================================
@@ -114,13 +114,14 @@
     #fsocialBottomNav{
       position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:99990!important;width:100%!important;
       height:70px!important;padding:5px 18px calc(5px + env(safe-area-inset-bottom))!important;
-      background:rgba(8,8,10,.97)!important;border-top:1px solid rgba(255,255,255,.055)!important;
-      box-shadow:0 -8px 24px rgba(0,0,0,.24)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important;
+      background:rgba(8,8,10,.58)!important;border-top:1px solid rgba(255,255,255,.14)!important;
+      box-shadow:0 -10px 30px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.10)!important;backdrop-filter:blur(30px) saturate(160%)!important;-webkit-backdrop-filter:blur(30px) saturate(160%)!important;
     }
-    #fsocialBottomNav .fsbn-inner{width:min(600px,100%)!important;height:100%!important;margin:0 auto!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:2px!important}
-    #fsocialBottomNav .fsbn-item{
+    #fsocialBottomNav .fsbn-inner{
+      width:min(600px,100%)!important;height:100%!important;margin:0 auto!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:2px!important
+    }    #fsocialBottomNav .fsbn-item{
       height:100%!important;min-width:0!important;flex:1 1 0!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;
-      color:#77777d!important;background:transparent!important;border:0!important;font:700 9px Inter,Arial,sans-serif!important;letter-spacing:.85px!important;text-transform:uppercase!important;text-decoration:none!important;
+      color:#9a9aa0!important;background:transparent!important;border:0!important;font:700 9px Inter,Arial,sans-serif!important;letter-spacing:.85px!important;text-transform:uppercase!important;text-decoration:none!important;
       transition:color .18s ease,transform .15s ease!important;
     }
     #fsocialBottomNav .fsbn-item:hover,#fsocialBottomNav .fsbn-item.active{color:#fff!important}
@@ -144,10 +145,21 @@
       .post-card{margin-bottom:14px!important}
       .post-header{padding:13px 14px 11px!important}
       #fsocialBottomNav{height:68px!important;padding-left:8px!important;padding-right:8px!important}
-      #fsocialBottomNav .fsbn-item{font-size:8px!important;letter-spacing:.75px!important}
+          #fsocialBottomNav .fsbn-item{font-size:8px!important;letter-spacing:.75px!important}
       #fsocialBottomNav .fsbn-icon{width:19px!important;height:19px!important}
       #fsocialBottomNav .fsbn-icon svg{width:17px;height:17px}
       #fsocialBottomNav .fsbn-add{width:44px!important;height:44px!important}
+    }
+
+    /* Placeholder readability — visual only */
+    .user-search-input::placeholder{
+      color:rgba(255,255,255,.58)!important;
+      opacity:1!important;
+    }
+
+    .create-card textarea::placeholder{
+      color:rgba(255,255,255,.52)!important;
+      opacity:1!important;
     }
   `;
 

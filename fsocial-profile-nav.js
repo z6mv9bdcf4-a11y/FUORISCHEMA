@@ -19,7 +19,7 @@
        FSOCIAL PROFILE — SHARED CLEAN VISUAL SYSTEM
        VISUAL ONLY: no profile, auth or navigation logic changes.
     ========================================================= */
-    body{background:#050505!important;color:#f5f5f5!important}
+    body{background:radial-gradient(circle at 15% 10%,rgba(255,78,0,.14),transparent 32%),radial-gradient(circle at 85% 85%,rgba(255,120,40,.10),transparent 35%),linear-gradient(135deg,#ffffff 0%,#fffaf7 48%,#fff0e8 100%)!important;color:#f5f5f5!important}
     header{background:rgba(5,5,5,.94)!important;border-bottom-color:rgba(255,255,255,.055)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important}
     .profile-container{padding-top:28px!important;padding-bottom:88px!important}
     .profile-header{border-bottom-color:rgba(255,255,255,.055)!important}
@@ -34,9 +34,9 @@
     .bottom-nav{
       position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:99990!important;
       height:70px!important;padding:5px 18px calc(5px + env(safe-area-inset-bottom))!important;
-      background:rgba(8,8,10,.97)!important;border-top:1px solid rgba(255,255,255,.055)!important;
-      backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important;
-      box-shadow:0 -8px 24px rgba(0,0,0,.24)!important;justify-content:center!important;gap:2px!important;
+      background:rgba(8,8,10,.58)!important;border-top:1px solid rgba(255,255,255,.14)!important;
+      backdrop-filter:blur(30px) saturate(160%)!important;-webkit-backdrop-filter:blur(30px) saturate(160%)!important;
+      box-shadow:0 -10px 30px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.10)!important;justify-content:center!important;gap:2px!important;
     }
     .bottom-nav-item{
       height:100%!important;min-width:0!important;flex:1 1 0!important;max-width:152px!important;

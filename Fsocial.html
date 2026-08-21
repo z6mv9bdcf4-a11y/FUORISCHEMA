@@ -1769,6 +1769,155 @@ a{
         animation: none !important;
     }
 }
+
+/* =========================================================
+   FSocial — Frosted Glass UI
+   Visual-only override: layout and functionality unchanged.
+   ========================================================= */
+
+.user-search-input-box{
+    background:rgba(8,8,10,.48);
+    border-color:rgba(255,255,255,.12);
+    backdrop-filter:blur(18px) saturate(135%);
+    -webkit-backdrop-filter:blur(18px) saturate(135%);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.055),
+        0 8px 24px rgba(0,0,0,.10);
+}
+
+.feed-tabs{
+    background:rgba(8,8,10,.48);
+    border-color:rgba(255,255,255,.12);
+    backdrop-filter:blur(18px) saturate(135%);
+    -webkit-backdrop-filter:blur(18px) saturate(135%);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.055),
+        0 8px 24px rgba(0,0,0,.10);
+}
+
+.create-card{
+    background:rgba(10,10,12,.50);
+    border-color:rgba(255,255,255,.12);
+    backdrop-filter:blur(18px) saturate(135%);
+    -webkit-backdrop-filter:blur(18px) saturate(135%);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.055),
+        0 14px 34px rgba(0,0,0,.12);
+}
+
+.post-card{
+    background:rgba(10,10,12,.54);
+    border-color:rgba(255,255,255,.11);
+    backdrop-filter:blur(18px) saturate(130%);
+    -webkit-backdrop-filter:blur(18px) saturate(130%);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.045),
+        0 12px 32px rgba(0,0,0,.10);
+}
+
+@media (max-width:550px){
+    .bottom-nav{
+        background:rgba(8,8,10,.55);
+        border-top-color:rgba(255,255,255,.12);
+        backdrop-filter:blur(24px) saturate(145%);
+        -webkit-backdrop-filter:blur(24px) saturate(145%);
+        box-shadow:
+            0 -10px 30px rgba(0,0,0,.16),
+            inset 0 1px 0 rgba(255,255,255,.055);
+    }
+}
+
+/* =========================================================
+   FSocial — FINAL FROSTED GLASS OVERRIDE
+   Override finale del vecchio clean visual system.
+   ========================================================= */
+
+.user-search-input-box{
+    background:rgba(8,8,10,.58)!important;
+    border-color:rgba(255,255,255,.12)!important;
+    backdrop-filter:blur(20px) saturate(140%)!important;
+    -webkit-backdrop-filter:blur(20px) saturate(140%)!important;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.06),
+        0 8px 24px rgba(0,0,0,.12)!important;
+}
+
+.feed-tabs{
+    background:rgba(8,8,10,.58)!important;
+    border-color:rgba(255,255,255,.12)!important;
+    backdrop-filter:blur(20px) saturate(140%)!important;
+    -webkit-backdrop-filter:blur(20px) saturate(140%)!important;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.06),
+        0 8px 24px rgba(0,0,0,.12)!important;
+}
+
+.create-card{
+    background:rgba(10,10,12,.58)!important;
+    border-color:rgba(255,255,255,.12)!important;
+    backdrop-filter:blur(20px) saturate(140%)!important;
+    -webkit-backdrop-filter:blur(20px) saturate(140%)!important;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.055),
+        0 14px 34px rgba(0,0,0,.14)!important;
+}
+
+.post-card{
+    background:rgba(10,10,12,.58)!important;
+    border-color:rgba(255,255,255,.12)!important;
+    backdrop-filter:blur(20px) saturate(140%)!important;
+    -webkit-backdrop-filter:blur(20px) saturate(140%)!important;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.05),
+        0 12px 32px rgba(0,0,0,.14)!important;
+}
+
+@media(max-width:550px){
+    #fsocialBottomNav{
+        background:rgba(8,8,10,.62)!important;
+        border-top-color:rgba(255,255,255,.12)!important;
+        backdrop-filter:blur(24px) saturate(145%)!important;
+        -webkit-backdrop-filter:blur(24px) saturate(145%)!important;
+        box-shadow:
+            0 -10px 30px rgba(0,0,0,.16),
+            inset 0 1px 0 rgba(255,255,255,.055)!important;
+    }
+}
+/* =========================================================
+   FSocial — Action readability
+   Visual only — no layout / logic changes.
+   ========================================================= */
+
+.action-button{
+    color:rgba(255,255,255,.72);
+}
+
+.action-button .action-icon{
+    color:rgba(255,255,255,.78);
+}
+
+.action-button .like-icon::before{
+    color:rgba(255,255,255,.82);
+}
+
+.action-button .comment-count{
+    color:rgba(255,255,255,.68);
+}
+
+.action-button:hover{
+    color:#fff;
+}
+
+.delete-button{
+    color:rgba(255,105,85,.90);
+    border:1px solid rgba(255,78,0,.38);
+}
+
+.delete-button:hover{
+    color:#ff4e00;
+    border-color:rgba(255,78,0,.65);
+    background:rgba(255,78,0,.10);
+}
 </style>
     <script src="fs-notifications.js"></script>
 </head>
