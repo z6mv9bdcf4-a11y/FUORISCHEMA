@@ -551,11 +551,17 @@
                     ${type === "success" ? "✓" : "!"}
                 </div>
                 <div>
-                    <div class="fs-notification-title">${title}</div>
-                    <p class="fs-notification-text">${message}</p>
+                    <div class="fs-notification-title"></div>
+                    <p class="fs-notification-text"></p>
                 </div>
             </div>
         `;
+
+        const notificationTitle = wrap.querySelector(".fs-notification-title");
+        const notificationText = wrap.querySelector(".fs-notification-text");
+
+        notificationTitle.textContent = title;
+        notificationText.textContent = message;
 
         const notification = wrap.querySelector(".fs-notification");
 
