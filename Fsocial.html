@@ -2422,6 +2422,14 @@ async function loadNotifications() {
                 actionText = `ha messo Mi piace al tuo post`;
             } else if (notif.type === "comment") {
                 actionText = `ha commentato il tuo post`;
+            } else if (notif.type === "battle_challenge") {
+                actionText = `ti ha sfidato a una Battle ⚔`;
+            } else if (notif.type === "battle_accepted") {
+                actionText = `ha accettato la tua Battle ⚔`;
+            } else if (notif.type === "battle_declined") {
+                actionText = `ha rifiutato la tua Battle`;
+            } else if (notif.type === "battle_result") {
+                actionText = `ha concluso una Battle con te ⚔`;
             } else {
                 actionText = `ha interagito con il tuo post`;
             }
@@ -2463,6 +2471,30 @@ async function handleNotificationClick(notif) {
     }
 
     closeNotifications();
+
+    if (notif.battle_id) {
+        try {
+            const { data: shareSlug, error: battleSlugError } = await supabase
+                .rpc("get_battle_share_slug", {
+                    p_battle_id: notif.battle_id
+                });
+
+            if (battleSlugError) throw battleSlugError;
+
+            if (!shareSlug) {
+                showToast("Battle non disponibile.");
+                return;
+            }
+
+            window.location.href =
+                `battle.html?battle=${encodeURIComponent(shareSlug)}`;
+            return;
+        } catch (error) {
+            console.error("Errore apertura Battle:", error);
+            showToast("Impossibile aprire la Battle.");
+            return;
+        }
+    }
 
     if (notif.post_id) {
         let targetPostEl = document.getElementById(`comments-${notif.post_id}`)?.closest(".post-card");
