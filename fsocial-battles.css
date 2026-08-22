@@ -1,4 +1,4 @@
-/* =========================================================
+﻿/* =========================================================
    FSOCIAL BATTLES
    FUORISCHEMA — Battle V1
    ========================================================= */
@@ -1237,5 +1237,1267 @@ body.fs-battle-modal-open {
 
     .fs-battle-hub-empty{
         min-height:300px;
+    }
+}/* =========================================================
+   BATTLE V2 — MOTION LAYER
+   Visual only. Does not modify Battle logic.
+========================================================= */
+
+.battle-page .battle-main,
+.battle-page .battle-header,
+.battle-page .battle-category,
+.battle-page .battle-vote-message,
+.battle-page .battle-share,
+.battle-page .battle-response-actions{
+    animation: battleFadeUp .55s cubic-bezier(.22,1,.36,1) both;
+}
+
+.battle-page .battle-fighter-left{
+    animation:
+        battleFighterLeft .7s cubic-bezier(.22,1,.36,1) both;
+}
+
+.battle-page .battle-fighter-right{
+    animation:
+        battleFighterRight .7s cubic-bezier(.22,1,.36,1) both;
+}
+
+.battle-page .battle-vs{
+    animation:
+        battleVsReveal .65s cubic-bezier(.22,1,.36,1) .12s both;
+}
+
+.battle-page .battle-outfit-image{
+    transition:
+        transform .45s cubic-bezier(.22,1,.36,1),
+        filter .35s ease;
+}
+
+.battle-page .battle-fighter:hover .battle-outfit-image{
+    transform:scale(1.025);
+}
+
+.battle-page .battle-fighter{
+    transition:
+        opacity .3s ease,
+        transform .3s ease,
+        filter .3s ease;
+}
+
+.battle-page .battle-fighter:has(.battle-vote-button:hover){
+    transform:translateY(-2px);
+}
+
+.battle-page .battle-fighter:has(.battle-vote-button:hover)
+.battle-outfit-image{
+    transform:scale(1.025);
+}
+
+.battle-page .battle-vote-button{
+    position:relative;
+    overflow:hidden;
+    transition:
+        transform .22s cubic-bezier(.22,1,.36,1),
+        background .22s ease,
+        border-color .22s ease,
+        box-shadow .22s ease;
+}
+
+.battle-page .battle-vote-button::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        110deg,
+        transparent 25%,
+        rgba(255,255,255,.14) 50%,
+        transparent 75%
+    );
+    transform:translateX(-130%);
+    transition:transform .55s ease;
+    pointer-events:none;
+}
+
+.battle-page .battle-vote-button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 30px rgba(0,0,0,.18);
+}
+
+.battle-page .battle-vote-button:hover::after{
+    transform:translateX(130%);
+}
+
+.battle-page .battle-vote-button:active{
+    transform:translateY(0) scale(.985);
+}
+
+.battle-page .battle-vote-count strong{
+    display:inline-block;
+    transition:
+        transform .25s cubic-bezier(.22,1,.36,1),
+        opacity .2s ease;
+}
+
+.battle-page .battle-share-button{
+    transition:
+        transform .22s cubic-bezier(.22,1,.36,1),
+        border-color .22s ease,
+        background .22s ease;
+}
+
+.battle-page .battle-share-button:hover{
+    transform:translateY(-2px);
+}
+
+@keyframes battleFadeUp{
+    from{
+        opacity:0;
+        transform:translateY(14px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes battleFighterLeft{
+    from{
+        opacity:0;
+        transform:translateX(-34px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+@keyframes battleFighterRight{
+    from{
+        opacity:0;
+        transform:translateX(34px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+@keyframes battleVsReveal{
+    0%{
+        opacity:0;
+        transform:scale(.7);
+        filter:blur(6px);
+    }
+    65%{
+        opacity:1;
+        transform:scale(1.08);
+        filter:blur(0);
+    }
+    100%{
+        opacity:1;
+        transform:scale(1);
+        filter:blur(0);
+    }
+}
+
+@media (prefers-reduced-motion:reduce){
+    .battle-page *,
+    .battle-page *::before,
+    .battle-page *::after{
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:.01ms !important;
+        scroll-behavior:auto !important;
+    }
+}
+
+@media (max-width:600px){
+    .battle-page .battle-fighter-left,
+    .battle-page .battle-fighter-right{
+        animation-duration:.5s;
+    }
+
+    .battle-page .battle-vs{
+        animation-duration:.45s;
+    }
+}
+
+/* =========================================================
+   FSOCIAL BATTLE — V2.1 VISUAL SYSTEM
+   CSS ONLY — NO BATTLE LOGIC CHANGES
+========================================================= */
+
+/* ---------- ARENA BACKGROUND ---------- */
+
+.battle-page{
+    position:relative;
+    isolation:isolate;
+    background:
+        radial-gradient(
+            circle at 50% 24%,
+            rgba(255,106,0,.075),
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 12% 62%,
+            rgba(255,255,255,.025),
+            transparent 28%
+        ),
+        #080808;
+}
+
+.battle-page::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    pointer-events:none;
+    opacity:.18;
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,.045) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.045) 1px,
+            transparent 1px
+        );
+    background-size:42px 42px;
+    mask-image:linear-gradient(
+        to bottom,
+        transparent,
+        black 18%,
+        black 78%,
+        transparent
+    );
+}
+
+.battle-page::after{
+    content:"";
+    position:fixed;
+    inset:-50%;
+    z-index:-1;
+    pointer-events:none;
+    opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.65'/%3E%3C/svg%3E");
+    transform:rotate(.001deg);
+    animation:battleGrain .28s steps(2) infinite;
+}
+
+/* ---------- HEADER ---------- */
+
+.battle-page .battle-header{
+    position:relative;
+}
+
+.battle-page .battle-header::after{
+    content:"FSOCIAL / BATTLE";
+    position:absolute;
+    right:0;
+    bottom:-18px;
+    color:rgba(255,255,255,.16);
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:.22em;
+    pointer-events:none;
+    animation:battleHeaderTag .8s ease .45s both;
+}
+
+/* ---------- CATEGORY ---------- */
+
+.battle-page .battle-category{
+    transform-origin:center;
+    animation:
+        battleCategoryReveal .7s
+        cubic-bezier(.22,1,.36,1)
+        .08s both;
+}
+
+/* ---------- MAIN TITLE ---------- */
+
+.battle-page .battle-title,
+.battle-page h1{
+    position:relative;
+    overflow:hidden;
+}
+
+.battle-page .battle-title::after,
+.battle-page h1::after{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    width:42%;
+    height:100%;
+    background:linear-gradient(
+        105deg,
+        transparent,
+        rgba(255,255,255,.16),
+        transparent
+    );
+    transform:translateX(-160%);
+    pointer-events:none;
+    animation:battleTitleSweep 1.15s ease .65s both;
+}
+
+/* ---------- FIGHTERS ---------- */
+
+.battle-page .battle-fighter{
+    position:relative;
+    overflow:hidden;
+    will-change:transform;
+}
+
+.battle-page .battle-fighter::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:2;
+    pointer-events:none;
+    border:1px solid rgba(255,255,255,.055);
+    border-radius:inherit;
+    opacity:0;
+    transition:
+        opacity .35s ease,
+        border-color .35s ease;
+}
+
+.battle-page .battle-fighter:hover::before{
+    opacity:1;
+    border-color:rgba(255,106,0,.35);
+}
+
+.battle-page .battle-fighter::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background:
+        linear-gradient(
+            180deg,
+            transparent 55%,
+            rgba(0,0,0,.16)
+        );
+    opacity:.45;
+}
+
+/* ---------- IMAGES ---------- */
+
+.battle-page .battle-outfit-image{
+    will-change:transform;
+    transform:scale(1.001);
+}
+
+.battle-page .battle-fighter:hover .battle-outfit-image{
+    transform:scale(1.035);
+    filter:saturate(1.04) contrast(1.025);
+}
+
+/* ---------- VS ---------- */
+
+.battle-page .battle-vs{
+    position:relative;
+    z-index:5;
+    box-shadow:
+        0 0 0 1px rgba(255,106,0,.05),
+        0 0 35px rgba(255,106,0,.08);
+}
+
+.battle-page .battle-vs::before,
+.battle-page .battle-vs::after{
+    content:"";
+    position:absolute;
+    top:50%;
+    width:clamp(18px,4vw,80px);
+    height:1px;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,106,0,.38)
+    );
+    pointer-events:none;
+}
+
+.battle-page .battle-vs::before{
+    right:100%;
+    transform-origin:right center;
+}
+
+.battle-page .battle-vs::after{
+    left:100%;
+    transform:
+        rotate(180deg);
+    transform-origin:left center;
+}
+
+/* ---------- VOTE BUTTON ---------- */
+
+.battle-page .battle-vote-button{
+    isolation:isolate;
+    letter-spacing:.16em;
+}
+
+.battle-page .battle-vote-button::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    background:
+        linear-gradient(
+            115deg,
+            transparent 20%,
+            rgba(255,106,0,.18) 50%,
+            transparent 80%
+        );
+    transform:translateX(-120%);
+    transition:transform .7s cubic-bezier(.22,1,.36,1);
+}
+
+.battle-page .battle-vote-button:hover::before{
+    transform:translateX(120%);
+}
+
+.battle-page .battle-vote-button:hover{
+    border-color:rgba(255,106,0,.7);
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.28),
+        0 0 25px rgba(255,106,0,.07);
+}
+
+/* ---------- VOTE COUNTER ---------- */
+
+.battle-page .battle-vote-count{
+    transition:
+        transform .25s ease,
+        opacity .25s ease;
+}
+
+.battle-page .battle-vote-count strong{
+    font-variant-numeric:tabular-nums;
+}
+
+/* ---------- SHARE ---------- */
+
+.battle-page .battle-share{
+    position:relative;
+}
+
+.battle-page .battle-share::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:0;
+    width:80px;
+    height:1px;
+    background:rgba(255,106,0,.35);
+    transform:translateX(-50%);
+}
+
+/* ---------- RESPONSE ---------- */
+
+.battle-page .battle-response-actions{
+    position:relative;
+}
+
+.battle-page .battle-response-button{
+    transition:
+        transform .25s cubic-bezier(.22,1,.36,1),
+        box-shadow .25s ease,
+        background .25s ease,
+        border-color .25s ease;
+}
+
+.battle-page .battle-response-button:hover{
+    transform:translateY(-2px);
+}
+
+/* ---------- PAGE FOOTER ---------- */
+
+.battle-page .battle-footer{
+    position:relative;
+}
+
+.battle-page .battle-footer::before{
+    content:"BATTLE / END";
+    display:block;
+    margin-bottom:16px;
+    color:rgba(255,255,255,.13);
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:.3em;
+}
+
+/* ---------- KEYFRAMES ---------- */
+
+@keyframes battleCategoryReveal{
+    from{
+        opacity:0;
+        transform:translateY(-12px) scale(.96);
+        filter:blur(5px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+        filter:blur(0);
+    }
+}
+
+@keyframes battleTitleSweep{
+    from{
+        transform:translateX(-160%);
+    }
+    to{
+        transform:translateX(320%);
+    }
+}
+
+@keyframes battleHeaderTag{
+    from{
+        opacity:0;
+        transform:translateY(6px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes battleGrain{
+    0%{
+        transform:translate(0,0);
+    }
+    25%{
+        transform:translate(1%,-1%);
+    }
+    50%{
+        transform:translate(-1%,1%);
+    }
+    75%{
+        transform:translate(1%,1%);
+    }
+    100%{
+        transform:translate(-1%,-1%);
+    }
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width:600px){
+
+    .battle-page{
+        background:
+            radial-gradient(
+                circle at 50% 18%,
+                rgba(255,106,0,.065),
+                transparent 38%
+            ),
+            #080808;
+    }
+
+    .battle-page::before{
+        background-size:30px 30px;
+        opacity:.11;
+    }
+
+    .battle-page .battle-header::after{
+        right:4px;
+        bottom:-14px;
+        font-size:7px;
+    }
+
+    .battle-page .battle-fighter:hover{
+        transform:none;
+    }
+
+    .battle-page .battle-fighter:hover .battle-outfit-image{
+        transform:scale(1.018);
+    }
+
+    .battle-page .battle-vote-button:hover{
+        transform:none;
+    }
+
+    .battle-page .battle-vs{
+        box-shadow:
+            0 0 0 1px rgba(255,106,0,.05),
+            0 0 22px rgba(255,106,0,.07);
+    }
+}
+
+/* ---------- REDUCED MOTION ---------- */
+
+@media (prefers-reduced-motion:reduce){
+
+    .battle-page::after{
+        animation:none !important;
+    }
+
+    .battle-page .battle-title::after,
+    .battle-page h1::after{
+        display:none;
+    }
+}
+
+/* =========================================================
+   BATTLE V2.2 — FINAL ARENA POLISH
+   CSS ONLY — LOGIC UNTOUCHED
+========================================================= */
+
+/* ---------- STRONGER CENTER ---------- */
+
+.battle-page .battle-vs{
+    display:grid;
+    place-items:center;
+    position:relative;
+    z-index:10;
+    border-color:rgba(255,106,0,.48);
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,106,0,.14),
+            rgba(255,106,0,.025) 62%,
+            transparent 70%
+        );
+    box-shadow:
+        0 0 0 1px rgba(255,106,0,.08),
+        0 0 24px rgba(255,106,0,.13),
+        0 0 70px rgba(255,106,0,.045);
+    animation:
+        battleVsFinalReveal .7s
+        cubic-bezier(.22,1,.36,1)
+        .48s both;
+}
+
+.battle-page .battle-vs::before{
+    width:clamp(28px,5vw,82px);
+    height:1px;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,106,0,.5)
+    );
+}
+
+.battle-page .battle-vs::after{
+    width:clamp(28px,5vw,82px);
+    height:1px;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,106,0,.5)
+    );
+}
+
+.battle-page .battle-vs{
+    --vs-ring:rgba(255,106,0,.3);
+}
+
+.battle-page .battle-vs > *{
+    position:relative;
+    z-index:2;
+}
+
+.battle-page .battle-vs{
+    isolation:isolate;
+}
+
+.battle-page .battle-vs{
+    overflow:visible;
+}
+
+.battle-page .battle-vs::marker{
+    display:none;
+}
+
+/* rotating technical ring */
+
+.battle-page .battle-vs{
+    outline:1px solid rgba(255,106,0,.08);
+    outline-offset:6px;
+}
+
+.battle-page .battle-vs{
+    transition:
+        transform .3s cubic-bezier(.22,1,.36,1),
+        box-shadow .3s ease;
+}
+
+.battle-page .battle-vs:hover{
+    transform:scale(1.045);
+    box-shadow:
+        0 0 0 1px rgba(255,106,0,.12),
+        0 0 30px rgba(255,106,0,.18),
+        0 0 80px rgba(255,106,0,.06);
+}
+
+/* ---------- FOCUS EFFECT ---------- */
+
+/* Quando una card è in hover, l'altra diventa leggermente
+   meno luminosa. Non altera la logica della Battle. */
+
+.battle-page .battle-fighter{
+    transition:
+        transform .35s cubic-bezier(.22,1,.36,1),
+        opacity .35s ease,
+        filter .35s ease,
+        box-shadow .35s ease;
+}
+
+.battle-page:has(.battle-fighter-left:hover)
+.battle-fighter-right{
+    opacity:.62;
+    filter:saturate(.72) brightness(.72);
+}
+
+.battle-page:has(.battle-fighter-right:hover)
+.battle-fighter-left{
+    opacity:.62;
+    filter:saturate(.72) brightness(.72);
+}
+
+.battle-page .battle-fighter-left:hover,
+.battle-page .battle-fighter-right:hover{
+    opacity:1;
+    filter:none;
+    transform:translateY(-4px);
+    z-index:4;
+}
+
+/* ---------- CARD EDGE LIGHT ---------- */
+
+.battle-page .battle-fighter-left:hover{
+    box-shadow:
+        0 18px 55px rgba(0,0,0,.32),
+        -1px 0 0 rgba(255,106,0,.18);
+}
+
+.battle-page .battle-fighter-right:hover{
+    box-shadow:
+        0 18px 55px rgba(0,0,0,.32),
+        1px 0 0 rgba(255,106,0,.18);
+}
+
+/* ---------- NAME EMPHASIS ---------- */
+
+.battle-page .battle-fighter:hover .battle-player-name,
+.battle-page .battle-fighter:hover .battle-username{
+    color:#fff;
+}
+
+/* ---------- CENTER BREATH ---------- */
+
+@keyframes battleVsFinalReveal{
+    0%{
+        opacity:0;
+        transform:scale(.72);
+        filter:blur(5px);
+    }
+
+    65%{
+        opacity:1;
+        transform:scale(1.08);
+        filter:blur(0);
+    }
+
+    100%{
+        opacity:1;
+        transform:scale(1);
+        filter:blur(0);
+    }
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width:600px){
+
+    .battle-page .battle-vs{
+        outline-offset:4px;
+        box-shadow:
+            0 0 0 1px rgba(255,106,0,.08),
+            0 0 20px rgba(255,106,0,.10);
+    }
+
+    .battle-page:has(.battle-fighter-left:hover)
+    .battle-fighter-right,
+    .battle-page:has(.battle-fighter-right:hover)
+    .battle-fighter-left{
+        opacity:1;
+        filter:none;
+    }
+
+    .battle-page .battle-fighter-left:hover,
+    .battle-page .battle-fighter-right:hover{
+        transform:none;
+    }
+
+    .battle-page .battle-vs:hover{
+        transform:none;
+    }
+}
+
+@media (prefers-reduced-motion:reduce){
+
+    .battle-page .battle-vs{
+        animation:none !important;
+    }
+}
+
+
+/* =========================================================
+   MOBILE BATTLE — TRUE SIDE BY SIDE
+   .battle-arena = LEFT / VS / RIGHT
+========================================================= */
+
+@media (max-width:600px){
+
+    .battle-page .battle-arena{
+        display:grid !important;
+
+        grid-template-columns:
+            minmax(0,1fr)
+            34px
+            minmax(0,1fr) !important;
+
+        grid-template-rows:auto !important;
+
+        align-items:start;
+        justify-content:stretch;
+
+        width:100% !important;
+        max-width:none !important;
+
+        gap:6px !important;
+
+        position:relative;
+    }
+
+    /* SINISTRA */
+    .battle-page .battle-fighter-left{
+        grid-column:1 !important;
+        grid-row:1 !important;
+
+        width:100% !important;
+        min-width:0 !important;
+        max-width:none !important;
+
+        margin:0 !important;
+
+        transform:none !important;
+    }
+
+    /* VS */
+    .battle-page .battle-vs{
+        grid-column:2 !important;
+        grid-row:1 !important;
+
+        align-self:center !important;
+        justify-self:center !important;
+
+        width:34px !important;
+        min-width:34px !important;
+
+        margin:0 !important;
+
+        position:relative !important;
+        z-index:20;
+
+        display:flex !important;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+    }
+
+    .battle-page .battle-vs-badge{
+        width:34px !important;
+        height:34px !important;
+
+        display:grid;
+        place-items:center;
+
+        font-size:9px !important;
+        line-height:1 !important;
+    }
+
+    .battle-page .battle-vs-line{
+        width:1px !important;
+        height:18px !important;
+    }
+
+    /* DESTRA */
+    .battle-page .battle-fighter-right{
+        grid-column:3 !important;
+        grid-row:1 !important;
+
+        width:100% !important;
+        min-width:0 !important;
+        max-width:none !important;
+
+        margin:0 !important;
+
+        transform:none !important;
+    }
+
+    /* CARD */
+    .battle-page .battle-fighter{
+        box-sizing:border-box;
+        overflow:hidden;
+    }
+
+    /* FOTO */
+    .battle-page .battle-outfit{
+        width:100% !important;
+        overflow:hidden;
+    }
+
+    .battle-page .battle-outfit-image{
+        display:block;
+        width:100% !important;
+
+        aspect-ratio:3 / 4;
+
+        height:auto !important;
+
+        object-fit:cover;
+
+        transform:none !important;
+    }
+
+    /* HEADER UTENTE */
+    .battle-page .battle-fighter-top{
+        min-width:0;
+    }
+
+    .battle-page .battle-user-info{
+        min-width:0;
+    }
+
+    .battle-page .battle-name,
+    .battle-page .battle-username{
+        max-width:100%;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+    }
+
+    .battle-page .battle-name{
+        font-size:11px !important;
+    }
+
+    .battle-page .battle-username{
+        font-size:8px !important;
+    }
+
+    /* AVATAR */
+    .battle-page .battle-avatar{
+        width:34px !important;
+        height:34px !important;
+    }
+
+    /* VOTA */
+    .battle-page .battle-vote-button{
+        width:100% !important;
+        min-height:42px !important;
+
+        padding:9px 4px !important;
+
+        font-size:8px !important;
+        letter-spacing:.08em !important;
+
+        white-space:nowrap;
+    }
+
+    /* CONTATORE */
+    .battle-page .battle-vote-count{
+        text-align:center;
+    }
+
+    .battle-page .battle-vote-count strong{
+        font-size:20px !important;
+    }
+
+    .battle-page .battle-vote-count span{
+        font-size:8px !important;
+    }
+
+    /* SU TOUCH NIENTE FOCUS ARTIFICIALE */
+    .battle-page:has(.battle-fighter-left:hover)
+    .battle-fighter-right,
+
+    .battle-page:has(.battle-fighter-right:hover)
+    .battle-fighter-left{
+        opacity:1 !important;
+        filter:none !important;
+    }
+
+    .battle-page .battle-fighter-left:hover,
+    .battle-page .battle-fighter-right:hover{
+        transform:none !important;
+    }
+
+    .battle-page .battle-vs:hover{
+        transform:none !important;
+    }
+}
+
+/* =========================================================
+   MOBILE BATTLE — POLISH 390px
+   Affiancata / leggibile / fashion
+========================================================= */
+
+@media (max-width:600px){
+
+    .battle-page .battle-arena{
+        grid-template-columns:
+            minmax(0,1fr)
+            30px
+            minmax(0,1fr) !important;
+
+        gap:5px !important;
+    }
+
+    /* CARD */
+
+    .battle-page .battle-fighter{
+        border-radius:16px !important;
+        background:
+            linear-gradient(
+                145deg,
+                rgba(255,255,255,.045),
+                rgba(255,255,255,.012)
+            ) !important;
+
+        box-shadow:
+            0 12px 30px rgba(0,0,0,.22),
+            inset 0 1px 0 rgba(255,255,255,.035);
+
+        overflow:hidden;
+    }
+
+    /* HEADER */
+
+    .battle-page .battle-fighter-top{
+        display:flex !important;
+        align-items:center !important;
+
+        gap:7px !important;
+
+        padding:11px 9px !important;
+    }
+
+    .battle-page .battle-avatar{
+        width:30px !important;
+        height:30px !important;
+
+        flex:0 0 30px;
+    }
+
+    .battle-page .battle-user-info{
+        overflow:hidden;
+    }
+
+    .battle-page .battle-name{
+        display:block;
+
+        font-size:10px !important;
+        line-height:1.15 !important;
+        font-weight:900 !important;
+
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+    }
+
+    .battle-page .battle-username{
+        display:block;
+
+        margin-top:3px !important;
+
+        font-size:7px !important;
+        line-height:1 !important;
+
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+    }
+
+    /* FOTO */
+
+    .battle-page .battle-outfit{
+        margin:0 8px !important;
+
+        border-radius:11px !important;
+        overflow:hidden;
+    }
+
+    .battle-page .battle-outfit-image{
+        width:100% !important;
+        aspect-ratio:3 / 4 !important;
+
+        object-fit:cover !important;
+
+        transition:
+            transform .35s cubic-bezier(.22,1,.36,1),
+            filter .35s ease !important;
+    }
+
+    /* VOTO */
+
+    .battle-page .battle-vote-button{
+        width:calc(100% - 16px) !important;
+
+        min-height:38px !important;
+
+        margin:9px 8px 0 !important;
+
+        padding:8px 3px !important;
+
+        border-radius:9px !important;
+
+        font-size:7px !important;
+        letter-spacing:.075em !important;
+
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+
+    .battle-page .battle-vote-count{
+        padding:8px 0 10px !important;
+    }
+
+    .battle-page .battle-vote-count strong{
+        font-size:18px !important;
+        line-height:1 !important;
+    }
+
+    .battle-page .battle-vote-count span{
+        margin-left:2px !important;
+        font-size:7px !important;
+    }
+
+    /* VS CENTRALE */
+
+    .battle-page .battle-vs{
+        width:30px !important;
+        min-width:30px !important;
+
+        gap:6px !important;
+    }
+
+    .battle-page .battle-vs-badge{
+        width:30px !important;
+        height:30px !important;
+
+        border:1px solid rgba(255,106,0,.65) !important;
+        border-radius:50% !important;
+
+        background:
+            radial-gradient(
+                circle,
+                rgba(255,106,0,.18),
+                rgba(255,106,0,.025) 70%
+            ) !important;
+
+        color:#ff6a00 !important;
+
+        font-size:8px !important;
+        font-weight:900 !important;
+
+        box-shadow:
+            0 0 0 1px rgba(255,106,0,.08),
+            0 0 22px rgba(255,106,0,.12);
+
+        animation:battleMobileVsPulse 3s ease-in-out infinite;
+    }
+
+    .battle-page .battle-vs-line{
+        height:22px !important;
+
+        opacity:.35;
+        background:linear-gradient(
+            to bottom,
+            transparent,
+            rgba(255,106,0,.55),
+            transparent
+        ) !important;
+    }
+
+    /* MICRO MOTION */
+
+    .battle-page .battle-fighter-left{
+        animation:battleMobileLeft .55s cubic-bezier(.22,1,.36,1) both;
+    }
+
+    .battle-page .battle-fighter-right{
+        animation:battleMobileRight .55s cubic-bezier(.22,1,.36,1) .08s both;
+    }
+
+    .battle-page .battle-fighter:active{
+        transform:scale(.985) !important;
+    }
+
+    .battle-page .battle-fighter:active .battle-outfit-image{
+        transform:scale(1.015) !important;
+    }
+
+    /* TITOLI */
+
+    .battle-page .battle-hero h1{
+        font-size:clamp(34px,9vw,48px) !important;
+        line-height:.92 !important;
+        letter-spacing:-.055em !important;
+    }
+
+    .battle-page .battle-hero{
+        padding-left:12px !important;
+        padding-right:12px !important;
+    }
+}
+
+@keyframes battleMobileLeft{
+    from{
+        opacity:0;
+        transform:translateX(-18px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+@keyframes battleMobileRight{
+    from{
+        opacity:0;
+        transform:translateX(18px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+@keyframes battleMobileVsPulse{
+    0%,100%{
+        box-shadow:
+            0 0 0 1px rgba(255,106,0,.08),
+            0 0 18px rgba(255,106,0,.08);
+    }
+
+    50%{
+        box-shadow:
+            0 0 0 1px rgba(255,106,0,.15),
+            0 0 28px rgba(255,106,0,.18);
+    }
+}
+
+@media (prefers-reduced-motion:reduce){
+
+    .battle-page .battle-fighter-left,
+    .battle-page .battle-fighter-right,
+    .battle-page .battle-vs-badge{
+        animation:none !important;
     }
 }
