@@ -1920,6 +1920,7 @@ a{
 }
 </style>
     <script src="fs-notifications.js"></script>
+    <link rel="stylesheet" href="./fsocial-battles.css">
 </head>
 
 <body>
@@ -2998,79 +2999,7 @@ tabRecent.addEventListener("click", () => {
     tabRecent.classList.add("active");
     tabForYou.classList.remove("active");
 
-    feed.innerHTML = `
-    <div class="fs-challenge">
-
-    <div class="fs-challenge-grid"></div>
-    <div class="fs-challenge-glow"></div>
-
-    <div class="fs-orbit fs-orbit-1"></div>
-    <div class="fs-orbit fs-orbit-2"></div>
-
-    <div class="fs-challenge-top">
-        <div class="fs-challenge-index">
-            <span>01</span>
-            <i></i>
-            <span>CHALLENGE 001</span>
-        </div>
-
-        <div class="fs-live">
-            <span></span>
-            IN ARRIVO
-        </div>
-    </div>
-
-    <div class="fs-challenge-center">
-
-        <div class="fs-mark">
-            <span></span>
-            <b>FS</b>
-        </div>
-
-        <div class="fs-eyebrow">
-            FUORISCHEMA / COMMUNITY
-        </div>
-
-        <h2>
-            NON È ANCORA<br>
-            <span>INIZIATA.</span>
-        </h2>
-
-        <div class="fs-divider">
-            <span></span>
-            <b>01</b>
-            <span></span>
-        </div>
-
-        <p class="fs-challenge-subtitle">
-            MA TU SEI GIÀ <strong>IN RITARDO.</strong>
-        </p>
-
-        <p class="fs-challenge-copy">
-            La prossima sfida FUORISCHEMA sta arrivando.
-            <br>
-            <strong>Premi. Sconti. Vantaggi.</strong>
-            <br>
-            Tutto riservato a chi è dentro.
-        </p>
-
-        <a href="index.html" class="fs-challenge-btn">
-            <span>SEGUI FUORISCHEMA</span>
-            <b>↗</b>
-        </a>
-
-    </div>
-
-    <div class="fs-challenge-bottom">
-        <span>FUORISCHEMA</span>
-        <span>CHALLENGE / 001</span>
-        <span>PROSSIMA SFIDA IN ARRIVO</span>
-    </div>
-
-    <div class="fs-scanline"></div>
-
-</div>
-    `;
+    loadActiveBattles();
 });
 
 // Funzione condivisa per il fetch del pool di candidati tramite Finestra Dinamica
@@ -3270,6 +3199,213 @@ selectedPosts.forEach(post => {
     return selectedPosts;
 }
 
+
+/* =========================================================
+   FSOCIAL BATTLES HUB
+========================================================= */
+
+const FSOCIAL_BATTLES_URL =
+    "https://dbjfvphcrfvajrtkeswg.supabase.co/functions/v1/fsocial-battles";
+
+const BATTLE_CATEGORY_LABELS = {
+    best_sneakers: "BEST SNEAKERS",
+    best_fit: "BEST FIT",
+    all_black: "ALL BLACK",
+    most_original: "MOST ORIGINAL",
+    streetwear: "STREETWEAR",
+    best_overall: "BEST OVERALL"
+};
+
+function battleHubEscape(value){
+    const div = document.createElement("div");
+    div.textContent = value ?? "";
+    return div.innerHTML;
+}
+
+function battleHubName(profile){
+    return profile?.username ||
+           profile?.full_name ||
+           "UTENTE";
+}
+
+function battleHubCategory(category){
+    return BATTLE_CATEGORY_LABELS[category] ||
+        String(category || "BEST OVERALL")
+            .replaceAll("_", " ")
+            .toUpperCase();
+}
+
+function renderBattleHubCard(item){
+    const battle = item?.battle || {};
+    const challenger = item?.challenger || {};
+    const challenged = item?.challenged || {};
+    const challengerPost = item?.challengerPost || {};
+    const challengedPost = item?.challengedPost || {};
+    const votes = item?.votes || {};
+
+    const challengerName = battleHubName(challenger);
+    const challengedName = battleHubName(challenged);
+
+    const challengerVotes = Number(
+        votes[battle.challenger_id] || 0
+    );
+
+    const challengedVotes = Number(
+        votes[battle.challenged_id] || 0
+    );
+
+    const category = battleHubCategory(battle.category);
+
+    const challengerImage = challengerPost.image_url
+        ? `<img src="${battleHubEscape(challengerPost.image_url)}" alt="Outfit ${battleHubEscape(challengerName)}" loading="lazy">`
+        : `<div class="fs-battle-hub-no-image">NO OUTFIT</div>`;
+
+    const challengedImage = challengedPost.image_url
+        ? `<img src="${battleHubEscape(challengedPost.image_url)}" alt="Outfit ${battleHubEscape(challengedName)}" loading="lazy">`
+        : `<div class="fs-battle-hub-no-image">NO OUTFIT</div>`;
+
+    const card = document.createElement("article");
+    card.className = "fs-battle-hub-card";
+
+    card.innerHTML = `
+        <div class="fs-battle-hub-top">
+            <span>⚔️ BATTLE</span>
+            <strong>${battleHubEscape(category)}</strong>
+        </div>
+
+        <div class="fs-battle-hub-versus">
+
+            <div class="fs-battle-hub-player">
+                <div class="fs-battle-hub-name">
+                    ${battleHubEscape(challengerName)}
+                </div>
+                <div class="fs-battle-hub-image">
+                    ${challengerImage}
+                </div>
+                <div class="fs-battle-hub-votes">
+                    <strong>${challengerVotes}</strong>
+                    <span>VOTI</span>
+                </div>
+            </div>
+
+            <div class="fs-battle-hub-vs">VS</div>
+
+            <div class="fs-battle-hub-player">
+                <div class="fs-battle-hub-name">
+                    ${battleHubEscape(challengedName)}
+                </div>
+                <div class="fs-battle-hub-image">
+                    ${challengedImage}
+                </div>
+                <div class="fs-battle-hub-votes">
+                    <strong>${challengedVotes}</strong>
+                    <span>VOTI</span>
+                </div>
+            </div>
+
+        </div>
+
+        <button class="fs-battle-hub-vote" type="button">
+            VOTA LA BATTLE <span>→</span>
+        </button>
+    `;
+
+    card.querySelector(".fs-battle-hub-vote")?.addEventListener("click", () => {
+        if(!battle.share_slug){
+            showToast("Link Battle non disponibile.");
+            return;
+        }
+
+        window.location.href =
+            `battle.html?battle=${encodeURIComponent(battle.share_slug)}`;
+    });
+
+    return card;
+}
+
+async function loadActiveBattles(){
+    feed.innerHTML = `
+        <div class="empty">
+            <div class="empty-icon">⚔</div>
+            <strong>CARICAMENTO BATTLE...</strong>
+            <span>Stiamo cercando le sfide attive.</span>
+        </div>
+    `;
+
+    try{
+        const response = await fetch(
+            `${FSOCIAL_BATTLES_URL}?action=active&limit=24`,
+            {
+                method: "GET",
+                headers: {
+                    Accept: "application/json"
+                },
+                credentials: "omit"
+            }
+        );
+
+        const data = await response.json();
+
+        if(!response.ok || !data?.success){
+            throw new Error(
+                data?.message || "Impossibile caricare le Battle."
+            );
+        }
+
+        const battles = Array.isArray(data.battles)
+            ? data.battles
+            : [];
+
+        if(battles.length === 0){
+            feed.innerHTML = `
+                <div class="fs-battle-hub-empty">
+                    <div class="fs-battle-hub-empty-icon">⚔</div>
+                    <span>NESSUNA BATTLE ATTIVA</span>
+                    <strong>LA PROSSIMA SFIDA<br>STA PER ARRIVARE.</strong>
+                    <p>
+                        Quando una sfida viene accettata,
+                        apparirà qui per tutta la community.
+                    </p>
+                </div>
+            `;
+            return;
+        }
+
+        feed.innerHTML = `
+            <section class="fs-battle-hub">
+                <div class="fs-battle-hub-heading">
+                    <div>
+                        <span>FUORISCHEMA / COMMUNITY</span>
+                        <h2>BATTLES.</h2>
+                    </div>
+                    <div class="fs-battle-hub-live">
+                        <i></i> LIVE
+                    </div>
+                </div>
+                <div class="fs-battle-hub-list"></div>
+            </section>
+        `;
+
+        const list = feed.querySelector(".fs-battle-hub-list");
+
+        battles.forEach(item => {
+            if(list){
+                list.appendChild(renderBattleHubCard(item));
+            }
+        });
+    }catch(error){
+        console.error("FSocial Battle Hub error:", error);
+
+        feed.innerHTML = `
+            <div class="empty">
+                <div class="empty-icon">!</div>
+                <strong>ERRORE BATTLE</strong>
+                <span>${battleHubEscape(error?.message || "Errore durante il caricamento.")}</span>
+            </div>
+        `;
+    }
+}
+
 async function loadFeed() {
     feed.innerHTML = `
         <div class="empty">
@@ -3364,6 +3500,9 @@ async function renderPost(post,author){
             <button class="action-button share-button" type="button" aria-label="Condividi">
                 <span class="action-icon">✈</span>
             </button>
+            <button class="action-button battle-button" type="button" aria-label="Sfida" title="Sfida">
+                <span class="action-icon">⚔</span>
+            </button>
 
             ${post.user_id === currentUser.id ? `
                 <button class="action-button delete-button" type="button">ELIMINA</button>
@@ -3398,6 +3537,7 @@ async function renderPost(post,author){
     const commentButton = article.querySelector(".comment-toggle");
     const deleteButton = article.querySelector(".delete-button");
     const shareButton = article.querySelector(".share-button");
+    const battleButton = article.querySelector(".battle-button");
     const addCommentButton = article.querySelector(".comment-button");
     const input = article.querySelector(".comment-input");
     const authorTriggers = article.querySelectorAll(".author-profile-trigger");
@@ -3420,6 +3560,15 @@ async function renderPost(post,author){
         });
     });
 
+
+    if(battleButton){
+        battleButton.addEventListener("click",() => {
+            window.openBattleChallengeModal({
+                challengedUserId: post.user_id,
+                challengedAuthor: author
+            });
+        });
+    }
     if(deleteButton){
         deleteButton.addEventListener("click",() => deletePost(post.id));
     }
@@ -3785,5 +3934,6 @@ notifPollInterval = setInterval(updateNotificationBadge, 15000);
 }
 </script>
 
+    <script type="module" src="./fsocial-battles.js"></script>
 </body>
 </html>

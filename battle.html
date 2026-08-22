@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Battle — FSocial</title>
+
+    <meta
+        name="description"
+        content="Una Battle FSocial. Non ti seguiamo. Ti sfidiamo."
+    >
+
+    <meta
+        name="theme-color"
+        content="#0b0b0d"
+    >
+
+    <link rel="icon" href="images/icon-192.png">
+    <link rel="stylesheet" href="./fsocial-battles.css">
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+        }
+
+        body {
+            background: #0b0b0d;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="battle-page">
+
+        <!-- HEADER -->
+        <header class="battle-header">
+            <a
+                href="Fsocial.html"
+                class="battle-brand"
+                aria-label="Torna a FSocial"
+            >
+                FUORISCHEMA
+            </a>
+
+            <div class="battle-header-label">
+                FSOCIAL BATTLE
+            </div>
+        </header>
+
+
+        <!-- LOADING -->
+        <section
+            id="battleLoading"
+            class="battle-state battle-loading"
+            aria-live="polite"
+        >
+            <div class="battle-loader"></div>
+
+            <p>Caricamento Battle...</p>
+        </section>
+
+
+        <!-- ERROR -->
+        <section
+            id="battleError"
+            class="battle-state battle-error"
+            hidden
+        >
+            <div class="battle-error-icon">
+                ⚔️
+            </div>
+
+            <h1>Battle non disponibile</h1>
+
+            <p id="battleErrorMessage">
+                Questa Battle non esiste oppure non è più disponibile.
+            </p>
+
+            <a
+                href="Fsocial.html"
+                class="battle-primary-button"
+            >
+                ENTRA IN FSOCIAL
+            </a>
+        </section>
+
+
+        <!-- BATTLE -->
+        <section
+            id="battleContent"
+            class="battle-content"
+            hidden
+        >
+
+            <!-- CATEGORY -->
+            <div class="battle-category-wrap">
+                <span class="battle-category-icon">
+                    ⚔️
+                </span>
+
+                <span
+                    id="battleCategory"
+                    class="battle-category"
+                >
+                    BEST FIT
+                </span>
+            </div>
+
+
+            <!-- TITLE -->
+            <div class="battle-title-block">
+
+                <div class="battle-eyebrow">
+                    FSOCIAL BATTLE
+                </div>
+
+                <h1>
+                    CHI HA PIÙ STILE?
+                </h1>
+
+                <p>
+                    La community decide.
+                </p>
+
+            </div>
+
+
+            <!-- FIGHTERS -->
+            <div class="battle-arena">
+
+                <!-- CHALLENGER -->
+                <article
+                    id="challengerCard"
+                    class="battle-fighter battle-fighter-left"
+                >
+
+                    <div class="battle-fighter-top">
+
+                        <a
+                            id="challengerProfile"
+                            href="#"
+                            class="battle-avatar-link"
+                        >
+                            <img
+                                id="challengerAvatar"
+                                class="battle-avatar"
+                                src=""
+                                alt=""
+                            >
+                        </a>
+
+                        <div class="battle-user-info">
+
+                            <a
+                                id="challengerName"
+                                href="#"
+                                class="battle-name"
+                            >
+                                —
+                            </a>
+
+                            <a
+                                id="challengerUsername"
+                                href="#"
+                                class="battle-username"
+                            >
+                                @—
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="battle-outfit">
+                        <img
+                            id="challengerOutfit"
+                            src=""
+                            alt="Outfit del primo partecipante"
+                            class="battle-outfit-image"
+                        >
+                    </div>
+
+
+                    <button
+                        id="voteChallenger"
+                        class="battle-vote-button battle-vote-button-left"
+                        type="button"
+                    >
+                        VOTA <span id="challengerVoteLabel">—</span>
+                    </button>
+
+
+                    <div class="battle-vote-count">
+                        <strong id="challengerVotes">0</strong>
+                        <span>voti</span>
+                    </div>
+
+                </article>
+
+
+                <!-- VS -->
+                <div class="battle-vs">
+
+                    <span class="battle-vs-line"></span>
+
+                    <div class="battle-vs-badge">
+                        VS
+                    </div>
+
+                    <span class="battle-vs-line"></span>
+
+                </div>
+
+
+                <!-- CHALLENGED -->
+                <article
+                    id="challengedCard"
+                    class="battle-fighter battle-fighter-right"
+                >
+
+                    <div class="battle-fighter-top">
+
+                        <a
+                            id="challengedProfile"
+                            href="#"
+                            class="battle-avatar-link"
+                        >
+                            <img
+                                id="challengedAvatar"
+                                class="battle-avatar"
+                                src=""
+                                alt=""
+                            >
+                        </a>
+
+                        <div class="battle-user-info">
+
+                            <a
+                                id="challengedName"
+                                href="#"
+                                class="battle-name"
+                            >
+                                —
+                            </a>
+
+                            <a
+                                id="challengedUsername"
+                                href="#"
+                                class="battle-username"
+                            >
+                                @—
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="battle-outfit">
+                        <img
+                            id="challengedOutfit"
+                            src=""
+                            alt="Outfit del secondo partecipante"
+                            class="battle-outfit-image"
+                        >
+                    </div>
+
+
+                    <button
+                        id="voteChallenged"
+                        class="battle-vote-button battle-vote-button-right"
+                        type="button"
+                    >
+                        VOTA <span id="challengedVoteLabel">—</span>
+                    </button>
+
+
+                    <div class="battle-vote-count">
+                        <strong id="challengedVotes">0</strong>
+                        <span>voti</span>
+                    </div>
+
+                </article>
+
+            </div>
+
+
+            <!-- BATTLE RESPONSE ACTIONS -->
+            <section id="battleResponseActions" class="battle-response-actions" hidden>
+                <div class="battle-response-heading">
+                    <span>SFIDA RICEVUTA</span>
+                    <h2>VUOI ACCETTARE?</h2>
+                    <p>Accetta la sfida per iniziare la Battle.</p>
+                </div>
+
+                <div class="battle-response-buttons">
+                    <button id="acceptBattleButton" class="battle-response-button battle-response-accept" type="button">
+                        ACCETTA LA SFIDA
+                    </button>
+                    <button id="declineBattleButton" class="battle-response-button battle-response-decline" type="button">
+                        RIFIUTA
+                    </button>
+                </div>
+            </section>
+
+            <!-- VOTE MESSAGE -->
+            <div
+                id="battleVoteMessage"
+                class="battle-vote-message"
+                aria-live="polite"
+                hidden
+            ></div>
+
+
+            <!-- SHARE -->
+            <section class="battle-share">
+
+                <div class="battle-share-heading">
+                    <span>HAI GIÀ DECISO?</span>
+
+                    <h2>
+                        FAI GIRARE LA BATTLE.
+                    </h2>
+
+                    <p>
+                        Condividila con i tuoi amici e scopri chi ha più stile.
+                    </p>
+                </div>
+
+
+                <div class="battle-share-actions">
+
+                    <button
+                        id="shareInstagram"
+                        class="battle-share-button"
+                        type="button"
+                    >
+                        INSTAGRAM
+                    </button>
+
+                    <button
+                        id="shareWhatsApp"
+                        class="battle-share-button"
+                        type="button"
+                    >
+                        WHATSAPP
+                    </button>
+
+                    <button
+                        id="copyBattleLink"
+                        class="battle-share-button"
+                        type="button"
+                    >
+                        COPIA LINK
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- CTA -->
+            <section class="battle-cta">
+
+                <div class="battle-cta-mark">
+                    ⚔️
+                </div>
+
+                <div class="battle-cta-copy">
+
+                    <span>
+                        TI È PIACIUTA QUESTA BATTLE?
+                    </span>
+
+                    <h2>
+                        SCOPRI FSOCIAL.
+                    </h2>
+
+                    <p>
+                        Guarda outfit, trova nuovi rivali e crea la tua prossima sfida.
+                    </p>
+
+                </div>
+
+                <a
+                    href="Fsocial.html"
+                    class="battle-primary-button"
+                >
+                    ENTRA IN FSOCIAL
+                </a>
+
+            </section>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer class="battle-footer">
+
+            <div>
+                POWERED BY FSOCIAL
+            </div>
+
+            <strong>
+                NON TI SEGUIAMO. TI SFIDIAMO.
+            </strong>
+
+        </footer>
+
+    </main>
+
+
+    <script
+        type="module"
+        src="./fsocial-battles.js"
+    ></script>
+
+</body>
+</html>
