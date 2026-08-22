@@ -1,4 +1,4 @@
-const BATTLE_FUNCTION_URL =
+﻿const BATTLE_FUNCTION_URL =
     "https://dbjfvphcrfvajrtkeswg.supabase.co/functions/v1/fsocial-battles";
 
 const CATEGORY_LABELS = {
@@ -240,6 +240,105 @@ function renderPostImage(element, post, name) {
     );
 }
 
+let battleCountdownInterval = null;
+
+function stopBattleCountdown() {
+    if (battleCountdownInterval) {
+        clearInterval(battleCountdownInterval);
+        battleCountdownInterval = null;
+    }
+}
+
+function updateBattleCountdown() {
+    const bar = document.getElementById("battleStatusBar");
+    const label = document.getElementById("battleStatusLabel");
+    const countdown = document.getElementById("battleCountdown");
+
+    if (!bar || !label || !countdown) return;
+
+    const battle = state.battle?.battle;
+
+    if (!battle) return;
+
+    if (battle.status !== "active") {
+        stopBattleCountdown();
+
+        bar.classList.add("is-completed");
+
+        if (battle.status === "completed") {
+            label.textContent = "BATTLE TERMINATA";
+            countdown.textContent = "00:00:00";
+        } else {
+            label.textContent = "BATTLE NON ATTIVA";
+            countdown.textContent = "—";
+        }
+
+        return;
+    }
+
+    const endTime = battle.ended_at
+        ? new Date(battle.ended_at).getTime()
+        : (
+            battle.started_at
+                ? new Date(battle.started_at).getTime() + (24 * 60 * 60 * 1000)
+                : NaN
+        );
+
+    if (!Number.isFinite(endTime)) {
+        label.textContent = "BATTLE LIVE";
+        countdown.textContent = "—";
+        return;
+    }
+
+    bar.classList.remove("is-completed");
+    label.textContent = "BATTLE LIVE";
+
+    const update = () => {
+        const remaining = Math.max(
+            0,
+            endTime - Date.now()
+        );
+
+        const totalSeconds = Math.floor(
+            remaining / 1000
+        );
+
+        const hours = Math.floor(
+            totalSeconds / 3600
+        );
+
+        const minutes = Math.floor(
+            (totalSeconds % 3600) / 60
+        );
+
+        const seconds =
+            totalSeconds % 60;
+
+        countdown.textContent =
+            `${String(hours).padStart(2, "0")}:` +
+            `${String(minutes).padStart(2, "0")}:` +
+            `${String(seconds).padStart(2, "0")}`;
+
+        if (remaining <= 0) {
+            stopBattleCountdown();
+
+            label.textContent = "BATTLE TERMINATA";
+            countdown.textContent = "00:00:00";
+            bar.classList.add("is-completed");
+
+            setTimeout(() => {
+                refreshBattle();
+            }, 1500);
+        }
+    };
+
+    update();
+
+    stopBattleCountdown();
+
+    battleCountdownInterval =
+        setInterval(update, 1000);
+}
 function renderBattle(data) {
     state.battle = data;
 
@@ -316,6 +415,7 @@ function renderBattle(data) {
 
     updateBattleState();
     updateBattleResponseActions();
+    updateBattleCountdown();
 
     showContent();
 
