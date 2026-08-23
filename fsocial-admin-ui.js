@@ -3,16 +3,11 @@ const supabase = globalThis.__FUORISCHEMA_SUPABASE__;
 (() => {
   "use strict";
 
-  const OWNER_EMAILS = new Set([
-    "gennyesposito2000@icloud.com",
-    "vincenzo.castaldo11@icloud.com"
-  ]);
-
   async function isOwner() {
     if (!supabase) return false;
     const { data, error } = await supabase.auth.getUser();
-    if (error || !data?.user?.email) return false;
-    return OWNER_EMAILS.has(String(data.user.email).toLowerCase());
+    if (error || !data?.user) return false;
+    return data.user.app_metadata?.role === "admin";
   }
 
   async function initAdminUI() {
@@ -86,7 +81,7 @@ const supabase = globalThis.__FUORISCHEMA_SUPABASE__;
         <span class="menu-feature-arrow">↗</span>
       </div>
       <span class="menu-feature-title">CENTRO MODERAZIONE</span>
-      <span class="menu-feature-text">Segnalazioni e strumenti riservati ai proprietari di FUORISCHEMA.</span>
+      <span class="menu-feature-text">Segnalazioni e strumenti riservati agli amministratori di FUORISCHEMA.</span>
     `;
 
     const existingFeature = sideMenu.querySelector(".menu-feature");
