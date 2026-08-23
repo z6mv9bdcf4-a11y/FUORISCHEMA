@@ -76,8 +76,8 @@
       background:rgba(8,8,10,.60)!important;backdrop-filter:blur(28px) saturate(155%)!important;-webkit-backdrop-filter:blur(28px) saturate(155%)!important;
       border-color:rgba(255,255,255,.065)!important;
       box-shadow:none!important;
-      backdrop-filter:none!important;
-      -webkit-backdrop-filter:none!important;
+
+
     }
     .create-card:focus-within{border-color:rgba(255,255,255,.14)!important;box-shadow:none!important}
     .photo-label{display:inline-flex!important;align-items:center!important;gap:6px!important}
@@ -105,7 +105,7 @@
 
     /* Remove decorative glow from ordinary UI. */
     .notif-overlay{background:rgba(0,0,0,.58)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
-    .notif-modal{background:rgba(8,8,10,.60)!important;backdrop-filter:blur(28px) saturate(155%)!important;-webkit-backdrop-filter:blur(28px) saturate(155%)!important;box-shadow:-18px 0 45px rgba(0,0,0,.55)!important;border-left-color:rgba(255,255,255,.065)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+    .notif-modal{background:rgba(8,8,10,.60)!important;backdrop-filter:blur(28px) saturate(155%)!important;-webkit-backdrop-filter:blur(28px) saturate(155%)!important;box-shadow:-18px 0 45px rgba(0,0,0,.55)!important;border-left-color:rgba(255,255,255,.065)!important;}
     .notif-header{background:#0a0a0c!important}
 
     /* =========================================================
