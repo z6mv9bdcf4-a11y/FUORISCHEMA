@@ -3,16 +3,11 @@ const supabase = globalThis.__FUORISCHEMA_SUPABASE__;
 (() => {
   "use strict";
 
-  const OWNER_EMAILS = new Set([
-    "gennyesposito2000@icloud.com",
-    "vincenzo.castaldo11@icloud.com"
-  ]);
-
   async function isOwner() {
     if (!supabase) return false;
     const { data, error } = await supabase.auth.getUser();
-    if (error || !data?.user?.email) return false;
-    return OWNER_EMAILS.has(String(data.user.email).toLowerCase());
+    if (error || !data?.user) return false;
+    return data.user.app_metadata?.role === "admin";
   }
 
   function showOwnerToast(message, isError = false) {
