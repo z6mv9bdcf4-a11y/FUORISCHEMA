@@ -103,6 +103,7 @@ async function battleRequest({
 function escapeText(value) {
     return String(value ?? "").trim();
 }
+
 async function getMyBattlePost() {
     const session =
         await getCurrentSession();
@@ -144,6 +145,7 @@ async function getMyBattlePost() {
 
     return data || null;
 }
+
 function closeBattleChallengeModal() {
     const modal = document.getElementById("fsBattleChallengeModal");
 
@@ -373,3 +375,68 @@ function openBattleChallengeModal({
 
 window.openBattleChallengeModal = openBattleChallengeModal;
 window.closeBattleChallengeModal = closeBattleChallengeModal;
+
+/* =========================================================
+   FSOCIAL — SURGICAL UI INTEGRITY FIXES
+   Loaded after Fsocial.html so these are intentionally last-in-line.
+   No data/auth/feed logic is changed here.
+========================================================= */
+(function installFsocialSurgicalFixes(){
+    const run = () => {
+        const home = document.getElementById("navHome");
+        if (home) {
+            home.setAttribute("href", "Fsocial.html");
+            home.setAttribute("aria-current", "page");
+        }
+
+        const battleTab = document.getElementById("tabRecent");
+        if (battleTab) {
+            battleTab.textContent = "BATTLES";
+            battleTab.setAttribute("aria-label", "Apri le Battle attive");
+        }
+
+        const styleId = "fsocial-surgical-ui-fixes";
+        if (!document.getElementById(styleId)) {
+            const style = document.createElement("style");
+            style.id = styleId;
+            style.textContent = `
+                /* Re-enable the intended frosted-glass treatment where an older
+                   override had explicitly disabled backdrop-filter. */
+                .create-card,
+                .notif-modal{
+                    backdrop-filter:blur(20px) saturate(140%) !important;
+                    -webkit-backdrop-filter:blur(20px) saturate(140%) !important;
+                }
+
+                /* Keep mobile content above the fixed navigation bar. */
+                @media(max-width:550px){
+                    .page{padding-bottom:calc(90px + env(safe-area-inset-bottom,0px)) !important;}
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        document.addEventListener("keydown", event => {
+            if (event.key !== "Escape") return;
+
+            const battleModal = document.getElementById("fsBattleChallengeModal");
+            if (battleModal) closeBattleChallengeModal();
+
+            const profileOverlay = document.getElementById("profileOverlay");
+            if (profileOverlay?.classList.contains("active")) {
+                document.getElementById("profileClose")?.click();
+            }
+
+            const notifOverlay = document.getElementById("notifOverlay");
+            if (notifOverlay?.classList.contains("active")) {
+                document.getElementById("notifClose")?.click();
+            }
+        }, { passive: true });
+    };
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", run, { once: true });
+    } else {
+        run();
+    }
+})();
