@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -1925,6 +1925,27 @@ a{
 </style>
     <script src="fs-notifications.js"></script>
     <link rel="stylesheet" href="./fsocial-battles.css">
+
+    <style>
+/* BATTLE TRENDING BADGE */
+.fs-battle-trending-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    margin-left:7px;
+    padding:4px 7px;
+    border:1px solid rgba(255,77,0,.35);
+    border-radius:999px;
+    background:rgba(255,77,0,.10);
+    color:#ff4d00;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:.08em;
+    line-height:1;
+    vertical-align:middle;
+    white-space:nowrap;
+}
+    </style>
 </head>
 
 <body>
@@ -3306,7 +3327,10 @@ function renderBattleHubCard(item){
 
     card.innerHTML = `
         <div class="fs-battle-hub-top">
-            <span>⚔️ BATTLE</span>
+            <span>
+                ⚔️ BATTLE
+                ${battle.__fsIsTrending ? `<b class="fs-battle-trending-badge">🔥 TRENDING</b>` : ""}
+            </span>
             <strong>${battleHubEscape(category)}</strong>
         </div>
 
@@ -3393,6 +3417,71 @@ async function loadActiveBattles(){
             ? data.battles
             : [];
 
+        // TRENDING SCORE
+        // 60% voti totali · 25% recenza · 15% equilibrio
+        const now = Date.now();
+
+        battles.forEach(item => {
+            const battle = item?.battle || {};
+            const votes = item?.votes || {};
+
+            const challengerVotes = Number(
+                votes[battle.challenger_id] || 0
+            );
+
+            const challengedVotes = Number(
+                votes[battle.challenged_id] || 0
+            );
+
+            const totalVotes =
+                challengerVotes + challengedVotes;
+
+            const createdAt = battle.created_at
+                ? new Date(battle.created_at).getTime()
+                : now;
+
+            const ageHours = Math.max(
+                0,
+                (now - createdAt) / 3600000
+            );
+
+            const recencyScore =
+                Math.max(0, 1 - (ageHours / 72));
+
+            const balanceScore = totalVotes > 0
+                ? 1 - Math.abs(
+                    challengerVotes - challengedVotes
+                ) / totalVotes
+                : 0;
+
+            item.__fsTrendingScore =
+                (totalVotes * 0.60) +
+                (recencyScore * 25) +
+                (balanceScore * 15);
+
+            item.__fsTrendingVotes = totalVotes;
+        });
+
+        battles.sort(
+            (a,b) =>
+                Number(b.__fsTrendingScore || 0) -
+                Number(a.__fsTrendingScore || 0)
+        );
+
+        // Le prime 3 Battle realmente partecipate diventano Trending.
+        let trendingCount = 0;
+
+        battles.forEach(item => {
+            item.__fsIsTrending = false;
+
+            if(
+                trendingCount < 3 &&
+                Number(item.__fsTrendingVotes || 0) >= 2
+            ){
+                item.__fsIsTrending = true;
+                trendingCount++;
+            }
+        });
         if(battles.length === 0){
             feed.innerHTML = `
                 <div class="fs-battle-hub-empty">
@@ -4008,3 +4097,4 @@ notifPollInterval = setInterval(updateNotificationBadge, 15000);
     <script type="module" src="./fsocial-battle-challenge.js"></script>
 </body>
 </html>
+
