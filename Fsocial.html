@@ -3415,8 +3415,13 @@ async function loadActiveBattles(){
                         <span>FUORISCHEMA / COMMUNITY</span>
                         <h2>BATTLES.</h2>
                     </div>
-                    <div class="fs-battle-hub-live">
-                        <i></i> LIVE
+                    <div class="fs-battle-hub-controls">
+                        <div class="fs-battle-hub-live">
+                            <i></i> LIVE
+                        </div>
+                        <button type="button" class="fs-battle-random-btn" id="fsBattleRandomBtn">
+                            ⚡ BATTLE RANDOM
+                        </button>
                     </div>
                 </div>
                 <div class="fs-battle-hub-list"></div>
@@ -3424,6 +3429,35 @@ async function loadActiveBattles(){
         `;
 
         const list = feed.querySelector(".fs-battle-hub-list");
+
+        const randomButton = feed.querySelector("#fsBattleRandomBtn");
+        if(randomButton){
+            randomButton.addEventListener("click",()=>{
+                if(!battles.length) return;
+
+                const lastRandomId = window.__fsocialLastRandomBattleId;
+                const candidates = battles.filter(item =>
+                    String(item?.id ?? item?.battle_id ?? "") !== String(lastRandomId ?? "")
+                );
+
+                const pool = candidates.length ? candidates : battles;
+                const selected = pool[Math.floor(Math.random() * pool.length)];
+
+                const battleId = selected?.id ?? selected?.battle_id;
+                const shareSlug = selected?.battle?.share_slug;
+
+                if(!shareSlug){
+                    console.warn("FSocial Battle Random: share_slug mancante.",selected);
+                    return;
+                }
+
+                window.__fsocialLastRandomBattleId = battleId;
+
+                randomButton.disabled = true;
+                window.location.href =
+                    `battle.html?battle=${encodeURIComponent(shareSlug)}`;
+            });
+        }
 
         battles.forEach(item => {
             if(list){
