@@ -413,6 +413,7 @@ function renderBattle(data) {
     $("challengedVotes").textContent =
         Number(votes[battle.challenged_id] || 0);
 
+    updateBattleVoteResult();
     updateBattleState();
     updateBattleResponseActions();
     updateBattleCountdown();
@@ -421,6 +422,136 @@ function renderBattle(data) {
 
     document.title =
         `${challengerName} vs ${challengedName} Ã¢â‚¬â€ FSocial Battle`;
+}
+
+function updateBattleVoteResult() {
+    const result = $("battleVoteResult");
+    if (!result) return;
+
+    const battle = state.battle?.battle;
+    const votes = state.battle?.votes || {};
+
+    if (!battle) {
+        result.hidden = true;
+        return;
+    }
+
+    const challengerVotes = Number(votes[battle.challenger_id] || 0);
+    const challengedVotes = Number(votes[battle.challenged_id] || 0);
+    const totalVotes = challengerVotes + challengedVotes;
+
+    const challengerPercent =
+        totalVotes > 0
+            ? Math.round((challengerVotes / totalVotes) * 100)
+            : 0;
+
+    const challengedPercent =
+        totalVotes > 0
+            ? 100 - challengerPercent
+            : 0;
+
+    const challengerName =
+        state.battle?.challenger?.username ||
+        state.battle?.challenger?.full_name ||
+        "PRIMO OUTFIT";
+
+    const challengedName =
+        state.battle?.challenged?.username ||
+        state.battle?.challenged?.full_name ||
+        "SECONDO OUTFIT";
+
+    const eyebrow = $("battleVoteResultEyebrow");
+    const title = $("battleVoteResultTitle");
+    const challengerNameEl = $("battleVoteResultChallengerName");
+    const challengedNameEl = $("battleVoteResultChallengedName");
+    const challengerPercentEl = $("battleVoteResultChallengerPercent");
+    const challengedPercentEl = $("battleVoteResultChallengedPercent");
+    const challengerBar = $("battleVoteResultChallengerBar");
+    const challengedBar = $("battleVoteResultChallengedBar");
+    const status = $("battleVoteResultStatus");
+
+    if (
+        !eyebrow ||
+        !title ||
+        !challengerNameEl ||
+        !challengedNameEl ||
+        !challengerPercentEl ||
+        !challengedPercentEl ||
+        !challengerBar ||
+        !challengedBar ||
+        !status
+    ) {
+        return;
+    }
+
+    challengerNameEl.textContent = challengerName;
+    challengedNameEl.textContent = challengedName;
+
+    challengerPercentEl.textContent = `${challengerPercent}%`;
+    challengedPercentEl.textContent = `${challengedPercent}%`;
+
+    challengerBar.style.width = `${challengerPercent}%`;
+    challengedBar.style.width = `${challengedPercent}%`;
+
+    result.classList.remove(
+        "is-live",
+        "is-completed",
+        "is-draw"
+    );
+
+    const challengerCard = $("challengerCard");
+    const challengedCard = $("challengedCard");
+
+    challengerCard?.classList.remove("is-winner", "is-loser");
+    challengedCard?.classList.remove("is-winner", "is-loser");
+
+    if (battle.status === "completed") {
+        result.hidden = false;
+        result.classList.add("is-completed");
+
+        eyebrow.textContent = "RISULTATO FINALE";
+
+        if (!battle.winner_id) {
+            result.classList.add("is-draw");
+            title.textContent = "BATTLE TERMINATA IN PAREGGIO";
+            status.textContent =
+                totalVotes > 0
+                    ? `${totalVotes} voti totali`
+                    : "Nessun voto registrato";
+        } else if (battle.winner_id === battle.challenger_id) {
+            title.textContent = "🏆 PRIMO OUTFIT VINCITORE";
+            status.textContent =
+                `${challengerName} conquista la Battle.`;
+
+            challengerCard?.classList.add("is-winner");
+            challengedCard?.classList.add("is-loser");
+        } else {
+            title.textContent = "🏆 SECONDO OUTFIT VINCITORE";
+            status.textContent =
+                `${challengedName} conquista la Battle.`;
+
+            challengedCard?.classList.add("is-winner");
+            challengerCard?.classList.add("is-loser");
+        }
+
+        return;
+    }
+
+    if (battle.status === "active" && totalVotes > 0) {
+        result.hidden = false;
+        result.classList.add("is-live");
+
+        eyebrow.textContent = "RISULTATO LIVE";
+        title.textContent = "LA COMMUNITY STA DECIDENDO";
+
+        status.textContent =
+            `${totalVotes} ${totalVotes === 1 ? "voto" : "voti"} registrati`;
+
+        return;
+    }
+
+    result.hidden = true;
+    status.textContent = "";
 }
 
 function updateBattleResponseActions() {
@@ -1130,3 +1261,4 @@ if (document.body?.classList.contains("battle-page")) {
         initBattlePage
     );
 }
+

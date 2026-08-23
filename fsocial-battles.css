@@ -2501,3 +2501,148 @@ body.fs-battle-modal-open {
         animation:none !important;
     }
 }
+/* =========================================================
+   LIVE / FINAL VOTE RESULT
+========================================================= */
+
+.battle-vote-result{
+    width:min(760px,100%);
+    margin:28px auto 0;
+    padding:22px;
+    border:1px solid rgba(255,106,0,.18);
+    border-radius:14px;
+    background:rgba(255,255,255,.025);
+    opacity:0;
+    transform:translateY(8px);
+    transition:opacity .35s ease,transform .35s ease,border-color .35s ease;
+}
+
+.battle-vote-result:not([hidden]){
+    opacity:1;
+    transform:translateY(0);
+}
+
+.battle-vote-result-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:20px;
+    margin-bottom:18px;
+}
+
+.battle-vote-result-head span{
+    color:var(--battle-orange);
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:.16em;
+}
+
+.battle-vote-result-head strong{
+    color:var(--battle-text);
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:.08em;
+    text-align:right;
+}
+
+.battle-vote-result-bars{
+    display:grid;
+    gap:14px;
+}
+
+.battle-vote-result-meta{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-bottom:7px;
+}
+
+.battle-vote-result-meta span{
+    color:var(--battle-muted);
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.08em;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.battle-vote-result-meta strong{
+    color:var(--battle-text);
+    font-size:13px;
+    font-variant-numeric:tabular-nums;
+}
+
+.battle-vote-result-track{
+    width:100%;
+    height:7px;
+    overflow:hidden;
+    border-radius:999px;
+    background:rgba(255,255,255,.07);
+}
+
+.battle-vote-result-fill{
+    width:0;
+    height:100%;
+    border-radius:inherit;
+    background:var(--battle-orange);
+    transition:width .65s cubic-bezier(.22,1,.36,1);
+}
+
+.battle-vote-result-status{
+    margin-top:16px;
+    color:var(--battle-muted);
+    text-align:center;
+    font-size:10px;
+    letter-spacing:.06em;
+}
+
+.battle-vote-result.is-completed{
+    border-color:rgba(255,106,0,.38);
+    background:rgba(255,106,0,.055);
+}
+
+.battle-vote-result.is-draw{
+    border-color:rgba(255,255,255,.15);
+}
+
+.battle-fighter.is-winner{
+    border-color:rgba(255,106,0,.7) !important;
+    box-shadow:0 0 0 1px rgba(255,106,0,.18),0 20px 55px rgba(255,106,0,.09);
+}
+
+.battle-fighter.is-winner::after{
+    content:"🏆 VINCITORE";
+    display:block;
+    margin-top:12px;
+    color:var(--battle-orange);
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:.14em;
+    text-align:center;
+}
+
+.battle-fighter.is-loser{
+    opacity:.55;
+    filter:saturate(.65);
+}
+
+@media (max-width:700px){
+    .battle-vote-result{
+        margin-top:20px;
+        padding:16px;
+    }
+
+    .battle-vote-result-head{
+        display:block;
+    }
+
+    .battle-vote-result-head strong{
+        display:block;
+        margin-top:7px;
+        text-align:left;
+        font-size:10px;
+    }
+}
+
