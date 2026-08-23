@@ -24,4 +24,10 @@ if (currentPath.endsWith("/area-personale.html")) {
     import("./fsocial-profile-v2.js").catch((error) => console.error("FSocial profile V2 failed to load:", error));
 }
 
-import("./fsocial-admin-ui.js").catch((error) => console.error("FSocial admin module failed to load:", error));
+if (
+    currentPath.endsWith("/area-personale.html") ||
+    currentPath.endsWith("/fsocial.html") ||
+    currentPath.endsWith("/fsocial-moderazione.html")
+) {
+    import("./fsocial-admin-ui.js").catch((error) => console.error("FSocial admin module failed to load:", error));
+}
