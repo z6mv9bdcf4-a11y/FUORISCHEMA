@@ -104,7 +104,7 @@ function escapeText(value) {
     return String(value ?? "").trim();
 }
 
-async function getMyBattlePost() {
+async function getMyBattlePosts() {
     const session =
         await getCurrentSession();
 
@@ -136,14 +136,13 @@ async function getMyBattlePost() {
                 "created_at",
                 { ascending: false }
             )
-            .limit(1)
-            .maybeSingle();
+            .limit(12);
 
     if (error) {
         throw error;
     }
 
-    return data || null;
+    return Array.isArray(data) ? data : [];
 }
 
 function closeBattleChallengeModal() {
@@ -159,6 +158,7 @@ function closeBattleChallengeModal() {
 async function submitBattleChallenge({
     challengedUserId,
     category,
+    postId,
     modal,
     statusElement,
     submitButton
@@ -166,24 +166,15 @@ async function submitBattleChallenge({
     try {
         submitButton.disabled = true;
 
-        if (statusElement) {
-            statusElement.textContent = "Controllo il tuo ultimo outfit...";
-        }
-
-        const myPost = await getMyBattlePost();
-
-        if (!myPost) {
-            if (statusElement) {
-                statusElement.textContent =
-                    "Prima di sfidare qualcuno devi pubblicare almeno un outfit.";
-            }
-
-            submitButton.disabled = false;
-            return;
+        if (!postId) {
+            throw new Error(
+                "Seleziona prima l'outfit con cui vuoi sfidare."
+            );
         }
 
         if (statusElement) {
-            statusElement.textContent = "Invio la sfida...";
+            statusElement.textContent =
+                "Invio la sfida...";
         }
 
         const data = await battleRequest({
@@ -191,14 +182,15 @@ async function submitBattleChallenge({
             action: "create",
             body: {
                 challenged_id: challengedUserId,
-                post_id: myPost.id,
+                post_id: postId,
                 category
             }
         });
 
         if (!data?.success || !data?.battle) {
             throw new Error(
-                data?.message || "Impossibile creare la sfida."
+                data?.message ||
+                "Impossibile creare la sfida."
             );
         }
 
@@ -209,13 +201,18 @@ async function submitBattleChallenge({
         if (toast) {
             toast.textContent = "⚔️ Sfida inviata!";
             toast.classList.add("show");
+
             clearTimeout(window.__fsToast);
+
             window.__fsToast = setTimeout(() => {
                 toast.classList.remove("show");
             }, 2600);
         }
     } catch (error) {
-        console.error("FSocial Battle create error:", error);
+        console.error(
+            "FSocial Battle create error:",
+            error
+        );
 
         if (statusElement) {
             statusElement.textContent =
@@ -227,7 +224,7 @@ async function submitBattleChallenge({
     }
 }
 
-function openBattleChallengeModal({
+async function openBattleChallengeModal({
     challengedUserId,
     challengedAuthor
 } = {}) {
@@ -240,7 +237,10 @@ function openBattleChallengeModal({
     const name =
         challengedAuthor?.username
             ? `@${escapeText(challengedAuthor.username)}`
-            : escapeText(challengedAuthor?.name || "questo utente");
+            : escapeText(
+                challengedAuthor?.name ||
+                "questo utente"
+            );
 
     const modal = document.createElement("div");
 
@@ -271,27 +271,45 @@ function openBattleChallengeModal({
             </h2>
 
             <p class="fs-battle-modal-description">
-                Pensi di avere più stile?
-                Scegli la categoria e lancia la sfida.
+                Scegli l'outfit con cui vuoi scendere in Battle.
             </p>
+
+            <div class="fs-battle-category-label">
+                SCEGLI IL TUO OUTFIT
+            </div>
+
+            <div
+                class="fs-battle-post-grid"
+                id="fsBattlePostGrid"
+            >
+                <div class="fs-battle-post-loading">
+                    CARICAMENTO OUTFIT...
+                </div>
+            </div>
 
             <div class="fs-battle-category-label">
                 SCEGLI LA CATEGORIA
             </div>
 
             <div class="fs-battle-category-grid">
-                ${Object.entries(CATEGORY_LABELS).map(([value, label]) => `
-                    <button
-                        type="button"
-                        class="fs-battle-category"
-                        data-category="${escapeText(value)}"
-                    >
-                        ${escapeText(label)}
-                    </button>
-                `).join("")}
+                ${Object.entries(CATEGORY_LABELS).map(
+                    ([value, label]) => `
+                        <button
+                            type="button"
+                            class="fs-battle-category"
+                            data-category="${escapeText(value)}"
+                            disabled
+                        >
+                            ${escapeText(label)}
+                        </button>
+                    `
+                ).join("")}
             </div>
 
-            <div class="fs-battle-status" aria-live="polite"></div>
+            <div
+                class="fs-battle-status"
+                aria-live="polite"
+            ></div>
 
             <button
                 class="fs-battle-submit"
@@ -311,68 +329,224 @@ function openBattleChallengeModal({
     `;
 
     document.body.appendChild(modal);
-    document.body.classList.add("fs-battle-modal-open");
+    document.body.classList.add(
+        "fs-battle-modal-open"
+    );
 
     const backdrop =
-        modal.querySelector(".fs-battle-modal-backdrop");
+        modal.querySelector(
+            ".fs-battle-modal-backdrop"
+        );
 
     const closeButton =
-        modal.querySelector(".fs-battle-modal-close");
+        modal.querySelector(
+            ".fs-battle-modal-close"
+        );
 
     const cancelButton =
-        modal.querySelector(".fs-battle-cancel");
+        modal.querySelector(
+            ".fs-battle-cancel"
+        );
 
     const submitButton =
-        modal.querySelector(".fs-battle-submit");
+        modal.querySelector(
+            ".fs-battle-submit"
+        );
 
     const statusElement =
-        modal.querySelector(".fs-battle-status");
+        modal.querySelector(
+            ".fs-battle-status"
+        );
+
+    const postGrid =
+        modal.querySelector(
+            "#fsBattlePostGrid"
+        );
 
     const categoryButtons =
-        modal.querySelectorAll(".fs-battle-category");
+        modal.querySelectorAll(
+            ".fs-battle-category"
+        );
 
+    let selectedPostId = "";
     let selectedCategory = "";
 
+    const updateSubmitState = () => {
+        submitButton.disabled =
+            !selectedPostId ||
+            !selectedCategory;
+    };
+
     categoryButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            categoryButtons.forEach(item => {
-                item.classList.remove("selected");
-            });
+        button.addEventListener(
+            "click",
+            () => {
+                categoryButtons.forEach(item => {
+                    item.classList.remove(
+                        "selected"
+                    );
+                });
 
-            button.classList.add("selected");
+                button.classList.add(
+                    "selected"
+                );
 
-            selectedCategory =
-                button.dataset.category || "";
+                selectedCategory =
+                    button.dataset.category ||
+                    "";
 
-            submitButton.disabled = !selectedCategory;
+                updateSubmitState();
 
-            if (statusElement) {
-                statusElement.textContent = "";
+                if (statusElement) {
+                    statusElement.textContent = "";
+                }
             }
-        });
+        );
     });
+
+    const renderPosts = posts => {
+        if (!postGrid) return;
+
+        if (!posts.length) {
+            postGrid.innerHTML = `
+                <div class="fs-battle-post-empty">
+                    PRIMA DI SFIDARE QUALCUNO
+                    DEVI PUBBLICARE UN OUTFIT.
+                </div>
+            `;
+
+            return;
+        }
+
+        categoryButtons.forEach(button => {
+            button.disabled = false;
+        });
+
+        postGrid.innerHTML = posts.map(post => `
+            <button
+                type="button"
+                class="fs-battle-post-option"
+                data-post-id="${escapeText(post.id)}"
+            >
+                <img
+                    src="${escapeText(post.image_url)}"
+                    alt="Outfit"
+                    loading="lazy"
+                >
+
+                <span class="fs-battle-post-check">
+                    ✓
+                </span>
+            </button>
+        `).join("");
+
+        postGrid
+            .querySelectorAll(
+                ".fs-battle-post-option"
+            )
+            .forEach(button => {
+                button.addEventListener(
+                    "click",
+                    () => {
+                        postGrid
+                            .querySelectorAll(
+                                ".fs-battle-post-option"
+                            )
+                            .forEach(item => {
+                                item.classList.remove(
+                                    "selected"
+                                );
+                            });
+
+                        button.classList.add(
+                            "selected"
+                        );
+
+                        selectedPostId =
+                            button.dataset.postId ||
+                            "";
+
+                        updateSubmitState();
+
+                        if (statusElement) {
+                            statusElement.textContent = "";
+                        }
+                    }
+                );
+            });
+    };
 
     const close = () => {
         closeBattleChallengeModal();
     };
 
-    backdrop?.addEventListener("click", close);
-    closeButton?.addEventListener("click", close);
-    cancelButton?.addEventListener("click", close);
+    backdrop?.addEventListener(
+        "click",
+        close
+    );
 
-    submitButton?.addEventListener("click", () => {
-        if (!selectedCategory) return;
+    closeButton?.addEventListener(
+        "click",
+        close
+    );
 
-        submitBattleChallenge({
-            challengedUserId,
-            category: selectedCategory,
-            modal,
-            statusElement,
-            submitButton
-        });
-    });
+    cancelButton?.addEventListener(
+        "click",
+        close
+    );
+
+    submitButton?.addEventListener(
+        "click",
+        () => {
+            if (
+                !selectedPostId ||
+                !selectedCategory
+            ) {
+                return;
+            }
+
+            submitBattleChallenge({
+                challengedUserId,
+                category: selectedCategory,
+                postId: selectedPostId,
+                modal,
+                statusElement,
+                submitButton
+            });
+        }
+    );
+
+    try {
+        const posts =
+            await getMyBattlePosts();
+
+        renderPosts(posts);
+
+        if (!posts.length && statusElement) {
+            statusElement.textContent =
+                "Pubblica almeno un outfit prima di lanciare una sfida.";
+        }
+    } catch (error) {
+        console.error(
+            "FSocial Battle posts error:",
+            error
+        );
+
+        if (postGrid) {
+            postGrid.innerHTML = `
+                <div class="fs-battle-post-empty">
+                    IMPOSSIBILE CARICARE I TUOI OUTFIT.
+                </div>
+            `;
+        }
+
+        if (statusElement) {
+            statusElement.textContent =
+                error?.message ||
+                "Errore durante il caricamento degli outfit.";
+        }
+    }
 }
-
 window.openBattleChallengeModal = openBattleChallengeModal;
 window.closeBattleChallengeModal = closeBattleChallengeModal;
 
@@ -395,6 +569,103 @@ window.closeBattleChallengeModal = closeBattleChallengeModal;
             battleTab.setAttribute("aria-label", "Apri il feed Sfida");
         }
 
+        const battlePostPickerStyleId = "fsocial-battle-post-picker-style";
+
+        if (!document.getElementById(battlePostPickerStyleId)) {
+            const style = document.createElement("style");
+            style.id = battlePostPickerStyleId;
+            style.textContent = `.fs-battle-post-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    margin:14px 0 18px;
+    max-height:330px;
+    overflow-y:auto;
+    padding-right:2px;
+}
+
+.fs-battle-post-option{
+    position:relative;
+    display:block;
+    padding:0;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:16px;
+    overflow:hidden;
+    background:#111116;
+    cursor:pointer;
+    aspect-ratio:1/1;
+    transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease;
+}
+
+.fs-battle-post-option:hover{
+    transform:translateY(-2px);
+    border-color:rgba(255,77,0,.45);
+}
+
+.fs-battle-post-option.selected{
+    border-color:#ff4d00;
+    box-shadow:0 0 0 2px rgba(255,77,0,.22),0 12px 30px rgba(255,77,0,.12);
+}
+
+.fs-battle-post-option img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+}
+
+.fs-battle-post-option::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to top,rgba(0,0,0,.58),transparent 45%);
+    pointer-events:none;
+}
+
+.fs-battle-post-option .fs-battle-post-check{
+    position:absolute;
+    right:8px;
+    top:8px;
+    width:26px;
+    height:26px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    background:rgba(0,0,0,.68);
+    border:1px solid rgba(255,255,255,.15);
+    color:#fff;
+    font-size:13px;
+    opacity:0;
+    z-index:2;
+}
+
+.fs-battle-post-option.selected .fs-battle-post-check{
+    opacity:1;
+    background:#ff4d00;
+    border-color:#ff4d00;
+}
+
+.fs-battle-post-loading,
+.fs-battle-post-empty{
+    grid-column:1/-1;
+    padding:22px 14px;
+    text-align:center;
+    color:#777;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.08em;
+}
+
+@media(max-width:550px){
+    .fs-battle-post-grid{
+        max-height:280px;
+        gap:8px;
+    }
+}
+
+            `;
+            document.head.appendChild(style);
+        }
         const styleId = "fsocial-surgical-ui-fixes";
         if (!document.getElementById(styleId)) {
             const style = document.createElement("style");
@@ -446,3 +717,7 @@ window.closeBattleChallengeModal = closeBattleChallengeModal;
         run();
     }
 })();
+
+
+
+
