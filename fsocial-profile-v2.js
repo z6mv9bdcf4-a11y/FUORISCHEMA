@@ -34,12 +34,27 @@ import { supabase } from './supabase.js';
   #fsProfileV2Sheet #fpv2-body{padding:15px 18px calc(24px + env(safe-area-inset-bottom));overflow:auto;max-height:calc(82vh - 70px)}
   .fpv2-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.fpv2-grid a{aspect-ratio:1;background:#111;overflow:hidden}.fpv2-grid img{width:100%;height:100%;object-fit:cover}.fpv2-empty{text-align:center;padding:40px 10px;color:#666;font-size:11px;letter-spacing:1px}
   .fpv2-setting{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:15px 0;border-bottom:1px solid rgba(255,255,255,.06)}.fpv2-setting strong{display:block;color:#fff;font-size:12px}.fpv2-setting span{display:block;color:#777;font-size:10px;margin-top:4px;line-height:1.4}.fpv2-select,.fpv2-toggle{height:40px;border:1px solid rgba(255,255,255,.1);border-radius:999px;background:#151518;color:#fff;padding:0 12px}.fpv2-toggle{width:54px;position:relative}.fpv2-toggle i{position:absolute;top:5px;left:5px;width:28px;height:28px;border-radius:50%;background:#666;transition:.2s}.fpv2-toggle.on{background:#ff4d00;border-color:#ff4d00}.fpv2-toggle.on i{left:21px;background:#050505}.fpv2-save{margin-top:16px;width:100%;height:46px;border:1px solid #ff4d00;border-radius:999px;background:#ff4d00;color:#050505;font:900 10px Inter;letter-spacing:1px;text-transform:uppercase}
+  .fpv2-achievement-list{display:grid;gap:9px}.fpv2-achievement{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid rgba(255,255,255,.07);border-radius:16px;background:#111116}.fpv2-achievement.locked{opacity:.42}.fpv2-achievement-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:#19191e;font-size:21px}.fpv2-achievement-copy{min-width:0}.fpv2-achievement-copy strong{display:block;color:#fff;font-size:11px;letter-spacing:.6px}.fpv2-achievement-copy span{display:block;color:#777;font-size:10px;margin-top:4px;line-height:1.35}.fpv2-achievement-state{margin-left:auto;color:#ff4d00;font-size:9px;font-weight:900;letter-spacing:.7px;white-space:nowrap}.fpv2-achievement.locked .fpv2-achievement-state{color:#666}
   @media(min-width:700px){#fsProfileV2Sheet .fpv2-sheet{left:50%;right:auto;width:520px;transform:translate(-50%,105%);bottom:24px;border:1px solid rgba(255,255,255,.1);border-radius:22px}.fpv2-grid{gap:7px}}
   `;
   document.head.appendChild(css);
 
   async function user(){const {data}=await supabase.auth.getUser();return data?.user||null;}
   async function saved(){const u=await user();if(!u)return;const {data}=await supabase.from('post_saves').select('post_id,posts(id,image_url,content)').eq('user_id',u.id).order('created_at',{ascending:false});openSheet('SALVATI',`<div class="fpv2-grid">${(data||[]).map(x=>x.posts?.image_url?`<a href="Fsocial.html#post-${x.post_id}"><img loading="lazy" src="${esc(x.posts.image_url)}" alt=""></a>`:'').join('')||'<div class="fpv2-empty" style="grid-column:1/-1">NESSUN POST SALVATO</div>'}</div>`);}
+
+  async function battleAchievements(){
+    const u=await user();
+    if(!u)return;
+    const [{data:all,error:allError},{data:unlocked,error:unlockedError},{data:record}] = await Promise.all([
+      supabase.from('fsocial_battle_achievements').select('id,code,name,description,icon,threshold').order('id'),
+      supabase.from('fsocial_battle_user_achievements').select('achievement_id,code,name,description,icon,threshold').eq('user_id',u.id),
+      supabase.from('fsocial_battle_records').select('wins,current_win_streak').eq('user_id',u.id).maybeSingle()
+    ]);
+    if(allError || unlockedError){alert((allError||unlockedError).message);return;}
+    const unlockedIds=new Set((unlocked||[]).map(x=>x.achievement_id));
+    const html=`<div class="fpv2-achievement-list">${(all||[]).map(a=>{const ok=unlockedIds.has(a.id);return `<div class="fpv2-achievement ${ok?'':'locked'}"><div class="fpv2-achievement-icon">${esc(a.icon)}</div><div class="fpv2-achievement-copy"><strong>${esc(a.name)}</strong><span>${esc(a.description)}</span></div><div class="fpv2-achievement-state">${ok?'SBLOCCATO':'🔒'}</div></div>`}).join('')||'<div class="fpv2-empty">NESSUN ACHIEVEMENT</div>'}</div><div style="margin-top:15px;color:#666;font-size:10px;text-align:center">Vittorie: ${record?.wins||0} · Streak: ${record?.current_win_streak||0}</div>`;
+    openSheet('ACHIEVEMENTS',html);
+  }
 
   async function socialSettings(){
     const u=await user();
@@ -50,12 +65,7 @@ import { supabase } from './supabase.js';
       const toggle=root.querySelector('[data-toggle="activity"]');
       toggle?.addEventListener('click',()=>toggle.classList.toggle('on'));
       root.querySelector('[data-save-settings]').onclick=async()=>{
-        const payload={
-          user_id:u.id,
-          show_activity:toggle?.classList.contains('on') ?? true,
-          message_privacy:root.querySelector('[data-message-privacy]').value,
-          updated_at:new Date().toISOString()
-        };
+        const payload={user_id:u.id,show_activity:toggle?.classList.contains('on') ?? true,message_privacy:root.querySelector('[data-message-privacy]').value,updated_at:new Date().toISOString()};
         const {error}=await supabase.from('profile_settings').upsert(payload);
         if(error){alert(error.message);return}
         root.querySelector('.fpv2-save').textContent='SALVATO ✓';
@@ -70,6 +80,10 @@ import { supabase } from './supabase.js';
     if(!document.getElementById('fsProfileSaved')){
       const b=document.createElement('button');
       b.id='fsProfileSaved';b.className='action-btn';b.textContent='SALVATI';b.onclick=saved;actions.appendChild(b);
+    }
+    if(!document.getElementById('fsProfileAchievements')){
+      const b=document.createElement('button');
+      b.id='fsProfileAchievements';b.className='action-btn';b.textContent='ACHIEVEMENTS';b.onclick=battleAchievements;actions.appendChild(b);
     }
     if(!document.getElementById('fsProfileSettings')){
       const b=document.createElement('button');
