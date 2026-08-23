@@ -30,6 +30,18 @@ if (currentPath.endsWith("/fsocial.html")) {
     import("./fsocial-notification-bridge.js").catch((error) => {
         console.error("FSocial notification bridge failed to load:", error);
     });
+
+    import("./fsocial-v2.js").catch((error) => {
+        console.error("FSocial V2 experience layer failed to load:", error);
+    });
+
+    if (!document.getElementById("fsocialV2Styles")) {
+        const style = document.createElement("link");
+        style.id = "fsocialV2Styles";
+        style.rel = "stylesheet";
+        style.href = "./fsocial-v2.css";
+        document.head.appendChild(style);
+    }
 }
 
 // Profile page: reuse the same FSocial bottom-bar visual language without
