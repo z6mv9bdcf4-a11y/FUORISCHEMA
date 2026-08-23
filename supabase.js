@@ -23,6 +23,7 @@ if (currentPath.endsWith("/area-personale.html")) {
     import("./fsocial-profile-nav.js").catch((error) => console.error("FSocial profile navigation styling failed to load:", error));
     import("./fsocial-profile-v2.js").catch((error) => console.error("FSocial profile V2 failed to load:", error));
     import("./fsocial-battle-record.js").catch((error) => console.error("FSocial Battle Record failed to load:", error));
+    import("./fsocial-battle-ranking.js").catch((error) => console.error("FSocial Battle Ranking failed to load:", error));
 }
 
 if (
