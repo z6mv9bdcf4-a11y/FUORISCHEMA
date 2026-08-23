@@ -1241,10 +1241,10 @@ a{
 }
 
 .toast{
-    position:fixed;
-    left:50%;
-    bottom:28px;
-    z-index:900;
+    position:fixed !important;
+    left:50% !important;
+    bottom:28px !important;
+    z-index:2147483647 !important;
     max-width:calc(100vw - 32px);
     padding:10px 18px;
     border:1px solid rgba(255,255,255,0.15);
@@ -1262,7 +1262,11 @@ a{
     transition:all .25s var(--ease-out);
     box-shadow:0 10px 30px rgba(0,0,0,0.6);
 }
-.toast.show{opacity:1;transform:translate(-50%,0) scale(1)}
+.toast.show{
+    opacity:1 !important;
+    visibility:visible !important;
+    transform:translate(-50%,0) scale(1) !important;
+}
 
 
 /* BOTTOM NAVIGATION BAR — MOBILE ONLY
@@ -2145,6 +2149,7 @@ function showToast(message){
     clearTimeout(window.__fsToast);
     window.__fsToast = setTimeout(() => toast.classList.remove("show"), 2600);
 }
+window.showToast = showToast;
 
 function escapeHtml(value){
     const div = document.createElement("div");
@@ -3966,6 +3971,6 @@ notifPollInterval = setInterval(updateNotificationBadge, 15000);
 }
 </script>
 
-    <script type="module" src="./fsocial-battles.js"></script>
+    <script type="module" src="./fsocial-battle-challenge.js"></script>
 </body>
 </html>
