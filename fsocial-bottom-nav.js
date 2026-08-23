@@ -192,6 +192,15 @@
     });
   }
 
+  function styleExistingNav(){
+    const nav=document.querySelector(".bottom-nav");
+    if(!nav) return false;
+    if(getComputedStyle(nav).display==="none") return false;
+    const icons=nav.querySelectorAll(".bottom-nav-icon");
+    const replacements=[icon("home"),icon("search"),null,icon("bell"),icon("user")];
+    icons.forEach((el,index)=>{if(replacements[index]!==null) el.innerHTML=replacements[index];});
+    return true;
+  }
   function styleExistingProfileNav(){
     const nav=document.querySelector(".bottom-nav");
     if(!nav) return false;
@@ -243,6 +252,7 @@
   function init(){
     injectStyle();
     if(isProfilePage){styleExistingProfileNav();return;}
+    if(styleExistingNav()){cleanUiIcons();return;}
     injectHomeNav();
     cleanUiIcons();
     const observer=new MutationObserver(()=>cleanUiIcons());
