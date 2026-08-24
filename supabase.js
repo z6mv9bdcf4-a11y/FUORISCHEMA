@@ -24,6 +24,10 @@ if (currentPath.endsWith("/area-personale.html")) {
     import("./fsocial-surgical-overrides-2.js").catch((error) => console.error("FSocial social interaction overrides failed to load:", error));
 }
 
+if (currentPath.endsWith("/battle.html")) {
+    import("./fsocial-battle-page-overrides.js").catch((error) => console.error("FSocial Battle page overrides failed to load:", error));
+}
+
 if (currentPath.endsWith("/area-personale.html") || currentPath.endsWith("/fsocial.html") || currentPath.endsWith("/fsocial-moderazione.html")) {
     import("./fsocial-admin-ui.js").catch((error) => console.error("FSocial admin module failed to load:", error));
 }
