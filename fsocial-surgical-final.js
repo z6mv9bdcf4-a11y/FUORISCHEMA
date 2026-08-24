@@ -24,6 +24,7 @@ import { supabase } from "./supabase.js";
     .post-secondary-actions .fs-save-button.is-saved{color:#ff4d00!important;border-color:rgba(255,77,0,.45)!important;background:rgba(255,77,0,.08)!important}
     .post-actions .action-icon{font-size:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important}
     .post-actions .action-icon svg{width:19px!important;height:19px!important;display:block!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+    .post-actions .battle-button .action-icon svg{width:20px!important;height:20px!important;stroke-width:1.7!important}
     .fs-battle-hub-live,.fs-battle-random-btn{display:none!important}
     .fs-battle-hub-votes .fs-surgical-percent~.fs-surgical-percent{display:none!important}
     .fs-battle-hub-vote{min-height:46px!important}
@@ -47,7 +48,7 @@ import { supabase } from "./supabase.js";
   const icons = {
     comment:'<svg viewBox="0 0 24 24"><path d="M5 5.5h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H11l-4.5 3v-3H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2Z"/></svg>',
     share:'<svg viewBox="0 0 24 24"><path d="m21 3-7.2 18-3.2-7.6L3 10.2 21 3Z"/><path d="m10.6 13.4 4.9-4.9"/></svg>',
-    battle:'<svg viewBox="0 0 24 24"><path d="m7 3 4 4-7 7 4 4 7-7 4 4"/><path d="m17 3-4 4 7 7-4 4-7-7"/></svg>'
+    battle:'<svg viewBox="0 0 24 24"><path d="M5 3l6.5 6.5"/><path d="M5 3l-1 3 2 2 3-1"/><path d="M11.5 9.5l-2 2"/><path d="M19 3l-6.5 6.5"/><path d="M19 3l1 3-2 2-3-1"/><path d="M12.5 9.5l2 2"/><path d="M9.5 11.5l-3 3"/><path d="M14.5 11.5l3 3"/><path d="M6.5 14.5l-1 3 3 1"/><path d="M17.5 14.5l1 3-3 1"/></svg>'
   };
 
   function closeAccidentalOverlays(){
@@ -72,7 +73,7 @@ import { supabase } from "./supabase.js";
         actions.querySelectorAll(".fs-save-button,.delete-button,.owner-delete-button").forEach(btn=>secondary.appendChild(btn));
         card.querySelectorAll(".comment-toggle .action-icon").forEach(x=>{if(!x.querySelector("svg"))x.innerHTML=icons.comment});
         card.querySelectorAll(".share-button .action-icon").forEach(x=>{if(!x.querySelector("svg"))x.innerHTML=icons.share});
-        card.querySelectorAll(".battle-button .action-icon").forEach(x=>{if(!x.querySelector("svg"))x.innerHTML=icons.battle});
+        card.querySelectorAll(".battle-button .action-icon").forEach(x=>{x.innerHTML=icons.battle});
       });
       const battleTab=document.getElementById("tabRecent");
       const isBattleFeed=!!battleTab?.classList.contains("active");
