@@ -14,6 +14,7 @@ if (currentPath.endsWith("/fsocial.html")) {
     import("./fsocial-surgical-overrides.js").catch((error) => console.error("FSocial surgical overrides failed to load:", error));
     import("./fsocial-surgical-overrides-2.js").catch((error) => console.error("FSocial social interaction overrides failed to load", error));
     import("./fsocial-battle-vote-override.js").catch((error) => console.error("FSocial Battle vote override failed to load", error));
+    import("./fsocial-final-home.js").catch((error) => console.error("FSocial final home layer failed to load:", error));
 }
 
 if (currentPath.endsWith("/area-personale.html")) {
@@ -23,14 +24,14 @@ if (currentPath.endsWith("/area-personale.html")) {
     import("./fsocial-battle-ranking.js").catch((error) => console.error("FSocial Battle Ranking failed to load", error));
     import("./fsocial-surgical-overrides.js").catch((error) => console.error("FSocial surgical overrides failed to load", error));
     import("./fsocial-surgical-overrides-2.js").catch((error) => console.error("FSocial social interaction overrides failed to load", error));
+    import("./fsocial-final-profile.js").catch((error) => console.error("FSocial final profile layer failed to load:", error));
 }
 
 if (currentPath.endsWith("/battle.html")) {
     import("./fsocial-battle-page-overrides.js").catch((error) => console.error("FSocial Battle page overrides failed to load", error));
+    import("./fsocial-final-battle.js").catch((error) => console.error("FSocial final Battle layer failed to load:", error));
 }
 
 if (currentPath.endsWith("/area-personale.html") || currentPath.endsWith("/fsocial.html") || currentPath.endsWith("/fsocial-moderazione.html")) {
     import("./fsocial-admin-ui.js").catch((error) => console.error("FSocial admin module failed to load:", error));
 }
-
-import("./fsocial-final-surgical.js").catch((error) => console.error("FSocial final surgical layer failed to load:", error));
