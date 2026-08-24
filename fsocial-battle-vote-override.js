@@ -1,0 +1,10 @@
+(() => {
+  "use strict";
+  if (window.__FS_BATTLE_VOTE_OVERRIDE__) return;
+  window.__FS_BATTLE_VOTE_OVERRIDE__ = true;
+  const URL_BASE="https://dbjfvphcrfvajrtkeswg.supabase.co/functions/v1/fsocial-battles";
+  function token(){let t=localStorage.getItem("fsocial_battle_voter_token");if(!t){const a=crypto.randomUUID?.()||Math.random().toString(36).slice(2),b=crypto.randomUUID?.()||Math.random().toString(36).slice(2);t=`${a}${b}`.replaceAll("-","");localStorage.setItem("fsocial_battle_voter_token",t)}return t}
+  async function vote(index,side){const response=await fetch(`${URL_BASE}?action=active&limit=24`,{headers:{Accept:"application/json"},credentials:"omit"});const data=await response.json();const item=data?.battles?.[index];if(!item?.battle)return;const userId=side===0?item.battle.challenger_id:item.battle.challenged_id;const res=await fetch(URL_BASE+"?action=vote",{method:"POST",headers:{Accept:"application/json","Content-Type":"application/json"},body:JSON.stringify({battle_id:Number(item.battle.id),voted_for_user_id:userId,voter_token:token()})});const result=await res.json();if(!res.ok||!result?.success){window.showToast?.(result?.message||"Voto non registrato.");return}window.showToast?.("Voto registrato.");document.getElementById("tabRecent")?.click()}
+  function init(){if(!location.pathname.toLowerCase().endsWith("/fsocial.html"))return;document.addEventListener("click",e=>{const player=e.target?.closest?.(".fs-battle-hub-player");if(!player)return;const card=player.closest(".fs-battle-hub-card");const list=[...document.querySelectorAll(".fs-battle-hub-card")];const index=list.indexOf(card);const players=[...card.querySelectorAll(".fs-battle-hub-player")];const side=players.indexOf(player);if(index<0||side<0)return;e.preventDefault();e.stopImmediatePropagation();vote(index,side).catch(err=>console.error("Battle quick vote:",err))},true)}
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
+})();
