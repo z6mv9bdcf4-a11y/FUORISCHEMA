@@ -48,11 +48,20 @@ import { supabase } from "./supabase.js";
     const comments=article.querySelector('[id^="comments-"]');const match=comments?.id?.match(/^comments-(\d+)$/);const postId=match?Number(match[1]):0;if(!postId)return;
     const meta=article.querySelector(".post-meta");
     if(meta&&!meta.dataset.fsLikeBound){meta.dataset.fsLikeBound="1";meta.classList.add("fs-like-meta-action");meta.addEventListener("click",()=>openLikes(postId));}
-    const actions=article.querySelector(".post-actions");
-    if(actions&&!actions.querySelector(".fs-save-button")){
-      const b=document.createElement("button");b.type="button";b.className="action-button fs-save-button";b.textContent="SALVA";b.title="Salva post";b.onclick=()=>toggleSave(postId,b);actions.appendChild(b);
-      try{const {data:userData}=await supabase.auth.getUser();const user=userData?.user;if(user){const {data}=await supabase.from("post_saves").select("id").eq("post_id",postId).eq("user_id",user.id).maybeSingle();if(data){b.classList.add("is-saved");b.textContent="SALVATO"}}}catch{}
+
+    // The save button may be moved out of .post-actions by fsocial-final-home.js.
+    // Search the whole post first so the MutationObserver never creates duplicates.
+    const saveButtons=[...article.querySelectorAll(".fs-save-button")];
+    if(saveButtons.length>1) saveButtons.slice(1).forEach(button=>button.remove());
+    let b=saveButtons[0]||null;
+
+    if(!b){
+      const actions=article.querySelector(".post-actions");
+      if(!actions)return;
+      b=document.createElement("button");b.type="button";b.className="action-button fs-save-button";b.textContent="SALVA";b.title="Salva post";b.onclick=()=>toggleSave(postId,b);actions.appendChild(b);
     }
+
+    try{const {data:userData}=await supabase.auth.getUser();const user=userData?.user;if(user){const {data}=await supabase.from("post_saves").select("id").eq("post_id",postId).eq("user_id",user.id).maybeSingle();if(data){b.classList.add("is-saved");b.textContent="SALVATO"}}}catch{}
   }
 
   async function openProfilePost(tile){
