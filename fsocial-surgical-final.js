@@ -89,44 +89,54 @@ import { supabase } from "./supabase.js";
     }
   }
 
-  let lastIds="";
-  async function hydrateLikes(){
-    if(!isHome)return;
-    const cards=[...document.querySelectorAll(".post-card")];
-    const ids=cards.map(c=>Number(c.querySelector('[id^="comments-"]')?.id?.match(/^comments-(\\d+)$/)?.[1]||0)).filter(Boolean);
-    const key=ids.join(",");
-    if(!key||key===lastIds)return;
-    lastIds=key;
+  const hydratedPosts = new Set();
+  async function hydrateOnePost(card){
+    if(!isHome || !card || card.dataset.fsLikeHydrated === "1") return;
+    const match = card.querySelector('[id^="comments-"]')?.id?.match(/^comments-(\d+)$/);
+    const postId = match ? Number(match[1]) : 0;
+    if(!postId || hydratedPosts.has(postId)) return;
+
+    hydratedPosts.add(postId);
     try{
-      const [{data:likes},{data:comments}]=await Promise.all([
-        supabase.from("post_likes").select("post_id,user_id").in("post_id",ids),
-        supabase.from("post_comments").select("post_id").in("post_id",ids)
+      const [{count:likeCount, error:likeError},{count:commentCount,error:commentError}]=await Promise.all([
+        supabase.from("post_likes").select("id",{count:"exact",head:true}).eq("post_id",postId),
+        supabase.from("post_comments").select("id",{count:"exact",head:true}).eq("post_id",postId)
       ]);
-      const lm=new Map(),cm=new Map();
-      (likes||[]).forEach(x=>lm.set(x.post_id,(lm.get(x.post_id)||0)+1));
-      (comments||[]).forEach(x=>cm.set(x.post_id,(cm.get(x.post_id)||0)+1));
-      cards.forEach(c=>{
-        const id=Number(c.querySelector('[id^="comments-"]')?.id?.match(/^comments-(\\d+)$/)?.[1]||0);
-        const like=c.querySelector(".like-count"),comment=c.querySelector(".comment-count");
-        if(like)like.textContent=String(lm.get(id)||0);
-        if(comment)comment.textContent=String(cm.get(id)||0);
-      });
-    }catch(error){console.warn("FSocial engagement hydration:",error)}
+      if(likeError) throw likeError;
+      if(commentError) throw commentError;
+      const like=card.querySelector(".like-count");
+      const comment=card.querySelector(".comment-count");
+      if(like) like.textContent=String(likeCount||0);
+      if(comment) comment.textContent=String(commentCount||0);
+      card.dataset.fsLikeHydrated="1";
+    }catch(error){
+      hydratedPosts.delete(postId);
+      console.warn("FSocial like/comment hydration:",error);
+    }
+  }
+
+  function hydrateAllPosts(){
+    if(!isHome)return;
+    document.querySelectorAll(".post-card").forEach(card=>hydrateOnePost(card));
   }
 
   function boot(){
     closeAccidentalOverlays();
     decorate();
-    hydrateLikes();
+    hydrateAllPosts();
     let queued=false;
     const observer=new MutationObserver(()=>{
       if(queued)return;
       queued=true;
-      requestAnimationFrame(()=>{queued=false;decorate();});
+      requestAnimationFrame(()=>{
+        queued=false;
+        decorate();
+        hydrateAllPosts();
+      });
     });
     observer.observe(document.body,{childList:true,subtree:true});
-    setTimeout(()=>observer.disconnect(),15000);
-    if(isHome)setTimeout(hydrateLikes,300);
+    setTimeout(()=>observer.disconnect(),30000);
+    if(isHome)setTimeout(hydrateAllPosts,300);
   }
 
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});
