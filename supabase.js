@@ -12,6 +12,7 @@ if (currentPath.endsWith("/fsocial.html")) {
     import("./fsocial-owner-tools.js").catch((error) => console.error("FSocial owner tools failed to load:", error));
     import("./fsocial-bottom-nav.js").catch((error) => console.error("FSocial bottom navigation failed to load:", error));
     import("./fsocial-surgical-overrides.js").catch((error) => console.error("FSocial surgical overrides failed to load:", error));
+    import("./fsocial-surgical-overrides-2.js").catch((error) => console.error("FSocial social interaction overrides failed to load:", error));
 }
 
 if (currentPath.endsWith("/area-personale.html")) {
@@ -20,6 +21,7 @@ if (currentPath.endsWith("/area-personale.html")) {
     import("./fsocial-battle-record.js").catch((error) => console.error("FSocial Battle Record failed to load:", error));
     import("./fsocial-battle-ranking.js").catch((error) => console.error("FSocial Battle Ranking failed to load:", error));
     import("./fsocial-surgical-overrides.js").catch((error) => console.error("FSocial surgical overrides failed to load:", error));
+    import("./fsocial-surgical-overrides-2.js").catch((error) => console.error("FSocial social interaction overrides failed to load:", error));
 }
 
 if (currentPath.endsWith("/area-personale.html") || currentPath.endsWith("/fsocial.html") || currentPath.endsWith("/fsocial-moderazione.html")) {
