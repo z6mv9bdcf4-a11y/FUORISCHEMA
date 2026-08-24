@@ -1,8 +1,7 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
 export const SUPABASE_URL = "https://dbjfvphcrfvajrtkeswg.supabase.co";
-export const SUPABASE_KEY = "sb_publishable_ojrCWgqvcViR8HKT7N_uVg_SHnZ36IZ";
-
+export const SUPABASE_KEY = "sb_publishable_ojrCWqgvcViR8HKT7N_uVg_SHnZ36IZ";
 export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 const currentPath = window.location.pathname.toLowerCase();
 globalThis.__FUORISCHEMA_SUPABASE__ = supabase;
@@ -27,6 +26,7 @@ if (currentPath.endsWith("/area-personale.html")) {
     import("./fsocial-surgical-overrides.js").catch((error) => console.error("FSocial surgical overrides failed to load", error));
     import("./fsocial-surgical-overrides-2.js").catch((error) => console.error("FSocial social interaction overrides failed to load", error));
     import("./fsocial-surgical-final.js").catch((error) => console.error("FSocial final surgical layer failed to load", error));
+    import("./fsocial-profile-viewer.js").catch((error) => console.error("FSocial profile post viewer failed to load", error));
 }
 
 if (currentPath.endsWith("/battle.html")) {
