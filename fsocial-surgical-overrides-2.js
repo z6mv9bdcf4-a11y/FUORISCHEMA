@@ -45,19 +45,19 @@ import { supabase } from "./supabase.js";
   }
 
   async function decoratePost(article){
+    if(article.dataset.fsDecorated === "1") return;
     const comments=article.querySelector('[id^="comments-"]');const match=comments?.id?.match(/^comments-(\d+)$/);const postId=match?Number(match[1]):0;if(!postId)return;
+    article.dataset.fsDecorated = "1";
     const meta=article.querySelector(".post-meta");
     if(meta&&!meta.dataset.fsLikeBound){meta.dataset.fsLikeBound="1";meta.classList.add("fs-like-meta-action");meta.addEventListener("click",()=>openLikes(postId));}
 
-    // The save button may be moved out of .post-actions by fsocial-final-home.js.
-    // Search the whole post first so the MutationObserver never creates duplicates.
     const saveButtons=[...article.querySelectorAll(".fs-save-button")];
     if(saveButtons.length>1) saveButtons.slice(1).forEach(button=>button.remove());
     let b=saveButtons[0]||null;
 
     if(!b){
       const actions=article.querySelector(".post-actions");
-      if(!actions)return;
+      if(!actions){delete article.dataset.fsDecorated;return;}
       b=document.createElement("button");b.type="button";b.className="action-button fs-save-button";b.textContent="SALVA";b.title="Salva post";b.onclick=()=>toggleSave(postId,b);actions.appendChild(b);
     }
 
@@ -79,11 +79,24 @@ import { supabase } from "./supabase.js";
     document.body.appendChild(root);
   }
 
+  function decorateAddedPosts(root){
+    if(root.nodeType!==1)return;
+    if(root.matches(".post-card")) decoratePost(root);
+    root.querySelectorAll?.(".post-card").forEach(decoratePost);
+  }
+
   function init(){
     const home=location.pathname.toLowerCase().endsWith("/fsocial.html");
     const profile=location.pathname.toLowerCase().endsWith("/area-personale.html");
     if(home){
-      const observer=new MutationObserver(()=>{document.querySelectorAll(".post-card").forEach(x=>decoratePost(x));notifyBattleRows()});observer.observe(document.body,{childList:true,subtree:true});
+      document.querySelectorAll(".post-card").forEach(decoratePost);
+      const observer=new MutationObserver(mutations=>{
+        for(const mutation of mutations){
+          for(const node of mutation.addedNodes) decorateAddedPosts(node);
+        }
+        notifyBattleRows();
+      });
+      observer.observe(document.body,{childList:true,subtree:true});
       notifyBattleRows();
     }
     if(profile){
