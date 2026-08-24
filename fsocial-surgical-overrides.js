@@ -1,4 +1,4 @@
-import { supabase } from "./supabase.js";
+﻿import { supabase } from "./supabase.js";
 
 (() => {
   "use strict";
@@ -204,7 +204,7 @@ import { supabase } from "./supabase.js";
       if (!timer) { timer = document.createElement("div"); timer.className = "fs-surgical-timer"; card.prepend(timer); }
       timer.innerHTML = `<span>LIVE</span><strong>${formatTimer(item.battle.ended_at)}</strong>`;
       const players = card.querySelectorAll(".fs-battle-hub-player");
-      [0,1].forEach(side => { const player = players[side]; if (!player) return; player.classList.add("fs-surgical-vote-card"); player.onclick = () => quickVote(item, side === 0 ? item.battle.challenger_id : item.battle.challenged_id, card); });
+      [0,1].forEach(side => { const player = players[side]; if (!player) return; player.classList.add("fs-surgical-vote-card"); });
       const total = Number(item.votes?.[item.battle.challenger_id] || 0) + Number(item.votes?.[item.battle.challenged_id] || 0);
       const p0 = total ? Math.round(Number(item.votes?.[item.battle.challenger_id] || 0) / total * 100) : 0;
       const p1 = total ? 100 - p0 : 0;
