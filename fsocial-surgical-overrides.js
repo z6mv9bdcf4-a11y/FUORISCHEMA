@@ -1,0 +1,275 @@
+import { supabase } from "./supabase.js";
+
+(() => {
+  "use strict";
+  if (window.__FSOCIAL_SURGICAL_OVERRIDES__) return;
+  window.__FSOCIAL_SURGICAL_OVERRIDES__ = true;
+
+  const BATTLE_URL = "https://dbjfvphcrfvajrtkeswg.supabase.co/functions/v1/fsocial-battles";
+  const escape = value => { const d = document.createElement("div"); d.textContent = value ?? ""; return d.innerHTML; };
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+  function addStyle() {
+    if (document.getElementById("fsocialSurgicalOverridesStyle")) return;
+    const style = document.createElement("style");
+    style.id = "fsocialSurgicalOverridesStyle";
+    style.textContent = `
+      .fs-surgical-selected{outline:2px solid #ff4d00!important;outline-offset:2px;box-shadow:0 0 28px rgba(255,77,0,.18)!important;transform:translateY(-2px)}
+      .fs-surgical-vote-card{cursor:pointer!important;transition:transform .18s ease,box-shadow .18s ease,filter .18s ease!important}
+      .fs-surgical-vote-card:active{transform:scale(.985)!important}
+      .fs-surgical-vote-button{width:100%;min-height:46px;margin-top:12px;border:1px solid rgba(255,77,0,.45);border-radius:14px;background:rgba(255,77,0,.08);color:#fff;font:900 10px Inter,Arial,sans-serif;letter-spacing:1.2px;text-transform:uppercase}
+      .fs-surgical-vote-button:disabled{opacity:.45}
+      .fs-surgical-percent{font:900 14px Inter,Arial,sans-serif;color:#fff}
+      .fs-surgical-timer{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 0 14px;padding:10px 14px;border:1px solid rgba(255,77,0,.18);border-radius:999px;background:rgba(255,77,0,.06);color:#fff;font:900 10px Inter,Arial,sans-serif;letter-spacing:1.4px;text-transform:uppercase}
+      .fs-surgical-timer strong{color:#ff4d00;font-variant-numeric:tabular-nums}
+      .fs-surgical-battle-mode{font:900 9px Inter,Arial,sans-serif;letter-spacing:1.6px;color:#ff4d00;text-transform:uppercase}
+      .fs-surgical-modal{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+      .fs-surgical-modal-card{width:min(620px,100%);max-height:88vh;overflow:auto;background:#0c0c0f;border:1px solid rgba(255,255,255,.10);border-bottom:0;border-radius:24px 24px 0 0;padding:22px 18px calc(22px + env(safe-area-inset-bottom));box-shadow:0 -30px 90px rgba(0,0,0,.55)}
+      .fs-surgical-kicker{color:#ff4d00;font:900 9px Inter,Arial,sans-serif;letter-spacing:2px;text-transform:uppercase}
+      .fs-surgical-title{margin:7px 0;color:#fff;font:900 28px/1 Syne,Inter,sans-serif;letter-spacing:-1px;text-transform:uppercase}
+      .fs-surgical-sub{margin:0 0 18px;color:#888;font:500 12px/1.5 Inter,Arial,sans-serif}
+      .fs-surgical-label{margin:18px 0 9px;color:#aaa;font:900 9px Inter,Arial,sans-serif;letter-spacing:1.8px;text-transform:uppercase}
+      .fs-surgical-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:48vh;overflow:auto;padding:2px}
+      .fs-surgical-post{position:relative;aspect-ratio:1;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;background:#151518;padding:0}
+      .fs-surgical-post img{width:100%;height:100%;display:block;object-fit:cover}
+      .fs-surgical-post span{position:absolute;right:7px;top:7px;width:24px;height:24px;display:grid;place-items:center;border-radius:50%;background:rgba(0,0,0,.72);color:#fff;font:900 12px Inter;opacity:0}
+      .fs-surgical-post.selected{border-color:#ff4d00;box-shadow:0 0 0 2px rgba(255,77,0,.20)}
+      .fs-surgical-post.selected span{opacity:1;background:#ff4d00}
+      .fs-surgical-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+      .fs-surgical-actions button{min-height:48px;border-radius:14px;font:900 10px Inter;letter-spacing:1px}
+      .fs-surgical-cancel{background:#151518;border:1px solid rgba(255,255,255,.10);color:#aaa}
+      .fs-surgical-confirm{background:#ff4d00;border:1px solid #ff4d00;color:#050505}
+      .fs-surgical-confirm:disabled{opacity:.35}
+      .fs-surgical-status{min-height:18px;margin-top:10px;text-align:center;color:#888;font:700 10px Inter}
+      .fs-surgical-profile-post{cursor:pointer!important}
+      @media(max-width:550px){.fs-surgical-grid{grid-template-columns:repeat(2,1fr)}.fs-surgical-modal-card{max-height:91vh}}
+    `;
+    document.head.appendChild(style);
+  }
+
+  async function session() {
+    const { data } = await supabase.auth.getSession();
+    return data?.session || null;
+  }
+
+  async function battleRequest(action, body = null, slug = "") {
+    const s = await session();
+    const url = new URL(BATTLE_URL);
+    if (action) url.searchParams.set("action", action);
+    if (slug) url.searchParams.set("slug", slug);
+    const headers = { Accept: "application/json" };
+    if (body !== null) {
+      headers["Content-Type"] = "application/json";
+      if (s?.access_token) headers.Authorization = `Bearer ${s.access_token}`;
+    }
+    const response = await fetch(url, { method: body === null ? "GET" : "POST", headers, body: body === null ? undefined : JSON.stringify(body), credentials: "omit" });
+    const data = await response.json().catch(() => null);
+    if (!response.ok || !data?.success) {
+      const error = new Error(data?.message || "Operazione Battle non riuscita.");
+      error.data = data;
+      throw error;
+    }
+    return data;
+  }
+
+  async function myPosts() {
+    const s = await session();
+    if (!s?.user?.id) throw new Error("Devi essere autenticato.");
+    const { data, error } = await supabase.from("posts").select("id,image_url,content,created_at").eq("user_id", s.user.id).not("image_url", "is", null).order("created_at", { ascending: false }).limit(24);
+    if (error) throw error;
+    return data || [];
+  }
+
+  function closeModal() { document.getElementById("fsSurgicalBattleModal")?.remove(); document.body.classList.remove("fs-battle-modal-open"); }
+
+  async function openChallenge({ challengedUserId, challengedAuthor } = {}) {
+    if (!challengedUserId) return;
+    closeModal();
+    const name = challengedAuthor?.username ? `@${escape(challengedAuthor.username)}` : escape(challengedAuthor?.name || "questo utente");
+    const root = document.createElement("div");
+    root.id = "fsSurgicalBattleModal";
+    root.className = "fs-surgical-modal";
+    root.innerHTML = `<div class="fs-surgical-modal-card"><div class="fs-surgical-kicker">⚔️ FSOCIAL BATTLE</div><h2 class="fs-surgical-title">SFIDA ${name}</h2><p class="fs-surgical-sub">Scendi in Battle con il tuo outfit. Scegli il post che vuoi mettere in gara.</p><div class="fs-surgical-label">SCEGLI IL TUO OUTFIT</div><div id="fsSurgicalGrid" class="fs-surgical-grid"><div class="fs-surgical-status">CARICAMENTO OUTFIT...</div></div><div id="fsSurgicalStatus" class="fs-surgical-status"></div><div class="fs-surgical-actions"><button id="fsSurgicalCancel" class="fs-surgical-cancel">ANNULLA</button><button id="fsSurgicalConfirm" class="fs-surgical-confirm" disabled>⚔️ INVIA SFIDA</button></div></div>`;
+    document.body.appendChild(root);
+    document.body.classList.add("fs-battle-modal-open");
+    root.addEventListener("click", e => { if (e.target === root) closeModal(); });
+    root.querySelector("#fsSurgicalCancel").onclick = closeModal;
+    const grid = root.querySelector("#fsSurgicalGrid");
+    const status = root.querySelector("#fsSurgicalStatus");
+    const confirm = root.querySelector("#fsSurgicalConfirm");
+    let selected = "";
+    try {
+      const posts = await myPosts();
+      if (!posts.length) { grid.innerHTML = `<div class="fs-surgical-status" style="grid-column:1/-1">PUBBLICA PRIMA UN OUTFIT SU FSOCIAL.</div>`; return; }
+      grid.innerHTML = posts.map(p => `<button class="fs-surgical-post" type="button" data-post-id="${escape(p.id)}"><img loading="lazy" src="${escape(p.image_url)}" alt="Outfit"><span>✓</span></button>`).join("");
+      grid.querySelectorAll(".fs-surgical-post").forEach(button => button.onclick = () => { grid.querySelectorAll(".fs-surgical-post").forEach(x => x.classList.remove("selected")); button.classList.add("selected"); selected = button.dataset.postId || ""; confirm.disabled = !selected; status.textContent = "Outfit selezionato."; });
+      confirm.onclick = async () => {
+        if (!selected) return;
+        confirm.disabled = true;
+        status.textContent = "Invio la sfida...";
+        try {
+          await battleRequest("create", { challenged_id: challengedUserId, post_id: Number(selected), category: "best_overall" });
+          closeModal();
+          window.showToast?.("⚔️ Sfida inviata!");
+        } catch (error) {
+          status.textContent = error?.message || "Impossibile inviare la sfida.";
+          confirm.disabled = false;
+        }
+      };
+    } catch (error) { grid.innerHTML = `<div class="fs-surgical-status" style="grid-column:1/-1">IMPOSSIBILE CARICARE I TUOI OUTFIT.</div>`; status.textContent = error?.message || "Errore."; }
+  }
+
+  function wrapChallenge() {
+    if (typeof window.openBattleChallengeModal !== "function" || window.__FSWrappedChallenge) return false;
+    window.__FSWrappedChallenge = true;
+    window.openBattleChallengeModal = openChallenge;
+    return true;
+  }
+
+  async function acceptPendingBattle(button) {
+    const s = await session();
+    if (!s?.user?.id) return;
+    const slug = new URLSearchParams(location.search).get("battle") || new URLSearchParams(location.search).get("slug") || "";
+    if (!slug) return;
+    const data = await battleRequest("", null, slug);
+    const battle = data?.battle;
+    if (!battle || battle.status !== "pending" || battle.challenged_id !== s.user.id) return;
+    const posts = await myPosts();
+    if (!posts.length) { window.showToast?.("Pubblica un outfit prima di accettare."); return; }
+    const root = document.createElement("div"); root.id = "fsSurgicalBattleModal"; root.className = "fs-surgical-modal";
+    root.innerHTML = `<div class="fs-surgical-modal-card"><div class="fs-surgical-kicker">⚔️ SFIDA RICEVUTA</div><h2 class="fs-surgical-title">SCEGLI IL TUO OUTFIT</h2><p class="fs-surgical-sub">Scegli il post con cui vuoi affrontare questa Battle.</p><div class="fs-surgical-grid">${posts.map(p => `<button class="fs-surgical-post" type="button" data-post-id="${escape(p.id)}"><img loading="lazy" src="${escape(p.image_url)}" alt="Outfit"><span>✓</span></button>`).join("")}</div><div class="fs-surgical-status" id="fsSurgicalStatus">Seleziona un outfit.</div><div class="fs-surgical-actions"><button class="fs-surgical-cancel" id="fsSurgicalCancel">ANNULLA</button><button class="fs-surgical-confirm" id="fsSurgicalConfirm" disabled>⚔️ ACCETTA E INIZIA</button></div></div>`;
+    document.body.appendChild(root); document.body.classList.add("fs-battle-modal-open");
+    let selected = ""; const grid = root.querySelector(".fs-surgical-grid"); const status = root.querySelector("#fsSurgicalStatus"); const confirm = root.querySelector("#fsSurgicalConfirm");
+    root.querySelector("#fsSurgicalCancel").onclick = closeModal;
+    grid.querySelectorAll(".fs-surgical-post").forEach(b => b.onclick = () => { grid.querySelectorAll(".fs-surgical-post").forEach(x => x.classList.remove("selected")); b.classList.add("selected"); selected = b.dataset.postId; confirm.disabled = false; status.textContent = "Outfit selezionato."; });
+    confirm.onclick = async () => { if (!selected) return; confirm.disabled = true; status.textContent = "Avvio la Battle..."; try { await battleRequest("accept", { battle_id: Number(battle.id), post_id: Number(selected) }); closeModal(); location.reload(); } catch (error) { status.textContent = error?.message || "La sfida non è più disponibile."; } };
+  }
+
+  function bindBattleAccept() {
+    if (!document.body.classList.contains("battle-page") || window.__FSBattleAcceptBound) return;
+    window.__FSBattleAcceptBound = true;
+    document.addEventListener("click", event => {
+      const button = event.target?.closest?.("#acceptBattleButton");
+      if (!button) return;
+      event.preventDefault(); event.stopImmediatePropagation();
+      acceptPendingBattle(button).catch(error => console.error("FSocial surgical accept:", error));
+    }, true);
+  }
+
+  let activeBattleData = [];
+  const originalFetch = window.fetch.bind(window);
+  window.fetch = async (...args) => {
+    const response = await originalFetch(...args);
+    try {
+      const requestUrl = typeof args[0] === "string" ? args[0] : args[0]?.url || "";
+      if (requestUrl.includes("/functions/v1/fsocial-battles") && requestUrl.includes("action=active")) {
+        const clone = response.clone();
+        const json = await clone.json();
+        if (json?.success && Array.isArray(json.battles)) activeBattleData = json.battles;
+      }
+    } catch {}
+    return response;
+  };
+
+  function formatTimer(endedAt) {
+    const end = new Date(endedAt || 0).getTime();
+    if (!Number.isFinite(end) || !end) return "LIVE";
+    const remaining = Math.max(0, end - Date.now());
+    const total = Math.floor(remaining / 1000);
+    return `${String(Math.floor(total / 3600)).padStart(2,"0")}:${String(Math.floor((total % 3600) / 60)).padStart(2,"0")}:${String(total % 60).padStart(2,"0")}`;
+  }
+
+  async function quickVote(item, userId, card) {
+    if (!item?.battle?.id || !userId) return;
+    const button = card.querySelector(".fs-surgical-vote-button");
+    if (button) button.disabled = true;
+    try { await battleRequest("vote", { battle_id: Number(item.battle.id), voted_for_user_id: userId, voter_token: localStorage.getItem("fsocial_battle_voter_token") || undefined }); card.querySelectorAll(".fs-surgical-vote-card").forEach(x => x.classList.remove("fs-surgical-selected")); await refreshBattleHub(); } catch (error) { window.showToast?.(error?.message || "Voto non registrato."); if (button) button.disabled = false; }
+  }
+
+  async function refreshBattleHub() {
+    if (!document.getElementById("tabRecent")?.classList.contains("active")) return;
+    const tab = document.getElementById("tabRecent"); tab.click();
+  }
+
+  function decorateBattleHub() {
+    const cards = document.querySelectorAll(".fs-battle-hub-card");
+    if (!cards.length || !activeBattleData.length) return;
+    cards.forEach((card, index) => {
+      const item = activeBattleData[index]; if (!item?.battle) return;
+      card.querySelector(".fs-battle-hub-top strong")?.remove();
+      const random = document.getElementById("fsBattleRandomBtn"); random?.remove();
+      const heading = card.closest(".fs-battle-hub")?.querySelector(".fs-battle-hub-heading");
+      if (heading) { const live = heading.querySelector(".fs-battle-hub-live"); if (live) live.style.marginInline = "auto"; }
+      let timer = card.querySelector(".fs-surgical-timer");
+      if (!timer) { timer = document.createElement("div"); timer.className = "fs-surgical-timer"; card.prepend(timer); }
+      timer.innerHTML = `<span>LIVE</span><strong>${formatTimer(item.battle.ended_at)}</strong>`;
+      const players = card.querySelectorAll(".fs-battle-hub-player");
+      [0,1].forEach(side => { const player = players[side]; if (!player) return; player.classList.add("fs-surgical-vote-card"); player.onclick = () => quickVote(item, side === 0 ? item.battle.challenger_id : item.battle.challenged_id, card); });
+      const total = Number(item.votes?.[item.battle.challenger_id] || 0) + Number(item.votes?.[item.battle.challenged_id] || 0);
+      const p0 = total ? Math.round(Number(item.votes?.[item.battle.challenger_id] || 0) / total * 100) : 0;
+      const p1 = total ? 100 - p0 : 0;
+      players[0]?.querySelector(".fs-battle-hub-votes")?.insertAdjacentHTML("beforeend", `<span class="fs-surgical-percent">${p0}%</span>`);
+      players[1]?.querySelector(".fs-battle-hub-votes")?.insertAdjacentHTML("beforeend", `<span class="fs-surgical-percent">${p1}%</span>`);
+      const oldVote = card.querySelector(".fs-battle-hub-vote"); if (oldVote) oldVote.textContent = "TOCCA UN OUTFIT PER VOTARE →";
+    });
+  }
+
+  function decorateProfile() {
+    if (!location.pathname.toLowerCase().endsWith("/area-personale.html")) return;
+    const name = document.getElementById("profileName"); const bio = document.getElementById("profileBio"); const count = document.getElementById("postsCount"); const label = document.querySelector(".section-label");
+    if (name) name.style.cssText += ";color:#151515!important;text-shadow:0 1px 0 rgba(255,255,255,.45);";
+    if (bio) bio.style.cssText += ";color:#555!important;";
+    if (count) count.style.cssText += ";color:#333!important;";
+    if (label) label.textContent = "GALLERIA";
+    const ranking = document.getElementById("fsProfileRanking");
+    if (ranking) { ranking.onclick = () => { location.href = "fsocial-ranking.html"; }; }
+    document.querySelectorAll(".post-tile").forEach(tile => {
+      if (tile.dataset.surgicalBound) return;
+      tile.dataset.surgicalBound = "1";
+      tile.classList.add("fs-surgical-profile-post");
+      tile.onclick = () => {
+        const img = tile.querySelector("img");
+        if (!img) return;
+        const overlay = document.createElement("div"); overlay.className = "fs-surgical-modal";
+        overlay.innerHTML = `<div class="fs-surgical-modal-card" style="padding:0;overflow:hidden"><img src="${escape(img.src)}" alt="Post" style="width:100%;display:block;max-height:78vh;object-fit:contain;background:#050505"><div style="padding:16px;color:#fff;font:700 11px Inter">Post FSOCIAL</div></div>`;
+        overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+        document.body.appendChild(overlay);
+      };
+    });
+  }
+
+  function removeChatSetting() {
+    if (!location.pathname.toLowerCase().endsWith("/area-personale.html")) return;
+    const settingsButton = [...document.querySelectorAll(".actions button,a")].find(el => el.textContent?.trim() === "IMPOSTAZIONI SOCIAL");
+    if (!settingsButton || settingsButton.dataset.surgicalBound) return;
+    settingsButton.dataset.surgicalBound = "1";
+    settingsButton.onclick = async event => {
+      event.preventDefault();
+      let root = document.getElementById("fsSurgicalSettings");
+      if (root) { root.remove(); return; }
+      root = document.createElement("div"); root.id = "fsSurgicalSettings"; root.className = "fs-surgical-modal";
+      root.innerHTML = `<div class="fs-surgical-modal-card"><div class="fs-surgical-kicker">FSOCIAL</div><h2 class="fs-surgical-title">IMPOSTAZIONI SOCIAL</h2><p class="fs-surgical-sub">Gestisci le preferenze di visibilità della tua attività.</p><div class="fs-surgical-label">ATTIVITÀ</div><button id="fsActivityToggle" class="fs-surgical-confirm" style="width:100%">VISIBILITÀ ATTIVA</button><div class="fs-surgical-actions"><button id="fsSettingsClose" class="fs-surgical-cancel">CHIUDI</button><button id="fsSettingsSave" class="fs-surgical-confirm">SALVA</button></div></div>`;
+      document.body.appendChild(root);
+      root.addEventListener("click", e => { if (e.target === root) root.remove(); });
+      const s = await session(); if (!s) return;
+      let enabled = true;
+      const toggle = root.querySelector("#fsActivityToggle"); toggle.onclick = () => { enabled = !enabled; toggle.textContent = enabled ? "VISIBILITÀ ATTIVA" : "VISIBILITÀ NASCOSTA"; };
+      root.querySelector("#fsSettingsClose").onclick = () => root.remove();
+      root.querySelector("#fsSettingsSave").onclick = async () => { const { error } = await supabase.from("profile_settings").upsert({ user_id:s.user.id, show_activity:enabled, updated_at:new Date().toISOString() }); if (error) { window.showToast?.(error.message); return; } window.showToast?.("Impostazioni salvate."); root.remove(); };
+    };
+  }
+
+  function init() {
+    addStyle();
+    if (location.pathname.toLowerCase().endsWith("/fsocial.html")) {
+      wrapChallenge();
+      setInterval(() => { wrapChallenge(); decorateBattleHub(); }, 500);
+    }
+    if (document.body.classList.contains("battle-page")) bindBattleAccept();
+    if (location.pathname.toLowerCase().endsWith("/area-personale.html")) {
+      decorateProfile(); removeChatSetting(); setInterval(() => { decorateProfile(); removeChatSetting(); }, 700);
+    }
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once:true }); else init();
+})();
