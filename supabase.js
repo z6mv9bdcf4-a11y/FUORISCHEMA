@@ -33,7 +33,6 @@ if (currentPath.endsWith("/area-personale.html")) {
     import("./fsocial-battle-ranking.js").catch((error) => console.error("FSocial Battle Ranking failed to load", error));
     import("./fsocial-bottom-nav-fix.js").catch((error) => console.error("FSocial bottom navigation fix failed to load", error));
     import("./fsocial-surgical-overrides.js").catch((error) => console.error("FSocial surgical overrides failed to load", error));
-    import("./fsocial-surgical-overrides-2.js").catch((error) => console.error("FSocial social interaction overrides failed to load", error));
     import("./fsocial-surgical-final.js").catch((error) => console.error("FSocial final profile layer failed to load", error));
     import("./fsocial-profile-viewer.js").catch((error) => console.error("FSocial profile post viewer failed to load", error));
 }
