@@ -1033,7 +1033,7 @@ async function respondToBattle(action, postId = "") {
     }
 }
 
-function updateBattleState()function updateBattleState() {
+function updateBattleState() {
     const battle = state.battle?.battle;
 
     if (!battle) return;
@@ -1666,9 +1666,14 @@ async function initBattlePage() {
 }
 
 if (document.body?.classList.contains("battle-page")) {
-    document.addEventListener(
-        "DOMContentLoaded",
-        initBattlePage
-    );
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            initBattlePage,
+            { once: true }
+        );
+    } else {
+        initBattlePage();
+    }
 }
 
