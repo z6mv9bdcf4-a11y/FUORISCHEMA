@@ -63,12 +63,28 @@
     const card = player?.closest?.(".fs-battle-hub-card");
     if (!card) return false;
 
-    card.querySelectorAll(".fs-battle-hub-player").forEach(x => {
+    const players = [...card.querySelectorAll(".fs-battle-hub-player")];
+    const alreadySelected = player.classList.contains("fs-surgical-selected");
+
+    players.forEach(x => {
       x.classList.remove("fs-surgical-selected");
     });
-    player.classList.add("fs-surgical-selected");
 
     const button = card.querySelector(".fs-battle-hub-vote");
+
+    // Tocca nuovamente l'outfit selezionato = annulla la selezione.
+    if (alreadySelected) {
+      if (button) {
+        button.disabled = true;
+        button.classList.remove("fs-vote-ready");
+        button.classList.add("fs-vote-locked");
+        button.textContent = "TOCCA UN OUTFIT PER VOTARE →";
+      }
+      return true;
+    }
+
+    player.classList.add("fs-surgical-selected");
+
     if (button) {
       button.disabled = false;
       button.classList.add("fs-vote-ready");
@@ -147,12 +163,8 @@
 
   function init() {
     if (!location.pathname.toLowerCase().endsWith("/fsocial.html")) return;
-
-    // Touch/pointer: seleziona immediatamente l'outfit senza bloccare il gesto.
-    document.addEventListener("pointerdown", event => {
-      const player = event.target?.closest?.(".fs-battle-hub-player");
-      if (player) selectPlayer(player);
-    }, true);
+    // La selezione avviene solo sul tap/click completato.
+    // Uno swipe sopra una card non deve selezionarla.
 
     // Click: blocca solo l'eventuale navigazione del player, non l'intera card.
     document.addEventListener("click", event => {
