@@ -98,19 +98,13 @@
   function sync() {
     document.querySelectorAll(".fs-battle-hub-card").forEach(card => {
       const button = card.querySelector(".fs-battle-hub-vote");
+      const selected = selectedSide(card) !== null;
+
       if (!button) return;
 
-      const selected = card.querySelector(".fs-surgical-selected");
-
       button.disabled = !selected;
-      button.classList.toggle("fs-vote-ready", !!selected);
+      button.classList.toggle("fs-vote-ready", selected);
       button.classList.toggle("fs-vote-locked", !selected);
-
-      if (!selected) {
-        button.textContent = "TOCCA UN OUTFIT PER VOTARE →";
-      } else {
-        button.textContent = "VOTA";
-      }
     });
   }
 
