@@ -554,6 +554,387 @@ function updateBattleVoteResult() {
     status.textContent = "";
 }
 
+function installBattleResponsePickerStyles() {
+    const styleId = "fsocial-battle-response-picker-style";
+
+    if (document.getElementById(styleId)) return;
+
+    const style = document.createElement("style");
+    style.id = styleId;
+
+    style.textContent = `
+        .fs-battle-accept-picker{
+            position:fixed;
+            inset:0;
+            z-index:99999;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:20px;
+            background:rgba(0,0,0,.78);
+            backdrop-filter:blur(16px);
+            -webkit-backdrop-filter:blur(16px);
+        }
+
+        .fs-battle-accept-picker-card{
+            width:min(620px,100%);
+            max-height:min(760px,calc(100vh - 40px));
+            overflow:auto;
+            padding:24px;
+            border:1px solid rgba(255,255,255,.10);
+            border-radius:24px;
+            background:#0d0d10;
+            box-shadow:0 30px 100px rgba(0,0,0,.55);
+        }
+
+        .fs-battle-accept-picker-kicker{
+            color:#ff4d00;
+            font-size:9px;
+            font-weight:900;
+            letter-spacing:.14em;
+            margin-bottom:8px;
+        }
+
+        .fs-battle-accept-picker-title{
+            margin:0;
+            color:#fff;
+            font-size:24px;
+            font-weight:900;
+            letter-spacing:-.03em;
+        }
+
+        .fs-battle-accept-picker-subtitle{
+            margin:8px 0 18px;
+            color:#777;
+            font-size:11px;
+            line-height:1.5;
+        }
+
+        .fs-battle-accept-picker-grid{
+            display:grid;
+            grid-template-columns:repeat(3,minmax(0,1fr));
+            gap:10px;
+            max-height:430px;
+            overflow-y:auto;
+            padding:2px;
+        }
+
+        .fs-battle-accept-post{
+            position:relative;
+            display:block;
+            padding:0;
+            aspect-ratio:1;
+            overflow:hidden;
+            border:1px solid rgba(255,255,255,.08);
+            border-radius:16px;
+            background:#151518;
+            cursor:pointer;
+            transition:.18s ease;
+        }
+
+        .fs-battle-accept-post:hover{
+            transform:translateY(-2px);
+            border-color:rgba(255,77,0,.45);
+        }
+
+        .fs-battle-accept-post.selected{
+            border-color:#ff4d00;
+            box-shadow:
+                0 0 0 2px rgba(255,77,0,.25),
+                0 14px 35px rgba(255,77,0,.12);
+        }
+
+        .fs-battle-accept-post img{
+            width:100%;
+            height:100%;
+            display:block;
+            object-fit:cover;
+        }
+
+        .fs-battle-accept-post-check{
+            position:absolute;
+            top:8px;
+            right:8px;
+            width:27px;
+            height:27px;
+            display:grid;
+            place-items:center;
+            border-radius:50%;
+            background:rgba(0,0,0,.72);
+            color:#fff;
+            font-size:13px;
+            font-weight:900;
+            opacity:0;
+        }
+
+        .fs-battle-accept-post.selected .fs-battle-accept-post-check{
+            opacity:1;
+            background:#ff4d00;
+        }
+
+        .fs-battle-accept-picker-status{
+            min-height:18px;
+            margin:12px 0;
+            color:#999;
+            font-size:10px;
+            font-weight:800;
+            text-align:center;
+        }
+
+        .fs-battle-accept-picker-actions{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:10px;
+            margin-top:14px;
+        }
+
+        .fs-battle-accept-picker-actions button{
+            min-height:46px;
+            border-radius:14px;
+            font-size:10px;
+            font-weight:900;
+            letter-spacing:.08em;
+            cursor:pointer;
+        }
+
+        .fs-battle-accept-confirm{
+            border:1px solid #ff4d00;
+            background:#ff4d00;
+            color:#080808;
+        }
+
+        .fs-battle-accept-confirm:disabled{
+            opacity:.35;
+            cursor:not-allowed;
+        }
+
+        .fs-battle-accept-cancel{
+            border:1px solid rgba(255,255,255,.10);
+            background:#17171b;
+            color:#aaa;
+        }
+
+        .battle-response-button{
+            transition:
+                transform .18s ease,
+                box-shadow .18s ease,
+                opacity .18s ease !important;
+        }
+
+        .battle-response-button:hover:not(:disabled){
+            transform:translateY(-2px);
+        }
+
+        .battle-response-accept:hover:not(:disabled){
+            box-shadow:0 12px 30px rgba(255,77,0,.20);
+        }
+
+        .battle-response-button:disabled{
+            opacity:.45;
+            cursor:not-allowed;
+        }
+
+        @media(max-width:550px){
+            .fs-battle-accept-picker{
+                padding:12px;
+                align-items:flex-end;
+            }
+
+            .fs-battle-accept-picker-card{
+                padding:18px;
+                border-radius:22px 22px 0 0;
+                max-height:90vh;
+            }
+
+            .fs-battle-accept-picker-grid{
+                grid-template-columns:repeat(2,minmax(0,1fr));
+                max-height:48vh;
+            }
+        }
+    `;
+
+    document.head.appendChild(style);
+}
+
+function closeBattleAcceptPicker() {
+    document.getElementById("fsBattleAcceptPicker")?.remove();
+}
+
+async function openBattleAcceptPicker() {
+    const battle = state.battle?.battle;
+    const currentUserId = state.session?.user?.id;
+
+    if(
+        !battle ||
+        battle.status !== "pending" ||
+        !currentUserId ||
+        currentUserId !== battle.challenged_id
+    ){
+        return;
+    }
+
+    if(document.getElementById("fsBattleAcceptPicker")){
+        return;
+    }
+
+    installBattleResponsePickerStyles();
+
+    const picker = document.createElement("div");
+    picker.id = "fsBattleAcceptPicker";
+    picker.className = "fs-battle-accept-picker";
+
+    picker.innerHTML = `
+        <div class="fs-battle-accept-picker-card">
+            <div class="fs-battle-accept-picker-kicker">
+                ⚔️ FSOCIAL BATTLE
+            </div>
+
+            <h2 class="fs-battle-accept-picker-title">
+                SCEGLI IL TUO OUTFIT
+            </h2>
+
+            <p class="fs-battle-accept-picker-subtitle">
+                Scegli il post con cui vuoi affrontare questa Battle.
+            </p>
+
+            <div
+                id="fsBattleAcceptPostGrid"
+                class="fs-battle-accept-picker-grid"
+            >
+                <div class="fs-battle-accept-picker-status">
+                    CARICAMENTO OUTFIT...
+                </div>
+            </div>
+
+            <div
+                id="fsBattleAcceptPickerStatus"
+                class="fs-battle-accept-picker-status"
+                aria-live="polite"
+            ></div>
+
+            <div class="fs-battle-accept-picker-actions">
+                <button
+                    type="button"
+                    class="fs-battle-accept-cancel"
+                    id="fsBattleAcceptCancel"
+                >
+                    ANNULLA
+                </button>
+
+                <button
+                    type="button"
+                    class="fs-battle-accept-confirm"
+                    id="fsBattleAcceptConfirm"
+                    disabled
+                >
+                    ⚔️ ACCETTA E INIZIA
+                </button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(picker);
+
+    const grid = document.getElementById("fsBattleAcceptPostGrid");
+    const status = document.getElementById("fsBattleAcceptPickerStatus");
+    const confirmButton = document.getElementById("fsBattleAcceptConfirm");
+
+    let selectedPostId = "";
+
+    document.getElementById("fsBattleAcceptCancel")?.addEventListener(
+        "click",
+        closeBattleAcceptPicker
+    );
+
+    try{
+        const module = await import("./supabase.js");
+
+        const { data: posts, error } =
+            await module.supabase
+                .from("posts")
+                .select("id,user_id,image_url,content,created_at")
+                .eq("user_id", currentUserId)
+                .not("image_url", "is", null)
+                .order("created_at", { ascending:false })
+                .limit(12);
+
+        if(error) throw error;
+
+        const availablePosts = Array.isArray(posts) ? posts : [];
+
+        if(!availablePosts.length){
+            grid.innerHTML = `
+                <div class="fs-battle-accept-picker-status">
+                    NON HAI ANCORA PUBBLICATO UN OUTFIT.
+                </div>
+            `;
+            return;
+        }
+
+        grid.innerHTML = availablePosts.map(post => `
+            <button
+                type="button"
+                class="fs-battle-accept-post"
+                data-post-id="${escapeText(post.id)}"
+            >
+                <img
+                    src="${escapeText(post.image_url)}"
+                    alt="Il tuo outfit"
+                    loading="lazy"
+                >
+                <span class="fs-battle-accept-post-check">✓</span>
+            </button>
+        `).join("");
+
+        grid.querySelectorAll(".fs-battle-accept-post").forEach(button => {
+            button.addEventListener("click", () => {
+                grid
+                    .querySelectorAll(".fs-battle-accept-post")
+                    .forEach(item => item.classList.remove("selected"));
+
+                button.classList.add("selected");
+
+                selectedPostId =
+                    button.dataset.postId || "";
+
+                confirmButton.disabled = !selectedPostId;
+
+                if(status){
+                    status.textContent =
+                        "Outfit selezionato.";
+                }
+            });
+        });
+
+        confirmButton.addEventListener("click", async () => {
+            if(!selectedPostId) return;
+
+            await respondToBattle(
+                "accept",
+                selectedPostId
+            );
+        });
+
+    }catch(error){
+        console.error(
+            "FSocial Battle accept outfit error:",
+            error
+        );
+
+        grid.innerHTML = `
+            <div class="fs-battle-accept-picker-status">
+                IMPOSSIBILE CARICARE I TUOI OUTFIT.
+            </div>
+        `;
+
+        if(status){
+            status.textContent =
+                error?.message ||
+                "Errore durante il caricamento degli outfit.";
+        }
+    }
+}
+
 function updateBattleResponseActions() {
     const container = $("battleResponseActions");
     const acceptButton = $("acceptBattleButton");
@@ -576,54 +957,83 @@ function updateBattleResponseActions() {
     container.hidden = !canRespond;
     acceptButton.disabled = !canRespond;
     declineButton.disabled = !canRespond;
+
+    if(canRespond){
+        acceptButton.textContent =
+            "⚔️ SCEGLI OUTFIT E ACCETTA";
+    }
 }
 
-async function respondToBattle(action) {
+async function respondToBattle(action, postId = "") {
     const battle = state.battle?.battle;
 
-    if (!battle || battle.status !== "pending") {
+    if(!battle || battle.status !== "pending"){
         return;
     }
 
     const currentUserId = state.session?.user?.id;
 
-    if (!currentUserId || currentUserId !== battle.challenged_id) {
+    if(
+        !currentUserId ||
+        currentUserId !== battle.challenged_id
+    ){
+        return;
+    }
+
+    if(action === "accept" && !postId){
+        await openBattleAcceptPicker();
         return;
     }
 
     const acceptButton = $("acceptBattleButton");
     const declineButton = $("declineBattleButton");
 
-    if (acceptButton) acceptButton.disabled = true;
-    if (declineButton) declineButton.disabled = true;
+    if(acceptButton) acceptButton.disabled = true;
+    if(declineButton) declineButton.disabled = true;
 
-    try {
+    try{
+        const body = {
+            battle_id: battle.id
+        };
+
+        if(action === "accept"){
+            body.post_id = Number(postId);
+        }
+
         const data = await battleRequest({
             method: "POST",
             action,
-            body: {
-                battle_id: battle.id
-            }
+            body
         });
 
-        if (!data?.success) {
-            throw new Error(data?.message || "Impossibile aggiornare la Battle.");
+        if(!data?.success){
+            throw new Error(
+                data?.message ||
+                "Impossibile aggiornare la Battle."
+            );
         }
 
-        await refreshBattle();
-    } catch (error) {
-        console.error("FSocial Battle response error:", error);
+        closeBattleAcceptPicker();
 
-        if (acceptButton) acceptButton.disabled = false;
-        if (declineButton) declineButton.disabled = false;
+        await refreshBattle();
+
+    }catch(error){
+        console.error(
+            "FSocial Battle response error:",
+            error
+        );
+
+        if(acceptButton) acceptButton.disabled = false;
+        if(declineButton) declineButton.disabled = false;
 
         showVoteMessage(
-            error?.message || "Impossibile aggiornare la Battle."
+            error?.message ||
+            "Impossibile aggiornare la Battle."
         );
     }
 }
 
-function updateBattleState() {
+function updateBattleState()function updateBattleState() {
     const battle = state.battle?.battle;
 
     if (!battle) return;
@@ -652,7 +1062,7 @@ function updateBattleState() {
         if (message) {
             message.hidden = false;
             message.textContent =
-                "Questa sfida non ÃƒÂ¨ ancora iniziata.";
+                "La sfida è in attesa del tuo outfit. Scegli un outfit per iniziare la Battle.";
         }
 
         return;
@@ -665,7 +1075,7 @@ function updateBattleState() {
         if (message) {
             message.hidden = false;
             message.textContent =
-                "Questa sfida ÃƒÂ¨ stata rifiutata.";
+                "Questa sfida è stata rifiutata.";
         }
 
         return;
@@ -678,7 +1088,7 @@ function updateBattleState() {
         if (message) {
             message.hidden = false;
             message.textContent =
-                "Questa Battle non ÃƒÂ¨ piÃƒÂ¹ disponibile.";
+                "Questa Battle non è più disponibile.";
         }
 
         return;
@@ -695,7 +1105,7 @@ function updateBattleState() {
 
             if (!winnerId) {
                 message.textContent =
-                    "La Battle ÃƒÂ¨ terminata in pareggio.";
+                    "La Battle è terminata in pareggio.";
             } else if (winnerId === battle.challenger_id) {
                 message.textContent =
                     "Ã°Å¸Ââ€  Battle terminata: ha vinto il primo outfit.";
@@ -712,7 +1122,7 @@ function updateBattleState() {
         if (message) {
             message.hidden = false;
             message.textContent =
-                "Ã¢Å“â€œ Hai votato. Ora fai girare la Battle.";
+                "✓ Hai votato. Ora fai girare la Battle.";
         }
     } else if (message) {
         message.hidden = true;
