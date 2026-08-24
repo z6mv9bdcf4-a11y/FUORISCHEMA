@@ -12,6 +12,10 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
 const currentPath = window.location.pathname.toLowerCase();
 globalThis.__FUORISCHEMA_SUPABASE__ = supabase;
 
+if (currentPath.endsWith("/login.html")) {
+    import("./auth-flow-bridge.js").catch((error) => console.error("FUORISCHEMA auth bridge failed to load:", error));
+}
+
 if (currentPath.endsWith("/fsocial.html")) {
     import("./fsocial-safety.js").catch((error) => console.error("FSocial safety module failed to load:", error));
     import("./fsocial-owner-tools.js").catch((error) => console.error("FSocial owner tools failed to load:", error));
