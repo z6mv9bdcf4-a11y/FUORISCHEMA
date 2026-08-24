@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>RANKING — FUORISCHEMA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--orange:#ff4d00;--bg:#08080a;--muted:#77777d;--line:rgba(255,255,255,.09)}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 0,rgba(255,77,0,.12),transparent 35%),#08080a;color:#fff;font-family:Inter,Arial,sans-serif;padding-bottom:40px}.wrap{width:min(680px,100%);margin:auto;padding:20px 16px 60px}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}.back{color:#aaa;text-decoration:none;font-size:11px;font-weight:800;letter-spacing:1px}.brand{font:900 19px Syne}.brand span{color:var(--orange)}.kicker{color:var(--orange);font-size:9px;font-weight:900;letter-spacing:2px}.title{font:900 clamp(38px,11vw,64px)/.9 Syne;margin:7px 0 24px;letter-spacing:-2px}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}.tabs button{height:48px;border-radius:999px;border:1px solid var(--line);background:#111116;color:#777;font:900 10px Inter;letter-spacing:1.2px}.tabs button.active{background:var(--orange);border-color:var(--orange);color:#050505}.list{display:grid;gap:8px}.row{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:12px;padding:14px;border:1px solid var(--line);border-radius:17px;background:rgba(255,255,255,.025);text-decoration:none;color:#fff}.row.me{border-color:rgba(255,77,0,.55);box-shadow:0 0 24px rgba(255,77,0,.08)}.rank{font:900 18px Syne;color:var(--orange);text-align:center}.name{min-width:0}.name strong{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.name span{display:block;color:#666;font-size:9px;margin-top:4px}.score{text-align:right;font-weight:900;font-size:12px}.score small{display:block;color:#666;font-size:8px;letter-spacing:1px;margin-top:3px}.state{padding:50px 15px;text-align:center;color:#666;font-size:10px;font-weight:800;letter-spacing:1.4px}.footer{text-align:center;color:#333;font-size:8px;font-weight:800;letter-spacing:2px;margin-top:34px}@media(max-width:520px){.wrap{padding:18px 12px 50px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="top"><a class="back" href="area-personale.html">← PROFILO</a><div class="brand">FUORI<span>SCHEMA</span></div></header>
+<div class="kicker">FSOCIAL / BATTLE</div>
+<h1 class="title">RANKING.</h1>
+<div class="tabs"><button id="globalTab" class="active">GLOBALE</button><button id="weeklyTab">SETTIMANA</button></div>
+<section id="rankingList" class="list"><div class="state">CARICAMENTO...</div></section>
+<div class="footer">NON TI SEGUIAMO. TI SFIDIAMO.</div>
+</main>
+<script type="module">
+import { supabase } from './supabase.js';
+const list=document.getElementById('rankingList'),globalTab=document.getElementById('globalTab'),weeklyTab=document.getElementById('weeklyTab');
+const esc=v=>{const d=document.createElement('div');d.textContent=v??'';return d.innerHTML};
+async function load(scope){list.innerHTML='<div class="state">CARICAMENTO...</div>';globalTab.classList.toggle('active',scope==='global');weeklyTab.classList.toggle('active',scope==='weekly');try{const {data,error}=await supabase.rpc('get_fsocial_battle_ranking',{p_scope:scope});if(error)throw error;if(!data?.length){list.innerHTML='<div class="state">NESSUN CONTENDENTE ANCORA</div>';return}const me=(await supabase.auth.getUser()).data?.user?.id;const ids=data.map(x=>x.user_id);const {data:profiles,error:pe}=await supabase.from('profiles').select('id,username,full_name').in('id',ids);if(pe)throw pe;const map=new Map((profiles||[]).map(p=>[p.id,p]));list.innerHTML=data.map(x=>{const p=map.get(x.user_id)||{};const name=p.full_name||p.username||'UTENTE';const handle=p.username?'@'+p.username:'';return `<a class="row ${x.user_id===me?'me':''}" href="area-personale.html?id=${encodeURIComponent(x.user_id)}"><div class="rank">#${x.rank}</div><div class="name"><strong>${esc(name)}</strong><span>${esc(handle)} · ${x.wins} vittorie · ${x.win_rate}% win rate</span></div><div class="score">${x.wins}<small>WIN</small></div></a>`}).join('')}catch(e){list.innerHTML=`<div class="state">${esc(e?.message||'RANKING NON DISPONIBILE')}</div>`}}
+globalTab.onclick=()=>load('global');weeklyTab.onclick=()=>load('weekly');load('global');
+</script>
+</body></html>
