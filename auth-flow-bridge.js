@@ -1,5 +1,4 @@
-import { supabase } from "./supabase.js";
-
+const supabase = globalThis.__FUORISCHEMA_SUPABASE__;
 const path = window.location.pathname.toLowerCase();
 
 function errorText(error) {
