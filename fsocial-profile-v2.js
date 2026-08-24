@@ -26,6 +26,8 @@ import { supabase } from './supabase.js';
 
   const css=document.createElement('style');
   css.textContent=`
+  /* PROFILE V2: these controls belong ONLY to the authenticated user's own profile. */
+  .fs-final-public #fsProfileSaved,.fs-final-public #fsProfileAchievements,.fs-final-public #fsProfileSettings{display:none!important}
   #fsProfileV2Sheet .fpv2-backdrop{position:fixed;inset:0;z-index:100001;background:rgba(0,0,0,.62);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);opacity:0;visibility:hidden;transition:.22s ease}
   #fsProfileV2Sheet .fpv2-backdrop.open{opacity:1;visibility:visible}
   #fsProfileV2Sheet .fpv2-sheet{position:absolute;left:0;right:0;bottom:0;max-height:82vh;background:#0b0b0e;border:1px solid rgba(255,255,255,.1);border-bottom:0;border-radius:22px 22px 0 0;transform:translateY(105%);transition:transform .34s cubic-bezier(.16,1,.3,1);overflow:hidden}
@@ -74,9 +76,23 @@ import { supabase } from './supabase.js';
     });
   }
 
+  function isPublicProfile(){
+    return document.documentElement.classList.contains('fs-final-public') ||
+           document.body.classList.contains('fs-final-public') ||
+           !!document.querySelector('.fs-final-public');
+  }
+
+  function removePersonalControls(){
+    ['fsProfileSaved','fsProfileAchievements','fsProfileSettings'].forEach(id=>document.getElementById(id)?.remove());
+  }
+
   function mount(){
     const actions=document.querySelector('.actions');
     if(!actions)return;
+    if(isPublicProfile()){
+      removePersonalControls();
+      return;
+    }
     if(!document.getElementById('fsProfileSaved')){
       const b=document.createElement('button');
       b.id='fsProfileSaved';b.className='action-btn';b.textContent='SALVATI';b.onclick=saved;actions.appendChild(b);
@@ -91,5 +107,14 @@ import { supabase } from './supabase.js';
     }
   }
 
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
+  function enforceProfileVisibility(){
+    if(isPublicProfile()) removePersonalControls();
+    else mount();
+  }
+
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',enforceProfileVisibility,{once:true});else enforceProfileVisibility();
+
+  const observer=new MutationObserver(()=>enforceProfileVisibility());
+  observer.observe(document.documentElement,{attributes:true,attributeFilter:['class'],childList:true,subtree:true});
+  setTimeout(()=>observer.disconnect(),30000);
 })();
