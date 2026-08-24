@@ -1,4 +1,4 @@
-﻿import { supabase } from "./supabase.js";
+import { supabase } from "./supabase.js";
 
 (() => {
   "use strict";
@@ -210,7 +210,7 @@
       const p1 = total ? 100 - p0 : 0;
       players[0]?.querySelector(".fs-battle-hub-votes")?.insertAdjacentHTML("beforeend", `<span class="fs-surgical-percent">${p0}%</span>`);
       players[1]?.querySelector(".fs-battle-hub-votes")?.insertAdjacentHTML("beforeend", `<span class="fs-surgical-percent">${p1}%</span>`);
-      const oldVote = card.querySelector(".fs-battle-hub-vote"); if (oldVote) oldVote.textContent = "TOCCA UN OUTFIT PER VOTARE →";
+      const oldVote = card.querySelector(".fs-battle-hub-vote"); if (oldVote && !card.querySelector(".fs-surgical-selected")) oldVote.textContent = "TOCCA UN OUTFIT PER VOTARE →";
     });
   }
 
