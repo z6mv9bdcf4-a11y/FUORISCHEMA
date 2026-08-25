@@ -41,15 +41,52 @@
     badge.classList.toggle("active", count > 0);
   }
 
+  function openSearch() {
+    const path = window.location.pathname.toLowerCase();
+    const isHome = path.endsWith(`/${HOME_PATH}`);
+    const isProfile = path.endsWith(`/${PROFILE_PATH}`);
+
+    if (isHome) {
+      const input = document.querySelector(".user-search-input");
+      if (input) {
+        input.focus();
+        input.scrollIntoView({ behavior: "smooth", block: "center" });
+        return true;
+      }
+      return false;
+    }
+
+    if (isProfile) {
+      window.location.href = `${HOME_PATH}?action=search`;
+      return true;
+    }
+
+    return false;
+  }
+
+  function bindSearch() {
+    const nav = getNav();
+    const search = nav?.querySelector("#navSearch");
+    if (!search || search.dataset.navigationSearchBound === "1") return;
+
+    search.dataset.navigationSearchBound = "1";
+    search.addEventListener("click", (event) => {
+      event.preventDefault();
+      openSearch();
+    });
+  }
+
   function init() {
     if (!getNav()) return;
     setActive();
+    bindSearch();
   }
 
   window.FsocialNavigation = Object.freeze({
     init,
     setActive,
-    setNotificationBadge
+    setNotificationBadge,
+    openSearch
   });
 
   if (document.readyState === "loading") {
