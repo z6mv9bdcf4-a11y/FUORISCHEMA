@@ -31,7 +31,7 @@
       background: #ff4d00;
     }
 
-    /* PROFILE: keep the identity/stat text readable on either light or dark profile backgrounds. */
+    /* PROFILE: identity/stat text must remain readable on the actual profile background. */
     .profile-name,
     .stat-value,
     .posts-count {
@@ -48,9 +48,9 @@
   function colorForBackground(el) {
     const bg = getComputedStyle(el || document.body).backgroundColor || "";
     const m = bg.match(/rgba?\(([^)]+)\)/i);
-    if (!m) return "#fff";
+    if (!m) return "#171717";
     const parts = m[1].split(",").map(v => Number.parseFloat(v.trim()));
-    if (parts.length < 3 || parts.some(Number.isNaN)) return "#fff";
+    if (parts.length < 3 || parts.some(Number.isNaN)) return "#171717";
     const [r,g,b] = parts;
     const luminance = (0.2126*r + 0.7152*g + 0.0722*b) / 255;
     return luminance > 0.58 ? "#171717" : "#fff";
@@ -58,9 +58,14 @@
 
   function syncProfileTextContrast() {
     if (!isProfile) return;
+    /* The profile currently uses a light hero/background, so never leave the name white. */
+    document.querySelectorAll(".profile-name").forEach(el => {
+      el.style.setProperty("color", "#171717", "important");
+    });
+
     const sample = document.querySelector(".profile-container") || document.body;
     const color = colorForBackground(sample);
-    document.querySelectorAll(".profile-name,.stat-value,.posts-count").forEach(el => {
+    document.querySelectorAll(".stat-value,.posts-count").forEach(el => {
       el.style.setProperty("color", color, "important");
     });
     document.querySelectorAll(".stat-label").forEach(el => {
