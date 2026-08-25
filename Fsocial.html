@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -2158,6 +2158,7 @@ let selectedImageFile = null;
 let selectedImageUrl = null;
 let currentFeedType = "foryou"; // "foryou" oppure "recent"
 let searchDebounceTimer = null;
+let searchRequestId = 0;
 let notifPollInterval = null;
 const profileCache = new Map();
 
@@ -2635,6 +2636,7 @@ navNotif?.addEventListener("click", () => {
 ========================================================= */
 userSearchInput.addEventListener("input", (e) => {
     const query = e.target.value.trim();
+    const requestId = ++searchRequestId;
 
     if (query.length > 0) {
         searchClearBtn.style.display = "block";
