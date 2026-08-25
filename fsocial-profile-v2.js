@@ -62,9 +62,14 @@ import { supabase } from './supabase.js';
   }
 
   function isPublicProfile(){
-    return document.documentElement.classList.contains('fs-final-public') ||
-           document.body.classList.contains('fs-final-public') ||
-           !!document.querySelector('.fs-final-public');
+    if(
+      document.documentElement.classList.contains('fs-final-public') ||
+      document.body.classList.contains('fs-final-public') ||
+      !!document.querySelector('.fs-final-public')
+    ) return true;
+
+    const params = new URLSearchParams(window.location.search);
+    return params.has('id') && params.get('id') !== '';
   }
 
   function removePersonalControls(){
