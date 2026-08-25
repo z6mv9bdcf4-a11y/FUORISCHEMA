@@ -8,62 +8,124 @@
   const isProfile = path.endsWith("/area-personale.html");
   if (!isHome && !isProfile) return;
 
-  /* FSocial Home and Profile already own the native bottom nav and its real handlers. */
-  if (document.querySelector(".bottom-nav")) return;
+  const homeNavCss = `
+    .bottom-nav{
+      display:flex !important;
+      position:fixed !important;
+      left:0 !important;
+      right:0 !important;
+      bottom:0 !important;
+      height:calc(60px + env(safe-area-inset-bottom, 0px)) !important;
+      padding-bottom:env(safe-area-inset-bottom, 0px) !important;
+      background:rgba(8,8,10,0.95) !important;
+      backdrop-filter:blur(20px) !important;
+      -webkit-backdrop-filter:blur(20px) !important;
+      border-top:1px solid rgba(255,255,255,0.08) !important;
+      z-index:100000 !important;
+      align-items:center !important;
+      justify-content:space-around !important;
+      box-shadow:0 -10px 30px rgba(0,0,0,0.5) !important;
+    }
+    .bottom-nav-item{
+      display:flex !important;
+      flex-direction:column !important;
+      align-items:center !important;
+      justify-content:center !important;
+      flex:1 !important;
+      height:100% !important;
+      color:#8e8e93 !important;
+      transition:color .2s ease,transform .15s ease !important;
+      position:relative !important;
+      background:transparent !important;
+      border:none !important;
+      cursor:pointer !important;
+      text-decoration:none !important;
+    }
+    .bottom-nav-item:active{transform:scale(.88) !important}
+    .bottom-nav-item.active,.bottom-nav-item:hover{color:#fff !important}
+    .bottom-nav-icon{font-size:20px !important;line-height:1 !important}
+    .bottom-nav-label{font-size:9px !important;font-weight:700 !important;letter-spacing:.5px !important;margin-top:3px !important;text-transform:uppercase !important}
+    .bottom-nav-item.plus-btn{flex:0 0 48px !important}
+    .bottom-nav-item.plus-btn .plus-inner{
+      width:42px !important;
+      height:42px !important;
+      border-radius:50% !important;
+      background:#ff4d00 !important;
+      color:#000 !important;
+      display:grid !important;
+      place-items:center !important;
+      font-size:22px !important;
+      font-weight:900 !important;
+      box-shadow:0 0 16px rgba(255,77,0,.25) !important;
+      transition:transform .2s ease,background-color .2s ease !important;
+    }
+    .bottom-nav-item.plus-btn:active .plus-inner{transform:scale(.92) !important;background:#fff !important}
+    .bottom-nav-badge{
+      position:absolute !important;
+      top:8px !important;
+      right:22% !important;
+      background:#ff4d00 !important;
+      color:#000 !important;
+      font-size:9px !important;
+      font-weight:900 !important;
+      min-width:14px !important;
+      height:14px !important;
+      border-radius:100px !important;
+      display:none !important;
+      align-items:center !important;
+      justify-content:center !important;
+      padding:0 3px !important;
+      border:2px solid #050505 !important;
+    }
+    .bottom-nav-badge.active{display:inline-flex !important}
+    @media(max-width:550px){
+      .bottom-nav{height:calc(60px + env(safe-area-inset-bottom, 0px)) !important}
+    }
+  `;
 
-  const icon = (name) => {
-    const paths = {
-      home: '<path d="M3 10.8 12 3l9 7.8"/><path d="M5.5 9.5V21h13V9.5"/><path d="M9.5 21v-6h5v6"/>',
-      search: '<circle cx="10.8" cy="10.8" r="6.3"/><path d="m16 16 5 5"/>',
-      bell: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/>',
-      user: '<circle cx="12" cy="8" r="3.5"/><path d="M5 21a7 7 0 0 1 14 0"/>'
-    };
-    return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths[name] || ""}</g></svg>`;
-  };
+  function normalizeProfileNav() {
+    if (!isProfile) return;
+    const nav = document.querySelector(".bottom-nav");
+    if (!nav) return;
+
+    let style = document.getElementById("fsocialProfileBottomNavStyle");
+    if (!style) {
+      style = document.createElement("style");
+      style.id = "fsocialProfileBottomNavStyle";
+      document.head.appendChild(style);
+    }
+    style.textContent = homeNavCss;
+
+    const profileItem = nav.querySelector("#navProfile");
+    if (profileItem) {
+      profileItem.classList.add("active");
+      const icon = profileItem.querySelector(".bottom-nav-icon");
+      if (icon) icon.textContent = "♙";
+    }
+  }
 
   function inject() {
     if (!document.body) return;
-    if (document.querySelector(".bottom-nav")) return;
 
-    document.querySelectorAll(".bottom-nav,#fsocialBottomNav").forEach(el => el.remove());
+    const nativeNav = document.querySelector(".bottom-nav");
+    if (nativeNav) {
+      normalizeProfileNav();
+      return;
+    }
+
+    if (isHome) return;
 
     const nav = document.createElement("nav");
-    nav.id = "fsocialBottomNav";
+    nav.className = "bottom-nav";
     nav.setAttribute("aria-label", "Navigazione FSocial");
     nav.innerHTML = `
-      <div class="fsbn-inner">
-        <a class="fsbn-item ${isHome ? "active" : ""}" href="Fsocial.html" data-nav="home" aria-label="Home"><span class="fsbn-icon">${icon("home")}</span><span>HOME</span></a>
-        <button class="fsbn-item" type="button" data-nav="search" aria-label="Cerca"><span class="fsbn-icon">${icon("search")}</span><span>CERCA</span></button>
-        <button class="fsbn-item" type="button" data-nav="create" aria-label="Crea un post"><span class="fsbn-add">+</span></button>
-        <button class="fsbn-item" type="button" data-nav="notifications" aria-label="Notifiche"><span class="fsbn-icon">${icon("bell")}</span><span>NOTIFICHE</span></button>
-        <a class="fsbn-item ${isProfile ? "active" : ""}" href="area-personale.html" data-nav="profile" aria-label="Profilo"><span class="fsbn-icon">${icon("user")}</span><span>PROFILO</span></a>
-      </div>`;
-
-    const style = document.createElement("style");
-    style.id = "fsocialBottomNavFixStyle";
-    style.textContent = `#fsocialBottomNav{position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:2147483000!important;width:100%!important;height:70px!important;padding:5px 10px calc(5px + env(safe-area-inset-bottom))!important;background:rgba(8,8,10,.82)!important;border-top:1px solid rgba(255,255,255,.12)!important;box-shadow:0 -10px 30px rgba(0,0,0,.24)!important;backdrop-filter:blur(24px)!important;-webkit-backdrop-filter:blur(24px)!important}#fsocialBottomNav .fsbn-inner{width:min(600px,100%)!important;height:100%!important;margin:0 auto!important;display:flex!important;align-items:center!important;justify-content:space-between!important}#fsocialBottomNav .fsbn-item{height:100%!important;min-width:0!important;flex:1 1 0!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;color:#85858c!important;background:transparent!important;border:0!important;font:800 8px Inter,Arial,sans-serif!important;letter-spacing:.8px!important;text-transform:uppercase!important;text-decoration:none!important;cursor:pointer!important;touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important}#fsocialBottomNav .fsbn-item.active{color:#fff!important}#fsocialBottomNav .fsbn-item:active{transform:scale(.96)!important}#fsocialBottomNav .fsbn-icon{width:21px!important;height:21px!important;display:flex!important;align-items:center!important;justify-content:center!important}#fsocialBottomNav .fsbn-icon svg{width:18px!important;height:18px!important;display:block!important}#fsocialBottomNav .fsbn-add{width:44px!important;height:44px!important;border-radius:50%!important;display:grid!important;place-items:center!important;background:#ff4d00!important;color:#000!important;font:900 23px/1 Inter,Arial,sans-serif!important;box-shadow:0 0 14px rgba(255,77,0,.16)!important}@media(max-width:650px){#fsocialBottomNav{height:68px!important;padding-left:6px!important;padding-right:6px!important}}`;
-    document.head.appendChild(style);
+      <a class="bottom-nav-item" href="Fsocial.html" aria-label="Home"><span class="bottom-nav-icon">⌂</span><span class="bottom-nav-label">Home</span></a>
+      <a class="bottom-nav-item" href="Fsocial.html#search" aria-label="Cerca"><span class="bottom-nav-icon">⌕</span><span class="bottom-nav-label">Cerca</span></a>
+      <a class="bottom-nav-item plus-btn" href="Fsocial.html#compose" aria-label="Crea Post"><div class="plus-inner">+</div></a>
+      <a class="bottom-nav-item" href="Fsocial.html#notifications" aria-label="Notifiche"><span class="bottom-nav-icon">♧</span><span class="bottom-nav-label">Notifiche</span></a>
+      <a class="bottom-nav-item active" href="area-personale.html" aria-label="Profilo"><span class="bottom-nav-icon">♙</span><span class="bottom-nav-label">Profilo</span></a>`;
     document.body.appendChild(nav);
-
-    nav.querySelector('[data-nav="search"]')?.addEventListener("click", () => {
-      if (!isHome) return void (window.location.href = "Fsocial.html#search");
-      const input = document.querySelector(".user-search-input");
-      input?.focus({ preventScroll: true });
-      input?.scrollIntoView({ behavior: "smooth", block: "center" });
-    });
-
-    nav.querySelector('[data-nav="create"]')?.addEventListener("click", () => {
-      if (!isHome) return void (window.location.href = "Fsocial.html#compose");
-      const input = document.querySelector(".create-card textarea, textarea, [contenteditable=\"true\"]");
-      input?.focus({ preventScroll: true });
-      input?.scrollIntoView({ behavior: "smooth", block: "center" });
-    });
-
-    nav.querySelector('[data-nav="notifications"]')?.addEventListener("click", () => {
-      const button = document.getElementById("navNotif");
-      if (button) button.click();
-      else if (!isHome) window.location.href = "Fsocial.html#notifications";
-    });
+    normalizeProfileNav();
   }
 
   const boot = () => setTimeout(inject, 0);
