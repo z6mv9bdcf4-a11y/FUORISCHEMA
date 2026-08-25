@@ -1,4 +1,4 @@
-(() => {
+﻿(() => {
   "use strict";
 
   if (window.__FUORISCHEMA_NAVIGATION__) return;
@@ -76,17 +76,60 @@
     });
   }
 
+  function openCreate() {
+    const path = window.location.pathname.toLowerCase();
+    const isHome = path.endsWith(`/${HOME_PATH}`);
+    const isProfile = path.endsWith(`/${PROFILE_PATH}`);
+
+    if (isHome) {
+      const composer = document.querySelector(
+        "#createPostInput, textarea[placeholder*='Cosa stai pensando'], textarea[placeholder*='cosa stai pensando']"
+      );
+
+      if (composer) {
+        composer.focus();
+        composer.scrollIntoView({ behavior: "smooth", block: "center" });
+        return true;
+      }
+
+      return false;
+    }
+
+    if (isProfile) {
+      window.location.href = `${HOME_PATH}?action=compose`;
+      return true;
+    }
+
+    return false;
+  }
+
+  function bindCreate() {
+    const nav = getNav();
+    const create = nav?.querySelector("#navCreate");
+
+    if (!create || create.dataset.navigationCreateBound === "1") return;
+
+    create.dataset.navigationCreateBound = "1";
+
+    create.addEventListener("click", (event) => {
+      event.preventDefault();
+      openCreate();
+    });
+  }
+
   function init() {
     if (!getNav()) return;
     setActive();
     bindSearch();
+    bindCreate();
   }
 
   window.FsocialNavigation = Object.freeze({
     init,
     setActive,
     setNotificationBadge,
-    openSearch
+    openSearch,
+    openCreate
   });
 
   if (document.readyState === "loading") {
