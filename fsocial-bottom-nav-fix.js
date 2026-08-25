@@ -8,8 +8,8 @@
   const isProfile = path.endsWith("/area-personale.html");
   if (!isHome && !isProfile) return;
 
-  /* FSocial Home already owns the native bottom nav and its real notification handler. */
-  if (isHome && document.querySelector(".bottom-nav")) return;
+  /* FSocial Home and Profile already own the native bottom nav and its real handlers. */
+  if (document.querySelector(".bottom-nav")) return;
 
   const icon = (name) => {
     const paths = {
@@ -23,7 +23,7 @@
 
   function inject() {
     if (!document.body) return;
-    if (isHome && document.querySelector(".bottom-nav")) return;
+    if (document.querySelector(".bottom-nav")) return;
 
     document.querySelectorAll(".bottom-nav,#fsocialBottomNav").forEach(el => el.remove());
 
