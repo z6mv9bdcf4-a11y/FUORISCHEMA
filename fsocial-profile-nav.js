@@ -33,19 +33,19 @@
     /* Same navigation grammar as Home. */
     .bottom-nav{
       position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:99990!important;
-      height:70px!important;padding:5px 18px calc(5px + env(safe-area-inset-bottom))!important;
-      background:rgba(8,8,10,.58)!important;border-top:1px solid rgba(255,255,255,.14)!important;
-      backdrop-filter:blur(30px) saturate(160%)!important;-webkit-backdrop-filter:blur(30px) saturate(160%)!important;
-      box-shadow:0 -10px 30px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.10)!important;justify-content:center!important;gap:2px!important;
+      height:calc(60px + env(safe-area-inset-bottom,0px))!important;padding:0 8px env(safe-area-inset-bottom,0px)!important;
+      background:rgba(8,8,10,.55)!important;border-top:1px solid rgba(255,255,255,.12)!important;
+      backdrop-filter:blur(24px) saturate(145%)!important;-webkit-backdrop-filter:blur(24px) saturate(145%)!important;
+      box-shadow:0 -10px 30px rgba(0,0,0,.5)!important;justify-content:space-around!important;align-items:center!important;
     }
     .bottom-nav-item{
-      height:100%!important;min-width:0!important;flex:1 1 0!important;max-width:152px!important;
+      height:100%!important;min-width:0!important;flex:1 1 0!important;
       color:#77777d!important;font:700 9px Inter,Arial,sans-serif!important;letter-spacing:.85px!important;gap:4px!important;
       transition:color .18s ease,transform .15s ease!important;
     }
     .bottom-nav-item:hover,.bottom-nav-item.active{color:#fff!important}
     .bottom-nav-item:active{transform:scale(.96)!important}
-    .bottom-nav-icon{width:20px!important;height:20px!important;font-size:0!important;display:flex!important;align-items:center!important;justify-content:center!important;font-family:Inter,Arial,sans-serif!important}
+    .bottom-nav-icon{width:20px!important;height:20px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-family:Inter,Arial,sans-serif!important}
     .bottom-nav-icon svg{width:18px;height:18px;display:block}
     .bottom-nav-label{margin-top:0!important;font-size:9px!important;letter-spacing:.85px!important}
     .bottom-nav-item.plus-btn .plus-inner{box-shadow:0 0 12px rgba(255,77,0,.14)!important;width:44px!important;height:44px!important}
@@ -73,12 +73,6 @@
       style.textContent = css;
       document.head.appendChild(style);
     }
-
-    const icons = nav.querySelectorAll('.bottom-nav-icon');
-    const replacements = [icon('home'), icon('search'), icon('bell'), icon('user')];
-    icons.forEach((el, index) => {
-      if (replacements[index] !== null) el.innerHTML = replacements[index];
-    });
 
     const profile = nav.querySelector('#navProfile');
     if (profile) profile.classList.add('active');
