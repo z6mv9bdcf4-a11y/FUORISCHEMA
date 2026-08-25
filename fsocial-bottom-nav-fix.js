@@ -8,73 +8,73 @@
   const isProfile = path.endsWith("/area-personale.html");
   if (!isHome && !isProfile) return;
 
-  const homeNavCss = `
-    .bottom-nav{
+  const profileNavCss = `
+    html body .bottom-nav{
       display:flex !important;
       position:fixed !important;
       left:0 !important;
       right:0 !important;
       bottom:0 !important;
-      height:70px !important;
-      padding:5px 18px calc(5px + env(safe-area-inset-bottom)) !important;
-      background:rgba(8,8,10,.58) !important;
-      border-top:1px solid rgba(255,255,255,.14) !important;
-      box-shadow:0 -10px 30px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.10) !important;
-      backdrop-filter:blur(30px) saturate(160%) !important;
-      -webkit-backdrop-filter:blur(30px) saturate(160%) !important;
-      z-index:99990 !important;
+      height:calc(60px + env(safe-area-inset-bottom,0px)) !important;
+      padding:0 8px env(safe-area-inset-bottom,0px) !important;
+      background:rgba(8,8,10,.55) !important;
+      border-top:1px solid rgba(255,255,255,.12) !important;
+      backdrop-filter:blur(24px) saturate(145%) !important;
+      -webkit-backdrop-filter:blur(24px) saturate(145%) !important;
+      box-shadow:0 -10px 30px rgba(0,0,0,.5) !important;
+      z-index:100000 !important;
       align-items:center !important;
-      justify-content:space-between !important;
-      gap:2px !important;
+      justify-content:space-around !important;
     }
-    .bottom-nav-item{
-      height:100% !important;
-      min-width:0 !important;
-      flex:1 1 0 !important;
+    html body .bottom-nav .bottom-nav-item{
       display:flex !important;
       flex-direction:column !important;
       align-items:center !important;
       justify-content:center !important;
-      gap:4px !important;
-      color:#9a9aa0 !important;
+      flex:1 !important;
+      height:100% !important;
+      color:#8e8e93 !important;
+      transition:color .2s ease,transform .15s ease !important;
+      position:relative !important;
       background:transparent !important;
       border:0 !important;
-      font:700 9px Inter,Arial,sans-serif !important;
-      letter-spacing:.85px !important;
-      text-transform:uppercase !important;
-      text-decoration:none !important;
-      transition:color .18s ease,transform .15s ease !important;
-      position:relative !important;
-      cursor:pointer !important;
     }
-    .bottom-nav-item:hover,.bottom-nav-item.active{color:#fff !important}
-    .bottom-nav-item:active{transform:scale(.96) !important}
-    .bottom-nav-icon{
+    html body .bottom-nav .bottom-nav-item:active{transform:scale(.88) !important}
+    html body .bottom-nav .bottom-nav-item.active,
+    html body .bottom-nav .bottom-nav-item:hover{color:#fff !important}
+    html body .bottom-nav .bottom-nav-icon{
       width:20px !important;
       height:20px !important;
       display:flex !important;
       align-items:center !important;
       justify-content:center !important;
-      font-size:0 !important;
+      font-size:20px !important;
       line-height:1 !important;
     }
-    .bottom-nav-icon svg{width:18px !important;height:18px !important;display:block !important}
-    .bottom-nav-label{font-size:9px !important;font-weight:700 !important;letter-spacing:.85px !important;margin-top:0 !important;text-transform:uppercase !important}
-    .bottom-nav-item.plus-btn{flex:1 1 0 !important}
-    .bottom-nav-item.plus-btn .plus-inner{
-      width:44px !important;
-      height:44px !important;
+    html body .bottom-nav .bottom-nav-icon svg{width:19px !important;height:19px !important;display:block !important}
+    html body .bottom-nav .bottom-nav-label{
+      font-size:9px !important;
+      font-weight:700 !important;
+      letter-spacing:.5px !important;
+      margin-top:3px !important;
+      text-transform:uppercase !important;
+    }
+    html body .bottom-nav .bottom-nav-item.plus-btn{flex:0 0 48px !important}
+    html body .bottom-nav .bottom-nav-item.plus-btn .plus-inner{
+      width:42px !important;
+      height:42px !important;
       border-radius:50% !important;
-      display:grid !important;
-      place-items:center !important;
       background:#ff4d00 !important;
       color:#000 !important;
-      font:900 21px/1 Inter,Arial,sans-serif !important;
-      box-shadow:0 0 12px rgba(255,77,0,.14) !important;
-      transition:transform .18s ease,background-color .18s ease !important;
+      display:grid !important;
+      place-items:center !important;
+      font-size:22px !important;
+      font-weight:900 !important;
+      box-shadow:0 0 16px rgba(255,77,0,.25) !important;
+      transition:transform .2s ease,background-color .2s ease !important;
     }
-    .bottom-nav-item.plus-btn:active .plus-inner{transform:scale(.92) !important;background:#fff !important}
-    .bottom-nav-badge{
+    html body .bottom-nav .bottom-nav-item.plus-btn:active .plus-inner{transform:scale(.92) !important;background:#fff !important}
+    html body .bottom-nav .bottom-nav-badge{
       position:absolute !important;
       top:8px !important;
       right:22% !important;
@@ -91,19 +91,7 @@
       padding:0 3px !important;
       border:2px solid #050505 !important;
     }
-    .bottom-nav-badge.active{display:inline-flex !important}
-    @media(max-width:650px){
-      .bottom-nav{
-        height:68px !important;
-        padding-left:8px !important;
-        padding-right:8px !important;
-      }
-      .bottom-nav-item{font-size:8px !important;letter-spacing:.75px !important}
-      .bottom-nav-icon{width:19px !important;height:19px !important}
-      .bottom-nav-icon svg{width:17px !important;height:17px !important}
-      .bottom-nav-label{font-size:8px !important;letter-spacing:.75px !important}
-      .bottom-nav-item.plus-btn .plus-inner{width:44px !important;height:44px !important}
-    }
+    html body .bottom-nav .bottom-nav-badge.active{display:inline-flex !important}
   `;
 
   function normalizeProfileNav() {
@@ -117,10 +105,15 @@
       style.id = "fsocialProfileBottomNavStyle";
       document.head.appendChild(style);
     }
-    style.textContent = homeNavCss;
+    style.textContent = profileNavCss;
 
     const profileItem = nav.querySelector("#navProfile");
     if (profileItem) profileItem.classList.add("active");
+
+    const profileIcon = nav.querySelector("#navProfile .bottom-nav-icon");
+    if (profileIcon) {
+      profileIcon.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4.5 21c.8-4.1 3.2-6.2 7.5-6.2s6.7 2.1 7.5 6.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+    }
   }
 
   function inject() {
@@ -138,11 +131,11 @@
     nav.className = "bottom-nav";
     nav.setAttribute("aria-label", "Navigazione FSocial");
     nav.innerHTML = `
-      <a class="bottom-nav-item" href="Fsocial.html" aria-label="Home"><span class="bottom-nav-icon">⌂</span><span class="bottom-nav-label">Home</span></a>
-      <a class="bottom-nav-item" href="Fsocial.html#search" aria-label="Cerca"><span class="bottom-nav-icon">⌕</span><span class="bottom-nav-label">Cerca</span></a>
-      <a class="bottom-nav-item plus-btn" href="Fsocial.html#compose" aria-label="Crea Post"><div class="plus-inner">+</div></a>
-      <a class="bottom-nav-item" href="Fsocial.html#notifications" aria-label="Notifiche"><span class="bottom-nav-icon">♧</span><span class="bottom-nav-label">Notifiche</span></a>
-      <a class="bottom-nav-item active" href="area-personale.html" aria-label="Profilo"><span class="bottom-nav-icon">♙</span><span class="bottom-nav-label">Profilo</span></a>`;
+      <a id="navHome" class="bottom-nav-item" href="Fsocial.html" aria-label="Home"><span class="bottom-nav-icon">⌂</span><span class="bottom-nav-label">Home</span></a>
+      <a id="navSearch" class="bottom-nav-item" href="Fsocial.html?action=search" aria-label="Cerca"><span class="bottom-nav-icon">⌕</span><span class="bottom-nav-label">Cerca</span></a>
+      <a id="navCreate" class="bottom-nav-item plus-btn" href="Fsocial.html?action=create" aria-label="Crea Post"><div class="plus-inner">+</div></a>
+      <a id="navNotif" class="bottom-nav-item" href="Fsocial.html?openNotifications=1" aria-label="Notifiche"><span class="bottom-nav-icon"></span><span class="bottom-nav-label">Notifiche</span></a>
+      <a id="navProfile" class="bottom-nav-item active" href="area-personale.html" aria-label="Profilo"><span class="bottom-nav-icon"></span><span class="bottom-nav-label">Profilo</span></a>`;
     document.body.appendChild(nav);
     normalizeProfileNav();
   }
