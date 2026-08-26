@@ -2591,6 +2591,10 @@ function closeNotifications() {
 }
 
 notifButton?.addEventListener("click", openNotifications);
+window.FsocialNotifications = Object.freeze({
+    open: openNotifications,
+    close: closeNotifications
+});
 notifClose.addEventListener("click", closeNotifications);
 notifMarkAllBtn.addEventListener("click", markAllNotificationsRead);
 notifOverlay.addEventListener("click", (e) => {
@@ -2621,14 +2625,6 @@ navCreate?.addEventListener("click", () => {
     const card = document.querySelector(".create-card");
     card?.scrollIntoView({ behavior: "smooth", block: "center" });
     postContent?.focus();
-});
-
-navNotif?.addEventListener("click", () => {
-    if (notifOverlay?.classList.contains("active")) {
-        closeNotifications();
-    } else {
-        openNotifications();
-    }
 });
 
 /* =========================================================

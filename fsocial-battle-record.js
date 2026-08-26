@@ -1,16 +1,20 @@
 const BATTLE_RECORD_STYLE = `
 .fsocial-battle-record{margin-top:2px;padding:16px 18px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(135deg,rgba(255,77,0,.07),rgba(255,255,255,.02));border-radius:4px;max-width:620px}
 .fsocial-battle-record-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
-.fsocial-battle-record-title{font:900 10px/1 Inter,Arial,sans-serif;letter-spacing:2px;text-transform:uppercase;color:#fff}
+.fsocial-battle-record-title{font:900 10px/1 Inter,Arial,sans-serif;letter-spacing:2px;text-transform:uppercase;color:#151515}
 .fsocial-battle-record-mark{color:#ff4d00;font-size:15px}
 .fsocial-battle-record-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .fsocial-battle-record-stat{min-width:0;padding:9px 6px;border:1px solid rgba(255,255,255,.06);background:rgba(0,0,0,.2);text-align:center}
-.fsocial-battle-record-value{display:block;color:#fff;font-size:17px;font-weight:900;line-height:1.1}
-.fsocial-battle-record-label{display:block;margin-top:4px;color:#777;font-size:7px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
-.fsocial-battle-record-empty{color:#777;font-size:9px;line-height:1.5;letter-spacing:.5px}
+.fsocial-battle-record-value{display:block;color:#151515;font-size:17px;font-weight:900;line-height:1.1}
+.fsocial-battle-record-label{display:block;margin-top:4px;color:#555;font-size:7px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.fsocial-battle-record-empty{color:#555;font-size:9px;line-height:1.5;letter-spacing:.5px}
 @media(max-width:480px){.fsocial-battle-record{width:100%;padding:14px 10px}.fsocial-battle-record-grid{gap:4px}.fsocial-battle-record-value{font-size:15px}.fsocial-battle-record-label{font-size:6.5px}}
 `;
 
+const battleRecordStyleElement = document.createElement("style");
+battleRecordStyleElement.id = "fsocialBattleRecordStyle";
+battleRecordStyleElement.textContent = BATTLE_RECORD_STYLE;
+document.head.appendChild(battleRecordStyleElement);
 function battleRecordEscape(value){
     return String(value ?? "").replace(/[&<>\"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'\"':"&quot;","'":"&#039;"}[c]));
 }
