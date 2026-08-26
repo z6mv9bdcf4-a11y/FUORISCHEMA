@@ -1,4 +1,4 @@
-﻿const BATTLE_FUNCTION_URL =
+const BATTLE_FUNCTION_URL =
     "https://dbjfvphcrfvajrtkeswg.supabase.co/functions/v1/fsocial-battles";
 
 const CATEGORY_LABELS = {
@@ -1357,6 +1357,61 @@ function shareWhatsApp() {
         "_blank",
         "noopener,noreferrer"
     );
+}
+
+function bindBattleFighterSelection() {
+    const fighters = [
+        $("challengerCard"),
+        $("challengedCard")
+    ];
+
+    const voteButtons = [
+        $("voteChallenger"),
+        $("voteChallenged")
+    ];
+
+    fighters.forEach((fighter, index) => {
+        if (!fighter) return;
+
+        fighter.addEventListener("click", (event) => {
+            if (event.target.closest("button,a")) return;
+
+            const battle = state.battle?.battle;
+            const active = battle?.status === "active";
+
+            if (!active || state.voted) return;
+
+            state.selectedFighter = index;
+
+            fighters.forEach((item, itemIndex) => {
+                item?.classList.toggle(
+                    "fs-bselected",
+                    itemIndex === index
+                );
+
+                item?.classList.toggle(
+                    "fs-bunselected",
+                    itemIndex !== index
+                );
+            });
+
+            voteButtons.forEach((button, buttonIndex) => {
+                if (!button) return;
+
+                button.disabled = buttonIndex !== index;
+
+                button.classList.toggle(
+                    "fs-vready",
+                    buttonIndex === index
+                );
+
+                button.classList.toggle(
+                    "fs-vlocked",
+                    buttonIndex !== index
+                );
+            });
+        });
+    });
 }
 
 function bindEvents() {
