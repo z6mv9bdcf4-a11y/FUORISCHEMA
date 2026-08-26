@@ -135,18 +135,6 @@ import { supabase } from "./supabase.js";
     return `${String(Math.floor(total / 3600)).padStart(2,"0")}:${String(Math.floor((total % 3600) / 60)).padStart(2,"0")}:${String(total % 60).padStart(2,"0")}`;
   }
 
-  async function quickVote(item, userId, card) {
-    if (!item?.battle?.id || !userId) return;
-    const button = card.querySelector(".fs-surgical-vote-button");
-    if (button) button.disabled = true;
-    try { await battleRequest("vote", { battle_id: Number(item.battle.id), voted_for_user_id: userId, voter_token: localStorage.getItem("fsocial_battle_voter_token") || undefined }); card.querySelectorAll(".fs-surgical-vote-card").forEach(x => x.classList.remove("fs-surgical-selected")); await refreshBattleHub(); } catch (error) { window.showToast?.(error?.message || "Voto non registrato."); if (button) button.disabled = false; }
-  }
-
-  async function refreshBattleHub() {
-    if (!document.getElementById("tabRecent")?.classList.contains("active")) return;
-    const tab = document.getElementById("tabRecent"); tab.click();
-  }
-
   function decorateBattleHub() {
     const cards = document.querySelectorAll(".fs-battle-hub-card");
     if (!cards.length || !activeBattleData.length) return;
