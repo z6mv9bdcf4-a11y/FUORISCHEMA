@@ -75,7 +75,7 @@ import { supabase } from './supabase.js';
     const [{ count: likes }, { count: comments }, { data: rows }, { data: likeRows }, { data: saveRows }] = await Promise.all([
       supabase.from('post_likes').select('id', { count: 'exact', head: true }).eq('post_id', id),
       supabase.from('post_comments').select('id', { count: 'exact', head: true }).eq('post_id', id),
-      supabase.from('post_comments').select('content,user_id,profiles(username,full_name)').eq('post_id', id).order('created_at', { ascending: true }),
+      supabase.from('post_comments').select('content,user_id').eq('post_id', id).order('created_at', { ascending: true }),
       supabase.from('post_likes').select('user_id').eq('post_id', id),
       supabase.from('post_saves').select('id').eq('post_id', id).eq('user_id', (await supabase.auth.getUser()).data.user?.id || '')
     ]);
@@ -119,15 +119,31 @@ import { supabase } from './supabase.js';
 
     b.querySelector('[data-save]').onclick = async e => {
       if (!user) return;
-      const existing = await supabase.from('post_saves').select('id').eq('post_id', id).eq('user_id', user.id).maybeSingle();
+
+      const button = e.currentTarget;
+
+      const existing = await supabase
+        .from('post_saves')
+        .select('id')
+        .eq('post_id', id)
+        .eq('user_id', user.id)
+        .maybeSingle();
+
       if (existing.data) {
-        await supabase.from('post_saves').delete().eq('id', existing.data.id);
-        e.currentTarget.textContent = 'SALVA';
-        e.currentTarget.classList.remove('liked');
+        await supabase
+          .from('post_saves')
+          .delete()
+          .eq('id', existing.data.id);
+
+        button.textContent = 'SALVA';
+        button.classList.remove('liked');
       } else {
-        await supabase.from('post_saves').insert({ post_id: id, user_id: user.id });
-        e.currentTarget.textContent = 'SALVATO';
-        e.currentTarget.classList.add('liked');
+        await supabase
+          .from('post_saves')
+          .insert({ post_id: id, user_id: user.id });
+
+        button.textContent = 'SALVATO';
+        button.classList.add('liked');
       }
     };
 

@@ -117,11 +117,32 @@
     });
   }
 
+  function bindNotifications() {
+    const nav = getNav();
+    const notifications = nav?.querySelector("#navNotif");
+
+    if (!notifications || notifications.dataset.navigationNotificationsBound === "1") return;
+
+    notifications.dataset.navigationNotificationsBound = "1";
+
+    notifications.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      if (typeof window.FsocialNotifications?.open === "function") {
+        if (document.querySelector("#notifOverlay")?.classList.contains("active")) {
+          window.FsocialNotifications.close?.();
+        } else {
+          window.FsocialNotifications.open();
+        }
+      }
+    });
+  }
   function init() {
     if (!getNav()) return;
     setActive();
     bindSearch();
     bindCreate();
+    bindNotifications();
   }
 
   window.FsocialNavigation = Object.freeze({
