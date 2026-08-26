@@ -158,60 +158,12 @@ import { supabase } from "./supabase.js";
     });
   }
 
-  function decorateProfile() {
-    if (!location.pathname.toLowerCase().endsWith("/area-personale.html")) return;
-    const name = document.getElementById("profileName"); const bio = document.getElementById("profileBio"); const count = document.getElementById("postsCount"); const label = document.querySelector(".section-label");
-    if (name) name.style.cssText += ";color:#151515!important;text-shadow:0 1px 0 rgba(255,255,255,.45);";
-    if (bio) bio.style.cssText += ";color:#555!important;";
-    if (count) count.style.cssText += ";color:#333!important;";
-    if (label) label.textContent = "GALLERIA";
-    const ranking = document.getElementById("fsProfileRanking");
-    if (ranking) { ranking.onclick = () => { location.href = "fsocial-ranking.html"; }; }
-    document.querySelectorAll(".post-tile").forEach(tile => {
-      if (tile.dataset.surgicalBound) return;
-      tile.dataset.surgicalBound = "1";
-      tile.classList.add("fs-surgical-profile-post");
-      tile.onclick = () => {
-        const img = tile.querySelector("img");
-        if (!img) return;
-        const overlay = document.createElement("div"); overlay.className = "fs-surgical-modal";
-        overlay.innerHTML = `<div class="fs-surgical-modal-card" style="padding:0;overflow:hidden"><img src="${escape(img.src)}" alt="Post" style="width:100%;display:block;max-height:78vh;object-fit:contain;background:#050505"><div style="padding:16px;color:#fff;font:700 11px Inter">Post FSOCIAL</div></div>`;
-        overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
-        document.body.appendChild(overlay);
-      };
-    });
-  }
-
-  function removeChatSetting() {
-    if (!location.pathname.toLowerCase().endsWith("/area-personale.html")) return;
-    const settingsButton = [...document.querySelectorAll(".actions button,a")].find(el => el.textContent?.trim() === "IMPOSTAZIONI SOCIAL");
-    if (!settingsButton || settingsButton.dataset.surgicalBound) return;
-    settingsButton.dataset.surgicalBound = "1";
-    settingsButton.onclick = async event => {
-      event.preventDefault();
-      let root = document.getElementById("fsSurgicalSettings");
-      if (root) { root.remove(); return; }
-      root = document.createElement("div"); root.id = "fsSurgicalSettings"; root.className = "fs-surgical-modal";
-      root.innerHTML = `<div class="fs-surgical-modal-card"><div class="fs-surgical-kicker">FSOCIAL</div><h2 class="fs-surgical-title">IMPOSTAZIONI SOCIAL</h2><p class="fs-surgical-sub">Gestisci le preferenze di visibilità della tua attività.</p><div class="fs-surgical-label">ATTIVITÀ</div><button id="fsActivityToggle" class="fs-surgical-confirm" style="width:100%">VISIBILITÀ ATTIVA</button><div class="fs-surgical-actions"><button id="fsSettingsClose" class="fs-surgical-cancel">CHIUDI</button><button id="fsSettingsSave" class="fs-surgical-confirm">SALVA</button></div></div>`;
-      document.body.appendChild(root);
-      root.addEventListener("click", e => { if (e.target === root) root.remove(); });
-      const s = await session(); if (!s) return;
-      let enabled = true;
-      const toggle = root.querySelector("#fsActivityToggle"); toggle.onclick = () => { enabled = !enabled; toggle.textContent = enabled ? "VISIBILITÀ ATTIVA" : "VISIBILITÀ NASCOSTA"; };
-      root.querySelector("#fsSettingsClose").onclick = () => root.remove();
-      root.querySelector("#fsSettingsSave").onclick = async () => { const { error } = await supabase.from("profile_settings").upsert({ user_id:s.user.id, show_activity:enabled, updated_at:new Date().toISOString() }); if (error) { window.showToast?.(error.message); return; } window.showToast?.("Impostazioni salvate."); root.remove(); };
-    };
-  }
-
   function init() {
     addStyle();
     if (location.pathname.toLowerCase().endsWith("/fsocial.html")) {
       setInterval(() => { decorateBattleHub(); }, 500);
     }
     if (document.body.classList.contains("battle-page")) bindBattleAccept();
-    if (location.pathname.toLowerCase().endsWith("/area-personale.html")) {
-      decorateProfile(); removeChatSetting(); setInterval(() => { decorateProfile(); removeChatSetting(); }, 700);
-    }
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once:true }); else init();
