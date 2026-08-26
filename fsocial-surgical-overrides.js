@@ -82,50 +82,6 @@ import { supabase } from "./supabase.js";
 
   function closeModal() { document.getElementById("fsSurgicalBattleModal")?.remove(); document.body.classList.remove("fs-battle-modal-open"); }
 
-  async function openChallenge({ challengedUserId, challengedAuthor } = {}) {
-    if (!challengedUserId) return;
-    closeModal();
-    const name = challengedAuthor?.username ? `@${escape(challengedAuthor.username)}` : escape(challengedAuthor?.name || "questo utente");
-    const root = document.createElement("div");
-    root.id = "fsSurgicalBattleModal";
-    root.className = "fs-surgical-modal";
-    root.innerHTML = `<div class="fs-surgical-modal-card"><div class="fs-surgical-kicker">⚔️ FSOCIAL BATTLE</div><h2 class="fs-surgical-title">SFIDA ${name}</h2><p class="fs-surgical-sub">Scendi in Battle con il tuo outfit. Scegli il post che vuoi mettere in gara.</p><div class="fs-surgical-label">SCEGLI IL TUO OUTFIT</div><div id="fsSurgicalGrid" class="fs-surgical-grid"><div class="fs-surgical-status">CARICAMENTO OUTFIT...</div></div><div id="fsSurgicalStatus" class="fs-surgical-status"></div><div class="fs-surgical-actions"><button id="fsSurgicalCancel" class="fs-surgical-cancel">ANNULLA</button><button id="fsSurgicalConfirm" class="fs-surgical-confirm" disabled>⚔️ INVIA SFIDA</button></div></div>`;
-    document.body.appendChild(root);
-    document.body.classList.add("fs-battle-modal-open");
-    root.addEventListener("click", e => { if (e.target === root) closeModal(); });
-    root.querySelector("#fsSurgicalCancel").onclick = closeModal;
-    const grid = root.querySelector("#fsSurgicalGrid");
-    const status = root.querySelector("#fsSurgicalStatus");
-    const confirm = root.querySelector("#fsSurgicalConfirm");
-    let selected = "";
-    try {
-      const posts = await myPosts();
-      if (!posts.length) { grid.innerHTML = `<div class="fs-surgical-status" style="grid-column:1/-1">PUBBLICA PRIMA UN OUTFIT SU FSOCIAL.</div>`; return; }
-      grid.innerHTML = posts.map(p => `<button class="fs-surgical-post" type="button" data-post-id="${escape(p.id)}"><img loading="lazy" src="${escape(p.image_url)}" alt="Outfit"><span>✓</span></button>`).join("");
-      grid.querySelectorAll(".fs-surgical-post").forEach(button => button.onclick = () => { grid.querySelectorAll(".fs-surgical-post").forEach(x => x.classList.remove("selected")); button.classList.add("selected"); selected = button.dataset.postId || ""; confirm.disabled = !selected; status.textContent = "Outfit selezionato."; });
-      confirm.onclick = async () => {
-        if (!selected) return;
-        confirm.disabled = true;
-        status.textContent = "Invio la sfida...";
-        try {
-          await battleRequest("create", { challenged_id: challengedUserId, post_id: Number(selected), category: "best_overall" });
-          closeModal();
-          window.showToast?.("⚔️ Sfida inviata!");
-        } catch (error) {
-          status.textContent = error?.message || "Impossibile inviare la sfida.";
-          confirm.disabled = false;
-        }
-      };
-    } catch (error) { grid.innerHTML = `<div class="fs-surgical-status" style="grid-column:1/-1">IMPOSSIBILE CARICARE I TUOI OUTFIT.</div>`; status.textContent = error?.message || "Errore."; }
-  }
-
-  function wrapChallenge() {
-    if (typeof window.openBattleChallengeModal !== "function" || window.__FSWrappedChallenge) return false;
-    window.__FSWrappedChallenge = true;
-    window.openBattleChallengeModal = openChallenge;
-    return true;
-  }
-
   async function acceptPendingBattle(button) {
     const s = await session();
     if (!s?.user?.id) return;
@@ -262,8 +218,7 @@ import { supabase } from "./supabase.js";
   function init() {
     addStyle();
     if (location.pathname.toLowerCase().endsWith("/fsocial.html")) {
-      wrapChallenge();
-      setInterval(() => { wrapChallenge(); decorateBattleHub(); }, 500);
+      setInterval(() => { decorateBattleHub(); }, 500);
     }
     if (document.body.classList.contains("battle-page")) bindBattleAccept();
     if (location.pathname.toLowerCase().endsWith("/area-personale.html")) {
