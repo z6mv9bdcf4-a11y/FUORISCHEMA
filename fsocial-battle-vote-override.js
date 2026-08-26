@@ -158,7 +158,7 @@
       button.textContent = "VOTO REGISTRATO";
     }
 
-    document.getElementById("tabRecent")?.click();
+    setTimeout(() => location.reload(), 500);
   }
 
   function init() {
