@@ -83,7 +83,7 @@ import { supabase } from './supabase.js';
       user ? supabase.from('post_saves').select('id').eq('post_id', id).eq('user_id', user.id).maybeSingle() : Promise.resolve({ data: null })
     ]);
 
-    const liked = !!likeRow?.data;
+    const liked = !!likeRow;
     const saved = !!saveRow?.data;
     const profile = p.profiles || {};
     const author = profile.full_name || profile.username || 'MEMBRO FUORISCHEMA';
