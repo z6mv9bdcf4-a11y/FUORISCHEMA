@@ -161,7 +161,7 @@ import { supabase } from "./supabase.js";
   function init() {
     addStyle();
     if (location.pathname.toLowerCase().endsWith("/fsocial.html")) {
-      setInterval(() => { decorateBattleHub(); }, 500);
+      setInterval(() => { decorateBattleHub(); }, 1000);
     }
     if (document.body.classList.contains("battle-page")) bindBattleAccept();
   }
