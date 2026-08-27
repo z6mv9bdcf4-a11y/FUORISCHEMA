@@ -3618,6 +3618,7 @@ async function loadFeed() {
 async function renderPost(post,author){
     const article = document.createElement("article");
     article.className = "post-card";
+    article.dataset.fsEngagementReady = "1";
 
     const avatarHtml = author.avatar
         ? `<img src="${escapeHtml(author.avatar)}" alt="">`
@@ -3668,7 +3669,7 @@ async function renderPost(post,author){
         </div>
 
         <div class="post-meta">
-            Piace a <strong class="like-count">0</strong> persone
+            Piace a <strong class="like-count">${post._likeCount || 0}</strong> persone
         </div>
 
         ${post.content ? `
