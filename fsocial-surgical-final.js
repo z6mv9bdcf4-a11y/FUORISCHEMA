@@ -92,6 +92,7 @@ import { supabase } from "./supabase.js";
 
   const hydratedPosts = new Set();
   async function hydrateOnePost(card){
+    if(card.dataset.fsEngagementReady === "1") return;
     if(!isHome || !card || card.dataset.fsLikeHydrated === "1") return;
     const match = card.querySelector('[id^="comments-"]')?.id?.match(/^comments-(\d+)$/);
     const postId = match ? Number(match[1]) : 0;
