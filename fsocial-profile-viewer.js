@@ -78,13 +78,38 @@ import { supabase } from './supabase.js';
     const [{ count: likes }, { count: comments }, { data: rows }, { data: likeRow }, { data: saveRow }] = await Promise.all([
       supabase.from('post_likes').select('id', { count: 'exact', head: true }).eq('post_id', id),
       supabase.from('post_comments').select('id', { count: 'exact', head: true }).eq('post_id', id),
-      supabase.from('post_comments').select('content,user_id,created_at,profiles(username,full_name,avatar_url)').eq('post_id', id).order('created_at', { ascending: true }),
+      supabase.from('post_comments').select('content,user_id,created_at').eq('post_id', id).order('created_at', { ascending: true }),
       user ? supabase.from('post_likes').select('user_id').eq('post_id', id).eq('user_id', user.id).maybeSingle() : Promise.resolve({ data: null }),
       user ? supabase.from('post_saves').select('id').eq('post_id', id).eq('user_id', user.id).maybeSingle() : Promise.resolve({ data: null })
     ]);
 
+    const commentUserIds = [...new Set((rows || []).map(comment => comment.user_id).filter(Boolean))];
+    let commentProfiles = [];
+
+    if (commentUserIds.length) {
+      const { data: profileRows, error: profileError } = await supabase
+        .from('profiles')
+        .select('id,username,full_name,avatar_url')
+        .in('id', commentUserIds);
+
+      if (profileError) {
+        console.warn('FSocial profile viewer comment profiles:', profileError);
+      } else {
+        commentProfiles = profileRows || [];
+      }
+    }
+
+    const commentProfileMap = new Map(
+      commentProfiles.map(profileRow => [profileRow.id, profileRow])
+    );
+
+    const normalizedComments = (rows || []).map(comment => ({
+      ...comment,
+      profiles: commentProfileMap.get(comment.user_id) || null
+    }));
+
     const liked = !!likeRow;
-    const saved = !!saveRow?.data;
+    const saved = !!saveRow;
     const profile = p.profiles || {};
     const author = profile.full_name || profile.username || 'MEMBRO FUORISCHEMA';
     const username = profile.username ? '@' + profile.username : '';
@@ -104,7 +129,7 @@ import { supabase } from './supabase.js';
         <button data-battle type="button">⚔ BATTLE</button>
       </div>
       <div class="fspv-comments">
-        ${(rows || []).map(c => `<div class="fspv-comment"><b>${esc(c.profiles?.full_name || c.profiles?.username || 'UTENTE')}</b><span>${esc(c.content || '')}</span></div>`).join('') || '<div class="fspv-comment" style="color:#666">Nessun commento.</div>'}
+        ${(normalizedComments || []).map(c => `<div class="fspv-comment"><b>${esc(c.profiles?.full_name || c.profiles?.username || 'UTENTE')}</b><span>${esc(c.content || '')}</span></div>`).join('') || '<div class="fspv-comment" style="color:#666">Nessun commento.</div>'}
       </div>
     `;
 
