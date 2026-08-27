@@ -61,6 +61,9 @@ import { supabase } from './supabase.js';
   }
 
   async function openPost(id) {
+    const { data: authData } = await supabase.auth.getUser();
+    const user = authData?.user;
+
     const { data: p, error } = await supabase
       .from('posts')
       .select('id,user_id,content,image_url,created_at,profiles(username,full_name,avatar_url)')
@@ -72,18 +75,16 @@ import { supabase } from './supabase.js';
       return;
     }
 
-    const [{ count: likes }, { count: comments }, { data: rows }, { data: likeRows }, { data: saveRows }] = await Promise.all([
+    const [{ count: likes }, { count: comments }, { data: rows }, { data: likeRow }, { data: saveRow }] = await Promise.all([
       supabase.from('post_likes').select('id', { count: 'exact', head: true }).eq('post_id', id),
       supabase.from('post_comments').select('id', { count: 'exact', head: true }).eq('post_id', id),
-      supabase.from('post_comments').select('content,user_id').eq('post_id', id).order('created_at', { ascending: true }),
-      supabase.from('post_likes').select('user_id').eq('post_id', id),
-      supabase.from('post_saves').select('id').eq('post_id', id).eq('user_id', (await supabase.auth.getUser()).data.user?.id || '')
+      supabase.from('post_comments').select('content,user_id,created_at,profiles(username,full_name,avatar_url)').eq('post_id', id).order('created_at', { ascending: true }),
+      user ? supabase.from('post_likes').select('user_id').eq('post_id', id).eq('user_id', user.id).maybeSingle() : Promise.resolve({ data: null }),
+      user ? supabase.from('post_saves').select('id').eq('post_id', id).eq('user_id', user.id).maybeSingle() : Promise.resolve({ data: null })
     ]);
 
-    const { data: authData } = await supabase.auth.getUser();
-    const user = authData?.user;
-    const liked = !!likeRows?.some(x => x.user_id === user?.id);
-    const saved = !!saveRows?.length;
+    const liked = !!likeRow?.data;
+    const saved = !!saveRow?.data;
     const profile = p.profiles || {};
     const author = profile.full_name || profile.username || 'MEMBRO FUORISCHEMA';
     const username = profile.username ? '@' + profile.username : '';
@@ -109,41 +110,72 @@ import { supabase } from './supabase.js';
 
     root.classList.add('open');
 
-    b.querySelector('[data-like]').onclick = async () => {
+    b.querySelector('[data-like]').onclick = async e => {
       if (!user) return;
-      const existing = likeRows?.find(x => x.user_id === user.id);
-      if (existing) await supabase.from('post_likes').delete().eq('post_id', id).eq('user_id', user.id);
-      else await supabase.from('post_likes').insert({ post_id: id, user_id: user.id });
-      openPost(id);
+
+      const button = e.currentTarget;
+      const wasLiked = button.classList.contains('liked');
+      const currentCount = Number((button.textContent || '').replace(/\D/g, '')) || 0;
+
+      button.disabled = true;
+
+      try {
+        if (wasLiked) {
+          const { error } = await supabase.from('post_likes').delete().eq('post_id', id).eq('user_id', user.id);
+          if (error) throw error;
+          button.classList.remove('liked');
+          button.textContent = `♥ ${Math.max(0, currentCount - 1)}`;
+        } else {
+          const { error } = await supabase.from('post_likes').insert({ post_id: id, user_id: user.id });
+          if (error) throw error;
+          button.classList.add('liked');
+          button.textContent = `♥ ${currentCount + 1}`;
+        }
+      } catch (error) {
+        window.showToast?.(error?.message || 'Impossibile aggiornare il like.');
+      } finally {
+        button.disabled = false;
+      }
     };
 
     b.querySelector('[data-save]').onclick = async e => {
       if (!user) return;
 
       const button = e.currentTarget;
+      button.disabled = true;
 
-      const existing = await supabase
-        .from('post_saves')
-        .select('id')
-        .eq('post_id', id)
-        .eq('user_id', user.id)
-        .maybeSingle();
-
-      if (existing.data) {
-        await supabase
+      try {
+        const existing = await supabase
           .from('post_saves')
-          .delete()
-          .eq('id', existing.data.id);
+          .select('id')
+          .eq('post_id', id)
+          .eq('user_id', user.id)
+          .maybeSingle();
 
-        button.textContent = 'SALVA';
-        button.classList.remove('liked');
-      } else {
-        await supabase
-          .from('post_saves')
-          .insert({ post_id: id, user_id: user.id });
+        if (existing.error) throw existing.error;
 
-        button.textContent = 'SALVATO';
-        button.classList.add('liked');
+        if (existing.data) {
+          const { error } = await supabase
+            .from('post_saves')
+            .delete()
+            .eq('id', existing.data.id);
+
+          if (error) throw error;
+          button.textContent = 'SALVA';
+          button.classList.remove('liked');
+        } else {
+          const { error } = await supabase
+            .from('post_saves')
+            .insert({ post_id: id, user_id: user.id });
+
+          if (error) throw error;
+          button.textContent = 'SALVATO';
+          button.classList.add('liked');
+        }
+      } catch (error) {
+        window.showToast?.(error?.message || 'Impossibile aggiornare il salvataggio.');
+      } finally {
+        button.disabled = false;
       }
     };
 
