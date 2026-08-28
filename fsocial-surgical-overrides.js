@@ -112,20 +112,6 @@ import { supabase } from "./supabase.js";
     }, true);
   }
 
-  let activeBattleData = [];
-  const originalFetch = window.fetch.bind(window);
-  window.fetch = async (...args) => {
-    const response = await originalFetch(...args);
-    try {
-      const requestUrl = typeof args[0] === "string" ? args[0] : args[0]?.url || "";
-      if (requestUrl.includes("/functions/v1/fsocial-battles") && requestUrl.includes("action=active")) {
-        const clone = response.clone();
-        const json = await clone.json();
-        if (json?.success && Array.isArray(json.battles)) activeBattleData = json.battles;
-      }
-    } catch {}
-    return response;
-  };
 
   function formatTimer(endedAt) {
     const end = new Date(endedAt || 0).getTime();
@@ -136,6 +122,7 @@ import { supabase } from "./supabase.js";
   }
 
   function decorateBattleHub() {
+    const activeBattleData = Array.isArray(window.__FSOCIAL_ACTIVE_BATTLES__) ? window.__FSOCIAL_ACTIVE_BATTLES__ : [];
     const cards = document.querySelectorAll(".fs-battle-hub-card");
     if (!cards.length || !activeBattleData.length) return;
     cards.forEach((card, index) => {
@@ -152,8 +139,24 @@ import { supabase } from "./supabase.js";
       const total = Number(item.votes?.[item.battle.challenger_id] || 0) + Number(item.votes?.[item.battle.challenged_id] || 0);
       const p0 = total ? Math.round(Number(item.votes?.[item.battle.challenger_id] || 0) / total * 100) : 0;
       const p1 = total ? 100 - p0 : 0;
-      players[0]?.querySelector(".fs-battle-hub-votes")?.insertAdjacentHTML("beforeend", `<span class="fs-surgical-percent">${p0}%</span>`);
-      players[1]?.querySelector(".fs-battle-hub-votes")?.insertAdjacentHTML("beforeend", `<span class="fs-surgical-percent">${p1}%</span>`);
+      const p0Existing = players[0]?.querySelector(".fs-surgical-percent");
+      if (p0Existing) {
+        p0Existing.textContent = `${p0}%`;
+      } else {
+        players[0]?.querySelector(".fs-battle-hub-votes")?.insertAdjacentHTML(
+          "beforeend",
+          `<span class="fs-surgical-percent">${p0}%</span>`
+        );
+      }
+      const p1Existing = players[1]?.querySelector(".fs-surgical-percent");
+      if (p1Existing) {
+        p1Existing.textContent = `${p1}%`;
+      } else {
+        players[1]?.querySelector(".fs-battle-hub-votes")?.insertAdjacentHTML(
+          "beforeend",
+          `<span class="fs-surgical-percent">${p1}%</span>`
+        );
+      }
       const oldVote = card.querySelector(".fs-battle-hub-vote"); if (oldVote && !card.querySelector(".fs-surgical-selected")) oldVote.textContent = "TOCCA UN OUTFIT PER VOTARE →";
     });
   }

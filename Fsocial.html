@@ -3480,6 +3480,7 @@ async function loadActiveBattles(){
                 trendingCount++;
             }
         });
+        window.__FSOCIAL_ACTIVE_BATTLES__ = battles;
         if(battles.length === 0){
             feed.innerHTML = `
                 <div class="fs-battle-hub-empty">

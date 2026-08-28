@@ -1,14 +1,6 @@
 ﻿const BATTLE_FUNCTION_URL =
     "https://dbjfvphcrfvajrtkeswg.supabase.co/functions/v1/fsocial-battles";
 
-const CATEGORY_LABELS = {
-    best_sneakers: "BEST SNEAKERS",
-    best_fit: "BEST FIT",
-    all_black: "ALL BLACK",
-    most_original: "MOST ORIGINAL",
-    streetwear: "STREETWEAR",
-    best_overall: "BEST OVERALL"
-};
 
 async function getCurrentSession() {
     try {
@@ -157,7 +149,6 @@ function closeBattleChallengeModal() {
 
 async function submitBattleChallenge({
     challengedUserId,
-    category,
     postId,
     modal,
     statusElement,
@@ -183,7 +174,7 @@ async function submitBattleChallenge({
             body: {
                 challenged_id: challengedUserId,
                 post_id: postId,
-                category
+                category: "best_overall"
             }
         });
 
@@ -287,24 +278,7 @@ async function openBattleChallengeModal({
                 </div>
             </div>
 
-            <div class="fs-battle-category-label">
-                SCEGLI LA CATEGORIA
-            </div>
 
-            <div class="fs-battle-category-grid">
-                ${Object.entries(CATEGORY_LABELS).map(
-                    ([value, label]) => `
-                        <button
-                            type="button"
-                            class="fs-battle-category"
-                            data-category="${escapeText(value)}"
-                            disabled
-                        >
-                            ${escapeText(label)}
-                        </button>
-                    `
-                ).join("")}
-            </div>
 
             <div
                 class="fs-battle-status"
@@ -363,46 +337,12 @@ async function openBattleChallengeModal({
             "#fsBattlePostGrid"
         );
 
-    const categoryButtons =
-        modal.querySelectorAll(
-            ".fs-battle-category"
-        );
 
     let selectedPostId = "";
-    let selectedCategory = "";
 
     const updateSubmitState = () => {
-        submitButton.disabled =
-            !selectedPostId ||
-            !selectedCategory;
+        submitButton.disabled = !selectedPostId;
     };
-
-    categoryButtons.forEach(button => {
-        button.addEventListener(
-            "click",
-            () => {
-                categoryButtons.forEach(item => {
-                    item.classList.remove(
-                        "selected"
-                    );
-                });
-
-                button.classList.add(
-                    "selected"
-                );
-
-                selectedCategory =
-                    button.dataset.category ||
-                    "";
-
-                updateSubmitState();
-
-                if (statusElement) {
-                    statusElement.textContent = "";
-                }
-            }
-        );
-    });
 
     const renderPosts = posts => {
         if (!postGrid) return;
@@ -418,9 +358,6 @@ async function openBattleChallengeModal({
             return;
         }
 
-        categoryButtons.forEach(button => {
-            button.disabled = false;
-        });
 
         postGrid.innerHTML = posts.map(post => `
             <button
@@ -499,15 +436,13 @@ async function openBattleChallengeModal({
         "click",
         () => {
             if (
-                !selectedPostId ||
-                !selectedCategory
+                !selectedPostId
             ) {
                 return;
             }
 
             submitBattleChallenge({
                 challengedUserId,
-                category: selectedCategory,
                 postId: selectedPostId,
                 modal,
                 statusElement,
