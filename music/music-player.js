@@ -9,7 +9,7 @@
     const MUSIC_CONFIG = {
         track: "music/si-salvi-chi-puo.wav",
         title: "",
-        volume: 0.7
+        volume: 0.18
     };
 
     const STORAGE_KEY = "fuorischema_music_state";
@@ -229,6 +229,15 @@
         createPlayer();
         createAudio();
         updateStatus();
+
+        if (audio) {
+            audio.play().then(function () {
+                saveState();
+                updateStatus();
+            }).catch(function () {
+                updateStatus("CLICK PLAY");
+            });
+        }
     }
 
     if (document.readyState === "loading") {
@@ -239,6 +248,9 @@
 
     window.FUORISCHEMA_MUSIC = MUSIC_CONFIG;
 })();
+
+
+
 
 
 
