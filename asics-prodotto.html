@@ -297,7 +297,7 @@ button{font:inherit;border:0}
     </a>
 
     <div class="nav-actions">
-        <a href="javascript:history.back()" class="nav-btn">← INDIETRO</a>
+        <a id="topBackLink" href="catalogo.html" class="nav-btn">← INDIETRO</a>
         <a href="index.html" class="nav-btn">HOME</a>
     </div>
 </header>
@@ -438,8 +438,10 @@ setText("backBrand", `${product.brand} / 01`);
 
 const categoryLink = document.getElementById("categoryLink");
 const backLink = document.getElementById("backLink");
+const topBackLink = document.getElementById("topBackLink");
 categoryLink.href = product.categoryUrl;
 backLink.href = product.categoryUrl;
+if(topBackLink){ topBackLink.href = product.categoryUrl || "catalogo.html"; }
 
 const image = document.getElementById("productImage");
 const placeholder = document.getElementById("imagePlaceholder");
