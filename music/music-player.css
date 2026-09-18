@@ -1,0 +1,125 @@
+﻿/* =========================================================
+   FUORISCHEMA MUSIC PLAYER
+   ========================================================= */
+
+#fs-music-player {
+    position: fixed;
+    top: 82px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 900;
+    width: 320px;
+    height: 38px;
+    background: rgba(10, 10, 10, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 0 9px;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff;
+}
+
+#fs-music-play {
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#fs-music-info {
+    min-width: 92px;
+    width: 92px;
+}
+
+#fs-music-label {
+    display: block;
+    font-size: 6px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    margin-bottom: 2px;
+}
+
+#fs-music-title {
+    display: block;
+    font-size: 7px;
+    letter-spacing: 0.7px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#fs-music-progress {
+    flex: 1;
+    min-width: 40px;
+    height: 2px;
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+
+#fs-music-volume {
+    width: 45px;
+    height: 2px;
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+
+#fs-music-status {
+    font-size: 6px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    min-width: 35px;
+    text-align: right;
+}
+
+@media (max-width: 600px) {
+    #fs-music-player {
+        top: 64px;
+        width: calc(100% - 24px);
+        max-width: 300px;
+        height: 36px;
+        gap: 7px;
+        padding: 0 8px;
+    }
+
+    #fs-music-play {
+        width: 23px;
+        height: 23px;
+        flex-basis: 23px;
+    }
+
+    #fs-music-info {
+        width: 82px;
+        min-width: 82px;
+    }
+
+    #fs-music-label {
+        font-size: 5.5px;
+    }
+
+    #fs-music-title {
+        font-size: 6.5px;
+    }
+
+    #fs-music-volume {
+        width: 35px;
+    }
+
+    #fs-music-status {
+        display: none;
+    }
+}
+
+
