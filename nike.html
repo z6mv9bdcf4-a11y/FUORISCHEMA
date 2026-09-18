@@ -683,7 +683,7 @@ button{font:inherit}
     Quando inizieremo a caricare i prodotti, basterà aggiungerli
     qui. Per ora NON inseriamo i vecchi prodotti di prova.
 */
-const products = Object.values(FUORISCHEMA_PRODUCTS).filter(product => product.brand === "NIKE");
+const products = Object.values(FUORISCHEMA_PRODUCTS).filter(product => product.brand === "NIKE" && product.category === "SCARPE");
 
 const productGrid = document.getElementById("productGrid");
 const emptyState = document.getElementById("emptyState");
