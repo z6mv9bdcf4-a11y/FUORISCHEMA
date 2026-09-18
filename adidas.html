@@ -495,7 +495,7 @@ button{font:inherit;border:0}
     </a>
 
     <div class="nav-actions">
-        <button id="sectionBackButton" class="nav-btn" type="button">← SCARPE</button>
+        <a href="scarpe.html" class="nav-btn">← SCARPE</a>
         <a href="index.html" class="nav-btn">HOME</a>
     </div>
 </header>
@@ -607,7 +607,6 @@ const detailTitle = document.getElementById("detailTitle");
 const detailCode = document.getElementById("detailCode");
 const detailDescription = document.getElementById("detailDescription");
 const footerSection = document.getElementById("footerSection");
-const sectionBackButton = document.getElementById("sectionBackButton");
 const searchInput = document.getElementById("searchInput");
 
 function escapeHtml(value){
@@ -687,10 +686,6 @@ function openProduct(id){
 if(searchInput){
     searchInput.addEventListener("input", renderCatalog);
 }
-
-sectionBackButton.onclick = () => {
-    window.location.href = "scarpe.html";
-};
 
 renderCatalog();
 
