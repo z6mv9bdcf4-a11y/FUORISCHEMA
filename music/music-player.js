@@ -7,8 +7,8 @@
     "use strict";
 
     const MUSIC_CONFIG = {
-        track: "",
-        title: "FUORISCHEMA RADIO",
+        track: "music/si-salvi-chi-puo.wav",
+        title: "",
         volume: 0.7
     };
 
@@ -31,8 +31,7 @@
             </button>
 
             <div id="fs-music-info">
-                <span id="fs-music-label">FUORISCHEMA RADIO</span>
-                <span id="fs-music-title">${MUSIC_CONFIG.title}</span>
+                <span id="fs-music-label">@palmhi<br>@sig.versace_official</span>
             </div>
 
             <input
@@ -240,3 +239,8 @@
 
     window.FUORISCHEMA_MUSIC = MUSIC_CONFIG;
 })();
+
+
+
+
+
