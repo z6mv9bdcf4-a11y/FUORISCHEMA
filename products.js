@@ -74,6 +74,66 @@ const FUORISCHEMA_PRODUCTS = {
         code: "",
         label: "",
         categoryUrl: "newbalance.html"
+    },    "jordan-tuta": {
+        id: "jordan-tuta",
+        name: "Tuta Jordan",
+        brand: "JORDAN",
+        category: "TUTE",
+        type: "TUTA / FUORISCHEMA",
+        description: "Tuta Jordan. Prodotto Jordan selezionato da FUORISCHEMA.",
+        image: "images/products/jordan/tuta-jordan.png",
+        code: "",
+        label: "",
+        categoryUrl: "tute.html"
+    },
+
+    "nike-smanicato": {
+        id: "nike-smanicato",
+        name: "Smanicato Nike",
+        brand: "NIKE",
+        category: "GIACCHE",
+        type: "SMANICATO / FUORISCHEMA",
+        description: "Smanicato Nike. Prodotto Nike selezionato da FUORISCHEMA.",
+        image: "images/products/nike/smanicato-nike.png",
+        code: "",
+        label: "",
+        categoryUrl: "giacche.html"
+    },
+    "lacoste-tracolla-02": {
+        id: "lacoste-tracolla-02",
+        name: "Tracolla Lacoste Mod. 2",
+        brand: "LACOSTE",
+        category: "BORSE",
+        type: "BORSA / FUORISCHEMA",
+        description: "Tracolla Lacoste Mod. 2. Un accessorio selezionato da FUORISCHEMA.",
+        image: "images/products/borse/tracolla-lacoste-mod-2.png",
+        code: "",
+        label: "",
+        categoryUrl: "borse.html"
+    },
+    "adidas-samba": {
+        id: "adidas-samba",
+        name: "Adidas Samba",
+        brand: "ADIDAS",
+        category: "SCARPE",
+        type: "SNEAKER / FUORISCHEMA",
+        description: "Adidas Samba. Una silhouette iconica selezionata da FUORISCHEMA.",
+        image: "images/products/adidas/samba.png",
+        code: "",
+        label: "",
+        categoryUrl: "adidas.html"
+    },
+    "adidas-real-madrid": {
+        id: "adidas-real-madrid",
+        name: "Tuta Adidas Real Madrid",
+        brand: "ADIDAS",
+        category: "TUTE",
+        type: "TUTA / FUORISCHEMA",
+        description: "Tuta Adidas Real Madrid. Prodotto Adidas selezionato da FUORISCHEMA.",
+        image: "images/products/adidas/adidas-real-madrid.png",
+        code: "",
+        label: "",
+        categoryUrl: "tute.html"
     },
 };
 
