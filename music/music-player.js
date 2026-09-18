@@ -230,6 +230,24 @@
         createAudio();
         updateStatus();
 
+        let autoplayStarted = false;
+
+        function startAfterInteraction() {
+            if (!audio || !audio.paused || autoplayStarted) {
+                return;
+            }
+
+            audio.play().then(function () {
+                autoplayStarted = true;
+                saveState();
+                updateStatus();
+                document.removeEventListener("pointerdown", startAfterInteraction);
+                document.removeEventListener("keydown", startAfterInteraction);
+            }).catch(function () {});
+        }
+
+        document.addEventListener("pointerdown", startAfterInteraction, { once: false });
+        document.addEventListener("keydown", startAfterInteraction, { once: false });
         if (audio) {
             audio.play().then(function () {
                 saveState();
@@ -248,6 +266,7 @@
 
     window.FUORISCHEMA_MUSIC = MUSIC_CONFIG;
 })();
+
 
 
 
