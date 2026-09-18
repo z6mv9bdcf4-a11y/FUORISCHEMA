@@ -596,7 +596,7 @@ button{font:inherit;border:0}
       compatibile tramite redirect alla scheda canonica.
 */
 
-const products = Object.values(FUORISCHEMA_PRODUCTS).filter(product => product.brand === "ADIDAS");
+const products = Object.values(FUORISCHEMA_PRODUCTS).filter(product => product.brand === "ADIDAS" && product.category === "SCARPE");
 
 const catalogView = document.getElementById("catalogView");
 const productDetail = document.getElementById("productDetail");
