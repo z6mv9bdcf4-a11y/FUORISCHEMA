@@ -135,6 +135,32 @@
         label: "",
         categoryUrl: "tute.html"
     },
+    "jordan-4-bred-reimagined": {
+        id: "jordan-4-bred-reimagined",
+        name: "Air Jordan 4 Retro Bred Reimagined",
+        brand: "JORDAN",
+        category: "SCARPE",
+        type: "SNEAKER / FUORISCHEMA",
+        description: "Air Jordan 4 Retro Bred Reimagined. Una sneaker selezionata da FUORISCHEMA.",
+        image: "images/products/jordan/jordan-4-bred-reimagined.png",
+        code: "",
+        label: "",
+        categoryUrl: "jordan.html"
+    },
+
+    "jordan-4-red-cement": {
+        id: "jordan-4-red-cement",
+        name: "Air Jordan 4 Retro Red Cement",
+        brand: "JORDAN",
+        category: "SCARPE",
+        type: "SNEAKER / FUORISCHEMA",
+        description: "Air Jordan 4 Retro Red Cement. Una sneaker selezionata da FUORISCHEMA.",
+        image: "images/products/jordan/jordan-4-red-cement.png",
+        code: "",
+        label: "",
+        categoryUrl: "jordan.html"
+    },
+
     "timberland-01": {
         id: "timberland-01",
         name: "Timberland",
