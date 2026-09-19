@@ -27,11 +27,12 @@
 
         player.innerHTML = `
             <button id="fs-music-play" type="button" aria-label="Riproduci musica">
-                ▶
+                PLAY
             </button>
 
             <div id="fs-music-info">
                 <span id="fs-music-label">@palmhi<br>@sig.versace_official</span>
+                <span id="fs-music-title">SI SALVI CHI PUO</span>
             </div>
 
             <input
@@ -147,16 +148,16 @@
         const status = document.getElementById("fs-music-status");
 
         if (!audio) {
-            if (playButton) playButton.textContent = "▶";
+            if (playButton) playButton.textContent = "PLAY";
             if (status) status.textContent = forcedStatus || "READY";
             return;
         }
 
         if (audio.paused) {
-            if (playButton) playButton.textContent = "▶";
+            if (playButton) playButton.textContent = "PLAY";
             if (status) status.textContent = forcedStatus || "PAUSED";
         } else {
-            if (playButton) playButton.textContent = "Ⅱ";
+            if (playButton) playButton.textContent = "PAUSE";
             if (status) status.textContent = forcedStatus || "PLAYING";
         }
     }
