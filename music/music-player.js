@@ -144,6 +144,9 @@
     }
 
     function updateStatus(forcedStatus) {
+        if (typeof forcedStatus !== "string") {
+            forcedStatus = "";
+        }
         const playButton = document.getElementById("fs-music-play");
         const status = document.getElementById("fs-music-status");
 
