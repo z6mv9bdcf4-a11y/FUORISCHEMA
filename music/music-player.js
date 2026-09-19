@@ -71,6 +71,7 @@
         audio = new Audio(MUSIC_CONFIG.track);
         audio.preload = "auto";
         audio.volume = MUSIC_CONFIG.volume;
+        audio.muted = false;
 
         restoreState();
 
@@ -78,6 +79,21 @@
         audio.addEventListener("play", updateStatus);
         audio.addEventListener("pause", updateStatus);
         audio.addEventListener("ended", handleEnded);
+        if ("mediaSession" in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: "SI SALVI CHI PUO",
+                artist: "@palmhi / @sig.versace_official",
+                album: "FUORISCHEMA"
+            });
+
+            navigator.mediaSession.setActionHandler("play", function () {
+                audio.play().catch(function () {});
+            });
+
+            navigator.mediaSession.setActionHandler("pause", function () {
+                audio.pause();
+            });
+        }
     }
 
     function bindControls() {
