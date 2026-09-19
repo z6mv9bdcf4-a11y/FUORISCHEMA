@@ -4,11 +4,12 @@
 
 #fs-music-player {
     position: fixed;
-    top: 64px;
+    top: 82px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 900;
-    width: calc(100% - 20px);
+    width: 360px;
+    max-width: calc(100% - 20px);
     height: 40px;
     background: rgba(10, 10, 10, 0.96);
     border: 1px solid rgba(255, 255, 255, 0.18);
