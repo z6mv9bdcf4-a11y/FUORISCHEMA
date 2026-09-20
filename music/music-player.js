@@ -7,7 +7,7 @@
     "use strict";
 
     const MUSIC_CONFIG = {
-        track: "music/si-salvi-chi-puo.wav",
+        track: "music/si-salvi-chi-puo.mp3",
         title: "",
         volume: 0.18
     };
