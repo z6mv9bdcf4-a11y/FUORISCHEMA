@@ -1866,6 +1866,65 @@
     }
 
 </style>
+<style id="fuorischema-homepage-impact-v1">
+/* =========================================================
+   HOMEPAGE IMPACT V1 — micro-adjustments only
+   - Keeps identity, hamburger and music untouched.
+   - No prices added.
+   - Makes the shop CTA clearer and lets the next section
+     enter the first viewport without redesigning the hero.
+========================================================= */
+
+.hero {
+    min-height: 88vh;
+}
+
+.hero-title {
+    font-size: clamp(90px, 13vw, 205px);
+    margin-bottom: 50px;
+}
+
+.hero-cta {
+    min-width: 310px;
+    padding: 16px 18px;
+    border: 1px solid var(--arancio);
+    background: rgba(255, 77, 0, .06);
+    transition:
+        background .25s ease,
+        color .25s ease,
+        transform .25s ease;
+}
+
+.hero-cta:hover {
+    padding-left: 18px;
+    padding-right: 18px;
+    background: var(--arancio);
+    color: #050505;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 900px) {
+    .hero {
+        min-height: 88svh;
+    }
+
+    .hero-title {
+        font-size: clamp(72px, 18vw, 140px);
+        margin-bottom: 45px;
+    }
+
+    .hero-cta {
+        min-width: 0;
+        width: 100%;
+        padding: 16px 18px;
+    }
+
+    .hero-cta:hover {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+}
+</style>
 <link rel="stylesheet" href="music/music-player.css"></head>
 
 
