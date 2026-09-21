@@ -173,6 +173,31 @@
         label: "",
         categoryUrl: "timberland.html"
     },
+    "adidas-08": {
+        id: "adidas-08",
+        name: "Adidas Samba OG",
+        brand: "ADIDAS",
+        category: "SCARPE",
+        type: "SNEAKER / FUORISCHEMA",
+        description: "Adidas Samba OG. Prodotto Adidas selezionato da FUORISCHEMA.",
+        image: "images/products/adidas/adidas-samba-og.png",
+        code: "",
+        label: "",
+        categoryUrl: "adidas.html"
+    },
+
+    "adidas-bayern-munich": {
+        id: "adidas-bayern-munich",
+        name: "Adidas Bayern Munich",
+        brand: "ADIDAS",
+        category: "TUTE",
+        type: "TUTA / FUORISCHEMA",
+        description: "Adidas Bayern Munich. Prodotto Adidas selezionato da FUORISCHEMA.",
+        image: "images/products/abbigliamento/adidas-bayern-munich.png",
+        code: "",
+        label: "",
+        categoryUrl: "tute.html"
+    },
 };
 
 window.FUORISCHEMA_PRODUCTS = FUORISCHEMA_PRODUCTS;
