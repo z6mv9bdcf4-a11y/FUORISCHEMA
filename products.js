@@ -198,6 +198,18 @@
         label: "",
         categoryUrl: "tute.html"
     },
+    "off-white-01": {
+        id: "off-white-01",
+        name: "Off-White Sneaker",
+        brand: "OFF-WHITE",
+        category: "SCARPE",
+        type: "SNEAKER / FUORISCHEMA",
+        description: "Off-White sneaker. Prodotto Off-White selezionato da FUORISCHEMA.",
+        image: "images/products/off-white/off-white.png",
+        code: "",
+        label: "",
+        categoryUrl: "off-white.html"
+    },
 };
 
 window.FUORISCHEMA_PRODUCTS = FUORISCHEMA_PRODUCTS;
