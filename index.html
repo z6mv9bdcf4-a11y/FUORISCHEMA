@@ -1734,6 +1734,71 @@
             opacity: 0.9;
         }
 
+        .hero {
+            background-image: linear-gradient(rgba(0,0,0,.48), rgba(0,0,0,.48)), url("images/sfondo-fuorischema.jpeg");
+            background-size: cover;
+            background-position: center center;
+        }
+
+        header {
+            background: transparent;
+            backdrop-filter: none;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+        @media (max-width: 768px) {
+            .categories {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .category { background-size: auto 82%; background-repeat: no-repeat; background-position: center; background-color: #080808; }
+            .category {
+                min-height: 105px;
+                height: 105px;
+                padding: 16px;
+                background-size: cover;
+                background-position: center;
+                border-color: rgba(255,255,255,.12);
+            }
+
+            .category:nth-child(1) {
+                background-image: linear-gradient(rgba(0,0,0,.28), rgba(0,0,0,.72)), url("images/products/nike/air-force-1-triple-white.webp");
+            }
+
+            .category:nth-child(2) {
+                background-image: linear-gradient(rgba(0,0,0,.28), rgba(0,0,0,.72)), url("images/products/nike/smanicato-nike.png");
+            }
+
+            .category:nth-child(3) {
+                background-image: linear-gradient(rgba(0,0,0,.28), rgba(0,0,0,.72)), url("images/products/borse/tracolla-lacoste-mod-2.png");
+            }
+
+            .category-number {
+                font-size: 10px;
+            }
+
+            .category-bottom {
+                align-items: center;
+            }
+
+            .category-bottom h3 {
+                font-size: clamp(18px, 5.5vw, 25px);
+                line-height: 1;
+                white-space: nowrap;
+            }
+
+            .category-arrow {
+                font-size: 24px;
+                flex-shrink: 0;
+            }
+        }
+        @media (max-width: 768px) {
+            .category {
+                background-size: cover, auto 88%;
+                background-repeat: no-repeat, no-repeat;
+                background-position: center, center;
+            }
+        }
     </style>
     <link rel="stylesheet" href="cart.css">
 <style id="fuorischema-install-cta-style">
@@ -2073,6 +2138,108 @@
 
 
         <!-- =====================================================
+             CATEGORIE
+        ===================================================== -->
+
+        <section class="section">
+
+            <div class="section-head reveal">
+
+                <div>
+
+                    <div class="section-number">
+                        02 / CATEGORIE
+                    </div>
+
+                    <h2 class="section-title">
+                        SCEGLI<br>
+                        DA DOVE<br>
+                        INIZIARE
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="categories">
+
+                <a
+                    href="scarpe.html"
+                    class="category reveal"
+                >
+
+                    <div class="category-number">
+                        001
+                    </div>
+
+                    <div class="category-bottom">
+
+                        <h3>
+                            SCARPE
+                        </h3>
+
+                        <span class="category-arrow">
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+                <a
+                    href="abbigliamento.html"
+                    class="category reveal"
+                >
+
+                    <div class="category-number">
+                        002
+                    </div>
+
+                    <div class="category-bottom">
+
+                        <h3>
+                            ABBIGLIAMENTO
+                        </h3>
+
+                        <span class="category-arrow">
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+                <a
+                    href="accessori.html"
+                    class="category reveal"
+                >
+
+                    <div class="category-number">
+                        003
+                    </div>
+
+                    <div class="category-bottom">
+
+                        <h3>
+                            ACCESSORI
+                        </h3>
+
+                        <span class="category-arrow">
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
              NUOVI ARRIVI — CURATED DROP (2 PRODOTTI EDITORIALI)
         ===================================================== -->
 
@@ -2177,109 +2344,6 @@
                             #002
                         </span>
                     </div>
-                </a>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================================
-             CATEGORIE
-        ===================================================== -->
-
-        <section class="section">
-
-            <div class="section-head reveal">
-
-                <div>
-
-                    <div class="section-number">
-                        02 / CATEGORIE
-                    </div>
-
-                    <h2 class="section-title">
-                        SCEGLI<br>
-                        DA DOVE<br>
-                        INIZIARE
-                    </h2>
-
-                </div>
-
-            </div>
-
-
-            <div class="categories">
-
-                <a
-                    href="scarpe.html"
-                    class="category reveal"
-                >
-
-                    <div class="category-number">
-                        001
-                    </div>
-
-                    <div class="category-bottom">
-
-                        <h3>
-                            SCARPE
-                        </h3>
-
-                        <span class="category-arrow">
-                            →
-                        </span>
-
-                    </div>
-
-                </a>
-
-
-                <a
-                    href="abbigliamento.html"
-                    class="category reveal"
-                >
-
-                    <div class="category-number">
-                        002
-                    </div>
-
-                    <div class="category-bottom">
-
-                        <h3>
-                            ABBIGLIAMENTO
-                        </h3>
-
-                        <span class="category-arrow">
-                            →
-                        </span>
-
-                    </div>
-
-                </a>
-
-
-                <a
-                    href="accessori.html"
-                    class="category reveal"
-                >
-
-                    <div class="category-number">
-                        003
-                    </div>
-
-                    <div class="category-bottom">
-
-                        <h3>
-                            ACCESSORI
-                        </h3>
-
-                        <span class="category-arrow">
-                            →
-                        </span>
-
-                    </div>
-
                 </a>
 
             </div>

@@ -82,7 +82,11 @@ h1{font-size:clamp(76px,12vw,148px);line-height:.76;font-weight:1000;letter-spac
  .footer{flex-direction:column;gap:7px}
 }
 @media(max-width:380px){h1{font-size:59px}.tile-name,.brand-tile:first-child .tile-name{font-size:40px}.nav-btn{padding:0 7px}.shop-title{font-size:19px}}
-</style>
+@media(max-width:700px){
+    .brand-tile:nth-child(2) .tile-name{font-size:31px;letter-spacing:-2px;white-space:nowrap}
+    .brand-tile:nth-child(6) .tile-name{font-size:21px;letter-spacing:-1.5px;white-space:nowrap}
+    .brand-tile:nth-child(7) .tile-name{font-size:22px;letter-spacing:-1.5px}
+}</style>
     <link rel="stylesheet" href="cart.css">
 </head>
 
@@ -175,10 +179,7 @@ h1{font-size:clamp(76px,12vw,148px);line-height:.76;font-weight:1000;letter-spac
      </a>
     </div>
   </section>
-  <section class="collab">
-    <div class="collab-head"><div><div class="kicker" style="margin-bottom:6px">SELEZIONE SPECIALE</div><div class="shop-title">COLLABORAZIONI</div></div></div>
-    <a class="collab-card" href="travis-scott.html"><div class="collab-label">001 / COLLABORAZIONE</div><div class="collab-arrow">↗</div><div class="collab-title">TRAVIS SCOTT<span>SELEZIONE / COLLABORAZIONI</span></div></a>
-  </section>
+
   <footer class="footer"><span>FUORISCHEMA</span><span>SCARPE / 01</span></footer>
 </main>
 <script>
