@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -298,14 +298,14 @@ h1{
     .shop-head h2{font-size:25px}
     .shop-note{margin-top:11px}
 
-    .categories{grid-template-columns:1fr;gap:10px}
+    .categories{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
     .category-card,
     .category-card.featured{
         grid-column:auto;
-        min-height:220px;
+        min-height:145px;
         padding:20px;
     }
-    .category-card.featured{min-height:285px}
+    .category-card.featured{min-height:145px}
     .card-name{font-size:clamp(39px,12vw,60px)}
     .featured .card-name{font-size:clamp(48px,15vw,76px)}
     .card-arrow{right:19px;top:18px}
