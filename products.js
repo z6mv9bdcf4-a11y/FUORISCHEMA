@@ -63,6 +63,20 @@
     "adidas-07": { id:"adidas-07", name:"Adidas Vento XLG Deluxe – IH0070", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas Vento XLG Deluxe – IH0070. Prodotto Adidas selezionato da FUORISCHEMA.", image:"images/products/adidas/vento-xlg-ih0070.webp", code:"IH0070", label:"", categoryUrl:"adidas.html" },
     "asics-01": { id:"asics-01", name:"ASICS GEL-NYC — 1201A789-103", brand:"ASICS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"ASICS GEL-NYC — 1201A789-103. Una sneaker selezionata da FUORISCHEMA.", image:"images/products/asics/gel-nyc-1201a789-103.webp", code:"1201A789-103", label:"NUOVO", filter:"new", categoryUrl:"asics.html" },
     "lacoste-tracolla": { id:"lacoste-tracolla", name:"Tracolla Lacoste", brand:"LACOSTE", category:"BORSE", type:"BORSA / FUORISCHEMA", description:"Tracolla Lacoste. Un accessorio selezionato da FUORISCHEMA.", image:"images/products/borse/tracolla-lacoste.webp", code:"", label:"", categoryUrl:"borse.html" },
+    "newbalance-9060-black": {
+        id: "newbalance-9060-black",
+        name: "NEW BALANCE 9060 Black",
+        brand: "NEW BALANCE",
+        category: "SCARPE",
+        type: "SNEAKER / FUORISCHEMA",
+        description: "NEW BALANCE 9060 Black. Una sneaker New Balance selezionata da FUORISCHEMA.",
+        image: "images/products/newbalance/9060-black.webp",
+        code: "",
+        label: "",
+        categoryUrl: "newbalance.html"
+    },
+
+
     "newbalance-m1906": {
         id: "newbalance-m1906",
         name: "New Balance M1906",
