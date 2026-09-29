@@ -317,6 +317,19 @@ const FUORISCHEMA_PRODUCTS = {
         label: "",
         categoryUrl: "tute.html"
     },
+
+    "nike-performance-barcelona": {
+        id: "nike-performance-barcelona",
+        name: "NIKE PERFORMANCE BARCELONA",
+        brand: "NIKE",
+        category: "TUTE",
+        type: "TUTA / FUORISCHEMA",
+        description: "NIKE PERFORMANCE BARCELONA. Una tuta Nike Barcelona selezionata da FUORISCHEMA.",
+        image: "images/products/nike/nike-performance-barcelona.jpg",
+        code: "",
+        label: "",
+        categoryUrl: "tute.html"
+    },
 };
 
 window.FUORISCHEMA_PRODUCTS = FUORISCHEMA_PRODUCTS;
