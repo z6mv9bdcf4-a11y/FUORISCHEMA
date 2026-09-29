@@ -230,7 +230,7 @@
         category: "GIACCHE",
         type: "GIACCA / FUORISCHEMA",
         description: "ADIDAS ORIGINALS CROPPED. Un capo Adidas Originals selezionato da FUORISCHEMA.",
-        image: "images/products/adidas/adidas-originals-cropped.jpg",
+        image: "images/products/adidas/adidas-originals-cropped.webp",
         code: "",
         label: "",
         categoryUrl: "giacche.html"
