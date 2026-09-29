@@ -223,6 +223,19 @@
         categoryUrl: "newbalance.html"
     },
 
+    "nike-smanicato-white": {
+        id: "nike-smanicato-white",
+        name: "Smanicato Nike White",
+        brand: "NIKE",
+        category: "GIACCHE",
+        type: "SMANICATO / FUORISCHEMA",
+        description: "Smanicato Nike White. Un capo Nike selezionato da FUORISCHEMA.",
+        image: "images/products/nike/smanicato-nike-white.webp",
+        code: "",
+        label: "",
+        categoryUrl: "giacche.html"
+    },
+
 };
 
 window.FUORISCHEMA_PRODUCTS = FUORISCHEMA_PRODUCTS;
