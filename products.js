@@ -291,6 +291,19 @@ const FUORISCHEMA_PRODUCTS = {
         label: "",
         categoryUrl: "tute.html"
     },
+
+    "nike-performance-chelsea": {
+        id: "nike-performance-chelsea",
+        name: "NIKE PERFORMANCE CHELSEA",
+        brand: "NIKE",
+        category: "TUTE",
+        type: "TUTA / FUORISCHEMA",
+        description: "NIKE PERFORMANCE CHELSEA. Una tuta Nike Chelsea selezionata da FUORISCHEMA.",
+        image: "images/products/nike/nike-performance-chelsea.jpg",
+        code: "",
+        label: "",
+        categoryUrl: "tute.html"
+    },
 };
 
 window.FUORISCHEMA_PRODUCTS = FUORISCHEMA_PRODUCTS;
