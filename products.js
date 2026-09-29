@@ -237,6 +237,19 @@
         categoryUrl: "newbalance.html"
     },
 
+    "zaino-lacoste": {
+        id: "zaino-lacoste",
+        name: "Zaino Lacoste",
+        brand: "LACOSTE",
+        category: "BORSE",
+        type: "ZAINO / FUORISCHEMA",
+        description: "Zaino Lacoste. Un accessorio Lacoste selezionato da FUORISCHEMA.",
+        image: "images/products/borse/zaino-lacoste.webp",
+        code: "",
+        label: "",
+        categoryUrl: "borse.html"
+    },
+
 };
 
 window.FUORISCHEMA_PRODUCTS = FUORISCHEMA_PRODUCTS;
