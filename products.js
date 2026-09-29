@@ -250,18 +250,7 @@ const FUORISCHEMA_PRODUCTS = {
         label: "",
         categoryUrl: "giacche.html"
     },
-    "adidas-originals-cropped": {
-        id: "adidas-originals-cropped",
-        name: "ADIDAS ORIGINALS CROPPED",
-        brand: "ADIDAS",
-        category: "GIACCHE",
-        type: "GIACCA / FUORISCHEMA",
-        description: "ADIDAS ORIGINALS CROPPED. Un capo Adidas Originals selezionato da FUORISCHEMA.",
-        image: "images/products/adidas/adidas-originals-cropped.webp",
-        code: "",
-        label: "",
-        categoryUrl: "giacche.html"
-    },
+
 
 };
 
