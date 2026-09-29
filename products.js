@@ -278,6 +278,19 @@ const FUORISCHEMA_PRODUCTS = {
         label: "",
         categoryUrl: "newbalance.html"
     },
+
+    "nike-performance-psg": {
+        id: "nike-performance-psg",
+        name: "NIKE PERFORMANCE PSG",
+        brand: "NIKE",
+        category: "TUTE",
+        type: "TUTA / FUORISCHEMA",
+        description: "NIKE PERFORMANCE PSG. Una tuta Nike PSG selezionata da FUORISCHEMA.",
+        image: "images/products/nike/nike-performance-psg.jpg",
+        code: "",
+        label: "",
+        categoryUrl: "tute.html"
+    },
 };
 
 window.FUORISCHEMA_PRODUCTS = FUORISCHEMA_PRODUCTS;
