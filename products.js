@@ -217,7 +217,7 @@
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "NEW BALANCE 9060 White. Una sneaker New Balance selezionata da FUORISCHEMA.",
-        image: "images/products/newbalance/9060-white.jpg",
+        image: "images/products/newbalance/9060-white.webp",
         code: "",
         label: "",
         categoryUrl: "newbalance.html"
