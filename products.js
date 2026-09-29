@@ -304,6 +304,19 @@ const FUORISCHEMA_PRODUCTS = {
         label: "",
         categoryUrl: "tute.html"
     },
+
+    "nike-performance-chelsea-blue": {
+        id: "nike-performance-chelsea-blue",
+        name: "NIKE PERFORMANCE CHELSEA BLUE",
+        brand: "NIKE",
+        category: "TUTE",
+        type: "TUTA / FUORISCHEMA",
+        description: "NIKE PERFORMANCE CHELSEA BLUE. Una tuta Nike Chelsea selezionata da FUORISCHEMA.",
+        image: "images/products/nike/nike-performance-chelsea-blue.jpg",
+        code: "",
+        label: "",
+        categoryUrl: "tute.html"
+    },
 };
 
 window.FUORISCHEMA_PRODUCTS = FUORISCHEMA_PRODUCTS;
