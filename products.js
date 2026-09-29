@@ -210,6 +210,19 @@
         label: "",
         categoryUrl: "off-white.html"
     },
+    "newbalance-9060-white": {
+        id: "newbalance-9060-white",
+        name: "NEW BALANCE 9060 White",
+        brand: "NEW BALANCE",
+        category: "SCARPE",
+        type: "SNEAKER / FUORISCHEMA",
+        description: "NEW BALANCE 9060 White. Una sneaker New Balance selezionata da FUORISCHEMA.",
+        image: "images/products/newbalance/9060-white.jpg",
+        code: "",
+        label: "",
+        categoryUrl: "newbalance.html"
+    },
+
 };
 
 window.FUORISCHEMA_PRODUCTS = FUORISCHEMA_PRODUCTS;
