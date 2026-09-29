@@ -265,6 +265,19 @@ const FUORISCHEMA_PRODUCTS = {
         label: "",
         categoryUrl: "giacche.html"
     },
+
+    "newbalance-9060-black": {
+        id: "newbalance-9060-black",
+        name: "NEW BALANCE 9060 Black",
+        brand: "NEW BALANCE",
+        category: "SCARPE",
+        type: "SNEAKER / FUORISCHEMA",
+        description: "NEW BALANCE 9060 Black. Una sneaker New Balance selezionata da FUORISCHEMA.",
+        image: "images/products/newbalance/newbalance-9060-black.jpg",
+        code: "",
+        label: "",
+        categoryUrl: "newbalance.html"
+    },
 };
 
 window.FUORISCHEMA_PRODUCTS = FUORISCHEMA_PRODUCTS;
