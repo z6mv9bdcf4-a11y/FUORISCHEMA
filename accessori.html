@@ -316,7 +316,7 @@ h1{
     .category-card:nth-child(1) .card-name{font-size:34px;letter-spacing:-2px;white-space:nowrap}
     .category-card:nth-child(2) .card-name{font-size:18px;letter-spacing:-1px;white-space:nowrap}
     .category-card:nth-child(3) .card-name{font-size:28px;letter-spacing:-1.8px;white-space:nowrap}
-}</style>
+}.card-arrow,.tile-arrow{position:relative;display:block;width:18px;height:18px;color:#777}.card-arrow::before,.tile-arrow::before{content:"";position:absolute;width:11px;height:1px;background:currentColor;top:9px;left:2px;transform:rotate(-45deg);transform-origin:right center}.card-arrow::after,.tile-arrow::after{content:"";position:absolute;width:6px;height:6px;border-top:1px solid currentColor;border-right:1px solid currentColor;top:4px;right:1px}.cta-arrow{display:inline-block;width:12px;height:8px;position:relative;margin-left:7px;vertical-align:middle}.cta-arrow::before{content:"";position:absolute;width:9px;height:1px;background:#ff5a00;left:0;top:4px}.cta-arrow::after{content:"";position:absolute;width:5px;height:5px;border-top:1px solid #ff5a00;border-right:1px solid #ff5a00;right:0;top:1px}</style>
     <link rel="stylesheet" href="cart.css">
 </head>
 
@@ -359,29 +359,29 @@ h1{
     <section class="categories" aria-label="Categorie accessori">
         <a class="category-card featured" href="borse.html">
             <span class="card-number">001</span>
-            <span class="card-arrow">↗</span>
+            <span class="card-arrow" aria-hidden="true"></span>
             <div class="card-copy">
                 <span class="card-kicker">BAGS / BORSE</span>
                 <span class="card-name">BORSE</span>
-                <span class="card-cta">ESPLORA <b>→</b></span>
+                <span class="card-cta">ESPLORA <b class="cta-arrow" aria-hidden="true"></b></span>
             </div>
         </a>
         <a class="category-card " href="portafogli.html">
             <span class="card-number">002</span>
-            <span class="card-arrow">↗</span>
+            <span class="card-arrow" aria-hidden="true"></span>
             <div class="card-copy">
                 <span class="card-kicker">ESSENTIALS / PORTAFOGLI</span>
                 <span class="card-name">PORTAFOGLI</span>
-                <span class="card-cta">ESPLORA <b>→</b></span>
+                <span class="card-cta">ESPLORA <b class="cta-arrow" aria-hidden="true"></b></span>
             </div>
         </a>
         <a class="category-card " href="cappelli.html">
             <span class="card-number">003</span>
-            <span class="card-arrow">↗</span>
+            <span class="card-arrow" aria-hidden="true"></span>
             <div class="card-copy">
                 <span class="card-kicker">HEADWEAR / CAPPELLI</span>
                 <span class="card-name">CAPPELLI</span>
-                <span class="card-cta">ESPLORA <b>→</b></span>
+                <span class="card-cta">ESPLORA <b class="cta-arrow" aria-hidden="true"></b></span>
             </div>
         </a>
     </section>
