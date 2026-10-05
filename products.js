@@ -65,6 +65,18 @@ const FUORISCHEMA_PRODUCTS = {
     "lacoste-tracolla": { id:"lacoste-tracolla", name:"Tracolla Lacoste", brand:"LACOSTE", category:"BORSE", type:"BORSA / FUORISCHEMA", description:"Tracolla Lacoste. Un accessorio selezionato da FUORISCHEMA.", image:"images/products/borse/tracolla-lacoste.webp", code:"", label:"", categoryUrl:"borse.html" },
 
 
+    "newbalance-204l": {
+        id: "newbalance-204l",
+        name: "New Balance 204L",
+        brand: "NEW BALANCE",
+        category: "SCARPE",
+        type: "SNEAKER / FUORISCHEMA",
+        description: "New Balance 204L. Una sneaker New Balance selezionata da FUORISCHEMA.",
+        image: "images/products/newbalance/newbalance-204l.png",
+        code: "",
+        label: "",
+        categoryUrl: "newbalance.html"
+    },
     "newbalance-m1906": {
         id: "newbalance-m1906",
         name: "New Balance M1906",
@@ -133,6 +145,77 @@ const FUORISCHEMA_PRODUCTS = {
         type: "TUTA / FUORISCHEMA",
         description: "Tuta Adidas Real Madrid. Prodotto Adidas selezionato da FUORISCHEMA.",
         image: "images/products/adidas/adidas-real-madrid.png",
+        code: "",
+        label: "",
+        categoryUrl: "tute.html"
+    },    "adidas-real-madrid-originals": {
+        id: "adidas-real-madrid-originals",
+        name: "Adidas Real Madrid Originals",
+        brand: "ADIDAS",
+        category: "TUTE",
+        type: "TUTA / FUORISCHEMA",
+        description: "Adidas Real Madrid Originals. Prodotto Adidas selezionato da FUORISCHEMA.",
+        image: "images/products/abbigliamento/adidas-real-madrid-originals.png",
+        code: "",
+        label: "",
+        categoryUrl: "tute.html"
+    },
+    "adidas-argentina-originals": {
+        id: "adidas-argentina-originals",
+        name: "Adidas Argentina Originals",
+        brand: "ADIDAS",
+        category: "TUTE",
+        type: "TUTA / FUORISCHEMA",
+        description: "Adidas Argentina Originals. Prodotto Adidas selezionato da FUORISCHEMA.",
+        image: "images/products/abbigliamento/adidas-argentina-originals.png",
+        code: "",
+        label: "",
+        categoryUrl: "tute.html"
+    },
+    "adidas-bayern-munich-basketball": {
+        id: "adidas-bayern-munich-basketball",
+        name: "Adidas Bayern Munich Basketball",
+        brand: "ADIDAS",
+        category: "TUTE",
+        type: "TUTA / FUORISCHEMA",
+        description: "Adidas Bayern Munich Basketball. Prodotto Adidas selezionato da FUORISCHEMA.",
+        image: "images/products/abbigliamento/adidas-bayern-munich-basketball.png",
+        code: "",
+        label: "",
+        categoryUrl: "tute.html"
+    },
+    "adidas-women-animal-tracksuit": {
+        id: "adidas-women-animal-tracksuit",
+        name: "Adidas Women Animal Tracksuit",
+        brand: "ADIDAS",
+        category: "TUTE",
+        type: "TUTA DONNA / FUORISCHEMA",
+        description: "Adidas Women Animal Tracksuit. Tuta Adidas da donna selezionata da FUORISCHEMA.",
+        image: "images/products/abbigliamento/adidas-women-animal-tracksuit.png",
+        code: "",
+        label: "",
+        categoryUrl: "tute.html"
+    },
+    "adidas-women-black-tracksuit": {
+        id: "adidas-women-black-tracksuit",
+        name: "Adidas Women Black Tracksuit",
+        brand: "ADIDAS",
+        category: "TUTE",
+        type: "TUTA DONNA / FUORISCHEMA",
+        description: "Adidas Women Black Tracksuit. Tuta Adidas da donna selezionata da FUORISCHEMA.",
+        image: "images/products/abbigliamento/adidas-women-black-tracksuit.png",
+        code: "",
+        label: "",
+        categoryUrl: "tute.html"
+    },
+    "adidas-women-burgundy-tracksuit": {
+        id: "adidas-women-burgundy-tracksuit",
+        name: "Adidas Women Burgundy Tracksuit",
+        brand: "ADIDAS",
+        category: "TUTE",
+        type: "TUTA DONNA / FUORISCHEMA",
+        description: "Adidas Women Burgundy Tracksuit. Tuta Adidas da donna selezionata da FUORISCHEMA.",
+        image: "images/products/abbigliamento/adidas-women-burgundy-tracksuit.png",
         code: "",
         label: "",
         categoryUrl: "tute.html"
