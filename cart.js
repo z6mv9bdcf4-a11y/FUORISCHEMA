@@ -371,9 +371,9 @@
 
         const href = link ? link.getAttribute("href") : "";
 
-        let id = "";
+        let id = card.dataset.productId || "";
 
-        if (href) {
+        if (!id && href) {
             try {
                 const url = new URL(href, window.location.href);
                 id = url.searchParams.get("id") || "";
@@ -442,19 +442,26 @@
 
             if (!product) return;
 
-            const button = document.createElement("button");
+            const button = document.createElement("span");
 
-            button.type = "button";
             button.className = "fs-add-cart-button";
+            button.setAttribute("role", "button");
+            button.setAttribute("tabindex", "0");
+            button.setAttribute("aria-label", `Aggiungi ${product.name} al carrello`);
             button.innerHTML = `
                 <span>AGGIUNGI AL CARRELLO</span>
-                <span>+</span>
+                <span aria-hidden="true">+</span>
             `;
 
-            button.addEventListener("click", event => {
+            const addFromCard = event => {
                 event.preventDefault();
                 event.stopPropagation();
                 addToCart(product);
+            };
+
+            button.addEventListener("click", addFromCard);
+            button.addEventListener("keydown", event => {
+                if (event.key === "Enter" || event.key === " ") addFromCard(event);
             });
 
             card.appendChild(button);
