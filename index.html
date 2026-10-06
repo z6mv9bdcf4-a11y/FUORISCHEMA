@@ -31,17 +31,7 @@
         content="FUORISCHEMA è lo store online di scarpe, abbigliamento e accessori per chi sceglie la propria strada. Scopri nuovi arrivi, footwear e streetwear."
     >
 
-    <!-- PWA & Mobile Web App Config -->
     <link rel="icon" type="image/png" sizes="192x192" href="images/icon-192.png">
-    <link rel="manifest" href="manifest.webmanifest">
-    <meta name="theme-color" content="#050505">
-    <meta name="mobile-web-app-capable" content="yes">
-    
-    <!-- Configurazione Apple iOS -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="FUORISCHEMA">
-    <link rel="apple-touch-icon" href="images/icon-192.png">
 
     <style>
 
@@ -1964,15 +1954,6 @@
 
 
 
-        <a class="menu-feature menu-app-link" href="installazione.html" aria-label="Scopri come aggiungere FUORISCHEMA alla schermata Home">
-            <div class="menu-feature-top">
-                <span class="menu-feature-label">APP FUORISCHEMA</span>
-                <span class="menu-feature-arrow">→</span>
-            </div>
-            <span class="menu-feature-title">SCARICA L'APP</span>
-            <span class="menu-feature-text">Porta FUORISCHEMA con te. Aggiungilo alla schermata Home e aprilo rapidamente come un'app.</span>
-        </a>
-
         <nav class="menu-links">
 
             <div class="menu-section">SHOP</div>
@@ -2058,11 +2039,6 @@
             FUORI<span>SCHEMA</span>
         </a>
 
-        <div class="auth-buttons" id="authButtons">
-
-
-
-        </div>
     </header>
 
 
@@ -2274,7 +2250,7 @@
 
                 <!-- PRODOTTO PROTAGONISTA -->
                 <a
-                    href="nike.html"
+                    href="off-white.html"
                     class="product featured reveal"
                 >
                     <span class="badge">
@@ -2311,7 +2287,7 @@
 
                 <!-- PRODOTTO 2 -->
                 <a
-                    href="borse.html"
+                    href="giacche.html"
                     class="product reveal"
                 >
                     <span class="badge">
@@ -2330,7 +2306,7 @@
                     <div class="product-info">
                         <div class="product-copy">
                             <span class="product-label">
-                                GIACCHERI
+                                GIACCHE
                             </span>
                             <span class="product-name">
                                 Smanicato Nike
@@ -2462,45 +2438,6 @@
         </section>
 
     </main>
-
-
-
-    <!-- =========================================================
-         PWA INSTALLATION CARD / MODAL
-    ========================================================= -->
-
-    <div class="pwa-install-card" id="pwaInstallCard" role="dialog" aria-labelledby="pwaTitle" aria-describedby="pwaInstallSubtext">
-        <div class="pwa-card-header">
-            <span class="pwa-card-kicker">APP FUORISCHEMA</span>
-            <button class="pwa-close-btn" id="pwaInstallClose" aria-label="Chiudi avviso installazione">×</a>
-        </div>
-        <div class="pwa-card-title" id="pwaTitle">PORTA FUORISCHEMA CON TE</div>
-        <div class="pwa-card-subtext" id="pwaInstallSubtext">
-            Installa FUORISCHEMA sulla schermata Home e aprilo come un'app.
-        </div>
-
-        <div class="pwa-ios-steps" id="pwaIosSteps">
-    <div class="pwa-step-item">
-        <span class="pwa-step-num">01.</span>
-        <span>Premi i <strong>tre puntini</strong> in basso e poi <strong>Condividi</strong></span>
-    </div>
-
-    <div class="pwa-step-item">
-        <span class="pwa-step-num">02.</span>
-        <span>Premi <strong>Visualizza altro</strong></span>
-    </div>
-
-    <div class="pwa-step-item">
-        <span class="pwa-step-num">03.</span>
-        <span>Trova e seleziona <strong>Aggiungi alla schermata Home</strong></span>
-    </div>
-</div>
-        </div>
-
-        <button class="pwa-action-btn" id="pwaInstallAction" style="display: none;">
-            INSTALLA ORA →
-        </a>
-    </div>
 
 
 
@@ -2880,44 +2817,7 @@
             });
         }
     </script>
-    <script type="module">
-        import { supabase } from "./supabase.js";
 
-        const authButtons = document.getElementById("authButtons");
-
-        async function aggiornaAccesso() {
-            if (!authButtons) return;
-
-            const { data: { session } } = await supabase.auth.getSession();
-
-            if (session) {
-                authButtons.innerHTML = `
-
-                    <button id="logoutButton" class="auth-btn auth-btn-orange">
-                        ESCI
-                    </a>
-                `;
-
-                document.getElementById("logoutButton").addEventListener("click", async () => {
-                    await supabase.auth.signOut();
-                    window.location.reload();
-                });
-
-            } else {
-                authButtons.innerHTML = `
-
-                `;
-            }
-        }
-
-        aggiornaAccesso();
-
-        supabase.auth.onAuthStateChange(() => {
-            aggiornaAccesso();
-        });
-    </script>
-
-    <!-- Script Gestione Installazione PWA -->
 
     <script src="cart.js"></script>
 </body>
