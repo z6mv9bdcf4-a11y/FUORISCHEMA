@@ -638,6 +638,7 @@ function renderCatalog(){
         const card = document.createElement("button");
         card.type = "button";
         card.className = "product-card";
+        card.dataset.productId = product.id;
         card.setAttribute("aria-label", `Apri ${product.name}`);
 
         card.innerHTML = `
