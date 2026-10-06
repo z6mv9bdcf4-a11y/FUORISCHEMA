@@ -750,6 +750,7 @@ function renderProducts(filter = activeFilter){
         const card = document.createElement("a");
         card.className = "product-card";
         card.dataset.productId = product.id;
+        card.dataset.productId = product.id;
         card.href = `prodotto.html?id=${encodeURIComponent(product.id)}`;
 
         card.innerHTML = `
