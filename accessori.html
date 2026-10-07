@@ -848,7 +848,7 @@ h1{
         render
     );
 
-    brandFilters.addEventListener(
+    filters.addEventListener(
         "click",
         event => {
 
@@ -856,11 +856,11 @@ h1{
                 event.target.closest(".filter-chip");
 
             if(!button) return;
+            if(button.dataset.brand === undefined) return;
 
             selectedBrand =
                 button.dataset.brand;
-
-            brandFilters
+brandFilters
                 .querySelectorAll(".filter-chip")
                 .forEach(chip =>
                     chip.classList.remove("active")
@@ -873,7 +873,7 @@ h1{
         }
     );
 
-    categoryFilters.addEventListener(
+    filters.addEventListener(
         "click",
         event => {
 
@@ -881,11 +881,11 @@ h1{
                 event.target.closest(".filter-chip");
 
             if(!button) return;
+            if(button.dataset.category === undefined) return;
 
             selectedCategory =
                 button.dataset.category;
-
-            categoryFilters
+categoryFilters
                 .querySelectorAll(".filter-chip")
                 .forEach(chip =>
                     chip.classList.remove("active")
