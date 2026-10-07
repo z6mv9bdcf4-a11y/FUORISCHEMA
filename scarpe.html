@@ -1,239 +1,738 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NCPT8WXXDN"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag("js", new Date());
-  gtag("config", "G-NCPT8WXXDN");
-</script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#050505">
-<title>Scarpe — FUORISCHEMA</title>
-    <link rel="icon" type="image/png" href="images/icon-192.png">
-    <link rel="apple-touch-icon" href="images/icon-192.png">
-    <meta name="description" content="Scopri le scarpe FUORISCHEMA e la selezione footwear di brand e modelli scelti per il tuo stile.">
-    <link rel="canonical" href="https://fuorischemastore.it/scarpe.html">
+
+<title>Sneakers — FUORISCHEMA</title>
+<meta name="description" content="Scopri le sneakers selezionate da FUORISCHEMA. Nike, Jordan, Adidas, ASICS, New Balance e altri brand.">
+
+<link rel="icon" type="image/png" href="images/icon-192.png">
+<link rel="apple-touch-icon" href="images/icon-192.png">
+<link rel="stylesheet" href="cart.css">
 
 <style>
-:root{--bg:#050505;--card:#0b0b0b;--text:#f5f5f5;--muted:#777;--line:rgba(255,255,255,.10);--orange:#ff4d00;--max:1180px}
-*{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth}
-body{min-height:100vh;background:var(--bg);color:var(--text);font-family:Inter,Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration:none}
-.topbar{position:sticky;top:0;z-index:100;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 34px;background:rgba(5,5,5,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
-.brand{font-size:21px;font-weight:1000;letter-spacing:-1.7px}.brand-white{color:#fff}.brand-orange{color:var(--orange)}
-.nav-actions{display:flex;gap:7px}.nav-btn{min-height:38px;padding:0 13px;border:1px solid rgba(255,255,255,.17);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;letter-spacing:1.5px}
-.page{width:min(calc(100% - 42px),var(--max));margin:auto;padding:34px 0 80px}
+:root{
+    --bg:#050505;
+    --card:#0a0a0a;
+    --text:#f5f5f5;
+    --muted:#777;
+    --line:#222;
+    --orange:#ff5a00;
+}
 
-/* HERO: gerarchia editoriale + percorso d'acquisto */
-.hero{display:grid;grid-template-columns:1.25fr .75fr;min-height:390px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
-.hero-main{display:flex;flex-direction:column;justify-content:flex-end;padding:35px 25px 38px 0;position:relative;z-index:2}
-.kicker{color:var(--orange);font-size:8px;font-weight:1000;letter-spacing:3.5px;margin-bottom:14px}
-h1{font-size:clamp(76px,12vw,148px);line-height:.76;font-weight:1000;letter-spacing:-9px}
-.hero-text{max-width:470px;color:#888;font-size:11px;line-height:1.65;margin-top:25px}.hero-text b{color:#ddd}
-.hero-side{border-left:1px solid var(--line);display:flex;align-items:flex-end;justify-content:flex-end;padding:25px 0 35px 25px}
-.hero-side-box{width:100%;max-width:270px;border:1px solid var(--line);padding:19px;background:linear-gradient(145deg,rgba(255,77,0,.07),rgba(255,255,255,.01))}
-.hero-side-label{color:#666;font-size:7px;font-weight:1000;letter-spacing:2.5px}.hero-side-number{font-size:80px;line-height:.8;font-weight:1000;letter-spacing:-7px;margin:22px 0 15px}
-.hero-side-copy{color:#777;font-size:9px;line-height:1.55}.hero-side-cta{margin-top:18px;color:var(--orange);font-size:8px;font-weight:1000;letter-spacing:2px}
+*{box-sizing:border-box;margin:0;padding:0}
 
-/* SCELTA BRAND */
-.shop-intro{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:32px 0 12px}
-.shop-title{font-size:25px;font-weight:1000;letter-spacing:-1.2px}.shop-note{color:#555;font-size:8px;font-weight:900;letter-spacing:1.5px}
-.filters{display:flex;gap:7px;overflow-x:auto;padding:8px 0 14px;scrollbar-width:none;position:sticky;top:68px;z-index:50;background:linear-gradient(var(--bg) 78%,transparent)}
-.filters::-webkit-scrollbar{display:none}
-.filter{flex:0 0 auto;min-height:36px;padding:0 13px;border:1px solid var(--line);background:#080808;color:#888;font-size:8px;font-weight:1000;letter-spacing:1.5px}
-.filter.active,.filter:hover{background:var(--orange);border-color:var(--orange);color:#080808}
+html{
+    background:var(--bg);
+    scroll-behavior:smooth;
+}
 
-/* Gerarchia: brand principale grande, gli altri facilmente scansionabili */
-.brand-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:4px}
-.brand-tile{position:relative;min-height:235px;background:var(--card);border:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;transition:.25s}
-.brand-tile:first-child{grid-column:span 2;min-height:300px;background:radial-gradient(circle at 82% 30%,rgba(255,77,0,.13),transparent 32%),#0b0b0b}
-.brand-tile:after{content:"";position:absolute;width:180px;height:180px;right:-80px;bottom:-90px;border:1px solid rgba(255,77,0,.16);border-radius:50%}
-.brand-tile:hover{transform:translateY(-4px);border-color:rgba(255,77,0,.65)}
-.tile-top{display:flex;justify-content:space-between;padding:17px 18px;color:var(--orange);font-size:8px;font-weight:1000;letter-spacing:2px;position:relative;z-index:2}.tile-arrow{color:#666;font-size:18px}
-.tile-content{padding:0 18px 18px;position:relative;z-index:2}.tile-name{font-size:clamp(30px,5vw,58px);font-weight:1000;line-height:.82;letter-spacing:-3px}.brand-tile:first-child .tile-name{font-size:clamp(52px,8vw,92px)}
-.tile-sub{color:#555;font-size:7px;font-weight:900;letter-spacing:1.7px;margin-top:10px}.tile-action{color:#aaa;font-size:8px;font-weight:1000;letter-spacing:1.7px;margin-top:15px}.tile-action span{color:var(--orange);font-size:13px;margin-left:4px}
+body{
+    min-height:100vh;
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
+    background:var(--bg);
+    color:var(--text);
+    font-family:Arial,Helvetica,sans-serif;
+    -webkit-font-smoothing:antialiased;
+}
 
-/* COLLAB */
-.collab{margin-top:54px;padding-top:24px;border-top:1px solid var(--line)}.collab-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:14px}
-.collab-card{position:relative;min-height:215px;border:1px solid var(--line);padding:23px;display:flex;align-items:flex-end;overflow:hidden;background:radial-gradient(circle at 80% 25%,rgba(255,77,0,.14),transparent 32%),#0b0b0b}
-.collab-label{position:absolute;top:18px;left:19px;color:var(--orange);font-size:7px;font-weight:1000;letter-spacing:2.5px}.collab-arrow{position:absolute;top:17px;right:20px;color:#777;font-size:20px}
-.collab-title{font-size:clamp(38px,6vw,72px);font-weight:1000;line-height:.84;letter-spacing:-4px}.collab-title span{display:block;color:#777;font-size:.34em;letter-spacing:-.5px;margin-top:12px}
-.footer{display:flex;justify-content:space-between;margin-top:58px;padding-top:17px;border-top:1px solid var(--line);color:#444;font-size:7px;font-weight:900;letter-spacing:2.5px}
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+/* HEADER */
+
+header{
+    height:68px;
+    padding:0 5%;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(5,5,5,.94);
+    backdrop-filter:blur(14px);
+}
+
+.logo{
+    font-size:21px;
+    font-weight:900;
+    letter-spacing:-1.5px;
+}
+
+.logo span{
+    color:var(--orange);
+}
+
+.home-btn{
+    min-height:36px;
+    padding:0 13px;
+    border:1px solid #292929;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+/* MAIN */
+
+main{
+    width:min(1180px,90%);
+    margin:0 auto;
+    padding:42px 0 90px;
+}
+
+/* HERO */
+
+.eyebrow{
+    color:var(--orange);
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:3px;
+    margin-bottom:15px;
+}
+
+h1{
+    font-size:clamp(65px,11vw,135px);
+    line-height:.78;
+    letter-spacing:-7px;
+    font-weight:900;
+}
+
+.hero{
+    padding-bottom:24px;
+    border-bottom:1px solid var(--line);
+}
+
+.hero-copy{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:30px;
+    margin-top:27px;
+}
+
+.hero-description{
+    max-width:500px;
+    color:#888;
+    font-size:12px;
+    line-height:1.6;
+}
+
+.hero-description strong{
+    display:block;
+    color:#eee;
+    font-size:12px;
+    margin-bottom:6px;
+    letter-spacing:.04em;
+}
+
+.hero-index{
+    min-width:170px;
+    border:1px solid #252525;
+    padding:17px;
+    background:#090909;
+}
+
+.hero-index-number{
+    display:block;
+    font-size:48px;
+    line-height:.8;
+    font-weight:900;
+    letter-spacing:-3px;
+    margin-bottom:17px;
+}
+
+.hero-index-text{
+    color:#777;
+    font-size:8px;
+    line-height:1.55;
+    letter-spacing:.08em;
+}
+
+.hero-index-cta{
+    display:block;
+    color:var(--orange);
+    margin-top:14px;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+/* BRAND SECTION */
+
+.section-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:20px;
+    margin:30px 0 15px;
+}
+
+.section-label{
+    color:var(--orange);
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:3px;
+    margin-bottom:8px;
+}
+
+.section-title{
+    font-size:27px;
+    line-height:1;
+    font-weight:900;
+    letter-spacing:-1px;
+}
+
+.section-note{
+    color:#555;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+/* BRAND LIST */
+
+.brand-list{
+    border-top:1px solid var(--line);
+}
+
+.brand-link{
+    min-height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid var(--line);
+    transition:.2s ease;
+}
+
+.brand-link:hover{
+    padding-left:12px;
+    border-color:var(--orange);
+    color:var(--orange);
+}
+
+.brand-left{
+    display:flex;
+    align-items:center;
+    gap:22px;
+}
+
+.brand-number{
+    color:#555;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:2px;
+    width:24px;
+}
+
+.brand-name{
+    font-size:24px;
+    font-weight:900;
+    letter-spacing:-1px;
+}
+
+.brand-meta{
+    color:#555;
+    font-size:7px;
+    letter-spacing:1.5px;
+    margin-left:8px;
+}
+
+.brand-arrow{
+    width:18px;
+    height:18px;
+    position:relative;
+    color:#666;
+}
+
+.brand-arrow:before{
+    content:"";
+    position:absolute;
+    width:11px;
+    height:1px;
+    background:currentColor;
+    top:9px;
+    left:1px;
+    transform:rotate(-45deg);
+    transform-origin:right center;
+}
+
+.brand-arrow:after{
+    content:"";
+    position:absolute;
+    width:6px;
+    height:6px;
+    border-top:1px solid currentColor;
+    border-right:1px solid currentColor;
+    top:4px;
+    right:0;
+}
+
+/* ALL */
+
+.all-link{
+    margin-top:18px;
+    min-height:52px;
+    border:1px solid #292929;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 17px;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:2px;
+    transition:.2s ease;
+}
+
+.all-link:hover{
+    border-color:var(--orange);
+    color:var(--orange);
+}
+
+/* FEATURED PRODUCTS */
+
+.featured{
+    margin-top:65px;
+    padding-top:28px;
+    border-top:1px solid var(--line);
+}
+
+.product-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:10px;
+}
+
+.product-card{
+    border:1px solid #222;
+    background:#090909;
+    overflow:hidden;
+    transition:.2s ease;
+}
+
+.product-card:hover{
+    border-color:#555;
+    transform:translateY(-3px);
+}
+
+.product-image{
+    aspect-ratio:1/1;
+    background:#111;
+    overflow:hidden;
+    min-width:0;
+}
+
+.product-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.product-info{
+    padding:14px;
+}
+
+.product-brand{
+    color:#666;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:2px;
+    margin-bottom:6px;
+}
+
+.product-name{
+    min-height:34px;
+    font-size:13px;
+    line-height:1.15;
+    font-weight:900;
+}
+
+.product-price{
+    margin-top:12px;
+    font-size:14px;
+    font-weight:900;
+}
+
+.product-cta{
+    display:block;
+    margin-top:13px;
+    padding-top:11px;
+    border-top:1px solid #222;
+    color:var(--orange);
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:1.5px;
+}
+
+/* FOOTER */
+
+.bottom-note{
+    margin-top:70px;
+    padding-top:18px;
+    border-top:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    color:#444;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+/* MOBILE */
 
 @media(max-width:700px){
- .topbar{height:62px;padding:0 13px}.brand{font-size:17px}.nav-btn{min-height:34px;padding:0 9px;font-size:6.5px}
- .page{width:calc(100% - 20px);padding-top:18px}
- .hero{display:block;min-height:auto}.hero-main{padding:24px 0 25px}.kicker{font-size:7px;margin-bottom:11px}
- h1{font-size:66px;letter-spacing:-5px}.hero-text{font-size:10px;margin-top:17px;max-width:100%;line-height:1.55}
- .hero-side{border-left:0;border-top:1px solid var(--line);padding:13px 0 0;display:block}
- .hero-side-box{max-width:none;padding:14px;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:14px;align-items:center}
- .hero-side-label{grid-column:1/3}.hero-side-number{font-size:47px;letter-spacing:-4px;margin:7px 0 0}.hero-side-copy{font-size:8px;margin-top:5px}
- .hero-side-cta{grid-column:1/3;margin-top:11px;font-size:7px}
- .shop-intro{margin-top:27px;align-items:flex-end}.shop-title{font-size:21px}.shop-note{font-size:6.5px}
- .filters{top:62px;padding-top:7px}
- .brand-grid{grid-template-columns:repeat(2,1fr);gap:8px}.brand-tile,.brand-tile:first-child{grid-column:auto;min-height:145px}.brand-tile:first-child{min-height:145px}
- .tile-name,.brand-tile:first-child .tile-name{font-size:45px;letter-spacing:-2.5px}.brand-tile:nth-child(5) .tile-name{font-size:32px}.brand-tile:nth-child(6) .tile-name{font-size:28px}.brand-tile:nth-child(7) .tile-name{font-size:28px}.tile-content{padding:0 16px 16px}.tile-top{padding:15px 16px}
- .collab{margin-top:42px}.collab-card{min-height:190px;padding:19px}.collab-title{font-size:45px;letter-spacing:-2.5px}
- .footer{flex-direction:column;gap:7px}
-}
-@media(max-width:380px){h1{font-size:59px}.tile-name,.brand-tile:first-child .tile-name{font-size:40px}.nav-btn{padding:0 7px}.shop-title{font-size:19px}}
-@media(max-width:700px){
-    .brand-tile:nth-child(2) .tile-name{font-size:31px;letter-spacing:-2px;white-space:nowrap}
-    .brand-tile:nth-child(6) .tile-name{font-size:21px;letter-spacing:-1.5px;white-space:nowrap}
-    .brand-tile:nth-child(7) .tile-name{font-size:22px;letter-spacing:-1.5px}
-}.card-arrow,.tile-arrow{position:relative;display:block;width:18px;height:18px;color:#777}.card-arrow::before,.tile-arrow::before{content:"";position:absolute;width:11px;height:1px;background:currentColor;top:9px;left:2px;transform:rotate(-45deg);transform-origin:right center}.card-arrow::after,.tile-arrow::after{content:"";position:absolute;width:6px;height:6px;border-top:1px solid currentColor;border-right:1px solid currentColor;top:4px;right:1px}.cta-arrow{display:inline-block;width:12px;height:8px;position:relative;margin-left:7px;vertical-align:middle}.cta-arrow::before{content:"";position:absolute;width:9px;height:1px;background:#ff5a00;left:0;top:4px}.cta-arrow::after{content:"";position:absolute;width:5px;height:5px;border-top:1px solid #ff5a00;border-right:1px solid #ff5a00;right:0;top:1px;transform:rotate(45deg)}
-/* FUORISCHEMA-SHOES-BRANDS-V1 */
-.brand-grid {
-    min-width: 0;
-    gap: clamp(10px, 1.5vw, 18px);
-}
 
-.brand-tile {
-    min-width: 0;
-    overflow: hidden;
-    border: 1px solid #292929;
-    transition: border-color .25s ease, transform .25s ease;
-}
-
-.brand-tile:hover {
-    border-color: var(--arancio, #ff6a00);
-    transform: translateY(-3px);
-}
-
-.brand-tile:focus-visible {
-    outline: 2px solid var(--arancio, #ff6a00);
-    outline-offset: 4px;
-}
-
-.tile-name {
-    overflow-wrap: anywhere;
-}
-
-@media (max-width: 700px) {
-    .brand-grid {
-        gap: 10px;
+    header{
+        height:62px;
+        padding:0 13px;
     }
 
-    .brand-tile {
-        min-width: 0;
+    .logo{
+        font-size:17px;
     }
-}
 
-@media (prefers-reduced-motion: reduce) {
-    .brand-tile {
-        transition: none;
+    .home-btn{
+        min-height:33px;
+        padding:0 10px;
+        font-size:6px;
+    }
+
+    main{
+        width:calc(100% - 26px);
+        padding:28px 0 65px;
+    }
+
+    h1{
+        font-size:clamp(48px,15vw,65px);
+        letter-spacing:-4px;
+        line-height:.82;
+        max-width:100%;
+        overflow-wrap:anywhere;
+    }
+
+    .hero-copy{
+        display:block;
+        margin-top:22px;
+    }
+
+    .hero-description{
+        font-size:10px;
+        max-width:100%;
+    }
+
+    .hero-index{
+        margin-top:17px;
+        min-width:0;
+        width:100%;
+        padding:14px;
+    }
+
+    .hero-index-number{
+        font-size:40px;
+        margin-bottom:12px;
+    }
+
+    .hero-index-text{
+        font-size:7px;
+    }
+
+    .section-head{
+        margin-top:32px;
+        align-items:flex-end;
+        min-width:0;
+    }
+
+    .section-note{
+        white-space:nowrap;
+    }
+
+    .section-title{
+        font-size:22px;
+    }
+
+    .section-note{
+        font-size:6px;
+    }
+
+    .brand-link{
+        min-height:61px;
+    }
+
+    .brand-left{
+        gap:13px;
+    }
+
+    .brand-number{
+        width:20px;
+        font-size:6px;
+    }
+
+    .brand-name{
+        font-size:19px;
+    }
+
+    .brand-meta{
+        display:none;
+    }
+
+    .all-link{
+        min-height:49px;
+        font-size:7px;
+    }
+
+    .featured{
+        margin-top:50px;
+        padding-bottom:75px;
+    }
+
+    .product-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:8px;
+    }
+
+    .product-info{
+        padding:10px;
+        min-width:0;
+    }
+
+    .product-brand{
+        font-size:6px;
+    }
+
+    .product-name{
+        font-size:10px;
+        line-height:1.2;
+        min-height:30px;
+        overflow-wrap:anywhere;
+    }
+
+    .product-price{
+        font-size:13px;
+        margin-top:9px;
+    }
+
+    .product-cta{
+        font-size:7px;
+        margin-top:10px;
+        padding-top:10px;
+        line-height:1.3;
+    }
+
+    .bottom-note{
+        display:block;
+        line-height:2;
+        font-size:6px;
     }
 }
 </style>
-    <link rel="stylesheet" href="cart.css">
 </head>
 
 <body>
-<header class="topbar">
-  <a href="index.html" class="brand"><span class="brand-white">FUORI</span><span class="brand-orange">SCHEMA</span></a>
-  <div class="nav-actions"><a href="index.html" class="nav-btn">HOME</a></div>
+
+<header>
+    <a href="index.html" class="logo">FUORI<span>SCHEMA</span></a>
+    <a href="index.html" class="home-btn">HOME</a>
 </header>
-<main class="page">
-  <section class="hero">
-    <div class="hero-main">
-      <div class="kicker">01 / CATEGORIA</div>
-      <h1>SCARPE</h1>
-      <p class="hero-text"><b>IL TUO STILE PARTE DA QUI.</b><br>Scopri i brand selezionati da FUORISCHEMA e trova la scarpa che parla di te.</p>
-    </div>
-    <div class="hero-side">
-      <div class="hero-side-box">
-        <div class="hero-side-label">FOOTWEAR / FUORISCHEMA</div><div class="hero-side-number">01</div>
-        <div class="hero-side-copy">Scegli un brand.<br>Entra nella sua selezione.</div>
-        <div class="hero-side-cta">INIZIA A ESPLORARE</div>
-      </div>
-    </div>
-  </section>
-  <section>
-    <div class="shop-intro"><div><div class="kicker" style="margin-bottom:6px">SHOP</div><div class="shop-title">SCEGLI IL TUO BRAND</div></div><div class="shop-note">SELEZIONA / ESPLORA</div></div>
-    <nav class="filters" aria-label="Filtri brand">
-      <button class="filter active" type="button" data-target="all">TUTTE</button><button class="filter" type="button" data-target="nike">NIKE</button>
-      <button class="filter" type="button" data-target="jordan">JORDAN</button><button class="filter" type="button" data-target="adidas">ADIDAS</button>
-      <button class="filter" type="button" data-target="asics">ASICS</button><button class="filter" type="button" data-target="off-white">OFF-WHITE</button>
-      <button class="filter" type="button" data-target="timberland">TIMBERLAND</button><button class="filter" type="button" data-target="newbalance">NEW BALANCE</button>
-    </nav>
-    <div class="brand-grid" id="brandGrid">
-      <a class="brand-tile brand-item" data-brand="nike" href="nike.html">
-        <div class="tile-top"><span>001</span><span class="tile-arrow" aria-hidden="true"></span></div>
-        <div class="tile-content">
-          <div class="tile-name">NIKE</div>
-          <div class="tile-sub">SCARPE / NIKE</div>
-          <div class="tile-action">ESPLORA <span class="cta-arrow" aria-hidden="true"></span></div>
-        </div>
-      </a>
-      <a class="brand-tile brand-item" data-brand="jordan" href="jordan.html">
-        <div class="tile-top"><span>002</span><span class="tile-arrow" aria-hidden="true"></span></div>
-        <div class="tile-content">
-          <div class="tile-name">JORDAN</div>
-          <div class="tile-sub">SCARPE / JORDAN</div>
-          <div class="tile-action">ESPLORA <span class="cta-arrow" aria-hidden="true"></span></div>
-        </div>
-      </a>
-      <a class="brand-tile brand-item" data-brand="adidas" href="adidas.html">
-        <div class="tile-top"><span>003</span><span class="tile-arrow" aria-hidden="true"></span></div>
-        <div class="tile-content">
-          <div class="tile-name">ADIDAS</div>
-          <div class="tile-sub">SCARPE / ADIDAS</div>
-          <div class="tile-action">ESPLORA <span class="cta-arrow" aria-hidden="true"></span></div>
-        </div>
-      </a>
-      <a class="brand-tile brand-item" data-brand="asics" href="asics.html">
-        <div class="tile-top"><span>004</span><span class="tile-arrow" aria-hidden="true"></span></div>
-        <div class="tile-content">
-          <div class="tile-name">ASICS</div>
-          <div class="tile-sub">SCARPE / ASICS</div>
-          <div class="tile-action">ESPLORA <span class="cta-arrow" aria-hidden="true"></span></div>
-        </div>
-      </a>
 
-      <a class="brand-tile brand-item" data-brand="off-white" href="off-white.html">
-        <div class="tile-top"><span>005</span><span class="tile-arrow" aria-hidden="true"></span></div>
-        <div class="tile-content">
-          <div class="tile-name">OFF-WHITE</div>
-          <div class="tile-sub">SCARPE / OFF-WHITE</div>
-          <div class="tile-action">ESPLORA <span class="cta-arrow" aria-hidden="true"></span></div>
-        </div>
-      </a>
+<main>
 
-      <a class="brand-tile brand-item" data-brand="timberland" href="timberland.html">
-        <div class="tile-top"><span>006</span><span class="tile-arrow" aria-hidden="true"></span></div>
-        <div class="tile-content">
-          <div class="tile-name">TIMBERLAND</div>
-          <div class="tile-sub">SCARPE / TIMBERLAND</div>
-          <div class="tile-action">ESPLORA <span class="cta-arrow" aria-hidden="true"></span></div>
+    <section class="hero">
+        <div class="eyebrow">SCARPE</div>
+
+        <h1>SNEAKERS</h1>
+
+        <div class="hero-copy">
+
+            <div class="hero-description">
+                <strong>SCOPRI LE NOSTRE SNEAKERS.</strong>
+                Nike, Jordan, Adidas e altri brand selezionati da FUORISCHEMA.
+            </div>
+
+            <div class="hero-index">
+                <span class="hero-index-number">01</span>
+                <span class="hero-index-text">
+                    SCEGLI UN BRAND<br>
+                    E SCOPRI LA SELEZIONE.
+                </span>
+                <span class="hero-index-cta">SCOPRI</span>
+            </div>
+
         </div>
-      </a>
-     <a class="brand-tile brand-item" data-brand="newbalance" href="newbalance.html">
-       <div class="tile-top"><span>007</span><span class="tile-arrow" aria-hidden="true"></span></div>
-       <div class="tile-content">
-         <div class="tile-name">NEW BALANCE</div>
-         <div class="tile-sub">SCARPE / NEW BALANCE</div>
-         <div class="tile-action">ESPLORA <span class="cta-arrow" aria-hidden="true"></span></div>
-       </div>
-     </a>
+    </section>
+
+
+    <section>
+
+        <div class="section-head">
+            <div>
+                <div class="section-label">BRAND</div>
+                <h2 class="section-title">SCEGLI IL TUO BRAND</h2>
+            </div>
+
+            <div class="section-note">SCOPRI I BRAND</div>
+        </div>
+
+        <nav class="brand-list" aria-label="Brand sneakers">
+
+            <a class="brand-link" href="nike.html">
+                <div class="brand-left">
+                    <span class="brand-number">001</span>
+                    <span class="brand-name">NIKE</span>
+                    <span class="brand-meta">SNEAKERS</span>
+                </div>
+                <span class="brand-arrow"></span>
+            </a>
+
+            <a class="brand-link" href="jordan.html">
+                <div class="brand-left">
+                    <span class="brand-number">002</span>
+                    <span class="brand-name">JORDAN</span>
+                    <span class="brand-meta">SNEAKERS</span>
+                </div>
+                <span class="brand-arrow"></span>
+            </a>
+
+            <a class="brand-link" href="adidas.html">
+                <div class="brand-left">
+                    <span class="brand-number">003</span>
+                    <span class="brand-name">ADIDAS</span>
+                    <span class="brand-meta">SNEAKERS</span>
+                </div>
+                <span class="brand-arrow"></span>
+            </a>
+
+            <a class="brand-link" href="asics.html">
+                <div class="brand-left">
+                    <span class="brand-number">004</span>
+                    <span class="brand-name">ASICS</span>
+                    <span class="brand-meta">SNEAKERS</span>
+                </div>
+                <span class="brand-arrow"></span>
+            </a>
+
+            <a class="brand-link" href="newbalance.html">
+                <div class="brand-left">
+                    <span class="brand-number">005</span>
+                    <span class="brand-name">NEW BALANCE</span>
+                    <span class="brand-meta">SNEAKERS</span>
+                </div>
+                <span class="brand-arrow"></span>
+            </a>
+
+            <a class="brand-link" href="off-white.html">
+                <div class="brand-left">
+                    <span class="brand-number">006</span>
+                    <span class="brand-name">OFF-WHITE</span>
+                    <span class="brand-meta">SNEAKERS</span>
+                </div>
+                <span class="brand-arrow"></span>
+            </a>
+
+            <a class="brand-link" href="timberland.html">
+                <div class="brand-left">
+                    <span class="brand-number">007</span>
+                    <span class="brand-name">TIMBERLAND</span>
+                    <span class="brand-meta">FOOTWEAR</span>
+                </div>
+                <span class="brand-arrow"></span>
+            </a>
+
+        </nav>
+
+        <a href="catalogo.html" class="all-link">
+            <span>VEDI TUTTI I PRODOTTI</span>
+            <span>→</span>
+        </a>
+
+    </section>
+
+
+    <section class="featured">
+
+        <div class="section-head">
+            <div>
+                <div class="section-label">IN EVIDENZA</div>
+                <h2 class="section-title">IN EVIDENZA</h2>
+            </div>
+
+            <a href="catalogo.html" class="section-note" style="color:#777;text-decoration:none;">
+                VEDI TUTTO
+            </a>
+        </div>
+
+        <div class="product-grid" id="featuredProducts"></div>
+
+    </section>
+
+
+    <div class="bottom-note">
+        <span>FUORISCHEMA / FOOTWEAR</span>
+        <span>01 — SNEAKERS</span>
     </div>
-  </section>
 
-  <footer class="footer"><span>FUORISCHEMA</span><span>SCARPE / 01</span></footer>
 </main>
+
+<script src="products.js"></script>
+
 <script>
-const filters=document.querySelectorAll(".filter"),cards=document.querySelectorAll(".brand-item");
-filters.forEach(filter=>filter.addEventListener("click",()=>{
- const target=filter.dataset.target; filters.forEach(x=>x.classList.remove("active")); filter.classList.add("active");
- if(target==="all"){cards.forEach(x=>x.style.display="");return;}
- cards.forEach(x=>x.style.display=x.dataset.brand===target?"":"none");
-}));
+(function(){
+
+    const grid = document.getElementById("featuredProducts");
+
+    if(!grid || typeof FUORISCHEMA_PRODUCTS === "undefined") return;
+
+    const products = Object.values(FUORISCHEMA_PRODUCTS)
+        .filter(product => String(product.category).toUpperCase() === "SCARPE")
+        .slice(0,4);
+
+    if (!products.length) {
+        grid.innerHTML = `<div style="grid-column:1/-1;border:1px solid #222;padding:22px;color:#666;font-size:8px;font-weight:900;letter-spacing:2px;">SELEZIONE IN AGGIORNAMENTO</div>`;
+        return;
+    }
+
+    products.forEach(product => {
+
+        const card = document.createElement("a");
+
+        card.className = "product-card";
+        card.href = "prodotto.html?id=" + encodeURIComponent(product.id);
+
+        const price = typeof product.price === "number"
+            ? product.price.toLocaleString("it-IT",{style:"currency",currency:"EUR"})
+            : "";
+
+        card.innerHTML = `
+            <div class="product-image">
+                <img src="${product.image}" alt="${product.name}" loading="lazy">
+            </div>
+
+            <div class="product-info">
+                <div class="product-brand">${product.brand || ""}</div>
+                <div class="product-name">${product.name || ""}</div>
+                ${price ? `<div class="product-price">${price}</div>` : ""}
+                <span class="product-cta">SCOPRI IL PRODOTTO →</span>
+            </div>
+        `;
+
+        grid.appendChild(card);
+    });
+
+})();
 </script>
-    <script src="cart.js"></script>
+
+<script src="cart.js"></script>
+
 </body>
 </html>
 
