@@ -1,40 +1,56 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NCPT8WXXDN"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag("js", new Date());
-  gtag("config", "G-NCPT8WXXDN");
-</script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050505">
+
 <title>FUORISCHEMA — Abbigliamento</title>
-    <meta name="theme-color" content="#050505">
-    <link rel="icon" type="image/png" href="images/icon-192.png">
-    <link rel="apple-touch-icon" href="images/icon-192.png">
-    <meta name="description" content="Scopri l’abbigliamento FUORISCHEMA: t-shirt, jeans, pantaloni, maglieria e giacche.">
-    <link rel="canonical" href="https://fuorischemastore.it/abbigliamento.html">
+<meta name="description" content="Scopri l'abbigliamento FUORISCHEMA: t-shirt, jeans, pantaloni, maglieria, giacche e tute.">
+
+<link rel="icon" type="image/png" href="images/icon-192.png">
+<link rel="apple-touch-icon" href="images/icon-192.png">
+<link rel="stylesheet" href="cart.css">
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-html{background:#050505;scroll-behavior:smooth}
-body{
-    background:#050505;
-    color:#f5f5f5;
-    font-family:Arial,Helvetica,sans-serif;
-    min-height:100vh;
-    overflow-x:hidden;
+:root{
+    --bg:#050505;
+    --text:#f5f5f5;
+    --muted:#777;
+    --line:#222;
+    --orange:#ff5a00;
 }
-a{color:inherit;text-decoration:none}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    background:var(--bg);
+    scroll-behavior:smooth;
+}
+
+body{
+    min-height:100vh;
+    width:100%;
+    overflow-x:hidden;
+    background:var(--bg);
+    color:var(--text);
+    font-family:Arial,Helvetica,sans-serif;
+    -webkit-font-smoothing:antialiased;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
 
 header{
-    height:76px;
+    height:68px;
     padding:0 5%;
-    border-bottom:1px solid #202020;
+    border-bottom:1px solid var(--line);
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -42,386 +58,643 @@ header{
     top:0;
     z-index:20;
     background:rgba(5,5,5,.94);
-    backdrop-filter:blur(12px);
+    backdrop-filter:blur(14px);
 }
+
 .logo{
-    font-size:22px;
+    font-size:21px;
     font-weight:900;
     letter-spacing:-1.5px;
 }
-.logo::first-letter{color:#fff}
-.header-actions{display:flex;gap:8px;align-items:center}
-.header-btn{
-    min-height:38px;
+
+.logo span{
+    color:var(--orange);
+}
+
+.home-btn{
+    min-height:36px;
     padding:0 13px;
-    border:1px solid rgba(255,255,255,.17);
-    display:inline-flex;
+    border:1px solid #292929;
+    display:flex;
     align-items:center;
     justify-content:center;
-    color:#ddd;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+main{
+    width:min(1180px,90%);
+    margin:0 auto;
+    padding:42px 0 90px;
+}
+
+.eyebrow{
+    color:var(--orange);
     font-size:8px;
     font-weight:900;
-    letter-spacing:1.5px;
-    text-transform:uppercase;
-    transition:.2s ease;
+    letter-spacing:3px;
+    margin-bottom:15px;
 }
-.header-btn:hover{border-color:#ff5a00;color:#ff5a00}
 
-main{max-width:1260px;margin:0 auto;padding:64px 5% 100px}
+h1{
+    font-size:clamp(55px,9vw,115px);
+    line-height:.82;
+    letter-spacing:-6px;
+    font-weight:900;
+}
 
 .hero{
-    position:relative;
-    min-height:315px;
-    border-bottom:1px solid #202020;
-    padding-bottom:42px;
+    padding-bottom:24px;
+    border-bottom:1px solid var(--line);
+}
+
+.hero-copy{
     display:flex;
-    flex-direction:column;
-    justify-content:flex-end;
-    overflow:hidden;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:30px;
+    margin-top:27px;
 }
-.hero::after{
-    content:"";
-    position:absolute;
-    width:480px;height:480px;
-    right:-210px;top:-180px;
-    border:1px solid rgba(255,90,0,.18);
-    border-radius:50%;
-    box-shadow:0 0 100px rgba(255,90,0,.05);
-    pointer-events:none;
+
+.hero-description{
+    max-width:520px;
+    color:#888;
+    font-size:12px;
+    line-height:1.6;
 }
-.eyebrow{
-    color:#ff5a00;
-    font-size:10px;
+
+.hero-description strong{
+    display:block;
+    color:#eee;
+    font-size:12px;
+    margin-bottom:6px;
+}
+
+.hero-index{
+    min-width:170px;
+    border:1px solid #252525;
+    padding:17px;
+    background:#090909;
+}
+
+.hero-index-number{
+    display:block;
+    font-size:48px;
+    line-height:.8;
     font-weight:900;
-    letter-spacing:.35em;
-    margin-bottom:18px;
+    letter-spacing:-3px;
+    margin-bottom:17px;
 }
-h1{
-    font-size:clamp(64px,11vw,142px);
-    line-height:.78;
-    letter-spacing:-.055em;
-    text-transform:uppercase;
-    max-width:100%;
-    position:relative;
-    z-index:1;
+
+.hero-index-text{
+    color:#777;
+    font-size:8px;
+    line-height:1.55;
 }
-.hero-bottom{
+
+.hero-index-cta{
+    display:block;
+    color:var(--orange);
+    margin-top:14px;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.section-head{
     display:flex;
     align-items:flex-end;
     justify-content:space-between;
-    gap:30px;
-    margin-top:28px;
-    position:relative;
-    z-index:1;
+    gap:20px;
+    margin:30px 0 15px;
 }
-.hero-intro{max-width:520px}
-.hero-intro strong{
-    display:block;
-    font-size:13px;
-    letter-spacing:.08em;
+
+.section-label{
+    color:var(--orange);
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:3px;
     margin-bottom:8px;
 }
-.hero-intro p{
-    color:#858585;
-    font-size:13px;
-    line-height:1.6;
-}
-.hero-index{
-    min-width:190px;
-    border:1px solid #242424;
-    padding:18px;
-    background:#080808;
-}
-.hero-index .big{
-    display:block;
-    font-size:58px;
-    font-weight:900;
-    line-height:.8;
-    margin-bottom:20px;
-}
-.hero-index small{
-    color:#777;
-    display:block;
-    font-size:9px;
-    line-height:1.5;
-    letter-spacing:.08em;
-}
-.hero-index .start{
-    color:#ff5a00;
-    display:block;
-    margin-top:18px;
-    font-size:9px;
-    font-weight:900;
-    letter-spacing:.25em;
-}
 
-.shop-head{
-    padding:42px 0 20px;
-    display:flex;
-    align-items:end;
-    justify-content:space-between;
-    gap:20px;
-}
-.section-label{
-    color:#ff5a00;
-    font-size:9px;
-    font-weight:900;
-    letter-spacing:.38em;
-    margin-bottom:9px;
-}
-.shop-head h2{
-    font-size:30px;
+.section-title{
+    font-size:27px;
     line-height:1;
-    letter-spacing:-.03em;
-    text-transform:uppercase;
-}
-.shop-note{
-    color:#666;
-    font-size:8px;
-    font-weight:800;
-    letter-spacing:.28em;
-    text-transform:uppercase;
+    font-weight:900;
+    letter-spacing:-1px;
 }
 
-.categories{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:12px;
+.section-note{
+    color:#666;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:2px;
 }
-.category-card{
-    position:relative;
-    min-height:265px;
-    padding:22px;
-    border:1px solid #222;
-    background:
-      radial-gradient(circle at 90% 100%,rgba(255,90,0,.11),transparent 25%),
-      #090909;
-    overflow:hidden;
+
+.category-list{
+    border-top:1px solid var(--line);
+}
+
+.category-link{
+    min-height:72px;
     display:flex;
-    flex-direction:column;
+    align-items:center;
     justify-content:space-between;
-    transition:border-color .25s,transform .25s,background .25s;
+    border-bottom:1px solid var(--line);
+    transition:.2s ease;
 }
-.category-card::after{
+
+.category-link:hover{
+    padding-left:12px;
+    border-color:var(--orange);
+    color:var(--orange);
+}
+
+.category-left{
+    display:flex;
+    align-items:center;
+    gap:22px;
+}
+
+.category-number{
+    width:24px;
+    color:#555;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.category-name{
+    font-size:24px;
+    font-weight:900;
+    letter-spacing:-1px;
+}
+
+.category-arrow{
+    width:18px;
+    height:18px;
+    position:relative;
+    color:#666;
+}
+
+.category-arrow:before{
     content:"";
     position:absolute;
-    width:155px;height:155px;
-    right:-70px;bottom:-70px;
-    border:1px solid rgba(255,90,0,.22);
-    transform:rotate(45deg);
-    pointer-events:none;
+    width:11px;
+    height:1px;
+    background:currentColor;
+    top:9px;
+    left:1px;
+    transform:rotate(-45deg);
+    transform-origin:right center;
 }
-.category-card:hover{
-    border-color:#ff5a00;
+
+.category-arrow:after{
+    content:"";
+    position:absolute;
+    width:6px;
+    height:6px;
+    border-top:1px solid currentColor;
+    border-right:1px solid currentColor;
+    top:4px;
+    right:0;
+}
+
+.all-link{
+    margin-top:18px;
+    min-height:52px;
+    border:1px solid #292929;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 17px;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.all-link:hover{
+    border-color:var(--orange);
+    color:var(--orange);
+}
+
+.featured{
+    margin-top:65px;
+    padding-top:28px;
+    padding-bottom:75px;
+    border-top:1px solid var(--line);
+}
+
+.product-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:10px;
+    width:100%;
+}
+
+.product-card{
+    min-width:0;
+    border:1px solid #222;
+    background:#090909;
+    overflow:hidden;
+    transition:.2s ease;
+}
+
+.product-card:hover{
+    border-color:#555;
     transform:translateY(-3px);
 }
-.category-card.featured{
-    grid-column:span 2;
-    min-height:360px;
-    background:
-      radial-gradient(circle at 80% 30%,rgba(255,90,0,.12),transparent 30%),
-      #090909;
+
+.product-image{
+    aspect-ratio:1/1;
+    background:#111;
+    overflow:hidden;
 }
-.card-number{
-    color:#ff5a00;
-    font-size:9px;
-    font-weight:900;
-    letter-spacing:.34em;
-}
-.card-arrow{
-    position:absolute;
-    right:22px;top:20px;
-    color:#777;
-    font-size:17px;
-    z-index:2;
-}
-.card-copy{
-    position:relative;
-    z-index:2;
-}
-.card-kicker{
+
+.product-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
     display:block;
-    color:#777;
+}
+
+.product-info{
+    padding:14px;
+    min-width:0;
+}
+
+.product-brand{
+    color:#666;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:2px;
+    margin-bottom:6px;
+}
+
+.product-name{
+    min-height:34px;
+    font-size:13px;
+    line-height:1.15;
+    font-weight:900;
+    overflow-wrap:anywhere;
+}
+
+.product-price{
+    margin-top:12px;
+    font-size:14px;
+    font-weight:900;
+}
+
+.product-cta{
+    display:block;
+    margin-top:13px;
+    padding-top:11px;
+    border-top:1px solid #222;
+    color:var(--orange);
     font-size:8px;
-    font-weight:800;
-    letter-spacing:.22em;
-    margin-bottom:13px;
-}
-.card-name{
-    display:block;
-    font-size:clamp(35px,5vw,68px);
     font-weight:900;
-    line-height:.86;
-    letter-spacing:-.045em;
-    text-transform:uppercase;
+    letter-spacing:1.5px;
 }
-.featured .card-name{font-size:clamp(52px,8vw,100px)}
-.card-cta{
-    display:block;
-    margin-top:24px;
-    font-size:9px;
-    font-weight:900;
-    letter-spacing:.3em;
-}
-.card-cta b{color:#ff5a00;margin-left:7px}
 
 .bottom-note{
-    margin-top:70px;
-    padding-top:20px;
-    border-top:1px solid #202020;
+    margin-top:0;
+    padding-top:18px;
+    border-top:1px solid var(--line);
     display:flex;
     justify-content:space-between;
-    color:#555;
-    font-size:8px;
-    font-weight:800;
-    letter-spacing:.25em;
-    text-transform:uppercase;
+    color:#444;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:2px;
 }
 
 @media(max-width:700px){
-    header{height:68px;padding:0 5%}
-    .logo{font-size:20px}
-    .header-actions{gap:6px}
-    .header-btn{min-height:34px;padding:0 9px;font-size:6.5px;letter-spacing:1.5px}
 
-    main{padding:42px 5% 70px}
-    .hero{min-height:auto;padding-bottom:30px}
-    h1{font-size:clamp(53px,16vw,78px);line-height:.82;letter-spacing:-.06em;max-width:100%}
-    .hero-bottom{display:block;margin-top:24px}
-    .hero-intro strong{font-size:12px}
-    .hero-intro p{font-size:12px;line-height:1.55}
-    .hero-index{margin-top:20px;min-width:0;padding:16px}
-    .hero-index .big{font-size:48px;margin-bottom:14px}
-    .hero-index .start{margin-top:14px}
-
-    .shop-head{padding:34px 0 17px;display:block}
-    .shop-head h2{font-size:25px}
-    .shop-note{margin-top:11px}
-
-    .categories{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-    .category-card,
-    .category-card.featured{
-        grid-column:auto;
-        min-height:145px;
-        padding:20px;
+    header{
+        height:62px;
+        padding:0 13px;
     }
-    .category-card.featured{min-height:145px}
-    .card-name{font-size:clamp(39px,12vw,60px)}.category-card:nth-child(2) .card-name,.category-card:nth-child(3) .card-name{font-size:32px}
-    .featured .card-name{font-size:clamp(48px,15vw,76px)}
-    .card-arrow{right:19px;top:18px}
-    .card-cta{margin-top:20px}
 
-    .bottom-note{margin-top:48px;display:block;line-height:2}
+    .logo{
+        font-size:17px;
+    }
+
+    .home-btn{
+        min-height:33px;
+        padding:0 10px;
+        font-size:6px;
+    }
+
+    main{
+        width:calc(100% - 26px);
+        padding:28px 0 65px;
+    }
+
+    h1{
+        font-size:clamp(42px,13vw,60px);
+        letter-spacing:-4px;
+        line-height:.84;
+        max-width:100%;
+    }
+
+    .hero-copy{
+        display:block;
+        margin-top:22px;
+    }
+
+    .hero-description{
+        font-size:10px;
+        max-width:100%;
+    }
+
+    .hero-index{
+        margin-top:17px;
+        width:100%;
+        min-width:0;
+        padding:14px;
+    }
+
+    .hero-index-number{
+        font-size:40px;
+        margin-bottom:12px;
+    }
+
+    .hero-index-text{
+        font-size:7px;
+    }
+
+    .section-head{
+        margin-top:32px;
+        align-items:flex-end;
+        min-width:0;
+    }
+
+    .section-title{
+        font-size:22px;
+    }
+
+    .section-note{
+        font-size:6px;
+        white-space:nowrap;
+    }
+
+    .category-link{
+        min-height:61px;
+    }
+
+    .category-left{
+        gap:13px;
+    }
+
+    .category-number{
+        width:20px;
+        font-size:6px;
+    }
+
+    .category-name{
+        font-size:19px;
+    }
+
+    .all-link{
+        min-height:49px;
+        font-size:7px;
+    }
+
+    .featured{
+        margin-top:50px;
+        padding-bottom:75px;
+    }
+
+    .product-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:6px;
+    }
+
+    .product-info{
+        padding:10px;
+    }
+
+    .product-brand{
+        font-size:6px;
+    }
+
+    .product-name{
+        font-size:10px;
+        line-height:1.2;
+        min-height:30px;
+    }
+
+    .product-price{
+        font-size:13px;
+        margin-top:9px;
+    }
+
+    .product-cta{
+        font-size:7px;
+        margin-top:10px;
+        padding-top:10px;
+        line-height:1.3;
+    }
+
+    .bottom-note{
+        display:block;
+        line-height:2;
+        font-size:6px;
+    }
 }
-@media(max-width:700px){
-    .category-card:nth-child(1) .card-name{font-size:25px;letter-spacing:-1.5px;white-space:nowrap}
-    .category-card:nth-child(2) .card-name{font-size:22px;letter-spacing:-1.2px;white-space:nowrap}
-    .category-card:nth-child(3) .card-name{font-size:22px;letter-spacing:-1.2px;white-space:nowrap}
-    .category-card:nth-child(4) .card-name{font-size:30px;letter-spacing:-1.8px;white-space:nowrap}
-    .category-card:nth-child(5) .card-name{font-size:25px;letter-spacing:-1.5px;white-space:nowrap}
-}.card-arrow,.tile-arrow{position:relative;display:block;width:18px;height:18px;color:#777}.card-arrow{position:absolute;right:19px;top:18px}.card-arrow::before,.tile-arrow::before{content:"";position:absolute;width:11px;height:1px;background:currentColor;top:9px;left:2px;transform:rotate(-45deg);transform-origin:right center}.card-arrow::after,.tile-arrow::after{content:"";position:absolute;width:6px;height:6px;border-top:1px solid currentColor;border-right:1px solid currentColor;top:4px;right:1px}.cta-arrow{display:inline-block;width:12px;height:8px;position:relative;margin-left:7px;vertical-align:middle}.cta-arrow::before{content:"";position:absolute;width:9px;height:1px;background:#ff5a00;left:0;top:4px}.cta-arrow::after{content:"";position:absolute;width:5px;height:5px;border-top:1px solid #ff5a00;border-right:1px solid #ff5a00;right:0;top:1px}</style>
-    <link rel="stylesheet" href="cart.css">
+</style>
 </head>
 
 <body>
+
 <header>
-    <a href="index.html" class="logo">FUORISCHEMA</a>
-    <nav class="header-actions">
-        
-        <a href="index.html" class="header-btn">HOME</a>
-    </nav>
+    <a href="index.html" class="logo">FUORI<span>SCHEMA</span></a>
+    <a href="index.html" class="home-btn">HOME</a>
 </header>
 
 <main>
-    <section class="hero">
-        <div class="eyebrow">02 / CATEGORIA</div>
-        <h1>ABBIGLIAMENTO</h1>
 
-        <div class="hero-bottom">
-            <div class="hero-intro">
-                <strong>IL TUO STILE PARTE DA QUI.</strong>
-                <p>Esplora le categorie e trova i capi che rappresentano il tuo modo di essere.</p>
-            </div>
+<section class="hero">
 
-            <div class="hero-index">
-                <span class="big">02</span>
-                <small>SCEGLI UNA CATEGORIA.<br>ENTRA NELLA TUA SELEZIONE.</small>
-                <span class="start">INIZIA A ESPLORARE</span>
-            </div>
+    <div class="eyebrow">ABBIGLIAMENTO</div>
+
+    <h1>ABBIGLIAMENTO</h1>
+
+    <div class="hero-copy">
+
+        <div class="hero-description">
+            <strong>SCOPRI LA SELEZIONE FUORISCHEMA.</strong>
+            T-shirt, pantaloni, giacche, tute e altri capi scelti per il tuo stile.
         </div>
-    </section>
 
-    <section class="shop-head">
-        <div>
-            <div class="section-label">SHOP</div>
-            <h2>SCEGLI IL TUO MONDO</h2>
+        <div class="hero-index">
+            <span class="hero-index-number">02</span>
+            <span class="hero-index-text">
+                SCEGLI UNA CATEGORIA<br>
+                E SCOPRI LA SELEZIONE.
+            </span>
+            <span class="hero-index-cta">SCOPRI</span>
         </div>
-        <div class="shop-note">SELEZIONA / ESPLORA</div>
-    </section>
 
-    <section class="categories" aria-label="Categorie abbigliamento">
-        <a class="category-card featured" href="tshirt.html">
-            <span class="card-number">001</span>
-            <span class="card-arrow" aria-hidden="true"></span>
-            <div class="card-copy">
-                <span class="card-kicker">ESSENTIALS / T-SHIRT</span>
-                <span class="card-name">T-SHIRT</span>
-                <span class="card-cta">ESPLORA <b class="cta-arrow" aria-hidden="true"></b></span>
-            </div>
-        </a>
-        <a class="category-card " href="maglieria.html">
-            <span class="card-number">002</span>
-            <span class="card-arrow" aria-hidden="true"></span>
-            <div class="card-copy">
-                <span class="card-kicker">KNITWEAR / MAGLIERIA</span>
-                <span class="card-name">MAGLIERIA</span>
-                <span class="card-cta">ESPLORA <b class="cta-arrow" aria-hidden="true"></b></span>
-            </div>
-        </a>
-        <a class="category-card " href="pantaloni.html">
-            <span class="card-number">003</span>
-            <span class="card-arrow" aria-hidden="true"></span>
-            <div class="card-copy">
-                <span class="card-kicker">BOTTOMS / PANTALONI</span>
-                <span class="card-name">PANTALONI</span>
-                <span class="card-cta">ESPLORA <b class="cta-arrow" aria-hidden="true"></b></span>
-            </div>
-        </a>
-        <a class="category-card " href="jeans.html">
-            <span class="card-number">004</span>
-            <span class="card-arrow" aria-hidden="true"></span>
-            <div class="card-copy">
-                <span class="card-kicker">DENIM / JEANS</span>
-                <span class="card-name">JEANS</span>
-                <span class="card-cta">ESPLORA <b class="cta-arrow" aria-hidden="true"></b></span>
-            </div>
-        </a>
-        <a class="category-card " href="giacche.html">
-            <span class="card-number">005</span>
-            <span class="card-arrow" aria-hidden="true"></span>
-            <div class="card-copy">
-                <span class="card-kicker">OUTERWEAR / GIACCHE</span>
-                <span class="card-name">GIACCHE</span>
-                <span class="card-cta">ESPLORA <b class="cta-arrow" aria-hidden="true"></b></span>
-            </div>
-        </a>
-        <a class="category-card " href="tute.html">
-            <span class="card-number">006</span>
-            <span class="card-arrow" aria-hidden="true"></span>
-            <div class="card-copy">
-                <span class="card-kicker">TRACKSUIT / TUTE</span>
-                <span class="card-name">TUTE</span>
-                <span class="card-cta">ESPLORA <b class="cta-arrow" aria-hidden="true"></b></span>
-            </div>
-        </a>
-    </section>
-
-    <div class="bottom-note">
-        <span>FUORISCHEMA / ABBIGLIAMENTO</span>
-        <span>01 — 05</span>
     </div>
+
+</section>
+
+<section>
+
+    <div class="section-head">
+        <div>
+            <div class="section-label">CATEGORIE</div>
+            <h2 class="section-title">SCEGLI COSA CERCHI</h2>
+        </div>
+        <div class="section-note">SCOPRI I CAPI</div>
+    </div>
+
+    <nav class="category-list" aria-label="Categorie abbigliamento">
+
+        <a class="category-link" href="tshirt.html">
+            <div class="category-left">
+                <span class="category-number">001</span>
+                <span class="category-name">T-SHIRT</span>
+            </div>
+            <span class="category-arrow"></span>
+        </a>
+
+        <a class="category-link" href="maglieria.html">
+            <div class="category-left">
+                <span class="category-number">002</span>
+                <span class="category-name">MAGLIERIA</span>
+            </div>
+            <span class="category-arrow"></span>
+        </a>
+
+        <a class="category-link" href="pantaloni.html">
+            <div class="category-left">
+                <span class="category-number">003</span>
+                <span class="category-name">PANTALONI</span>
+            </div>
+            <span class="category-arrow"></span>
+        </a>
+
+        <a class="category-link" href="jeans.html">
+            <div class="category-left">
+                <span class="category-number">004</span>
+                <span class="category-name">JEANS</span>
+            </div>
+            <span class="category-arrow"></span>
+        </a>
+
+        <a class="category-link" href="giacche.html">
+            <div class="category-left">
+                <span class="category-number">005</span>
+                <span class="category-name">GIACCHE</span>
+            </div>
+            <span class="category-arrow"></span>
+        </a>
+
+        <a class="category-link" href="tute.html">
+            <div class="category-left">
+                <span class="category-number">006</span>
+                <span class="category-name">TUTE</span>
+            </div>
+            <span class="category-arrow"></span>
+        </a>
+
+    </nav>
+
+    <a href="catalogo.html" class="all-link">
+        <span>VEDI TUTTO L'ABBIGLIAMENTO</span>
+        <span>→</span>
+    </a>
+
+</section>
+
+<section class="featured">
+
+    <div class="section-head">
+        <div>
+            <div class="section-label">IN EVIDENZA</div>
+            <h2 class="section-title">IN EVIDENZA</h2>
+        </div>
+
+        <a href="catalogo.html" class="section-note">VEDI TUTTO</a>
+    </div>
+
+    <div class="product-grid" id="featuredProducts"></div>
+
+</section>
+
+<div class="bottom-note">
+    <span>FUORISCHEMA / ABBIGLIAMENTO</span>
+    <span>02 — ABBIGLIAMENTO</span>
+</div>
+
 </main>
-    <script src="cart.js"></script>
+
+<script src="products.js"></script>
+
+<script>
+(function(){
+
+    const grid = document.getElementById("featuredProducts");
+
+    if(!grid || typeof FUORISCHEMA_PRODUCTS === "undefined") return;
+
+    const featuredIds = [
+        "nike-smanicato",
+        "nike-smanicato-white",
+        "adidas-real-madrid",
+        "adidas-real-madrid-originals"
+    ];
+
+    const products = featuredIds
+        .map(id => FUORISCHEMA_PRODUCTS[id])
+        .filter(Boolean);
+
+    if(!products.length){
+        grid.innerHTML = `
+            <div style="grid-column:1/-1;border:1px solid #222;padding:22px;color:#666;font-size:8px;font-weight:900;letter-spacing:2px;">
+                SELEZIONE IN AGGIORNAMENTO
+            </div>
+        `;
+        return;
+    }
+
+    products.forEach(product => {
+
+        const card = document.createElement("a");
+
+        card.className = "product-card";
+        card.href = "prodotto.html?id=" + encodeURIComponent(product.id);
+
+        const price = typeof product.price === "number"
+            ? product.price.toLocaleString("it-IT",{
+                style:"currency",
+                currency:"EUR"
+            })
+            : "";
+
+        card.innerHTML = `
+            <div class="product-image">
+                <img src="${product.image}" alt="${product.name}" loading="lazy">
+            </div>
+
+            <div class="product-info">
+                <div class="product-brand">${product.brand || ""}</div>
+                <div class="product-name">${product.name || ""}</div>
+                ${price ? `<div class="product-price">${price}</div>` : ""}
+                <span class="product-cta">SCOPRI IL PRODOTTO →</span>
+            </div>
+        `;
+
+        grid.appendChild(card);
+    });
+
+})();
+</script>
+
+<script src="cart.js"></script>
+
 </body>
 </html>
-
