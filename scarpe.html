@@ -618,15 +618,15 @@ h1{
     searchInput.addEventListener("input", render);
     sortSelect.addEventListener("change", render);
 
-    brandFilters.addEventListener("click", event => {
+    filters.addEventListener("click", event => {
 
         const button = event.target.closest(".filter-chip");
 
         if(!button) return;
+        if(button.dataset.brand === undefined) return;
 
         selectedBrand = button.dataset.brand;
-
-        document
+document
             .querySelectorAll(".filter-chip")
             .forEach(chip => chip.classList.remove("active"));
 
