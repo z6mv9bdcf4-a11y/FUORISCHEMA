@@ -6,7 +6,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Nike Air Force 1 Triple White. Una delle silhouette più iconiche di Nike, proposta nella classica colorazione Triple White.",
-        image: "images/products/nike/air-force-1-triple-white.webp",
+        image: "images/products/standardized/nike/air-force-1-triple-white.webp",
         code: "",
         label: "PIÙ SCELTO",
         filter: "selected",
@@ -20,7 +20,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Nike Air Force 1 Triple Black. Una versione completamente nera dell'iconica Air Force 1, pensata per un look essenziale e deciso.",
-        image: "images/products/nike/air-force-1-triple-black.webp",
+        image: "images/products/standardized/nike/air-force-1-triple-black.webp",
         code: "",
         label: "",
         categoryUrl: "scarpe.html"
@@ -33,7 +33,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Nike Shox TL White. Una silhouette caratterizzata dall'iconica tecnologia Shox e da una presenza forte e contemporanea.",
-        image: "images/products/nike/shox-tl-white.webp",
+        image: "images/products/standardized/nike/shox-tl-white.webp",
         code: "",
         label: "NUOVO",
         filter: "new",
@@ -47,7 +47,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Nike Shox TL Triple Black. Una colorazione total black dell'iconica silhouette Shox TL.",
-        image: "images/products/nike/shox-tl-triple-black.webp",
+        image: "images/products/standardized/nike/shox-tl-triple-black.webp",
         code: "",
         label: "",
         filter: "new",
@@ -72,7 +72,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "New Balance 204L. Una sneaker New Balance selezionata da FUORISCHEMA.",
-        image: "images/products/newbalance/newbalance-204l.png",
+        image: "images/products/standardized/newbalance/newbalance-204l.webp",
         code: "",
         label: "",
         categoryUrl: "newbalance.html"
@@ -84,7 +84,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "New Balance M1906. Prodotto New Balance selezionato da FUORISCHEMA.",
-        image: "images/products/newbalance/m1906.png",
+        image: "images/products/standardized/newbalance/m1906.webp",
         code: "",
         label: "",
         categoryUrl: "newbalance.html"
@@ -132,7 +132,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Adidas Samba. Una silhouette iconica selezionata da FUORISCHEMA.",
-        image: "images/products/adidas/samba.png",
+        image: "images/products/standardized/adidas/samba.webp",
         code: "",
         label: "",
         categoryUrl: "adidas.html"
@@ -227,7 +227,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Air Jordan 4 Retro Bred Reimagined. Una sneaker selezionata da FUORISCHEMA.",
-        image: "images/products/jordan/jordan-4-bred-reimagined.png",
+        image: "images/products/standardized/jordan/jordan-4-bred-reimagined.webp",
         code: "",
         label: "",
         categoryUrl: "jordan.html"
@@ -240,7 +240,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Air Jordan 4 Retro Red Cement. Una sneaker selezionata da FUORISCHEMA.",
-        image: "images/products/jordan/jordan-4-red-cement.png",
+        image: "images/products/standardized/jordan/jordan-4-red-cement.webp",
         code: "",
         label: "",
         categoryUrl: "jordan.html"
@@ -253,7 +253,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SCARPA / FUORISCHEMA",
         description: "Timberland. Una scarpa selezionata da FUORISCHEMA.",
-        image: "images/products/timberland/timberland.png",
+        image: "images/products/standardized/timberland/timberland.webp",
         code: "",
         label: "",
         categoryUrl: "timberland.html"
@@ -265,7 +265,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Adidas Samba OG. Prodotto Adidas selezionato da FUORISCHEMA.",
-        image: "images/products/adidas/adidas-samba-og.png",
+        image: "images/products/standardized/adidas/adidas-samba-og.webp",
         code: "",
         label: "",
         categoryUrl: "adidas.html"
@@ -290,7 +290,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Off-White sneaker. Prodotto Off-White selezionato da FUORISCHEMA.",
-        image: "images/products/off-white/off-white.png",
+        image: "images/products/standardized/off-white/off-white.webp",
         code: "",
         label: "",
         categoryUrl: "off-white.html"
@@ -302,7 +302,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "NEW BALANCE 9060 White. Una sneaker New Balance selezionata da FUORISCHEMA.",
-        image: "images/products/newbalance/9060-white.png",
+        image: "images/products/standardized/newbalance/9060-white.webp",
         code: "",
         label: "",
         categoryUrl: "newbalance.html"
@@ -356,7 +356,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "NEW BALANCE 9060 Black. Una sneaker New Balance selezionata da FUORISCHEMA.",
-        image: "images/products/newbalance/newbalance-9060-black.jpg",
+        image: "images/products/standardized/newbalance/newbalance-9060-black.webp",
         code: "",
         label: "",
         categoryUrl: "newbalance.html"
