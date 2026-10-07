@@ -233,7 +233,6 @@
             font-weight: 900;
             letter-spacing: -4px;
         }
-
         .menu-section {
             margin: 0 0 4px;
             padding-top: 25px;
@@ -2596,9 +2595,9 @@ body {
 
             <div class="menu-section">SHOP</div>
 
-            
 
-            
+
+
 
             <a class="menu-link menu-link-main" href="scarpe.html">
                 Scarpe
@@ -2679,7 +2678,7 @@ body {
         </a>
 
         <nav class="fs-header-actions" aria-label="Azioni rapide">
-        
+
         <button class="fs-header-action" id="fs-header-cart-trigger" type="button" aria-label="Apri carrello" title="Apri carrello">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 11.1a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.4L21 8H6"></path><circle cx="10" cy="20" r="1"></circle><circle cx="18" cy="20" r="1"></circle></svg>
         </button>
@@ -2741,7 +2740,7 @@ body {
                     </div>
 
 
-                    
+
 
                 </div>
 
@@ -2779,7 +2778,7 @@ body {
                     </h2>
                 </div>
 
-                
+
 
             </div>
 
@@ -2871,7 +2870,7 @@ body {
              MANIFESTO
         ===================================================== -->
 
-        
+
 <!-- FUORISCHEMA-CAMPAIGN-VIDEO-V1 -->
 <section class="campaign-video-section" id="fuorischema-campaign">
   <div class="campaign-video-inner">
@@ -3043,7 +3042,7 @@ body {
 
                 <div class="footer-links">
 
-                    
+
 
                     <a href="scarpe.html">
                         Scarpe
@@ -3057,7 +3056,7 @@ body {
                         Accessori
                     </a>
 
-                    
+
 
                 </div>
 
@@ -3415,18 +3414,3 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
