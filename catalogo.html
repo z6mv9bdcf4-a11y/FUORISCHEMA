@@ -304,7 +304,71 @@
                 font-size: 28px;
             }
         }
-    </style>
+
+/* FUORISCHEMA-CATALOG-PREMIUM-V1 */
+main {
+    width: min(100% - 40px, 1240px);
+    margin-inline: auto;
+}
+
+.category {
+    min-width: 0;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #292929;
+    transition: border-color .3s ease, transform .3s ease;
+}
+
+.category:hover {
+    border-color: var(--arancio, #ff6a00);
+    transform: translateY(-3px);
+}
+
+.category:focus-visible {
+    outline: 2px solid var(--arancio, #ff6a00);
+    outline-offset: 4px;
+}
+
+.category-number {
+    letter-spacing: 3px;
+}
+
+.category-content {
+    min-width: 0;
+}
+
+.category-name {
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+}
+
+.category-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+@media (max-width: 600px) {
+    main {
+        width: calc(100% - 28px);
+    }
+
+    .category {
+        min-width: 0;
+    }
+
+    .category-name {
+        line-height: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .category {
+        transition: none;
+    }
+}
+</style>
 
 
     <link rel="stylesheet" href="cart.css">

@@ -293,7 +293,7 @@
             await navigator.clipboard.writeText(summary);
 
             if (showToast) {
-                showCartToast("Riepilogo copiato ✓");
+                showCartToast(copied ? "Riepilogo copiato ✓" : "Copia non riuscita: copia il riepilogo manualmente.");
             }
 
             return true;
@@ -328,16 +328,16 @@
             return;
         }
 
-        await copyOrderSummary(false);
+        const copied = await copyOrderSummary(false);
 
-        showCartToast("Riepilogo copiato ✓");
+        showCartToast(copied ? "Riepilogo copiato ✓" : "Copia non riuscita: copia il riepilogo manualmente.");
 
         setTimeout(() => {
             /*
                 INSERIRE QUI IL LINK INSTAGRAM UFFICIALE
                 QUANDO ABBIAMO L'USERNAME DEFINITIVO.
             */
-            window.open("https://www.instagram.com/_fuori.schema_/", "_blank", "noopener,noreferrer");
+            window.open("https://www.instagram.com/_fuorischema_/", "_blank", "noopener,noreferrer");
         }, 500);
     }
 
@@ -529,4 +529,5 @@
         init();
     }
 })();
+
 
