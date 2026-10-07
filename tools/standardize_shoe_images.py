@@ -83,7 +83,8 @@ def fit_product(cutout):
 
 def process_one(source_path, session):
     rel = source_path.relative_to(ROOT)
-    out_path = OUT_ROOT / rel.relative_to(PRODUCT_ROOT)
+    rel_from_products = source_path.relative_to(PRODUCT_ROOT)
+    out_path = OUT_ROOT / rel_from_products
     out_path = out_path.with_suffix(".webp")
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
