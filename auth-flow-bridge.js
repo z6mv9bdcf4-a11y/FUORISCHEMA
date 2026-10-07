@@ -56,7 +56,7 @@ async function handleLogin(event) {
         return;
     }
 
-    window.location.replace("Fsocial.html");
+    window.location.replace("index.html");
 }
 
 async function handleRecovery(event) {

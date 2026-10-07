@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -86,14 +86,57 @@ h1{font-size:clamp(76px,12vw,148px);line-height:.76;font-weight:1000;letter-spac
     .brand-tile:nth-child(2) .tile-name{font-size:31px;letter-spacing:-2px;white-space:nowrap}
     .brand-tile:nth-child(6) .tile-name{font-size:21px;letter-spacing:-1.5px;white-space:nowrap}
     .brand-tile:nth-child(7) .tile-name{font-size:22px;letter-spacing:-1.5px}
-}.card-arrow,.tile-arrow{position:relative;display:block;width:18px;height:18px;color:#777}.card-arrow::before,.tile-arrow::before{content:"";position:absolute;width:11px;height:1px;background:currentColor;top:9px;left:2px;transform:rotate(-45deg);transform-origin:right center}.card-arrow::after,.tile-arrow::after{content:"";position:absolute;width:6px;height:6px;border-top:1px solid currentColor;border-right:1px solid currentColor;top:4px;right:1px}.cta-arrow{display:inline-block;width:12px;height:8px;position:relative;margin-left:7px;vertical-align:middle}.cta-arrow::before{content:"";position:absolute;width:9px;height:1px;background:#ff5a00;left:0;top:4px}.cta-arrow::after{content:"";position:absolute;width:5px;height:5px;border-top:1px solid #ff5a00;border-right:1px solid #ff5a00;right:0;top:1px;transform:rotate(45deg)}</style>
+}.card-arrow,.tile-arrow{position:relative;display:block;width:18px;height:18px;color:#777}.card-arrow::before,.tile-arrow::before{content:"";position:absolute;width:11px;height:1px;background:currentColor;top:9px;left:2px;transform:rotate(-45deg);transform-origin:right center}.card-arrow::after,.tile-arrow::after{content:"";position:absolute;width:6px;height:6px;border-top:1px solid currentColor;border-right:1px solid currentColor;top:4px;right:1px}.cta-arrow{display:inline-block;width:12px;height:8px;position:relative;margin-left:7px;vertical-align:middle}.cta-arrow::before{content:"";position:absolute;width:9px;height:1px;background:#ff5a00;left:0;top:4px}.cta-arrow::after{content:"";position:absolute;width:5px;height:5px;border-top:1px solid #ff5a00;border-right:1px solid #ff5a00;right:0;top:1px;transform:rotate(45deg)}
+/* FUORISCHEMA-SHOES-BRANDS-V1 */
+.brand-grid {
+    min-width: 0;
+    gap: clamp(10px, 1.5vw, 18px);
+}
+
+.brand-tile {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid #292929;
+    transition: border-color .25s ease, transform .25s ease;
+}
+
+.brand-tile:hover {
+    border-color: var(--arancio, #ff6a00);
+    transform: translateY(-3px);
+}
+
+.brand-tile:focus-visible {
+    outline: 2px solid var(--arancio, #ff6a00);
+    outline-offset: 4px;
+}
+
+.tile-name {
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 700px) {
+    .brand-grid {
+        gap: 10px;
+    }
+
+    .brand-tile {
+        min-width: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .brand-tile {
+        transition: none;
+    }
+}
+</style>
     <link rel="stylesheet" href="cart.css">
 </head>
 
 <body>
 <header class="topbar">
   <a href="index.html" class="brand"><span class="brand-white">FUORI</span><span class="brand-orange">SCHEMA</span></a>
-  <div class="nav-actions"><a href="catalogo.html" class="nav-btn">← CATALOGO</a><a href="index.html" class="nav-btn">HOME</a></div>
+  <div class="nav-actions"><a href="index.html" class="nav-btn">HOME</a></div>
 </header>
 <main class="page">
   <section class="hero">
@@ -116,7 +159,7 @@ h1{font-size:clamp(76px,12vw,148px);line-height:.76;font-weight:1000;letter-spac
       <button class="filter active" type="button" data-target="all">TUTTE</button><button class="filter" type="button" data-target="nike">NIKE</button>
       <button class="filter" type="button" data-target="jordan">JORDAN</button><button class="filter" type="button" data-target="adidas">ADIDAS</button>
       <button class="filter" type="button" data-target="asics">ASICS</button><button class="filter" type="button" data-target="off-white">OFF-WHITE</button>
-      <button class="filter" type="button" data-target="timberland">TIMBERLAND</button><button class="filter" type="button" data-target="newbalance">NEW BALANCE</button><button class="filter" type="button" data-target="collab">COLLABORAZIONI</button>
+      <button class="filter" type="button" data-target="timberland">TIMBERLAND</button><button class="filter" type="button" data-target="newbalance">NEW BALANCE</button>
     </nav>
     <div class="brand-grid" id="brandGrid">
       <a class="brand-tile brand-item" data-brand="nike" href="nike.html">
@@ -187,10 +230,10 @@ const filters=document.querySelectorAll(".filter"),cards=document.querySelectorA
 filters.forEach(filter=>filter.addEventListener("click",()=>{
  const target=filter.dataset.target; filters.forEach(x=>x.classList.remove("active")); filter.classList.add("active");
  if(target==="all"){cards.forEach(x=>x.style.display="");return;}
- if(target==="collab"){cards.forEach(x=>x.style.display="none");document.querySelector(".collab").scrollIntoView({behavior:"smooth",block:"start"});return;}
  cards.forEach(x=>x.style.display=x.dataset.brand===target?"":"none");
 }));
 </script>
     <script src="cart.js"></script>
 </body>
 </html>
+

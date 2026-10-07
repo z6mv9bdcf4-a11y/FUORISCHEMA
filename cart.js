@@ -293,7 +293,7 @@
             await navigator.clipboard.writeText(summary);
 
             if (showToast) {
-                showCartToast("Riepilogo copiato ✓");
+                showCartToast(copied ? "Riepilogo copiato ✓" : "Copia non riuscita: copia il riepilogo manualmente.");
             }
 
             return true;
@@ -328,16 +328,16 @@
             return;
         }
 
-        await copyOrderSummary(false);
+        const copied = await copyOrderSummary(false);
 
-        showCartToast("Riepilogo copiato ✓");
+        showCartToast(copied ? "Riepilogo copiato ✓" : "Copia non riuscita: copia il riepilogo manualmente.");
 
         setTimeout(() => {
             /*
                 INSERIRE QUI IL LINK INSTAGRAM UFFICIALE
                 QUANDO ABBIAMO L'USERNAME DEFINITIVO.
             */
-            window.open("https://www.instagram.com/_fuori.schema_/", "_blank", "noopener,noreferrer");
+            window.open("https://www.instagram.com/_fuorischema_/", "_blank", "noopener,noreferrer");
         }, 500);
     }
 
@@ -371,9 +371,9 @@
 
         const href = link ? link.getAttribute("href") : "";
 
-        let id = "";
+        let id = card.dataset.productId || "";
 
-        if (href) {
+        if (!id && href) {
             try {
                 const url = new URL(href, window.location.href);
                 id = url.searchParams.get("id") || "";
@@ -442,19 +442,26 @@
 
             if (!product) return;
 
-            const button = document.createElement("button");
+            const button = document.createElement("span");
 
-            button.type = "button";
             button.className = "fs-add-cart-button";
+            button.setAttribute("role", "button");
+            button.setAttribute("tabindex", "0");
+            button.setAttribute("aria-label", `Aggiungi ${product.name} al carrello`);
             button.innerHTML = `
                 <span>AGGIUNGI AL CARRELLO</span>
-                <span>+</span>
+                <span aria-hidden="true">+</span>
             `;
 
-            button.addEventListener("click", event => {
+            const addFromCard = event => {
                 event.preventDefault();
                 event.stopPropagation();
                 addToCart(product);
+            };
+
+            button.addEventListener("click", addFromCard);
+            button.addEventListener("keydown", event => {
+                if (event.key === "Enter" || event.key === " ") addFromCard(event);
             });
 
             card.appendChild(button);
@@ -522,4 +529,5 @@
         init();
     }
 })();
+
 

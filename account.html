@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ACCOUNT — FUORISCHEMA</title>
+    <title>ACCOUNT â€” FUORISCHEMA</title>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
@@ -289,7 +289,7 @@
             }
         }
     <style>
-/* FUORISCHEMA — NOTIFICATION SYSTEM */
+/* FUORISCHEMA â€” NOTIFICATION SYSTEM */
 .fs-notification-wrap{
     position:fixed !important;
     top:24px !important;
@@ -389,6 +389,7 @@
 }
 </style>
     <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta name="description" content="Scopri ACCOUNT &#226;€” FUORISCHEMA su FUORISCHEMA: sneakers, abbigliamento e accessori streetwear selezionati.">
 </head>
 
 <body>
@@ -400,7 +401,7 @@
         </a>
 
         <a href="index.html" class="back">
-    ← HOME
+    â† HOME
 </a>
 
     </header>
@@ -473,7 +474,7 @@
                     >
 
                     <p class="form-note">
-                        Il tuo username Instagram verrà associato
+                        Il tuo username Instagram verrÃ  associato
                         al tuo profilo Community.
                     </p>
 
@@ -499,7 +500,7 @@
 
                     CREA ACCOUNT
 
-                    <span>→</span>
+                    <span>â†’</span>
 
                 </button>
 
@@ -509,11 +510,11 @@
             <div class="login-link">
 
                 <span>
-                    HAI GIÀ UN ACCOUNT?
+                    HAI GIÃ€ UN ACCOUNT?
                 </span>
 
                 <a href="login.html">
-                    ACCEDI →
+                    ACCEDI â†’
                 </a>
 
             </div>
@@ -526,7 +527,7 @@
     <footer>
 
         <span>
-            FUORISCHEMA © 2026
+            FUORISCHEMA Â© 2026
         </span>
 
         <span>
@@ -549,7 +550,7 @@
         wrap.innerHTML = `
             <div class="fs-notification ${type === "success" ? "success" : ""}" role="alert">
                 <div class="fs-notification-icon">
-                    ${type === "success" ? "✓" : "!"}
+                    ${type === "success" ? "âœ“" : "!"}
                 </div>
                 <div>
                     <div class="fs-notification-title"></div>
@@ -654,7 +655,7 @@
             successOverlay.innerHTML = `
                 <div class="success-overlay" role="status" aria-live="polite">
                     <div class="success-card">
-                        <div class="success-check">✓</div>
+                        <div class="success-check">âœ“</div>
                         <div class="success-eyebrow">FUORISCHEMA</div>
                         <h2>ACCOUNT<br><span>CREATO.</span></h2>
                         <p>Controlla la tua email e conferma l'indirizzo per attivare l'account.</p>
@@ -669,12 +670,12 @@
 
             console.error("ERRORE REGISTRAZIONE:", error);
 
-            let message = error.message || "Si è verificato un errore durante la registrazione.";
+            let message = error.message || "Si Ã¨ verificato un errore durante la registrazione.";
 
             if (/password/i.test(message)) {
                 message = "La password non rispetta i requisiti richiesti.";
             } else if (/already registered|already exists|user already/i.test(message)) {
-                message = "Questa email è già associata a un account.";
+                message = "Questa email Ã¨ giÃ  associata a un account.";
             } else if (/invalid email/i.test(message)) {
                 message = "Inserisci un indirizzo email valido.";
             }

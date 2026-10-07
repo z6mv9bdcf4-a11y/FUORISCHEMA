@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -336,6 +336,83 @@ button{font:inherit;border:0}
     .product-name{font-size:36px;letter-spacing:-2.3px}
     .gallery-main{aspect-ratio:1 / 1}
 }
+
+/* FUORISCHEMA-PRODUCT-PAGE-V1 */
+.product-layout {
+    min-width: 0;
+    gap: clamp(24px, 4vw, 64px);
+}
+
+.gallery,
+.gallery-main,
+.product-details {
+    min-width: 0;
+}
+
+.gallery-main {
+    overflow: hidden;
+    border: 1px solid #292929;
+    background: #0b0b0b;
+}
+
+.gallery-main img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.product-details {
+    overflow-wrap: anywhere;
+}
+
+.product-name {
+    text-wrap: balance;
+}
+
+.product-subtitle,
+.info-text {
+    line-height: 1.7;
+}
+
+#categoryLink,
+#backLink {
+    transition: color .2s ease, border-color .2s ease;
+}
+
+#categoryLink:hover,
+#backLink:hover {
+    color: var(--arancio, #ff6a00);
+}
+
+#categoryLink:focus-visible,
+#backLink:focus-visible {
+    outline: 2px solid var(--arancio, #ff6a00);
+    outline-offset: 4px;
+}
+
+@media (max-width: 850px) {
+    .product-layout {
+        gap: 28px;
+    }
+}
+
+@media (max-width: 430px) {
+    .product-layout {
+        gap: 20px;
+    }
+
+    .product-name {
+        overflow-wrap: anywhere;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #categoryLink,
+    #backLink {
+        transition: none;
+    }
+}
 </style>
     <link rel="stylesheet" href="cart.css">
 </head>
@@ -348,7 +425,7 @@ button{font:inherit;border:0}
     </a>
 
     <div class="nav-actions">
-        <a id="topBackLink" href="catalogo.html" class="nav-btn">← INDIETRO</a>
+        
         <a href="index.html" class="nav-btn">HOME</a>
     </div>
 </header>
@@ -356,7 +433,7 @@ button{font:inherit;border:0}
 <main class="page">
 
     <div class="breadcrumb">
-        <a href="catalogo.html">CATALOGO</a>
+        
         <span>/</span>
         <a id="categoryLink" href="scarpe.html">SCARPE</a>
         <span>/</span>
@@ -461,7 +538,21 @@ button{font:inherit;border:0}
 
 const params = new URLSearchParams(window.location.search);
 const productId = params.get("id");
-const product = FUORISCHEMA_PRODUCTS[productId] || FUORISCHEMA_PRODUCTS["nike-air-force-1-triple-white"];
+const product = productId ? FUORISCHEMA_PRODUCTS[productId] : null;
+
+if (!product) {
+    document.title = "Prodotto non trovato | FUORISCHEMA";
+    const layout = document.querySelector(".product-layout");
+    if (layout) {
+        layout.innerHTML = `
+            <section style="grid-column:1/-1;padding:60px 20px;text-align:center">
+                <p style="color:#f97316;letter-spacing:3px">FUORISCHEMA / 404</p>
+                <h1>PRODOTTO NON TROVATO</h1>
+                <p>Il prodotto richiesto non esiste o non è più disponibile.</p>
+                
+            </section>`;
+    }
+} else {
 
 function setText(id,value){
     const element = document.getElementById(id);
@@ -535,8 +626,9 @@ if(productId){
         description.content = `${product.name} di ${product.brand}: scopri la scheda prodotto FUORISCHEMA e contattaci in DM per prezzo, taglie e disponibilità.`;
     }
 }
+}
 </script>
-
     <script src="cart.js"></script>
 </body>
 </html>
+
