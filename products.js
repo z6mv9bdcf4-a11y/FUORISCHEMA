@@ -288,23 +288,6 @@ const FUORISCHEMA_PRODUCTS = {
         label: "",
         categoryUrl: "tute.html"
     },
-    "off-white-01": {
-        id: "off-white-01",
-        name: "Off-White Sneaker",
-        brand: "OFF-WHITE",
-        category: "SCARPE",
-        type: "SNEAKER / FUORISCHEMA",
-        description: "Sneaker Off-White. Prezzo 400 EUR. Per acquistare, scrivici in DM. Prodotto unico, senza selezione taglia.",
-        image: "images/products/off-white/02.webp",
-        images: [
-            "images/products/off-white/02.webp",
-            "images/products/off-white/03.webp"
-        ],
-        code: "",
-        label: "",
-        price: 400,
-        categoryUrl: "prodotto.html?id=off-white-01"
-    },
     "newbalance-9060-white": {
         id: "newbalance-9060-white",
         name: "NEW BALANCE 9060 White",

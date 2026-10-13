@@ -685,7 +685,6 @@ const priceProductIds = [
     "timberland-01",
     "adidas-08",
     "newbalance-9060-white",
-    "off-white-01"
 ];
 
 if (priceSizes && priceProductIds.includes(product.id) && Number.isFinite(product.price)) {
@@ -739,12 +738,6 @@ image.addEventListener("error", () => {
 const dmButton = document.getElementById("dmButton");
 if(dmButton){
     dmButton.href = "https://www.instagram.com/_fuori.schema_/";
-}
-if (product.id === "off-white-01") {
-    const availabilityText = document.querySelector(".availability .availability-text");
-    if (availabilityText) {
-        availabilityText.textContent = "Prezzo: 400 €. Prodotto unico, senza selezione taglia. Per acquistare, scrivici direttamente in DM.";
-    }
 }
 
 const codeRow = document.getElementById("codeRow");
