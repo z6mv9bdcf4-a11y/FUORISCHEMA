@@ -119,17 +119,72 @@ h1{
 }
 
 .subcategory-card{
-    min-height:150px;
+    min-height:190px;
     padding:22px;
     border:1px solid #292929;
-    background:linear-gradient(135deg,#101010,#070707);
+    background:
+        linear-gradient(110deg,rgba(5,5,5,.98) 0%,rgba(5,5,5,.78) 48%,rgba(5,5,5,.18) 100%),
+        linear-gradient(145deg,#191919,#070707 65%);
     display:flex;
     flex-direction:column;
+    align-items:flex-start;
     justify-content:space-between;
+    position:relative;
+    isolation:isolate;
+    overflow:hidden;
     text-align:left;
     color:var(--text);
     cursor:pointer;
     transition:border-color .2s ease, background .2s ease;
+}
+
+.subcategory-card::before{
+    content:"";
+    position:absolute;
+    z-index:-1;
+    width:145px;
+    height:190px;
+    right:-20px;
+    top:8px;
+    border:1px solid rgba(255,90,0,.5);
+    transform:rotate(28deg);
+    background:
+        repeating-linear-gradient(135deg,transparent 0 12px,rgba(255,255,255,.045) 12px 13px);
+    transition:transform .35s ease, border-color .2s ease;
+}
+
+.subcategory-card::after{
+    content:"";
+    position:absolute;
+    z-index:-1;
+    width:110px;
+    height:110px;
+    right:18px;
+    top:35px;
+    border:1px solid rgba(255,255,255,.13);
+    border-radius:50%;
+    box-shadow:0 0 0 15px rgba(255,255,255,.018),0 0 0 30px rgba(255,255,255,.012);
+}
+
+.subcategory-card[data-subcategory="SPORTSWEAR"]::before{
+    width:170px;
+    height:105px;
+    right:-10px;
+    top:28px;
+    transform:rotate(-24deg);
+    border-color:rgba(255,255,255,.35);
+    background:repeating-linear-gradient(0deg,transparent 0 13px,rgba(255,90,0,.12) 13px 14px);
+}
+
+.subcategory-card:hover::before,
+.subcategory-card.active::before{
+    transform:rotate(38deg) scale(1.06);
+    border-color:var(--orange);
+}
+
+.subcategory-card[data-subcategory="SPORTSWEAR"]:hover::before,
+.subcategory-card[data-subcategory="SPORTSWEAR"].active::before{
+    transform:rotate(-15deg) scale(1.06);
 }
 
 .subcategory-card:hover,
@@ -138,7 +193,9 @@ h1{
 }
 
 .subcategory-card.active{
-    background:#15100d;
+    background:
+        linear-gradient(110deg,rgba(5,5,5,.96) 0%,rgba(5,5,5,.7) 48%,rgba(255,90,0,.08) 100%),
+        #100b08;
 }
 
 .subcategory-label{
@@ -434,8 +491,30 @@ h1{
     }
 
     .subcategory-card{
-        min-height:125px;
+        min-height:145px;
         padding:13px;
+    }
+
+    .subcategory-card::before{
+        width:100px;
+        height:140px;
+        right:-22px;
+        top:8px;
+    }
+
+    .subcategory-card::after{
+        width:75px;
+        height:75px;
+        right:6px;
+        top:32px;
+        box-shadow:0 0 0 10px rgba(255,255,255,.018),0 0 0 20px rgba(255,255,255,.012);
+    }
+
+    .subcategory-card[data-subcategory="SPORTSWEAR"]::before{
+        width:115px;
+        height:75px;
+        right:-12px;
+        top:30px;
     }
 
     .subcategory-name{
