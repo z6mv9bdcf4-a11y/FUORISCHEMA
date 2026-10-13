@@ -707,11 +707,13 @@ h1{
     ];
 
     const products = Object.values(FUORISCHEMA_PRODUCTS)
-        .filter(product =>
-            clothingCategories.includes(
-                String(product.category || "").toUpperCase()
-            )
-        );
+        .filter(product => {
+            const category = String(product.category || "").trim().toUpperCase();
+            const subcategory = String(product.subcategory || "").trim().toUpperCase();
+
+            return clothingCategories.includes(category) ||
+                ["STREETWEAR", "SPORTSWEAR"].includes(subcategory);
+        });
 
     let selectedBrand = "ALL";
     let selectedCategory = "ALL";
@@ -766,11 +768,12 @@ h1{
             const productCategory =
                 String(product.category || "").toUpperCase();
             const productSubcategory =
-                String(product.subcategory || "").toUpperCase();
+                String(product.subcategory || "").trim().toUpperCase();
 
             const matchesSubcategory =
                 selectedSubcategory === "ALL" ||
-                productSubcategory === selectedSubcategory;
+                productSubcategory === selectedSubcategory ||
+                (!productSubcategory && productCategory === selectedSubcategory);
 
             const matchesBrand =
                 selectedBrand === "ALL" ||
