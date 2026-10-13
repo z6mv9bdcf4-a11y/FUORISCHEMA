@@ -1,14 +1,14 @@
-const FUORISCHEMA_PRODUCTS = {
+﻿const FUORISCHEMA_PRODUCTS = {
     "nike-air-force-1-triple-white": {
         id: "nike-air-force-1-triple-white",
         name: "Air Force 1 Triple White",
         brand: "NIKE",
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
-        description: "Nike Air Force 1 Triple White. Una delle silhouette piÃƒÂ¹ iconiche di Nike, proposta nella classica colorazione Triple White.",
+        description: "Nike Air Force 1 Triple White. Una delle silhouette piÃƒÆ’Ã‚Â¹ iconiche di Nike, proposta nella classica colorazione Triple White.",
         image: "images/products/nike/air-force-1-triple-white/01-b7d9211c-26e7-431a-ac24-b0540fb3c00f.png",
         code: "CW2288-111",
-        label: "PIÃƒâ„¢ SCELTO",
+        label: "PIÃƒÆ’Ã¢â€žÂ¢ SCELTO",
         filter: "selected",
         categoryUrl: "scarpe.html",
         price: 100,
@@ -294,11 +294,17 @@ const FUORISCHEMA_PRODUCTS = {
         brand: "OFF-WHITE",
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
-        description: "Off-White sneaker. Prodotto Off-White selezionato da FUORISCHEMA.",
-        image: "",
+        description: "Sneaker Off-White. Prezzo 400 EUR. Per acquistare, scrivici in DM. Prodotto unico, senza selezione taglia.",
+        image: "images/products/off-white/01.webp",
+        images: [
+            "images/products/off-white/01.webp",
+            "images/products/off-white/02.webp",
+            "images/products/off-white/03.webp"
+        ],
         code: "",
         label: "",
-        categoryUrl: "off-white.html"
+        price: 400,
+        categoryUrl: "prodotto.html?id=off-white-01"
     },
     "newbalance-9060-white": {
         id: "newbalance-9060-white",
@@ -427,3 +433,5 @@ const FUORISCHEMA_PRODUCTS = {
 };
 
 window.FUORISCHEMA_PRODUCTS = FUORISCHEMA_PRODUCTS;
+
+
