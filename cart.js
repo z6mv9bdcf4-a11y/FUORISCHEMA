@@ -442,6 +442,19 @@
 
             if (!product) return;
 
+            if (product.id === "off-white-01") {
+                const dmLink = document.createElement("a");
+                dmLink.className = "fs-add-cart-button";
+                dmLink.href = "https://www.instagram.com/_fuori.schema_/";
+                dmLink.target = "_blank";
+                dmLink.rel = "noopener noreferrer";
+                dmLink.setAttribute("aria-label", "Scrivi in DM per Off-White Sneaker, prezzo 400 euro");
+                dmLink.innerHTML = '<span>SCRIVI IN DM · 400 €</span><span aria-hidden="true">→</span>';
+                card.appendChild(dmLink);
+                card.dataset.cartReady = "1";
+                return;
+            }
+
             const button = document.createElement("span");
 
             button.className = "fs-add-cart-button";
