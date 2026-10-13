@@ -447,7 +447,7 @@ body.asics-product .gallery-main img#productImage {
     transform-origin: center;
 }
 
-/* NEW BALANCE 9060 ONLY: crop excess empty space in source photos */
+/* NEW BALANCE 9060 ONLY: zoom into the shoe inside source photos */
 body.newbalance-9060-product .gallery-main {
     background: #f2f2f2;
 }
@@ -457,12 +457,15 @@ body.newbalance-9060-product .gallery-main img#productImage {
     height: 100%;
     max-width: none;
     object-fit: cover;
-    object-position: center 88%;
-    transform: none;
+    object-position: center center;
+    transform: scale(2.25);
+    transform-origin: 50% 88%;
 }
 body.newbalance-9060-product .gallery-thumb img {
     object-fit: cover;
-    object-position: center 88%;
+    object-position: center center;
+    transform: scale(2.25);
+    transform-origin: 50% 88%;
 }
 </style>
     <link rel="stylesheet" href="cart.css">
