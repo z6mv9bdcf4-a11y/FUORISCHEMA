@@ -128,18 +128,6 @@ const FUORISCHEMA_PRODUCTS = {
             "images/products/newbalance/204l/02.webp"
         ]
     },
-    "nike-smanicato": {
-        id: "nike-smanicato",
-        name: "Smanicato Nike",
-        brand: "NIKE",
-        category: "GIACCHE",
-        type: "SMANICATO / FUORISCHEMA",
-        description: "Smanicato Nike. Prodotto Nike selezionato da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "giacche.html"
-    },
     "lacoste-tracolla-02": {
         id: "lacoste-tracolla-02",
         name: "Tracolla Lacoste Mod. 2",
@@ -152,91 +140,6 @@ const FUORISCHEMA_PRODUCTS = {
         label: "",
         categoryUrl: "borse.html"
     },
-    "adidas-real-madrid": {
-        id: "adidas-real-madrid",
-        name: "Tuta Adidas Real Madrid",
-        brand: "ADIDAS",
-        category: "TUTE",
-        type: "TUTA / FUORISCHEMA",
-        description: "Tuta Adidas Real Madrid. Prodotto Adidas selezionato da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "tute.html"
-    },    "adidas-real-madrid-originals": {
-        id: "adidas-real-madrid-originals",
-        name: "Adidas Real Madrid Originals",
-        brand: "ADIDAS",
-        category: "TUTE",
-        type: "TUTA / FUORISCHEMA",
-        description: "Adidas Real Madrid Originals. Prodotto Adidas selezionato da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "tute.html"
-    },
-    "adidas-argentina-originals": {
-        id: "adidas-argentina-originals",
-        name: "Adidas Argentina Originals",
-        brand: "ADIDAS",
-        category: "TUTE",
-        type: "TUTA / FUORISCHEMA",
-        description: "Adidas Argentina Originals. Prodotto Adidas selezionato da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "tute.html"
-    },
-    "adidas-bayern-munich-basketball": {
-        id: "adidas-bayern-munich-basketball",
-        name: "Adidas Bayern Munich Basketball",
-        brand: "ADIDAS",
-        category: "TUTE",
-        type: "TUTA / FUORISCHEMA",
-        description: "Adidas Bayern Munich Basketball. Prodotto Adidas selezionato da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "tute.html"
-    },
-    "adidas-women-animal-tracksuit": {
-        id: "adidas-women-animal-tracksuit",
-        name: "Adidas Women Animal Tracksuit",
-        brand: "ADIDAS",
-        category: "TUTE",
-        type: "TUTA DONNA / FUORISCHEMA",
-        description: "Adidas Women Animal Tracksuit. Tuta Adidas da donna selezionata da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "tute.html"
-    },
-    "adidas-women-black-tracksuit": {
-        id: "adidas-women-black-tracksuit",
-        name: "Adidas Women Black Tracksuit",
-        brand: "ADIDAS",
-        category: "TUTE",
-        type: "TUTA DONNA / FUORISCHEMA",
-        description: "Adidas Women Black Tracksuit. Tuta Adidas da donna selezionata da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "tute.html"
-    },
-    "adidas-women-burgundy-tracksuit": {
-        id: "adidas-women-burgundy-tracksuit",
-        name: "Adidas Women Burgundy Tracksuit",
-        brand: "ADIDAS",
-        category: "TUTE",
-        type: "TUTA DONNA / FUORISCHEMA",
-        description: "Adidas Women Burgundy Tracksuit. Tuta Adidas da donna selezionata da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "tute.html"
-    },
-
-
     "timberland-01": {
         id: "timberland-01",
         name: "Timberland",
@@ -276,18 +179,6 @@ const FUORISCHEMA_PRODUCTS = {
             "images/products/adidas/samba-og/04.webp"
         ]
     },
-    "adidas-bayern-munich": {
-        id: "adidas-bayern-munich",
-        name: "Adidas Bayern Munich",
-        brand: "ADIDAS",
-        category: "TUTE",
-        type: "TUTA / FUORISCHEMA",
-        description: "Adidas Bayern Munich. Prodotto Adidas selezionato da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "tute.html"
-    },
     "newbalance-9060-white": {
         id: "newbalance-9060-white",
         name: "NEW BALANCE 9060 White",
@@ -314,34 +205,6 @@ const FUORISCHEMA_PRODUCTS = {
         categoryUrl: "borse.html"
     },
 
-    "nike-smanicato-white": {
-        id: "nike-smanicato-white",
-        name: "Smanicato Nike White",
-        brand: "NIKE",
-        category: "GIACCHE",
-        type: "SMANICATO / FUORISCHEMA",
-        description: "Smanicato Nike White. Un capo Nike selezionato da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "giacche.html"
-    },
-
-
-
-    "adidas-originals-cropped": {
-        id: "adidas-originals-cropped",
-        name: "ADIDAS ORIGINALS CROPPED",
-        brand: "ADIDAS",
-        category: "GIACCHE",
-        type: "GIACCA / FUORISCHEMA",
-        description: "ADIDAS ORIGINALS CROPPED. Un capo Adidas Originals selezionato da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "giacche.html"
-    },
-
     "newbalance-9060-white": {
         id: "newbalance-9060-white",
         name: "New Balance 9060 White",
@@ -360,57 +223,6 @@ const FUORISCHEMA_PRODUCTS = {
             "images/products/newbalance/9060-white/02.webp",
             "images/products/newbalance/9060-white/03.webp"
         ]
-    },
-"nike-performance-psg": {
-        id: "nike-performance-psg",
-        name: "NIKE PERFORMANCE PSG",
-        brand: "NIKE",
-        category: "TUTE",
-        type: "TUTA / FUORISCHEMA",
-        description: "NIKE PERFORMANCE PSG. Una tuta Nike PSG selezionata da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "tute.html"
-    },
-
-    "nike-performance-chelsea": {
-        id: "nike-performance-chelsea",
-        name: "NIKE PERFORMANCE CHELSEA",
-        brand: "NIKE",
-        category: "TUTE",
-        type: "TUTA / FUORISCHEMA",
-        description: "NIKE PERFORMANCE CHELSEA. Una tuta Nike Chelsea selezionata da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "tute.html"
-    },
-
-    "nike-performance-chelsea-blue": {
-        id: "nike-performance-chelsea-blue",
-        name: "NIKE PERFORMANCE CHELSEA BLUE",
-        brand: "NIKE",
-        category: "TUTE",
-        type: "TUTA / FUORISCHEMA",
-        description: "NIKE PERFORMANCE CHELSEA BLUE. Una tuta Nike Chelsea selezionata da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "tute.html"
-    },
-
-    "nike-performance-barcelona": {
-        id: "nike-performance-barcelona",
-        name: "NIKE PERFORMANCE BARCELONA",
-        brand: "NIKE",
-        category: "TUTE",
-        type: "TUTA / FUORISCHEMA",
-        description: "NIKE PERFORMANCE BARCELONA. Una tuta Nike Barcelona selezionata da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "tute.html"
     },
 };
 
