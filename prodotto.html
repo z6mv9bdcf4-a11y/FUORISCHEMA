@@ -446,6 +446,24 @@ body.asics-product .gallery-main img#productImage {
     transform: none;
     transform-origin: center;
 }
+
+/* NEW BALANCE 9060 ONLY: crop excess empty space in source photos */
+body.newbalance-9060-product .gallery-main {
+    background: #f2f2f2;
+}
+body.newbalance-9060-product .gallery-main img#productImage {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: center 88%;
+    transform: none;
+}
+body.newbalance-9060-product .gallery-thumb img {
+    object-fit: cover;
+    object-position: center 88%;
+}
 </style>
     <link rel="stylesheet" href="cart.css">
     
@@ -648,6 +666,9 @@ image.src = product.image;
 
     if (product.id === "asics-01") {
     document.body.classList.add("asics-product");
+}
+if (product.id === "newbalance-9060-white") {
+    document.body.classList.add("newbalance-9060-product");
 }
 
 const priceSizes = document.getElementById("productPriceSizes");
