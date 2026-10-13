@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -409,6 +409,22 @@ h1{
         line-height:2;
         font-size:6px;
     }
+}
+
+/* ASICS_CATALOG_IMAGE_FIX */
+.product-image img[src*="images/products/asics/gel-nyc/01.webp"] {
+    object-fit: contain !important;
+    background: #fff;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+/* NB9060_WHITE_CATALOG_FIX */
+.product-image img[src*="images/products/newbalance/9060-white/01.webp"] {
+    object-fit: contain !important;
+    object-position: center center !important;
+    padding: 0;
+    background: #ededed;
 }
 </style>
 </head>
