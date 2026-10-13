@@ -6,7 +6,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Nike Air Force 1 Triple White. Una delle silhouette più iconiche di Nike, proposta nella classica colorazione Triple White.",
-        image: "images/products/nike/air-force-1-triple-white.webp",
+        image: "",
         code: "",
         label: "PIÙ SCELTO",
         filter: "selected",
@@ -20,7 +20,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Nike Air Force 1 Triple Black. Una versione completamente nera dell'iconica Air Force 1, pensata per un look essenziale e deciso.",
-        image: "images/products/nike/air-force-1-triple-black.webp",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "scarpe.html"
@@ -33,7 +33,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Nike Shox TL White. Una silhouette caratterizzata dall'iconica tecnologia Shox e da una presenza forte e contemporanea.",
-        image: "images/products/nike/shox-tl-white.webp",
+        image: "",
         code: "",
         label: "NUOVO",
         filter: "new",
@@ -47,22 +47,22 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Nike Shox TL Triple Black. Una colorazione total black dell'iconica silhouette Shox TL.",
-        image: "images/products/nike/shox-tl-triple-black.webp",
+        image: "",
         code: "",
         label: "",
         filter: "new",
         categoryUrl: "scarpe.html"
     },
 
-    "adidas-01": { id:"adidas-01", name:"Adidas XLG Runner Deluxe – JR9633", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas XLG Runner Deluxe – JR9633. Prodotto Adidas selezionato da FUORISCHEMA.", image:"images/products/adidas/xlg-runner-jr9633.webp", code:"JR9633", label:"", categoryUrl:"adidas.html" },
-    "adidas-02": { id:"adidas-02", name:"Adidas XLG Runner Deluxe – JP5761", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas XLG Runner Deluxe – JP5761. Prodotto Adidas selezionato da FUORISCHEMA.", image:"images/products/adidas/xlg-runner-jp5761.webp", code:"JP5761", label:"", categoryUrl:"adidas.html" },
-    "adidas-03": { id:"adidas-03", name:"Adidas XLG Runner Deluxe – JS1590", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas XLG Runner Deluxe – JS1590. Prodotto Adidas selezionato da FUORISCHEMA.", image:"images/products/adidas/xlg-runner-js1590.webp", code:"JS1590", label:"", categoryUrl:"adidas.html" },
-    "adidas-04": { id:"adidas-04", name:"Adidas XLG Runner Deluxe – JS1588", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas XLG Runner Deluxe – JS1588. Prodotto Adidas selezionato da FUORISCHEMA.", image:"images/products/adidas/xlg-runner-js1588.webp", code:"JS1588", label:"", categoryUrl:"adidas.html" },
-    "adidas-05": { id:"adidas-05", name:"Adidas XLG Runner Deluxe – JR0861", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas XLG Runner Deluxe – JR0861. Prodotto Adidas selezionato da FUORISCHEMA.", image:"images/products/adidas/xlg-runner-jr0861.webp", code:"JR0861", label:"", categoryUrl:"adidas.html" },
-    "adidas-06": { id:"adidas-06", name:"Adidas Vento XLG Deluxe – IH7799", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas Vento XLG Deluxe – IH7799. Prodotto Adidas selezionato da FUORISCHEMA.", image:"images/products/adidas/vento-xlg-ih7799.webp", code:"IH7799", label:"", categoryUrl:"adidas.html" },
-    "adidas-07": { id:"adidas-07", name:"Adidas Vento XLG Deluxe – IH0070", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas Vento XLG Deluxe – IH0070. Prodotto Adidas selezionato da FUORISCHEMA.", image:"images/products/adidas/vento-xlg-ih0070.webp", code:"IH0070", label:"", categoryUrl:"adidas.html" },
-    "asics-01": { id:"asics-01", name:"ASICS GEL-NYC — 1201A789-103", brand:"ASICS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"ASICS GEL-NYC — 1201A789-103. Una sneaker selezionata da FUORISCHEMA.", image:"images/products/asics/gel-nyc-1201a789-103.webp", code:"1201A789-103", label:"NUOVO", filter:"new", categoryUrl:"asics.html" },
-    "lacoste-tracolla": { id:"lacoste-tracolla", name:"Tracolla Lacoste", brand:"LACOSTE", category:"BORSE", type:"BORSA / FUORISCHEMA", description:"Tracolla Lacoste. Un accessorio selezionato da FUORISCHEMA.", image:"images/products/borse/tracolla-lacoste.webp", code:"", label:"", categoryUrl:"borse.html" },
+    "adidas-01": { id:"adidas-01", name:"Adidas XLG Runner Deluxe – JR9633", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas XLG Runner Deluxe – JR9633. Prodotto Adidas selezionato da FUORISCHEMA.", image: "", code:"JR9633", label:"", categoryUrl:"adidas.html" },
+    "adidas-02": { id:"adidas-02", name:"Adidas XLG Runner Deluxe – JP5761", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas XLG Runner Deluxe – JP5761. Prodotto Adidas selezionato da FUORISCHEMA.", image: "", code:"JP5761", label:"", categoryUrl:"adidas.html" },
+    "adidas-03": { id:"adidas-03", name:"Adidas XLG Runner Deluxe – JS1590", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas XLG Runner Deluxe – JS1590. Prodotto Adidas selezionato da FUORISCHEMA.", image: "", code:"JS1590", label:"", categoryUrl:"adidas.html" },
+    "adidas-04": { id:"adidas-04", name:"Adidas XLG Runner Deluxe – JS1588", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas XLG Runner Deluxe – JS1588. Prodotto Adidas selezionato da FUORISCHEMA.", image: "", code:"JS1588", label:"", categoryUrl:"adidas.html" },
+    "adidas-05": { id:"adidas-05", name:"Adidas XLG Runner Deluxe – JR0861", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas XLG Runner Deluxe – JR0861. Prodotto Adidas selezionato da FUORISCHEMA.", image: "", code:"JR0861", label:"", categoryUrl:"adidas.html" },
+    "adidas-06": { id:"adidas-06", name:"Adidas Vento XLG Deluxe – IH7799", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas Vento XLG Deluxe – IH7799. Prodotto Adidas selezionato da FUORISCHEMA.", image: "", code:"IH7799", label:"", categoryUrl:"adidas.html" },
+    "adidas-07": { id:"adidas-07", name:"Adidas Vento XLG Deluxe – IH0070", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas Vento XLG Deluxe – IH0070. Prodotto Adidas selezionato da FUORISCHEMA.", image: "", code:"IH0070", label:"", categoryUrl:"adidas.html" },
+    "asics-01": { id:"asics-01", name:"ASICS GEL-NYC — 1201A789-103", brand:"ASICS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"ASICS GEL-NYC — 1201A789-103. Una sneaker selezionata da FUORISCHEMA.", image: "", code:"1201A789-103", label:"NUOVO", filter:"new", categoryUrl:"asics.html" },
+    "lacoste-tracolla": { id:"lacoste-tracolla", name:"Tracolla Lacoste", brand:"LACOSTE", category:"BORSE", type:"BORSA / FUORISCHEMA", description:"Tracolla Lacoste. Un accessorio selezionato da FUORISCHEMA.", image: "", code:"", label:"", categoryUrl:"borse.html" },
 
 
     "newbalance-204l": {
@@ -72,7 +72,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "New Balance 204L. Una sneaker New Balance selezionata da FUORISCHEMA.",
-        image: "images/products/newbalance/newbalance-204l.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "newbalance.html"
@@ -84,7 +84,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "New Balance M1906. Prodotto New Balance selezionato da FUORISCHEMA.",
-        image: "images/products/newbalance/m1906.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "newbalance.html"
@@ -95,7 +95,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "TUTE",
         type: "TUTA / FUORISCHEMA",
         description: "Tuta Jordan. Prodotto Jordan selezionato da FUORISCHEMA.",
-        image: "images/products/jordan/tuta-jordan.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "tute.html"
@@ -108,7 +108,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "GIACCHE",
         type: "SMANICATO / FUORISCHEMA",
         description: "Smanicato Nike. Prodotto Nike selezionato da FUORISCHEMA.",
-        image: "images/products/nike/smanicato-nike.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "giacche.html"
@@ -120,7 +120,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "BORSE",
         type: "BORSA / FUORISCHEMA",
         description: "Tracolla Lacoste Mod. 2. Un accessorio selezionato da FUORISCHEMA.",
-        image: "images/products/borse/tracolla-lacoste-mod-2.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "borse.html"
@@ -132,7 +132,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Adidas Samba. Una silhouette iconica selezionata da FUORISCHEMA.",
-        image: "images/products/adidas/samba.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "adidas.html"
@@ -144,7 +144,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "TUTE",
         type: "TUTA / FUORISCHEMA",
         description: "Tuta Adidas Real Madrid. Prodotto Adidas selezionato da FUORISCHEMA.",
-        image: "images/products/adidas/adidas-real-madrid.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "tute.html"
@@ -155,7 +155,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "TUTE",
         type: "TUTA / FUORISCHEMA",
         description: "Adidas Real Madrid Originals. Prodotto Adidas selezionato da FUORISCHEMA.",
-        image: "images/products/abbigliamento/adidas-real-madrid-originals.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "tute.html"
@@ -167,7 +167,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "TUTE",
         type: "TUTA / FUORISCHEMA",
         description: "Adidas Argentina Originals. Prodotto Adidas selezionato da FUORISCHEMA.",
-        image: "images/products/abbigliamento/adidas-argentina-originals.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "tute.html"
@@ -179,7 +179,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "TUTE",
         type: "TUTA / FUORISCHEMA",
         description: "Adidas Bayern Munich Basketball. Prodotto Adidas selezionato da FUORISCHEMA.",
-        image: "images/products/abbigliamento/adidas-bayern-munich-basketball.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "tute.html"
@@ -191,7 +191,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "TUTE",
         type: "TUTA DONNA / FUORISCHEMA",
         description: "Adidas Women Animal Tracksuit. Tuta Adidas da donna selezionata da FUORISCHEMA.",
-        image: "images/products/abbigliamento/adidas-women-animal-tracksuit.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "tute.html"
@@ -203,7 +203,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "TUTE",
         type: "TUTA DONNA / FUORISCHEMA",
         description: "Adidas Women Black Tracksuit. Tuta Adidas da donna selezionata da FUORISCHEMA.",
-        image: "images/products/abbigliamento/adidas-women-black-tracksuit.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "tute.html"
@@ -215,7 +215,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "TUTE",
         type: "TUTA DONNA / FUORISCHEMA",
         description: "Adidas Women Burgundy Tracksuit. Tuta Adidas da donna selezionata da FUORISCHEMA.",
-        image: "images/products/abbigliamento/adidas-women-burgundy-tracksuit.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "tute.html"
@@ -227,7 +227,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Air Jordan 4 Retro Bred Reimagined. Una sneaker selezionata da FUORISCHEMA.",
-        image: "images/products/jordan/jordan-4-bred-reimagined.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "jordan.html"
@@ -240,7 +240,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Air Jordan 4 Retro Red Cement. Una sneaker selezionata da FUORISCHEMA.",
-        image: "images/products/jordan/jordan-4-red-cement.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "jordan.html"
@@ -253,7 +253,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SCARPA / FUORISCHEMA",
         description: "Timberland. Una scarpa selezionata da FUORISCHEMA.",
-        image: "images/products/timberland/timberland.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "timberland.html"
@@ -265,7 +265,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Adidas Samba OG. Prodotto Adidas selezionato da FUORISCHEMA.",
-        image: "images/products/adidas/adidas-samba-og.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "adidas.html"
@@ -278,7 +278,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "TUTE",
         type: "TUTA / FUORISCHEMA",
         description: "Adidas Bayern Munich. Prodotto Adidas selezionato da FUORISCHEMA.",
-        image: "images/products/abbigliamento/adidas-bayern-munich.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "tute.html"
@@ -290,7 +290,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Off-White sneaker. Prodotto Off-White selezionato da FUORISCHEMA.",
-        image: "images/products/off-white/off-white.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "off-white.html"
@@ -302,7 +302,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "NEW BALANCE 9060 White. Una sneaker New Balance selezionata da FUORISCHEMA.",
-        image: "images/products/newbalance/9060-white.png",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "newbalance.html"
@@ -315,7 +315,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "BORSE",
         type: "ZAINO / FUORISCHEMA",
         description: "Zaino Lacoste. Un accessorio Lacoste selezionato da FUORISCHEMA.",
-        image: "images/products/borse/zaino-lacoste.webp",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "borse.html"
@@ -328,7 +328,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "GIACCHE",
         type: "SMANICATO / FUORISCHEMA",
         description: "Smanicato Nike White. Un capo Nike selezionato da FUORISCHEMA.",
-        image: "images/products/nike/smanicato-nike-white.webp",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "giacche.html"
@@ -343,7 +343,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "GIACCHE",
         type: "GIACCA / FUORISCHEMA",
         description: "ADIDAS ORIGINALS CROPPED. Un capo Adidas Originals selezionato da FUORISCHEMA.",
-        image: "images/products/adidas/adidas-originals-cropped.jpg",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "giacche.html"
@@ -356,7 +356,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "NEW BALANCE 9060 Black. Una sneaker New Balance selezionata da FUORISCHEMA.",
-        image: "images/products/newbalance/newbalance-9060-black.jpg",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "newbalance.html"
@@ -369,7 +369,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "TUTE",
         type: "TUTA / FUORISCHEMA",
         description: "NIKE PERFORMANCE PSG. Una tuta Nike PSG selezionata da FUORISCHEMA.",
-        image: "images/products/nike/nike-performance-psg.jpg",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "tute.html"
@@ -382,7 +382,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "TUTE",
         type: "TUTA / FUORISCHEMA",
         description: "NIKE PERFORMANCE CHELSEA. Una tuta Nike Chelsea selezionata da FUORISCHEMA.",
-        image: "images/products/nike/nike-performance-chelsea.jpg",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "tute.html"
@@ -395,7 +395,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "TUTE",
         type: "TUTA / FUORISCHEMA",
         description: "NIKE PERFORMANCE CHELSEA BLUE. Una tuta Nike Chelsea selezionata da FUORISCHEMA.",
-        image: "images/products/nike/nike-performance-chelsea-blue.jpg",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "tute.html"
@@ -408,7 +408,7 @@ const FUORISCHEMA_PRODUCTS = {
         category: "TUTE",
         type: "TUTA / FUORISCHEMA",
         description: "NIKE PERFORMANCE BARCELONA. Una tuta Nike Barcelona selezionata da FUORISCHEMA.",
-        image: "images/products/nike/nike-performance-barcelona.jpg",
+        image: "",
         code: "",
         label: "",
         categoryUrl: "tute.html"

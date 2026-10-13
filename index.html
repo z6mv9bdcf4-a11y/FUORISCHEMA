@@ -1609,7 +1609,7 @@
         }
 
         .hero {
-            background-image: linear-gradient(rgba(0,0,0,.48), rgba(0,0,0,.48)), url("images/sfondo-fuorischema.jpeg");
+            background-image: linear-gradient(rgba(0,0,0,.48), rgba(0,0,0,.48)), none;
             background-size: cover;
             background-position: center center;
         }
@@ -1636,15 +1636,15 @@
             }
 
             .category:nth-child(1) {
-                background-image: linear-gradient(rgba(0,0,0,.28), rgba(0,0,0,.72)), url("images/products/nike/air-force-1-triple-white.webp");
+                background-image: linear-gradient(rgba(0,0,0,.28), rgba(0,0,0,.72)), none;
             }
 
             .category:nth-child(2) {
-                background-image: linear-gradient(rgba(0,0,0,.28), rgba(0,0,0,.72)), url("images/products/nike/smanicato-nike.png");
+                background-image: linear-gradient(rgba(0,0,0,.28), rgba(0,0,0,.72)), none;
             }
 
             .category:nth-child(3) {
-                background-image: linear-gradient(rgba(0,0,0,.28), rgba(0,0,0,.72)), url("images/products/borse/tracolla-lacoste-mod-2.png");
+                background-image: linear-gradient(rgba(0,0,0,.28), rgba(0,0,0,.72)), none;
             }
 
             .category-number {
@@ -1985,7 +1985,7 @@
         padding: 112px 6vw 32px;
         display: flex;
         align-items: center;
-        background-image: linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.35) 35%,rgba(0,0,0,.90)),url("images/sfondo-fuorischema.jpeg");
+        background-image: linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.35) 35%,rgba(0,0,0,.90)),none;
         background-size: cover;
         background-position: center;
     }
@@ -2065,7 +2065,7 @@
                 rgba(0,0,0,.12) 75%,
                 rgba(0,0,0,.16) 100%
             ),
-            url("images/sfondo-fuorischema.jpeg");
+            none;
         background-size: cover;
         background-position: center center;
     }
@@ -2216,7 +2216,7 @@ header {
             rgba(0,0,0,.30) 42%,
             rgba(0,0,0,.78) 100%
         ),
-        url("images/sfondo-fuorischema.jpeg");
+        none;
     background-size: cover;
     background-position: center;
 }
@@ -2644,6 +2644,10 @@ body {
     <link rel="stylesheet" href="cart.css">
 
     <meta name="theme-color" content="#0a0a0a">
+    <style id="fuorischema-photo-reset">
+        /* FUORISCHEMA PHOTO RESET: photos removed pending replacement assets. */
+        img { display: none !important; }
+    </style>
 </head>
 
 
@@ -2880,7 +2884,7 @@ body {
                     </span>
 
                     <img
-                        src="images/products/off-white/off-white.png"
+                        src=""
                         alt="Off-White"
                     >
 
@@ -2917,7 +2921,7 @@ body {
                     </span>
 
                     <img
-                        src="images/products/nike/smanicato-nike.png"
+                        src=""
                         alt="Smanicato Nike"
                     >
 
