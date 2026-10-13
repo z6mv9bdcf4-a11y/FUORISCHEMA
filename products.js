@@ -1,4 +1,4 @@
-﻿const FUORISCHEMA_PRODUCTS = {
+const FUORISCHEMA_PRODUCTS = {
     "nike-air-force-1-triple-white": {
         id: "nike-air-force-1-triple-white",
         name: "Air Force 1 Triple White",
@@ -295,9 +295,8 @@
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Sneaker Off-White. Prezzo 400 EUR. Per acquistare, scrivici in DM. Prodotto unico, senza selezione taglia.",
-        image: "images/products/off-white/01.webp",
+        image: "images/products/off-white/02.webp",
         images: [
-            "images/products/off-white/01.webp",
             "images/products/off-white/02.webp",
             "images/products/off-white/03.webp"
         ],
