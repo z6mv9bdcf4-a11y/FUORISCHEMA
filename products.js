@@ -224,6 +224,25 @@ const FUORISCHEMA_PRODUCTS = {
             "images/products/newbalance/9060-white/03.webp"
         ]
     },
+    "urban-flannel-jacket": {
+        id: "urban-flannel-jacket",
+        name: "Urban Flannel Jacket",
+        brand: "ZORTREPY",
+        category: "GIACCHE",
+        subcategory: "STREETWEAR",
+        type: "OVERSHIRT / FUORISCHEMA",
+        description: "Urban Flannel Jacket: giacca-camicia a quadri nei toni del beige, arancione, blu e grigio, con chiusura a bottoni e tasche frontali. Disponibile nelle taglie M e L.",
+        image: "images/products/abbigliamento/urban-flannel-jacket/01.webp",
+        code: "",
+        label: "STREETWEAR",
+        categoryUrl: "abbigliamento.html",
+        price: 39.99,
+        sizes: ["M", "L"],
+        images: [
+            "images/products/abbigliamento/urban-flannel-jacket/01.webp",
+            "images/products/abbigliamento/urban-flannel-jacket/02.webp"
+        ]
+    },
 };
 
 window.FUORISCHEMA_PRODUCTS = FUORISCHEMA_PRODUCTS;
