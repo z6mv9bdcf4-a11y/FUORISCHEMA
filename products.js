@@ -5,12 +5,21 @@ const FUORISCHEMA_PRODUCTS = {
         brand: "NIKE",
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
-        description: "Nike Air Force 1 Triple White. Una delle silhouette più iconiche di Nike, proposta nella classica colorazione Triple White.",
-        image: "",
-        code: "",
-        label: "PIÙ SCELTO",
+        description: "Nike Air Force 1 Triple White. Una delle silhouette piÃƒÂ¹ iconiche di Nike, proposta nella classica colorazione Triple White.",
+        image: "images/products/nike/air-force-1-triple-white/01-b7d9211c-26e7-431a-ac24-b0540fb3c00f.png",
+        code: "CW2288-111",
+        label: "PIÃƒâ„¢ SCELTO",
         filter: "selected",
-        categoryUrl: "scarpe.html"
+        categoryUrl: "scarpe.html",
+        price: 100,
+        sizes: [40, 41, 42, 43, 44, 45, 46],
+        images: [
+            "images/products/nike/air-force-1-triple-white/01-b7d9211c-26e7-431a-ac24-b0540fb3c00f.png",
+            "images/products/nike/air-force-1-triple-white/59-6036bbbb-1cf1-410c-9546-8fb737c95797.png",
+            "images/products/nike/air-force-1-triple-white/61-ea33db62-7df9-480a-b5f7-3634525852eb.png",
+            "images/products/nike/air-force-1-triple-white/65-b4fff5a0-0204-4437-9181-c56817812daa.png",
+            "images/products/nike/air-force-1-triple-white/68-1c1e5f55-99c2-4522-b398-2352e01ba566.png"
+        ],
     },
 
     "nike-air-force-1-triple-black": {
@@ -20,21 +29,37 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Nike Air Force 1 Triple Black. Una versione completamente nera dell'iconica Air Force 1, pensata per un look essenziale e deciso.",
-        image: "",
+        image: "images/products/nike/air-force-1-triple-black/01.avif",
         code: "",
+        price: 100,
+        sizes: [40, 41, 42, 43, 44, 45, 46],
+        images: [
+            "images/products/nike/air-force-1-triple-black/01.avif",
+            "images/products/nike/air-force-1-triple-black/02.avif",
+            "images/products/nike/air-force-1-triple-black/03.avif",
+            "images/products/nike/air-force-1-triple-black/04.avif"
+        ],
         label: "",
         categoryUrl: "scarpe.html"
     },
 
     "nike-shox-tl-white": {
         id: "nike-shox-tl-white",
-        name: "Shox TL White",
+        name: "Nike Shox TL Bianca",
         brand: "NIKE",
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Nike Shox TL White. Una silhouette caratterizzata dall'iconica tecnologia Shox e da una presenza forte e contemporanea.",
-        image: "",
+        image: "images/products/nike/shox-tl-white/01.avif",
         code: "",
+        price: 139.99,
+        sizes: [40, 41, 42, 43, 44, 45, 46],
+        images: [
+            "images/products/nike/shox-tl-white/01.avif",
+            "images/products/nike/shox-tl-white/02.avif",
+            "images/products/nike/shox-tl-white/03.avif",
+            "images/products/nike/shox-tl-white/04.avif"
+        ],
         label: "NUOVO",
         filter: "new",
         categoryUrl: "scarpe.html"
@@ -47,22 +72,42 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Nike Shox TL Triple Black. Una colorazione total black dell'iconica silhouette Shox TL.",
-        image: "",
+        image: "images/products/nike/shox-tl-triple-black/01.avif",
         code: "",
         label: "",
         filter: "new",
-        categoryUrl: "scarpe.html"
+        categoryUrl: "scarpe.html",
+        price: 140,
+        sizes: [40, 41, 42, 43, 44, 45, 46],
+        images: [
+            "images/products/nike/shox-tl-triple-black/01.avif",
+            "images/products/nike/shox-tl-triple-black/02.avif",
+            "images/products/nike/shox-tl-triple-black/03.avif",
+            "images/products/nike/shox-tl-triple-black/04.avif"
+        ]
     },
-
-    "adidas-01": { id:"adidas-01", name:"Adidas XLG Runner Deluxe – JR9633", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas XLG Runner Deluxe – JR9633. Prodotto Adidas selezionato da FUORISCHEMA.", image: "", code:"JR9633", label:"", categoryUrl:"adidas.html" },
-    "adidas-02": { id:"adidas-02", name:"Adidas XLG Runner Deluxe – JP5761", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas XLG Runner Deluxe – JP5761. Prodotto Adidas selezionato da FUORISCHEMA.", image: "", code:"JP5761", label:"", categoryUrl:"adidas.html" },
-    "adidas-03": { id:"adidas-03", name:"Adidas XLG Runner Deluxe – JS1590", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas XLG Runner Deluxe – JS1590. Prodotto Adidas selezionato da FUORISCHEMA.", image: "", code:"JS1590", label:"", categoryUrl:"adidas.html" },
-    "adidas-04": { id:"adidas-04", name:"Adidas XLG Runner Deluxe – JS1588", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas XLG Runner Deluxe – JS1588. Prodotto Adidas selezionato da FUORISCHEMA.", image: "", code:"JS1588", label:"", categoryUrl:"adidas.html" },
-    "adidas-05": { id:"adidas-05", name:"Adidas XLG Runner Deluxe – JR0861", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas XLG Runner Deluxe – JR0861. Prodotto Adidas selezionato da FUORISCHEMA.", image: "", code:"JR0861", label:"", categoryUrl:"adidas.html" },
-    "adidas-06": { id:"adidas-06", name:"Adidas Vento XLG Deluxe – IH7799", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas Vento XLG Deluxe – IH7799. Prodotto Adidas selezionato da FUORISCHEMA.", image: "", code:"IH7799", label:"", categoryUrl:"adidas.html" },
-    "adidas-07": { id:"adidas-07", name:"Adidas Vento XLG Deluxe – IH0070", brand:"ADIDAS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"Adidas Vento XLG Deluxe – IH0070. Prodotto Adidas selezionato da FUORISCHEMA.", image: "", code:"IH0070", label:"", categoryUrl:"adidas.html" },
-    "asics-01": { id:"asics-01", name:"ASICS GEL-NYC — 1201A789-103", brand:"ASICS", category:"SCARPE", type:"SNEAKER / FUORISCHEMA", description:"ASICS GEL-NYC — 1201A789-103. Una sneaker selezionata da FUORISCHEMA.", image: "", code:"1201A789-103", label:"NUOVO", filter:"new", categoryUrl:"asics.html" },
-    "lacoste-tracolla": { id:"lacoste-tracolla", name:"Tracolla Lacoste", brand:"LACOSTE", category:"BORSE", type:"BORSA / FUORISCHEMA", description:"Tracolla Lacoste. Un accessorio selezionato da FUORISCHEMA.", image: "", code:"", label:"", categoryUrl:"borse.html" },
+    "asics-01": {
+        id: "asics-01",
+        name: "ASICS GEL-NYC",
+        brand: "ASICS",
+        category: "SCARPE",
+        type: "SNEAKER / FUORISCHEMA",
+        description: "ASICS GEL-NYC. Una sneaker selezionata da FUORISCHEMA.",
+        image: "images/products/asics/gel-nyc/01.webp",
+        code: "1201A789-103",
+        label: "NUOVO",
+        filter: "new",
+        categoryUrl: "asics.html",
+        price: 149.99,
+        sizes: [40, 40.5, 41, 42, 42.5, 43, 44, 44.5],
+        images: [
+            "images/products/asics/gel-nyc/01.webp",
+            "images/products/asics/gel-nyc/02.webp",
+            "images/products/asics/gel-nyc/03.webp",
+            "images/products/asics/gel-nyc/04.webp"
+        ]
+    },
+    "lacoste-tracolla": { id:"lacoste-tracolla", name:"Tracolla Lacoste", brand:"LACOSTE", category:"BORSE", type:"BORSA / FUORISCHEMA", description:"Tracolla Lacoste. Un accessorio selezionato da FUORISCHEMA.", image:"", code:"", label:"", categoryUrl:"borse.html" },
 
 
     "newbalance-204l": {
@@ -72,35 +117,17 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "New Balance 204L. Una sneaker New Balance selezionata da FUORISCHEMA.",
-        image: "",
+        image: "images/products/newbalance/204l/01.webp",
         code: "",
         label: "",
-        categoryUrl: "newbalance.html"
+        categoryUrl: "newbalance.html",
+        price: 130,
+        sizes: [36, 37, 38, 39, 40, 40.5],
+        images: [
+            "images/products/newbalance/204l/01.webp",
+            "images/products/newbalance/204l/02.webp"
+        ]
     },
-    "newbalance-m1906": {
-        id: "newbalance-m1906",
-        name: "New Balance M1906",
-        brand: "NEW BALANCE",
-        category: "SCARPE",
-        type: "SNEAKER / FUORISCHEMA",
-        description: "New Balance M1906. Prodotto New Balance selezionato da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "newbalance.html"
-    },    "jordan-tuta": {
-        id: "jordan-tuta",
-        name: "Tuta Jordan",
-        brand: "JORDAN",
-        category: "TUTE",
-        type: "TUTA / FUORISCHEMA",
-        description: "Tuta Jordan. Prodotto Jordan selezionato da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "tute.html"
-    },
-
     "nike-smanicato": {
         id: "nike-smanicato",
         name: "Smanicato Nike",
@@ -124,18 +151,6 @@ const FUORISCHEMA_PRODUCTS = {
         code: "",
         label: "",
         categoryUrl: "borse.html"
-    },
-    "adidas-samba": {
-        id: "adidas-samba",
-        name: "Adidas Samba",
-        brand: "ADIDAS",
-        category: "SCARPE",
-        type: "SNEAKER / FUORISCHEMA",
-        description: "Adidas Samba. Una silhouette iconica selezionata da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "adidas.html"
     },
     "adidas-real-madrid": {
         id: "adidas-real-madrid",
@@ -220,31 +235,7 @@ const FUORISCHEMA_PRODUCTS = {
         label: "",
         categoryUrl: "tute.html"
     },
-    "jordan-4-bred-reimagined": {
-        id: "jordan-4-bred-reimagined",
-        name: "Air Jordan 4 Retro Bred Reimagined",
-        brand: "JORDAN",
-        category: "SCARPE",
-        type: "SNEAKER / FUORISCHEMA",
-        description: "Air Jordan 4 Retro Bred Reimagined. Una sneaker selezionata da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "jordan.html"
-    },
 
-    "jordan-4-red-cement": {
-        id: "jordan-4-red-cement",
-        name: "Air Jordan 4 Retro Red Cement",
-        brand: "JORDAN",
-        category: "SCARPE",
-        type: "SNEAKER / FUORISCHEMA",
-        description: "Air Jordan 4 Retro Red Cement. Una sneaker selezionata da FUORISCHEMA.",
-        image: "",
-        code: "",
-        label: "",
-        categoryUrl: "jordan.html"
-    },
 
     "timberland-01": {
         id: "timberland-01",
@@ -253,10 +244,18 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SCARPA / FUORISCHEMA",
         description: "Timberland. Una scarpa selezionata da FUORISCHEMA.",
-        image: "",
-        code: "",
+        image: "images/products/timberland/tb110061/01.webp",
+        code: "TB110061",
         label: "",
-        categoryUrl: "timberland.html"
+        categoryUrl: "timberland.html",
+        price: 149.99,
+        sizes: [40, 41, 42, 43, 44, 45, 46],
+        images: [
+            "images/products/timberland/tb110061/01.webp",
+            "images/products/timberland/tb110061/02.webp",
+            "images/products/timberland/tb110061/03.webp",
+            "images/products/timberland/tb110061/04.webp"
+        ]
     },
     "adidas-08": {
         id: "adidas-08",
@@ -265,12 +264,18 @@ const FUORISCHEMA_PRODUCTS = {
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
         description: "Adidas Samba OG. Prodotto Adidas selezionato da FUORISCHEMA.",
-        image: "",
+        image: "images/products/adidas/samba-og/01.avif",
         code: "",
         label: "",
-        categoryUrl: "adidas.html"
+        categoryUrl: "adidas.html",
+        price: 99,
+        images: [
+            "images/products/adidas/samba-og/01.avif",
+            "images/products/adidas/samba-og/02.webp",
+            "images/products/adidas/samba-og/03.webp",
+            "images/products/adidas/samba-og/04.webp"
+        ]
     },
-
     "adidas-bayern-munich": {
         id: "adidas-bayern-munich",
         name: "Adidas Bayern Munich",
@@ -349,20 +354,26 @@ const FUORISCHEMA_PRODUCTS = {
         categoryUrl: "giacche.html"
     },
 
-    "newbalance-9060-black": {
-        id: "newbalance-9060-black",
-        name: "NEW BALANCE 9060 Black",
+    "newbalance-9060-white": {
+        id: "newbalance-9060-white",
+        name: "New Balance 9060 White",
         brand: "NEW BALANCE",
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
-        description: "NEW BALANCE 9060 Black. Una sneaker New Balance selezionata da FUORISCHEMA.",
-        image: "",
+        description: "New Balance 9060 White. Una sneaker selezionata da FUORISCHEMA.",
+        image: "images/products/newbalance/9060-white/01.webp",
         code: "",
         label: "",
-        categoryUrl: "newbalance.html"
+        categoryUrl: "newbalance.html",
+        price: 160,
+        sizes: [40, 41, 42, 43, 44, 45, 46],
+        images: [
+            "images/products/newbalance/9060-white/01.webp",
+            "images/products/newbalance/9060-white/02.webp",
+            "images/products/newbalance/9060-white/03.webp"
+        ]
     },
-
-    "nike-performance-psg": {
+"nike-performance-psg": {
         id: "nike-performance-psg",
         name: "NIKE PERFORMANCE PSG",
         brand: "NIKE",
