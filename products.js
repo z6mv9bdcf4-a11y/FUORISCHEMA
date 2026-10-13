@@ -294,11 +294,12 @@ const FUORISCHEMA_PRODUCTS = {
         brand: "OFF-WHITE",
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
-        description: "Off-White sneaker. Prodotto Off-White selezionato da FUORISCHEMA.",
+        description: "Sneaker Off-White. Prezzo 400 €. Per acquistare, scrivici in DM. Prodotto unico, senza selezione taglia.",
         image: "",
         code: "",
         label: "",
-        categoryUrl: "off-white.html"
+        price: 400,
+        categoryUrl: "prodotto.html?id=off-white-01"
     },
     "newbalance-9060-white": {
         id: "newbalance-9060-white",
