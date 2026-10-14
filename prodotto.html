@@ -13,7 +13,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#050505">
-<title>Prodotto — FUORISCHEMA</title>
+<title>Prodotto â€” FUORISCHEMA</title>
     <link rel="icon" type="image/png" href="images/icon-192.png">
     <link rel="apple-touch-icon" href="images/icon-192.png">
     <meta name="description" content="Scopri i dettagli del prodotto FUORISCHEMA, disponibilità e informazioni sul modello.">
@@ -21,7 +21,7 @@
     <script>
     /*
         CANONICAL SEO DINAMICO
-        prodotto.html è una scheda condivisa da più prodotti tramite ?id=...
+        prodotto.html Ã¨ una scheda condivisa da piÃ¹ prodotti tramite ?id=...
         Ogni URL prodotto deve quindi avere come canonical il proprio URL completo.
     */
     (function(){
@@ -392,7 +392,15 @@ button{font:inherit;border:0}
 }
 
 @media (max-width: 850px) {
+    .page {
+        width: min(100% - 22px, 600px);
+        margin-left: auto;
+        margin-right: auto;
+    }
     .product-layout {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
         gap: 28px;
     }
 }
@@ -467,6 +475,52 @@ body.newbalance-9060-product .gallery-thumb img {
     transform: scale(2.25);
     transform-origin: 50% 88%;
 }
+
+/* TUTA CHELSEA: mostra il completo intero */
+body.tuta-chelsea-product .gallery-main {
+    background: #fff;
+}
+body.tuta-chelsea-product .gallery-main img#productImage {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: center;
+    transform: none;
+}
+body.tuta-chelsea-product .gallery-thumb img {
+    object-fit: contain;
+    background: #fff;
+    transform: none;
+}
+/* CARGO URBAN: mostra l'intero prodotto, centrato e senza ritagli */
+body.cargo-urban-product .gallery-main {
+    background: #fff;
+}
+body.cargo-urban-product .gallery-main img#productImage {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: center center;
+    transform: none;
+}
+body.cargo-urban-product .gallery-thumb img {
+    object-fit: contain;
+    object-position: center center;
+    transform: none;
+}
+body.urban-flannel-jacket-product .gallery-main img#productImage {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: center 40%;
+    transform: none;
+}
 </style>
     <link rel="stylesheet" href="cart.css">
     
@@ -534,7 +588,7 @@ body.newbalance-9060-product .gallery-thumb img {
                 </p>
                 <a id="dmButton" class="dm-button" href="#" target="_blank" rel="noopener noreferrer">
                     <span>SCRIVI IN DM</span>
-                    <span class="dm-arrow">→</span>
+                    <span class="dm-arrow">&rarr;</span>
                 </a>
             </section>
 
@@ -558,7 +612,7 @@ body.newbalance-9060-product .gallery-thumb img {
             </div>
 
             <a id="backLink" class="back" href="scarpe.html">
-                <span>← TORNA ALLA SELEZIONE</span>
+                <span>&larr;</span>
                 <span id="backBrand">NIKE / 01</span>
             </a>
         </article>
@@ -611,7 +665,7 @@ if (!product) {
             <section style="grid-column:1/-1;padding:60px 20px;text-align:center">
                 <p style="color:#f97316;letter-spacing:3px">FUORISCHEMA / 404</p>
                 <h1>PRODOTTO NON TROVATO</h1>
-                <p>Il prodotto richiesto non esiste o non è più disponibile.</p>
+                <p>Il prodotto richiesto non esiste o non Ã¨ piÃ¹ disponibile.</p>
                 
             </section>`;
     }
@@ -667,11 +721,20 @@ image.src = product.image;
         });
     }
 
-    if (product.id === "asics-01") {
+    if (product.id === "tuta-chelsea") {
+    document.body.classList.add("tuta-chelsea-product");
+}
+if (product.id === "asics-01") {
     document.body.classList.add("asics-product");
 }
 if (product.id === "newbalance-9060-white") {
     document.body.classList.add("newbalance-9060-product");
+}
+if (product.id === "cargo-urban") {
+    document.body.classList.add("cargo-urban-product");
+}
+if (product.id === "urban-flannel-jacket") {
+    document.body.classList.add("urban-flannel-jacket-product");
 }
 
 const priceSizes = document.getElementById("productPriceSizes");
@@ -686,6 +749,21 @@ const priceProductIds = [
     "adidas-08",
     "newbalance-9060-white",
     "urban-flannel-jacket",
+    "smanicato-nike",
+    "tuta-chelsea",
+    "tuta-barcellona",
+    "tuta-argentina",
+    "tuta-real-madrid",
+    "tuta-real-madrid-verde-rosa",
+    "tuta-adidas-animalier",
+    "tuta-adidas-donna-nera",
+    "tuta-bayern-basket",
+    "cargo-urban",
+    "jeans-destroyed-black",
+    "jeans-j3",
+    "jeans-black-patchwork",
+    "jeans-ice-destroyed",
+    "jeans-arctic-destroyed",
 ];
 
 if (priceSizes && priceProductIds.includes(product.id) && Number.isFinite(product.price)) {
@@ -752,13 +830,13 @@ if(labelRow){
 }
 
 /* SEO: il contenuto della scheda resta dinamico, ma il canonical
-   è già stato impostato nell'head sulla base dell'ID presente nell'URL. */
+   Ã¨ giÃ  stato impostato nell'head sulla base dell'ID presente nell'URL. */
 if(productId){
-    document.title = `${product.name} — ${product.brand} | FUORISCHEMA`;
+    document.title = `${product.name} â€” ${product.brand} | FUORISCHEMA`;
 
     const description = document.querySelector('meta[name="description"]');
     if(description){
-        description.content = `${product.name} di ${product.brand}: scopri la scheda prodotto FUORISCHEMA e contattaci in DM per prezzo, taglie e disponibilità.`;
+        description.content = `${product.name} di ${product.brand}: scopri la scheda prodotto FUORISCHEMA e contattaci in DM per prezzo, taglie e disponibilitÃ .`;
     }
 }
 }
@@ -766,3 +844,16 @@ if(productId){
     <script src="cart.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+

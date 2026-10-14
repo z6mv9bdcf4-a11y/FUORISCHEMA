@@ -1,4 +1,4 @@
-﻿const FUORISCHEMA_PRODUCTS = {
+const FUORISCHEMA_PRODUCTS = {
     "nike-air-force-1-triple-white": {
         id: "nike-air-force-1-triple-white",
         name: "Air Force 1 Triple White",
@@ -243,7 +243,252 @@
             "images/products/abbigliamento/cargo-urban/02.PNG"
         ]
     },
-    "urban-flannel-jacket": {
+    "jeans-j3": {
+        id: "jeans-j3",
+        name: "Jeans Star",
+        brand: "FUORISCHEMA",
+        category: "PANTALONI",
+        subcategory: "STREETWEAR",
+        type: "JEANS / FUORISCHEMA",
+        description: "Jeans streetwear FUORISCHEMA. Disponibile nella taglia 46.",
+        image: "images/products/abbigliamento/jeans-j3/01.PNG",
+        code: "",
+        label: "STREETWEAR",
+        categoryUrl: "abbigliamento.html",
+        price: 29.99,
+        sizes: [46],
+        images: [
+            "images/products/abbigliamento/jeans-j3/01.PNG",
+            "images/products/abbigliamento/jeans-j3/02.PNG",
+            "images/products/abbigliamento/jeans-j3/03.PNG"
+        ]
+    },    "jeans-arctic-destroyed": {
+        id: "jeans-arctic-destroyed",
+        name: "Jeans Arctic Destroyed",
+        brand: "FUORISCHEMA",
+        category: "PANTALONI",
+        subcategory: "STREETWEAR",
+        type: "JEANS DESTROYED / FUORISCHEMA",
+        description: "Jeans denim chiaro effetto vintage con strappi e finiture distressed. Disponibile nella taglia 48.",
+        image: "images/products/abbigliamento/jeans-arctic-destroyed/01.png",
+        code: "",
+        label: "STREETWEAR",
+        categoryUrl: "abbigliamento.html",
+        price: 30,
+        sizes: [48],
+        images: [
+            "images/products/abbigliamento/jeans-arctic-destroyed/01.png",
+            "images/products/abbigliamento/jeans-arctic-destroyed/02.png"
+        ]
+    },    "jeans-ice-destroyed": {
+        id: "jeans-ice-destroyed",
+        name: "Jeans Ice Destroyed",
+        brand: "FUORISCHEMA",
+        category: "PANTALONI",
+        subcategory: "STREETWEAR",
+        type: "JEANS DESTROYED / FUORISCHEMA",
+        description: "Jeans denim azzurro slavato con strappi e dettagli effetto distressed. Disponibile nella taglia 44.",
+        image: "images/products/abbigliamento/jeans-ice-destroyed/01.PNG",
+        code: "",
+        label: "STREETWEAR",
+        categoryUrl: "abbigliamento.html",
+        price: 29.99,
+        sizes: [44],
+        images: [
+            "images/products/abbigliamento/jeans-ice-destroyed/01.PNG",
+            "images/products/abbigliamento/jeans-ice-destroyed/02.PNG"
+        ]
+    },    "jeans-black-patchwork": {
+        id: "jeans-black-patchwork",
+        name: "Jeans Black Patchwork",
+        brand: "FUORISCHEMA",
+        category: "PANTALONI",
+        subcategory: "STREETWEAR",
+        type: "JEANS PATCHWORK / FUORISCHEMA",
+        description: "Jeans streetwear nero e grigio con pannelli a contrasto e finiture distressed. Disponibile nella taglia 44.",
+        image: "images/products/abbigliamento/jeans-black-patchwork/01.PNG",
+        code: "",
+        label: "STREETWEAR",
+        categoryUrl: "abbigliamento.html",
+        price: 34.99,
+        sizes: [44],
+        images: [
+            "images/products/abbigliamento/jeans-black-patchwork/01.PNG",
+            "images/products/abbigliamento/jeans-black-patchwork/02.PNG"
+        ]
+    },    "jeans-destroyed-black": {
+        id: "jeans-destroyed-black",
+        name: "Jeans Destroyed Black",
+        brand: "FUORISCHEMA",
+        category: "PANTALONI",
+        subcategory: "STREETWEAR",
+        type: "JEANS DESTROYED / FUORISCHEMA",
+        description: "Jeans nero effetto destroyed con strappi e dettagli streetwear. Disponibile nella taglia 48.",
+        image: "images/products/abbigliamento/jeans-destroyed-black/01.PNG",
+        code: "",
+        label: "STREETWEAR",
+        categoryUrl: "abbigliamento.html",
+        price: 29.99,
+        sizes: [48],
+        images: [
+            "images/products/abbigliamento/jeans-destroyed-black/01.PNG",
+            "images/products/abbigliamento/jeans-destroyed-black/02.PNG"
+        ]
+    },    "smanicato-nike": {
+        id: "smanicato-nike",
+        name: "Smanicato Nike Nero",
+        brand: "NIKE",
+        category: "GIACCHE",
+        subcategory: "SPORTSWEAR",
+        type: "SMANICATO / FUORISCHEMA",
+        description: "Smanicato Nike nero imbottito. Disponibile nelle taglie S, M e L.",
+        image: "images/products/abbigliamento/gilet-imbottito-nero/01.png",
+        code: "",
+        label: "SPORTSWEAR",
+        categoryUrl: "abbigliamento.html",
+        price: 65,
+        sizes: ["S", "M", "L"],
+        images: [
+            "images/products/abbigliamento/gilet-imbottito-nero/01.png"
+        ]
+    },
+    "tuta-bayern-basket": {
+        id: "tuta-bayern-basket",
+        name: "Tuta Bayern Monaco Basketball",
+        brand: "ADIDAS",
+        category: "TUTE",
+        subcategory: "SPORTSWEAR",
+        type: "TUTA BASKET / FUORISCHEMA",
+        description: "Tuta Bayern Monaco Basketball rossa con dettagli bianchi. Disponibile nelle taglie M, L e XL.",
+        image: "images/products/abbigliamento/tuta-bayern-basket/01.png",
+        code: "",
+        label: "SPORTSWEAR",
+        categoryUrl: "abbigliamento.html",
+        price: 149.99,
+        sizes: ["M", "L", "XL"],
+        images: [
+            "images/products/abbigliamento/tuta-bayern-basket/01.png"
+        ]
+    },    "tuta-adidas-donna-nera": {
+        id: "tuta-adidas-donna-nera",
+        name: "Tuta Adidas Donna Nera",
+        brand: "ADIDAS",
+        category: "TUTE",
+        subcategory: "SPORTSWEAR",
+        type: "TUTA DONNA / FUORISCHEMA",
+        description: "Tuta Adidas donna nera con tre strisce bianche. Disponibile nelle taglie XS, S, M e L.",
+        image: "images/products/abbigliamento/tuta-adidas-donna-nera/01.png",
+        code: "",
+        label: "SPORTSWEAR",
+        categoryUrl: "abbigliamento.html",
+        price: 169.99,
+        sizes: ["XS", "S", "M", "L"],
+        images: [
+            "images/products/abbigliamento/tuta-adidas-donna-nera/01.png"
+        ]
+    },    "tuta-adidas-animalier": {
+        id: "tuta-adidas-animalier",
+        name: "Tuta Adidas Animalier Donna",
+        brand: "ADIDAS",
+        category: "TUTE",
+        subcategory: "SPORTSWEAR",
+        type: "TUTA DONNA / FUORISCHEMA",
+        description: "Tuta Adidas donna con fantasia animalier marrone e nera. Disponibile nella taglia L.",
+        image: "images/products/abbigliamento/tuta-adidas-animalier/01.png",
+        code: "",
+        label: "SPORTSWEAR",
+        categoryUrl: "abbigliamento.html",
+        price: 169.99,
+        sizes: ["L"],
+        images: [
+            "images/products/abbigliamento/tuta-adidas-animalier/01.png"
+        ]
+    },    "tuta-real-madrid-verde-rosa": {
+        id: "tuta-real-madrid-verde-rosa",
+        name: "Tuta Real Madrid Verde e Rosa",
+        brand: "ADIDAS",
+        category: "TUTE",
+        subcategory: "SPORTSWEAR",
+        type: "TUTA / FUORISCHEMA",
+        description: "Tuta Real Madrid verde petrolio con dettagli rosa. Disponibile nelle taglie S, M, L e XL.",
+        image: "images/products/abbigliamento/tuta-real-madrid-verde-rosa/01.png",
+        code: "",
+        label: "SPORTSWEAR",
+        categoryUrl: "abbigliamento.html",
+        price: 129.99,
+        sizes: ["S", "M", "L", "XL"],
+        images: [
+            "images/products/abbigliamento/tuta-real-madrid-verde-rosa/01.png"
+        ]
+    },    "tuta-real-madrid": {
+        id: "tuta-real-madrid",
+        name: "Tuta Real Madrid",
+        brand: "ADIDAS",
+        category: "TUTE",
+        subcategory: "SPORTSWEAR",
+        type: "TUTA / FUORISCHEMA",
+        description: "Tuta Real Madrid color panna e verde scuro. Disponibile nelle taglie S, M, L e XL.",
+        image: "images/products/abbigliamento/tuta-real-madrid/01.png",
+        code: "",
+        label: "SPORTSWEAR",
+        categoryUrl: "abbigliamento.html",
+        price: 199.99,
+        sizes: ["S", "M", "L", "XL"],
+        images: [
+            "images/products/abbigliamento/tuta-real-madrid/01.png"
+        ]
+    },    "tuta-argentina": {
+        id: "tuta-argentina",
+        name: "Tuta Argentina",
+        brand: "ADIDAS",
+        category: "TUTE",
+        subcategory: "SPORTSWEAR",
+        type: "TUTA / FUORISCHEMA",
+        description: "Tuta Argentina nera con dettagli bianchi e azzurri. Disponibile nelle taglie S, M, L e XL.",
+        image: "images/products/abbigliamento/tuta-argentina/01.png",
+        code: "",
+        label: "SPORTSWEAR",
+        categoryUrl: "abbigliamento.html",
+        price: 199.99,
+        sizes: ["S", "M", "L", "XL"],
+        images: [
+            "images/products/abbigliamento/tuta-argentina/01.png"
+        ]
+    },    "tuta-barcellona": {
+        id: "tuta-barcellona",
+        name: "Tuta Barcellona",
+        brand: "NIKE",
+        category: "TUTE",
+        subcategory: "SPORTSWEAR",
+        type: "TUTA / FUORISCHEMA",
+        description: "Tuta Barcellona nera e azzurra. Disponibile nelle taglie S, M, L e XL.",
+        image: "images/products/abbigliamento/tuta-barcellona/01.png",
+        code: "",
+        label: "SPORTSWEAR",
+        categoryUrl: "abbigliamento.html",
+        price: 209.99,
+        sizes: ["S", "M", "L", "XL"],
+        images: [
+            "images/products/abbigliamento/tuta-barcellona/01.png"
+        ]
+    },    "tuta-chelsea": {
+        id: "tuta-chelsea",
+        name: "Tuta Chelsea",
+        brand: "NIKE",
+        category: "TUTE",
+        subcategory: "SPORTSWEAR",
+        type: "TUTA / FUORISCHEMA",
+        description: "Tuta Chelsea blu e bianca. Disponibile nelle taglie S, M, L e XL.",
+        image: "images/products/abbigliamento/tuta-chelsea/01.png",
+        code: "",
+        label: "SPORTSWEAR",
+        categoryUrl: "abbigliamento.html",
+        price: 209.99,
+        sizes: ["S", "M", "L", "XL"],
+        images: [
+            "images/products/abbigliamento/tuta-chelsea/01.png"
+        ]
+    },    "urban-flannel-jacket": {
         id: "urban-flannel-jacket",
         name: "Urban Flannel Jacket",
         brand: "ZORTREPY",
@@ -265,6 +510,12 @@
 };
 
 window.FUORISCHEMA_PRODUCTS = FUORISCHEMA_PRODUCTS;
+
+
+
+
+
+
 
 
 
