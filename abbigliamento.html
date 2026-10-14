@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -920,7 +920,7 @@ h1{
     subcategoryCards.forEach(card => {
         card.addEventListener("click", () => {
             const requested = card.dataset.subcategory;
-            selectedSubcategory = selectedSubcategory === requested ? "ALL" : requested;
+            selectedSubcategory = requested;
 
             subcategoryCards.forEach(item => {
                 const active = item.dataset.subcategory === selectedSubcategory;
@@ -988,7 +988,3 @@ brandFilters
 
 </body>
 </html>
-
-
-
-
