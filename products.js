@@ -224,6 +224,25 @@
             "images/products/newbalance/9060-white/03.webp"
         ]
     },
+    "cargo-urban": {
+        id: "cargo-urban",
+        name: "Cargo Urban",
+        brand: "FUORISCHEMA",
+        category: "PANTALONI",
+        subcategory: "STREETWEAR",
+        type: "CARGO PANTS / FUORISCHEMA",
+        description: "Cargo Urban: pantaloni cargo con fantasia mimetica grigia e nera e tasche utility. Disponibili nella taglia 50.",
+        image: "images/products/abbigliamento/cargo-urban/01.PNG",
+        code: "",
+        label: "STREETWEAR",
+        categoryUrl: "abbigliamento.html",
+        price: 34.99,
+        sizes: [50],
+        images: [
+            "images/products/abbigliamento/cargo-urban/01.PNG",
+            "images/products/abbigliamento/cargo-urban/02.PNG"
+        ]
+    },
     "urban-flannel-jacket": {
         id: "urban-flannel-jacket",
         name: "Urban Flannel Jacket",
@@ -246,6 +265,8 @@
 };
 
 window.FUORISCHEMA_PRODUCTS = FUORISCHEMA_PRODUCTS;
+
+
 
 
 
