@@ -5,10 +5,10 @@ const FUORISCHEMA_PRODUCTS = {
         brand: "NIKE",
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
-        description: "Nike Air Force 1 Triple White. Una delle silhouette piÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹ iconiche di Nike, proposta nella classica colorazione Triple White.",
+        description: "Nike Air Force 1 Triple White. Una delle silhouette piÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¹ iconiche di Nike, proposta nella classica colorazione Triple White.",
         image: "images/products/nike/air-force-1-triple-white/01-b7d9211c-26e7-431a-ac24-b0540fb3c00f.png",
         code: "CW2288-111",
-        label: "PIÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ SCELTO",
+        label: "PIÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ SCELTO",
         filter: "selected",
         categoryUrl: "scarpe.html",
         price: 100,
@@ -488,6 +488,21 @@ const FUORISCHEMA_PRODUCTS = {
         images: [
             "images/products/abbigliamento/tuta-chelsea/01.png"
         ]
+    },    "lacoste-tracolla-geometrica": {
+        id: "lacoste-tracolla-geometrica",
+        name: "Borsa Lacoste Geometrica Nera e Grigia",
+        brand: "LACOSTE",
+        category: "BORSE",
+        type: "BORSA / FUORISCHEMA",
+        description: "Borsa Lacoste geometrica nera e grigia. Un accessorio selezionato da FUORISCHEMA.",
+        image: "images/products/lacoste/tracolla-geometrica-nera/01.png",
+        code: "",
+        label: "ACCESSORI",
+        categoryUrl: "borse.html",
+        price: 129.99,
+        images: [
+            "images/products/lacoste/tracolla-geometrica-nera/01.png"
+        ]
     },    "urban-flannel-jacket": {
         id: "urban-flannel-jacket",
         name: "Urban Flannel Jacket",
@@ -510,14 +525,3 @@ const FUORISCHEMA_PRODUCTS = {
 };
 
 window.FUORISCHEMA_PRODUCTS = FUORISCHEMA_PRODUCTS;
-
-
-
-
-
-
-
-
-
-
-

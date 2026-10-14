@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -2838,6 +2838,33 @@ body {
         ===================================================== -->
 
         
+<!-- FUORISCHEMA-NEW-ARRIVALS-3-CARDS -->
+<style>
+#nuovi-arrivi .products {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(12px, 1.8vw, 20px);
+    min-height: 420px;
+}
+#nuovi-arrivi .product {
+    min-height: 420px;
+}
+
+#nuovi-arrivi .product img {
+    object-fit: contain;
+    object-position: center center;
+    padding: 30px 24px 100px;
+}
+@media (max-width: 768px) {
+    #nuovi-arrivi .products {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+    #nuovi-arrivi .product {
+        min-height: 340px;
+    }
+}
+</style>
+
 <!-- FUORISCHEMA-HOME-SECTION-ORDER-V1 -->
 <!-- =====================================================
              NUOVI ARRIVI — CURATED DROP (2 PRODOTTI EDITORIALI)
@@ -2866,46 +2893,51 @@ body {
             </div>
 
             <div class="products">
-
-                <!-- PRODOTTO 2 -->
-                <a
-                    href="giacche.html"
-                    class="product reveal"
-                >
-                    <span class="badge">
-                        NUOVO
-                    </span>
-
-                    <span class="product-meta">
-                        DROP / 002
-                    </span>
-
-                    <img
-                        src=""
-                        alt="Smanicato Nike"
-                    >
-
+                <a href="prodotto.html?id=urban-flannel-jacket" class="product reveal" data-product-id="urban-flannel-jacket">
+                    <span class="badge">NUOVO</span>
+                    <span class="product-meta">DROP / 001</span>
+                    <img src="images/products/abbigliamento/urban-flannel-jacket/01.PNG" alt="Urban Flannel Jacket">
                     <div class="product-info">
                         <div class="product-copy">
-                            <span class="product-label">
-                                GIACCHE
-                            </span>
-                            <span class="product-name">
-                                Smanicato Nike
-                            </span>
-                            <span class="product-cta">
-                                ESPLORA <span>→</span>
-                            </span>
+                            <span class="product-label">GIACCHE</span>
+                            <span class="product-name">Urban Flannel Jacket</span>
+                            <span class="product-price">39,99 €</span>
+                            <span class="product-cta">SCOPRI <span>→</span></span>
                         </div>
-
-                        <span class="product-number">
-                            #002
-                        </span>
+                        <span class="product-number">#001</span>
                     </div>
                 </a>
 
-            </div>
+                <a href="prodotto.html?id=cargo-urban" class="product reveal" data-product-id="cargo-urban">
+                    <span class="badge">NUOVO</span>
+                    <span class="product-meta">DROP / 002</span>
+                    <img src="images/products/abbigliamento/cargo-urban/01.PNG" alt="Cargo Urban">
+                    <div class="product-info">
+                        <div class="product-copy">
+                            <span class="product-label">PANTALONI</span>
+                            <span class="product-name">Cargo Urban</span>
+                            <span class="product-price">34,99 €</span>
+                            <span class="product-cta">SCOPRI <span>→</span></span>
+                        </div>
+                        <span class="product-number">#002</span>
+                    </div>
+                </a>
 
+                <a href="prodotto.html?id=smanicato-nike" class="product reveal" data-product-id="smanicato-nike">
+                    <span class="badge">NUOVO</span>
+                    <span class="product-meta">DROP / 003</span>
+                    <img src="images/products/abbigliamento/gilet-imbottito-nero/01.png" alt="Smanicato Nike Nero">
+                    <div class="product-info">
+                        <div class="product-copy">
+                            <span class="product-label">GIACCHE</span>
+                            <span class="product-name">Smanicato Nike Nero</span>
+                            <span class="product-price">65,00 €</span>
+                            <span class="product-cta">SCOPRI <span>→</span></span>
+                        </div>
+                        <span class="product-number">#003</span>
+                    </div>
+                </a>
+            </div>
         </section>
 
 
@@ -3183,34 +3215,32 @@ body {
 
     <script src="products.js"></script>
     <script>
-        const homeProducts = FUORISCHEMA_PRODUCTS;
+    const homeProducts = FUORISCHEMA_PRODUCTS;
 
+    document.querySelectorAll("#nuovi-arrivi .product[data-product-id]").forEach((card) => {
+        const product = homeProducts[card.dataset.productId];
+        if (!product) return;
 
-        const featuredCard = document.querySelector(".product.featured");
-        const secondaryCard = document.querySelector(".products .product:not(.featured)");
-
-        if (featuredCard && homeFeatured) {
-            const image = featuredCard.querySelector("img");
-
-            featuredCard.href = homeFeatured.categoryUrl;
-
-            if (image) {
-                image.src = homeFeatured.image;
-                image.alt = homeFeatured.name;
-            }
+        const image = card.querySelector("img");
+        if (image) {
+            image.src = product.image;
+            image.alt = product.name;
         }
 
-        if (secondaryCard && homeSecondary) {
-            const image = secondaryCard.querySelector("img");
+        const name = card.querySelector(".product-name");
+        if (name) name.textContent = product.name;
 
-            secondaryCard.href = homeSecondary.categoryUrl;
-
-            if (image) {
-                image.src = homeSecondary.image;
-                image.alt = homeSecondary.name;
-            }
+        const price = card.querySelector(".product-price");
+        if (price) {
+            price.textContent = new Intl.NumberFormat("it-IT", {
+                style: "currency",
+                currency: "EUR"
+            }).format(product.price);
         }
-    </script>
+
+        card.href = "prodotto.html?id=" + encodeURIComponent(product.id);
+    });
+</script>
     <script>
 
         /* =====================================================
@@ -3458,6 +3488,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 </body>
 </html>
+
+
+
 
 
 

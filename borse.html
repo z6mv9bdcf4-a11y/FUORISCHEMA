@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -13,7 +13,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#050505">
-<title>BORSE — FUORISCHEMA</title>
+<title>BORSE | FUORISCHEMA</title>
     <link rel="icon" type="image/png" href="images/icon-192.png">
     <link rel="apple-touch-icon" href="images/icon-192.png">
     <meta name="description" content="Scopri le borse FUORISCHEMA e gli accessori selezionati per completare il tuo look.">
@@ -568,7 +568,7 @@ button{font:inherit}
     </a>
 
     <div class="nav-actions">
-        <a href="accessori.html" class="nav-btn">← ACCESSORI</a>
+        <a href="accessori.html" class="nav-btn">← ACCEDI AD ACCESSORI</a>
         <a href="index.html" class="nav-btn">HOME</a>
     </div>
 </header>
@@ -622,7 +622,7 @@ button{font:inherit}
     Quando inizieremo a caricare i prodotti, basterà aggiungerli
     qui. Per ora NON inseriamo i vecchi prodotti di prova.
 */
-const products = Object.values(FUORISCHEMA_PRODUCTS).filter(product => product.category === "BORSE");
+const products = Object.values(FUORISCHEMA_PRODUCTS).filter(product => product.id === "lacoste-tracolla-geometrica");
 
 const productGrid = document.getElementById("productGrid");
 const emptyState = document.getElementById("emptyState");
@@ -656,7 +656,7 @@ function renderProducts(filter = "all"){
                 <img
                     src="${escapeHtml(product.image)}"
                     alt="${escapeHtml(product.name)}"
-                    style="width:100%;height:100%;object-fit:cover;display:block;"
+                    style="width:100%;height:100%;object-fit:${product.id === "lacoste-tracolla-geometrica" ? "contain" : "cover"};display:block;"
                     loading="lazy"
                 >
             </div>
@@ -667,7 +667,7 @@ function renderProducts(filter = "all"){
                 <div class="product-type">${escapeHtml(product.type || "Footwear")}</div>
 
                 <div class="product-bottom">
-                    <span class="product-dm">SCRIVI IN DM</span>
+                    <span class="product-dm">${Number.isFinite(product.price) ? new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(product.price) + " · SCRIVI IN DM" : "SCRIVI IN DM"}</span>
                     <span class="product-arrow">→</span>
                 </div>
             </div>
@@ -712,3 +712,9 @@ renderProducts();
     <script src="cart.js"></script>
 </body>
 </html>
+
+
+
+
+
+
