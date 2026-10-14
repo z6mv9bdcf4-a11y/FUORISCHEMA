@@ -1,14 +1,14 @@
-const FUORISCHEMA_PRODUCTS = {
+﻿const FUORISCHEMA_PRODUCTS = {
     "nike-air-force-1-triple-white": {
         id: "nike-air-force-1-triple-white",
         name: "Air Force 1 Triple White",
         brand: "NIKE",
         category: "SCARPE",
         type: "SNEAKER / FUORISCHEMA",
-        description: "Nike Air Force 1 Triple White. Una delle silhouette piÃƒÆ’Ã‚Â¹ iconiche di Nike, proposta nella classica colorazione Triple White.",
+        description: "Nike Air Force 1 Triple White. Una delle silhouette piÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹ iconiche di Nike, proposta nella classica colorazione Triple White.",
         image: "images/products/nike/air-force-1-triple-white/01-b7d9211c-26e7-431a-ac24-b0540fb3c00f.png",
         code: "CW2288-111",
-        label: "PIÃƒÆ’Ã¢â€žÂ¢ SCELTO",
+        label: "PIÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ SCELTO",
         filter: "selected",
         categoryUrl: "scarpe.html",
         price: 100,
@@ -232,19 +232,20 @@ const FUORISCHEMA_PRODUCTS = {
         subcategory: "STREETWEAR",
         type: "OVERSHIRT / FUORISCHEMA",
         description: "Urban Flannel Jacket: giacca-camicia a quadri nei toni del beige, arancione, blu e grigio, con chiusura a bottoni e tasche frontali. Disponibile nelle taglie M e L.",
-        image: "images/products/abbigliamento/urban-flannel-jacket/01.webp",
+        image: "images/products/abbigliamento/urban-flannel-jacket/01.PNG",
         code: "",
         label: "STREETWEAR",
         categoryUrl: "abbigliamento.html",
         price: 39.99,
         sizes: ["M", "L"],
         images: [
-            "images/products/abbigliamento/urban-flannel-jacket/01.webp",
-            "images/products/abbigliamento/urban-flannel-jacket/02.webp"
+            "images/products/abbigliamento/urban-flannel-jacket/01.PNG",
+            "images/products/abbigliamento/urban-flannel-jacket/02.PNG"
         ]
     },
 };
 
 window.FUORISCHEMA_PRODUCTS = FUORISCHEMA_PRODUCTS;
+
 
 
