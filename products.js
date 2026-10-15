@@ -490,7 +490,7 @@ const FUORISCHEMA_PRODUCTS = {
         ]
     },    "lacoste-tracolla-geometrica": {
         id: "lacoste-tracolla-geometrica",
-        name: "Borsa Lacoste Geometrica Nera e Grigia",
+        name: "Tracolla Lacoste",
         brand: "LACOSTE",
         category: "BORSE",
         type: "BORSA / FUORISCHEMA",

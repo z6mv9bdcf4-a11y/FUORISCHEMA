@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -274,7 +274,7 @@ h1{
 .product-image img{
     width:100%;
     height:100%;
-    object-fit:cover;
+    object-fit: contain;
     display:block;
 }
 
@@ -604,7 +604,9 @@ h1{
         .filter(product =>
             accessoryCategories.includes(
                 String(product.category || "").toUpperCase()
-            )
+            ) &&
+            typeof product.image === "string" &&
+            product.image.trim() !== ""
         );
 
     let selectedBrand = "ALL";
